@@ -1,0 +1,340 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <None Include="..\..\ProjectGate.uproject" />
+    <Filter Include="Source">
+      <UniqueIdentifier>{F31BBDD1-B3E8-3BCC-9652-680E16935819}</UniqueIdentifier>
+    </Filter>
+    <None Include="..\..\Source\ProjectGate.Target.cs">
+      <Filter>Source</Filter>
+    </None>
+    <None Include="..\..\Source\ProjectGateEditor.Target.cs">
+      <Filter>Source</Filter>
+    </None>
+    <None Include="..\..\.vsconfig" />
+    <Filter Include="Config">
+      <UniqueIdentifier>{FA535FFB-25E1-3D20-B416-52F9BE21E06E}</UniqueIdentifier>
+    </Filter>
+    <None Include="..\..\Config\DefaultEditor.ini">
+      <Filter>Config</Filter>
+    </None>
+    <None Include="..\..\Config\DefaultEditorPerProjectUserSettings.ini">
+      <Filter>Config</Filter>
+    </None>
+    <None Include="..\..\Config\DefaultEngine.ini">
+      <Filter>Config</Filter>
+    </None>
+    <None Include="..\..\Config\DefaultGame.ini">
+      <Filter>Config</Filter>
+    </None>
+    <None Include="..\..\Config\DefaultInput.ini">
+      <Filter>Config</Filter>
+    </None>
+    <Filter Include="Source\ProjectGate">
+      <UniqueIdentifier>{73499FDC-106D-3960-A759-B3C7A839BCDE}</UniqueIdentifier>
+    </Filter>
+    <None Include="..\..\Source\ProjectGate\ProjectGate.Build.cs">
+      <Filter>Source\ProjectGate</Filter>
+    </None>
+    <Filter Include="Source\ProjectGate\Private">
+      <UniqueIdentifier>{07D67EE0-DBCA-3D05-8B7F-60D13C809DC4}</UniqueIdentifier>
+    </Filter>
+    <ClCompile Include="..\..\Source\ProjectGate\Private\ProjectGate.cpp">
+      <Filter>Source\ProjectGate\Private</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\ProjectGate\Private\ProjectGateCharacter.cpp">
+      <Filter>Source\ProjectGate\Private</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\ProjectGate\Private\ProjectGateGameMode.cpp">
+      <Filter>Source\ProjectGate\Private</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\ProjectGate\Private\ProjectGatePlayerController.cpp">
+      <Filter>Source\ProjectGate\Private</Filter>
+    </ClCompile>
+    <Filter Include="Source\ProjectGate\Private\TurnBasedSystem">
+      <UniqueIdentifier>{589773EB-8A58-3F36-AEAD-ACBE7E97E255}</UniqueIdentifier>
+    </Filter>
+    <ClCompile Include="..\..\Source\ProjectGate\Private\TurnBasedSystem\SimpleTurnManager.cpp">
+      <Filter>Source\ProjectGate\Private\TurnBasedSystem</Filter>
+    </ClCompile>
+    <Filter Include="Source\ProjectGate\Private\TurnBasedSystem\UI">
+      <UniqueIdentifier>{7C27C6DD-98DA-3A47-9552-54F49576E486}</UniqueIdentifier>
+    </Filter>
+    <ClCompile Include="..\..\Source\ProjectGate\Private\TurnBasedSystem\UI\TurnDisplayWidget.cpp">
+      <Filter>Source\ProjectGate\Private\TurnBasedSystem\UI</Filter>
+    </ClCompile>
+    <Filter Include="Source\ProjectGate\Public">
+      <UniqueIdentifier>{47DEB15C-0F2F-37CE-AE14-5D51D65175CB}</UniqueIdentifier>
+    </Filter>
+    <ClInclude Include="..\..\Source\ProjectGate\Public\DebugHelper.h">
+      <Filter>Source\ProjectGate\Public</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\ProjectGate\Public\ProjectGate.h">
+      <Filter>Source\ProjectGate\Public</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\ProjectGate\Public\ProjectGateCharacter.h">
+      <Filter>Source\ProjectGate\Public</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\ProjectGate\Public\ProjectGateGameMode.h">
+      <Filter>Source\ProjectGate\Public</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\ProjectGate\Public\ProjectGatePlayerController.h">
+      <Filter>Source\ProjectGate\Public</Filter>
+    </ClInclude>
+    <Filter Include="Source\ProjectGate\Public\TurnBasedSystem">
+      <UniqueIdentifier>{B24F2539-56DC-3150-829E-86689005E029}</UniqueIdentifier>
+    </Filter>
+    <ClInclude Include="..\..\Source\ProjectGate\Public\TurnBasedSystem\SimpleTurnManager.h">
+      <Filter>Source\ProjectGate\Public\TurnBasedSystem</Filter>
+    </ClInclude>
+    <Filter Include="Source\ProjectGate\Public\TurnBasedSystem\UI">
+      <UniqueIdentifier>{075E4A15-7349-38CF-8618-D88C18A8D78B}</UniqueIdentifier>
+    </Filter>
+    <ClInclude Include="..\..\Source\ProjectGate\Public\TurnBasedSystem\UI\TurnDisplayWidget.h">
+      <Filter>Source\ProjectGate\Public\TurnBasedSystem\UI</Filter>
+    </ClInclude>
+    <Filter Include="Source\ProjectGate\Variant_Combat">
+      <UniqueIdentifier>{E5F35EF7-E9C3-39A0-AC15-ACDD0C0805A8}</UniqueIdentifier>
+    </Filter>
+    <ClCompile Include="..\..\Source\ProjectGate\Variant_Combat\AnimNotify_CheckChargedAttack.cpp">
+      <Filter>Source\ProjectGate\Variant_Combat</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\ProjectGate\Variant_Combat\AnimNotify_CheckChargedAttack.h">
+      <Filter>Source\ProjectGate\Variant_Combat</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\ProjectGate\Variant_Combat\AnimNotify_CheckCombo.cpp">
+      <Filter>Source\ProjectGate\Variant_Combat</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\ProjectGate\Variant_Combat\AnimNotify_CheckCombo.h">
+      <Filter>Source\ProjectGate\Variant_Combat</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\ProjectGate\Variant_Combat\AnimNotify_DoAttackTrace.cpp">
+      <Filter>Source\ProjectGate\Variant_Combat</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\ProjectGate\Variant_Combat\AnimNotify_DoAttackTrace.h">
+      <Filter>Source\ProjectGate\Variant_Combat</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\ProjectGate\Variant_Combat\CombatActivatable.cpp">
+      <Filter>Source\ProjectGate\Variant_Combat</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\ProjectGate\Variant_Combat\CombatActivatable.h">
+      <Filter>Source\ProjectGate\Variant_Combat</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\ProjectGate\Variant_Combat\CombatActivationVolume.cpp">
+      <Filter>Source\ProjectGate\Variant_Combat</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\ProjectGate\Variant_Combat\CombatActivationVolume.h">
+      <Filter>Source\ProjectGate\Variant_Combat</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\ProjectGate\Variant_Combat\CombatAttacker.cpp">
+      <Filter>Source\ProjectGate\Variant_Combat</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\ProjectGate\Variant_Combat\CombatAttacker.h">
+      <Filter>Source\ProjectGate\Variant_Combat</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\ProjectGate\Variant_Combat\CombatCharacter.cpp">
+      <Filter>Source\ProjectGate\Variant_Combat</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\ProjectGate\Variant_Combat\CombatCharacter.h">
+      <Filter>Source\ProjectGate\Variant_Combat</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\ProjectGate\Variant_Combat\CombatCheckpointVolume.cpp">
+      <Filter>Source\ProjectGate\Variant_Combat</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\ProjectGate\Variant_Combat\CombatCheckpointVolume.h">
+      <Filter>Source\ProjectGate\Variant_Combat</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\ProjectGate\Variant_Combat\CombatDamageable.cpp">
+      <Filter>Source\ProjectGate\Variant_Combat</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\ProjectGate\Variant_Combat\CombatDamageable.h">
+      <Filter>Source\ProjectGate\Variant_Combat</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\ProjectGate\Variant_Combat\CombatDamageableBox.cpp">
+      <Filter>Source\ProjectGate\Variant_Combat</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\ProjectGate\Variant_Combat\CombatDamageableBox.h">
+      <Filter>Source\ProjectGate\Variant_Combat</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\ProjectGate\Variant_Combat\CombatDummy.cpp">
+      <Filter>Source\ProjectGate\Variant_Combat</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\ProjectGate\Variant_Combat\CombatDummy.h">
+      <Filter>Source\ProjectGate\Variant_Combat</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\ProjectGate\Variant_Combat\CombatGameMode.cpp">
+      <Filter>Source\ProjectGate\Variant_Combat</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\ProjectGate\Variant_Combat\CombatGameMode.h">
+      <Filter>Source\ProjectGate\Variant_Combat</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\ProjectGate\Variant_Combat\CombatLavaFloor.cpp">
+      <Filter>Source\ProjectGate\Variant_Combat</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\ProjectGate\Variant_Combat\CombatLavaFloor.h">
+      <Filter>Source\ProjectGate\Variant_Combat</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\ProjectGate\Variant_Combat\CombatLifeBar.cpp">
+      <Filter>Source\ProjectGate\Variant_Combat</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\ProjectGate\Variant_Combat\CombatLifeBar.h">
+      <Filter>Source\ProjectGate\Variant_Combat</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\ProjectGate\Variant_Combat\CombatPlayerController.cpp">
+      <Filter>Source\ProjectGate\Variant_Combat</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\ProjectGate\Variant_Combat\CombatPlayerController.h">
+      <Filter>Source\ProjectGate\Variant_Combat</Filter>
+    </ClInclude>
+    <Filter Include="Source\ProjectGate\Variant_Combat\AI">
+      <UniqueIdentifier>{68CB11FA-66D0-3661-A66E-22DA9B24E46F}</UniqueIdentifier>
+    </Filter>
+    <ClCompile Include="..\..\Source\ProjectGate\Variant_Combat\AI\CombatAIController.cpp">
+      <Filter>Source\ProjectGate\Variant_Combat\AI</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\ProjectGate\Variant_Combat\AI\CombatAIController.h">
+      <Filter>Source\ProjectGate\Variant_Combat\AI</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\ProjectGate\Variant_Combat\AI\CombatEnemy.cpp">
+      <Filter>Source\ProjectGate\Variant_Combat\AI</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\ProjectGate\Variant_Combat\AI\CombatEnemy.h">
+      <Filter>Source\ProjectGate\Variant_Combat\AI</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\ProjectGate\Variant_Combat\AI\CombatEnemySpawner.cpp">
+      <Filter>Source\ProjectGate\Variant_Combat\AI</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\ProjectGate\Variant_Combat\AI\CombatEnemySpawner.h">
+      <Filter>Source\ProjectGate\Variant_Combat\AI</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\ProjectGate\Variant_Combat\AI\CombatStateTreeUtility.cpp">
+      <Filter>Source\ProjectGate\Variant_Combat\AI</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\ProjectGate\Variant_Combat\AI\CombatStateTreeUtility.h">
+      <Filter>Source\ProjectGate\Variant_Combat\AI</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\ProjectGate\Variant_Combat\AI\EnvQueryContext_Player.cpp">
+      <Filter>Source\ProjectGate\Variant_Combat\AI</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\ProjectGate\Variant_Combat\AI\EnvQueryContext_Player.h">
+      <Filter>Source\ProjectGate\Variant_Combat\AI</Filter>
+    </ClInclude>
+    <Filter Include="Source\ProjectGate\Variant_Platforming">
+      <UniqueIdentifier>{31E11A97-70BB-3E89-83C7-173405A4BC89}</UniqueIdentifier>
+    </Filter>
+    <ClCompile Include="..\..\Source\ProjectGate\Variant_Platforming\AnimNotify_EndDash.cpp">
+      <Filter>Source\ProjectGate\Variant_Platforming</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\ProjectGate\Variant_Platforming\AnimNotify_EndDash.h">
+      <Filter>Source\ProjectGate\Variant_Platforming</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\ProjectGate\Variant_Platforming\PlatformingCharacter.cpp">
+      <Filter>Source\ProjectGate\Variant_Platforming</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\ProjectGate\Variant_Platforming\PlatformingCharacter.h">
+      <Filter>Source\ProjectGate\Variant_Platforming</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\ProjectGate\Variant_Platforming\PlatformingGameMode.cpp">
+      <Filter>Source\ProjectGate\Variant_Platforming</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\ProjectGate\Variant_Platforming\PlatformingGameMode.h">
+      <Filter>Source\ProjectGate\Variant_Platforming</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\ProjectGate\Variant_Platforming\PlatformingPlayerController.cpp">
+      <Filter>Source\ProjectGate\Variant_Platforming</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\ProjectGate\Variant_Platforming\PlatformingPlayerController.h">
+      <Filter>Source\ProjectGate\Variant_Platforming</Filter>
+    </ClInclude>
+    <Filter Include="Source\ProjectGate\Variant_SideScrolling">
+      <UniqueIdentifier>{9FC1D2C0-6475-3757-B8B9-AAFE83BDB24D}</UniqueIdentifier>
+    </Filter>
+    <ClCompile Include="..\..\Source\ProjectGate\Variant_SideScrolling\SideScrollingCameraManager.cpp">
+      <Filter>Source\ProjectGate\Variant_SideScrolling</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\ProjectGate\Variant_SideScrolling\SideScrollingCameraManager.h">
+      <Filter>Source\ProjectGate\Variant_SideScrolling</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\ProjectGate\Variant_SideScrolling\SideScrollingCharacter.cpp">
+      <Filter>Source\ProjectGate\Variant_SideScrolling</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\ProjectGate\Variant_SideScrolling\SideScrollingCharacter.h">
+      <Filter>Source\ProjectGate\Variant_SideScrolling</Filter>
+    </ClInclude>
+    <None Include="..\..\Source\ProjectGate\Variant_SideScrolling\SideScrollingCPP.Build.cs">
+      <Filter>Source\ProjectGate\Variant_SideScrolling</Filter>
+    </None>
+    <ClCompile Include="..\..\Source\ProjectGate\Variant_SideScrolling\SideScrollingGameMode.cpp">
+      <Filter>Source\ProjectGate\Variant_SideScrolling</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\ProjectGate\Variant_SideScrolling\SideScrollingGameMode.h">
+      <Filter>Source\ProjectGate\Variant_SideScrolling</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\ProjectGate\Variant_SideScrolling\SideScrollingInteractable.cpp">
+      <Filter>Source\ProjectGate\Variant_SideScrolling</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\ProjectGate\Variant_SideScrolling\SideScrollingInteractable.h">
+      <Filter>Source\ProjectGate\Variant_SideScrolling</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\ProjectGate\Variant_SideScrolling\SideScrollingPlayerController.cpp">
+      <Filter>Source\ProjectGate\Variant_SideScrolling</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\ProjectGate\Variant_SideScrolling\SideScrollingPlayerController.h">
+      <Filter>Source\ProjectGate\Variant_SideScrolling</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\ProjectGate\Variant_SideScrolling\SideScrollingUI.cpp">
+      <Filter>Source\ProjectGate\Variant_SideScrolling</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\ProjectGate\Variant_SideScrolling\SideScrollingUI.h">
+      <Filter>Source\ProjectGate\Variant_SideScrolling</Filter>
+    </ClInclude>
+    <Filter Include="Source\ProjectGate\Variant_SideScrolling\AI">
+      <UniqueIdentifier>{ABB1CE45-DB8B-392F-945F-2F77DEC00E1A}</UniqueIdentifier>
+    </Filter>
+    <ClCompile Include="..\..\Source\ProjectGate\Variant_SideScrolling\AI\SideScrollingAIController.cpp">
+      <Filter>Source\ProjectGate\Variant_SideScrolling\AI</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\ProjectGate\Variant_SideScrolling\AI\SideScrollingAIController.h">
+      <Filter>Source\ProjectGate\Variant_SideScrolling\AI</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\ProjectGate\Variant_SideScrolling\AI\SideScrollingNPC.cpp">
+      <Filter>Source\ProjectGate\Variant_SideScrolling\AI</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\ProjectGate\Variant_SideScrolling\AI\SideScrollingNPC.h">
+      <Filter>Source\ProjectGate\Variant_SideScrolling\AI</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\ProjectGate\Variant_SideScrolling\AI\SideScrollingStateTreeUtility.cpp">
+      <Filter>Source\ProjectGate\Variant_SideScrolling\AI</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\ProjectGate\Variant_SideScrolling\AI\SideScrollingStateTreeUtility.h">
+      <Filter>Source\ProjectGate\Variant_SideScrolling\AI</Filter>
+    </ClInclude>
+    <Filter Include="Source\ProjectGate\Variant_SideScrolling\Gameplay">
+      <UniqueIdentifier>{06B41675-6916-30E7-AE63-489994AEA426}</UniqueIdentifier>
+    </Filter>
+    <ClCompile Include="..\..\Source\ProjectGate\Variant_SideScrolling\Gameplay\SideScrollingJumpPad.cpp">
+      <Filter>Source\ProjectGate\Variant_SideScrolling\Gameplay</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\ProjectGate\Variant_SideScrolling\Gameplay\SideScrollingJumpPad.h">
+      <Filter>Source\ProjectGate\Variant_SideScrolling\Gameplay</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\ProjectGate\Variant_SideScrolling\Gameplay\SideScrollingMovingPlatform.cpp">
+      <Filter>Source\ProjectGate\Variant_SideScrolling\Gameplay</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\ProjectGate\Variant_SideScrolling\Gameplay\SideScrollingMovingPlatform.h">
+      <Filter>Source\ProjectGate\Variant_SideScrolling\Gameplay</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\ProjectGate\Variant_SideScrolling\Gameplay\SideScrollingPickup.cpp">
+      <Filter>Source\ProjectGate\Variant_SideScrolling\Gameplay</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\ProjectGate\Variant_SideScrolling\Gameplay\SideScrollingPickup.h">
+      <Filter>Source\ProjectGate\Variant_SideScrolling\Gameplay</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\ProjectGate\Variant_SideScrolling\Gameplay\SideScrollingSoftPlatform.cpp">
+      <Filter>Source\ProjectGate\Variant_SideScrolling\Gameplay</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\ProjectGate\Variant_SideScrolling\Gameplay\SideScrollingSoftPlatform.h">
+      <Filter>Source\ProjectGate\Variant_SideScrolling\Gameplay</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

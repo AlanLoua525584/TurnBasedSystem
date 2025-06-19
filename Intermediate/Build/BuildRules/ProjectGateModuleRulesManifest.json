@@ -1,0 +1,8 @@
+{
+	"SourceFiles": [
+		"D:\\UnrealProjects\\ProjectGate\\Source\\ProjectGate\\ProjectGate.Build.cs",
+		"D:\\UnrealProjects\\ProjectGate\\Source\\ProjectGate.Target.cs",
+		"D:\\UnrealProjects\\ProjectGate\\Source\\ProjectGateEditor.Target.cs"
+	],
+	"EngineVersion": "5.6.0"
+}

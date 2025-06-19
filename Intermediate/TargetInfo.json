@@ -1,0 +1,14 @@
+{
+	"Targets": [
+		{
+			"Name": "ProjectGate",
+			"Path": "..\\Source\\ProjectGate.Target.cs",
+			"Type": "Game"
+		},
+		{
+			"Name": "ProjectGateEditor",
+			"Path": "..\\Source\\ProjectGateEditor.Target.cs",
+			"Type": "Editor"
+		}
+	]
+}
