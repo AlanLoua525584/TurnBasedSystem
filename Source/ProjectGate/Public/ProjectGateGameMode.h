@@ -38,6 +38,10 @@ private:
 
     UPROPERTY(EditDefaultsOnly , Category = "UI")
     TSubclassOf<class UTurnDisplayWidget> TurnDisplayWidgetClass;
+
+    //追蹤前一個角色
+	UPROPERTY()
+	AActor* PreviousCharacter = nullptr;
     
 
     // 測試函數

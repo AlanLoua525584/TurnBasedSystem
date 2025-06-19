@@ -7,7 +7,9 @@
 #include "Engine/World.h"
 #include "TimerManager.h"
 #include "TurnBasedSystem/UI/TurnDisplayWidget.h"
+#include "TurnBasedSystem/TurnBasedCharacter.h"
 #include "Blueprint/UserWidget.h"
+#include "Kismet/GameplayStatics.h"
 
 AProjectGateGameMode::AProjectGateGameMode()
 {
@@ -42,7 +44,7 @@ void AProjectGateGameMode::BeginPlay()
             TurnManager->OnTurnChanged.AddDynamic(this, &AProjectGateGameMode::OnTurnChanged);
             TurnManager->OnPhaseChanged.AddDynamic(this, &AProjectGateGameMode::OnPhaseChanged);
 
-            // 創建測試角色
+            /*創建測試角色
             for (int32 i = 0; i < 3; i++)
             {
                 AActor* TestCharacter = GetWorld()->SpawnActor<AActor>(
@@ -59,6 +61,24 @@ void AProjectGateGameMode::BeginPlay()
                     // 加入到回合順序
                     TurnManager->AddCharacter(TestCharacter);
                     Debug::Print(FString::Printf(TEXT("Added %s to turn order"), *CharName), FColor::Yellow);
+                }
+            }*/
+
+			//尋找場景中已存在的角色並加入到回合管理器
+			TArray<AActor*> FoundCharacters; 
+            UGameplayStatics::GetAllActorsOfClass(
+                GetWorld(),
+                ATurnBasedCharacter::StaticClass(),
+                FoundCharacters
+            );
+
+            for (AActor* Character : FoundCharacters)
+            {
+                if (Character)
+                {
+					TurnManager->AddCharacter(Character);
+                    Debug::Print(FString::Printf(TEXT("Added %s to turn order"),
+                        *Character->GetActorLabel()), FColor::Yellow);
                 }
             }
 
@@ -149,11 +169,28 @@ void AProjectGateGameMode::BeginPlay()
 
 void AProjectGateGameMode::OnTurnChanged(AActor* CurrentCharacter)
 {
+    //先結束前一個角色的回合
+    if (PreviousCharacter)
+    {
+        if (ATurnBasedCharacter* PrevTurnChar = Cast<ATurnBasedCharacter>(PreviousCharacter))
+        {
+			PrevTurnChar->OnTurnEnd();
+        }
+    }
+
     if (CurrentCharacter)
     {
 		FString CharName = CurrentCharacter->GetActorLabel();
         FString Msg = FString::Printf(TEXT("=== TURN CHANGED: %s ==="), *CurrentCharacter->GetActorLabel());
         Debug::Print(Msg, FColor::Cyan, 1);  // Key = 1 保持在畫面上
+
+        //檢查是否為TurnBasedCharacter
+
+        if (ATurnBasedCharacter* TurnChar = Cast<ATurnBasedCharacter>(CurrentCharacter))
+        {
+            //呼叫角色的回合開始
+            TurnChar->OnTurnStart();
+        }
 
 		// 更新 UI 顯示
 
@@ -176,7 +213,10 @@ void AProjectGateGameMode::OnTurnChanged(AActor* CurrentCharacter)
 			TurnDisplayWidget->UpdateTurnOrder(CharacterNames, TurnManager->GetCurrentCharacterIndex());
         }
     }
+    
+    //儲存當前角色作為下一回合的"前一個角色"
 
+	PreviousCharacter = CurrentCharacter;
 }
 
 void AProjectGateGameMode::OnPhaseChanged(AActor* CurrentCharacter, ETurnPhase NewPhase)

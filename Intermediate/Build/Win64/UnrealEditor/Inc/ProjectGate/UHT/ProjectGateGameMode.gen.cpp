@@ -192,10 +192,20 @@ struct Z_Construct_UClass_AProjectGateGameMode_Statics
 		{ "Category", "UI" },
 		{ "ModuleRelativePath", "Public/ProjectGateGameMode.h" },
 	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_PreviousCharacter_MetaData[] = {
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "//\xef\xbf\xbdl\xef\xbf\xbd\xdc\xab""e\xef\xbf\xbd@\xef\xbf\xbd\xd3\xa8\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\n" },
+#endif
+		{ "ModuleRelativePath", "Public/ProjectGateGameMode.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "\xef\xbf\xbdl\xef\xbf\xbd\xdc\xab""e\xef\xbf\xbd@\xef\xbf\xbd\xd3\xa8\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd" },
+#endif
+	};
 #endif // WITH_METADATA
 	static const UECodeGen_Private::FObjectPropertyParams NewProp_TurnManager;
 	static const UECodeGen_Private::FObjectPropertyParams NewProp_TurnDisplayWidget;
 	static const UECodeGen_Private::FClassPropertyParams NewProp_TurnDisplayWidgetClass;
+	static const UECodeGen_Private::FObjectPropertyParams NewProp_PreviousCharacter;
 	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
 	static UObject* (*const DependentSingletons[])();
 	static constexpr FClassFunctionLinkInfo FuncInfo[] = {
@@ -211,10 +221,12 @@ struct Z_Construct_UClass_AProjectGateGameMode_Statics
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_AProjectGateGameMode_Statics::NewProp_TurnManager = { "TurnManager", nullptr, (EPropertyFlags)0x0040000000000000, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AProjectGateGameMode, TurnManager), Z_Construct_UClass_ASimpleTurnManager_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_TurnManager_MetaData), NewProp_TurnManager_MetaData) };
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_AProjectGateGameMode_Statics::NewProp_TurnDisplayWidget = { "TurnDisplayWidget", nullptr, (EPropertyFlags)0x0040000000080008, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AProjectGateGameMode, TurnDisplayWidget), Z_Construct_UClass_UTurnDisplayWidget_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_TurnDisplayWidget_MetaData), NewProp_TurnDisplayWidget_MetaData) };
 const UECodeGen_Private::FClassPropertyParams Z_Construct_UClass_AProjectGateGameMode_Statics::NewProp_TurnDisplayWidgetClass = { "TurnDisplayWidgetClass", nullptr, (EPropertyFlags)0x0044000000010001, UECodeGen_Private::EPropertyGenFlags::Class, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AProjectGateGameMode, TurnDisplayWidgetClass), Z_Construct_UClass_UClass, Z_Construct_UClass_UTurnDisplayWidget_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_TurnDisplayWidgetClass_MetaData), NewProp_TurnDisplayWidgetClass_MetaData) };
+const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_AProjectGateGameMode_Statics::NewProp_PreviousCharacter = { "PreviousCharacter", nullptr, (EPropertyFlags)0x0040000000000000, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AProjectGateGameMode, PreviousCharacter), Z_Construct_UClass_AActor_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_PreviousCharacter_MetaData), NewProp_PreviousCharacter_MetaData) };
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UClass_AProjectGateGameMode_Statics::PropPointers[] = {
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AProjectGateGameMode_Statics::NewProp_TurnManager,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AProjectGateGameMode_Statics::NewProp_TurnDisplayWidget,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AProjectGateGameMode_Statics::NewProp_TurnDisplayWidgetClass,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AProjectGateGameMode_Statics::NewProp_PreviousCharacter,
 };
 static_assert(UE_ARRAY_COUNT(Z_Construct_UClass_AProjectGateGameMode_Statics::PropPointers) < 2048);
 UObject* (*const Z_Construct_UClass_AProjectGateGameMode_Statics::DependentSingletons[])() = {
@@ -253,10 +265,10 @@ AProjectGateGameMode::~AProjectGateGameMode() {}
 struct Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_ProjectGateGameMode_h__Script_ProjectGate_Statics
 {
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_AProjectGateGameMode, AProjectGateGameMode::StaticClass, TEXT("AProjectGateGameMode"), &Z_Registration_Info_UClass_AProjectGateGameMode, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(AProjectGateGameMode), 2825511280U) },
+		{ Z_Construct_UClass_AProjectGateGameMode, AProjectGateGameMode::StaticClass, TEXT("AProjectGateGameMode"), &Z_Registration_Info_UClass_AProjectGateGameMode, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(AProjectGateGameMode), 1311576009U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_ProjectGateGameMode_h__Script_ProjectGate_1803452121(TEXT("/Script/ProjectGate"),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_ProjectGateGameMode_h__Script_ProjectGate_1035034341(TEXT("/Script/ProjectGate"),
 	Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_ProjectGateGameMode_h__Script_ProjectGate_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_ProjectGateGameMode_h__Script_ProjectGate_Statics::ClassInfo),
 	nullptr, 0,
 	nullptr, 0);

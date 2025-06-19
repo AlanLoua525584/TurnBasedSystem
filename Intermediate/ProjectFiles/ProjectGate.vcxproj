@@ -252,7 +252,10 @@
     <None Include="..\..\ProjectGate.uproject"/>
     <None Include="..\..\Source\ProjectGate.Target.cs"/>
     <None Include="..\..\Source\ProjectGateEditor.Target.cs"/>
+    <None Include="..\..\.gitattributes"/>
+    <None Include="..\..\.gitignore"/>
     <None Include="..\..\.vsconfig"/>
+    <None Include="..\..\README.md"/>
     <None Include="..\..\Config\DefaultEditor.ini"/>
     <None Include="..\..\Config\DefaultEditorPerProjectUserSettings.ini"/>
     <None Include="..\..\Config\DefaultEngine.ini"/>
@@ -274,6 +277,9 @@
     <ClCompile Include="..\..\Source\ProjectGate\Private\TurnBasedSystem\SimpleTurnManager.cpp">
       <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
+    <ClCompile Include="..\..\Source\ProjectGate\Private\TurnBasedSystem\TurnBasedCharacter.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
     <ClCompile Include="..\..\Source\ProjectGate\Private\TurnBasedSystem\UI\TurnDisplayWidget.cpp">
       <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
@@ -283,6 +289,7 @@
     <ClInclude Include="..\..\Source\ProjectGate\Public\ProjectGateGameMode.h"/>
     <ClInclude Include="..\..\Source\ProjectGate\Public\ProjectGatePlayerController.h"/>
     <ClInclude Include="..\..\Source\ProjectGate\Public\TurnBasedSystem\SimpleTurnManager.h"/>
+    <ClInclude Include="..\..\Source\ProjectGate\Public\TurnBasedSystem\TurnBasedCharacter.h"/>
     <ClInclude Include="..\..\Source\ProjectGate\Public\TurnBasedSystem\UI\TurnDisplayWidget.h"/>
     <ClCompile Include="..\..\Source\ProjectGate\Variant_Combat\AnimNotify_CheckChargedAttack.cpp">
       <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>

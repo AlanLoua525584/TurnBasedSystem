@@ -11,7 +11,10 @@
     <None Include="..\..\Source\ProjectGateEditor.Target.cs">
       <Filter>Source</Filter>
     </None>
+    <None Include="..\..\.gitattributes" />
+    <None Include="..\..\.gitignore" />
     <None Include="..\..\.vsconfig" />
+    <None Include="..\..\README.md" />
     <Filter Include="Config">
       <UniqueIdentifier>{FA535FFB-25E1-3D20-B416-52F9BE21E06E}</UniqueIdentifier>
     </Filter>
@@ -57,6 +60,9 @@
     <ClCompile Include="..\..\Source\ProjectGate\Private\TurnBasedSystem\SimpleTurnManager.cpp">
       <Filter>Source\ProjectGate\Private\TurnBasedSystem</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Source\ProjectGate\Private\TurnBasedSystem\TurnBasedCharacter.cpp">
+      <Filter>Source\ProjectGate\Private\TurnBasedSystem</Filter>
+    </ClCompile>
     <Filter Include="Source\ProjectGate\Private\TurnBasedSystem\UI">
       <UniqueIdentifier>{7C27C6DD-98DA-3A47-9552-54F49576E486}</UniqueIdentifier>
     </Filter>
@@ -85,6 +91,9 @@
       <UniqueIdentifier>{B24F2539-56DC-3150-829E-86689005E029}</UniqueIdentifier>
     </Filter>
     <ClInclude Include="..\..\Source\ProjectGate\Public\TurnBasedSystem\SimpleTurnManager.h">
+      <Filter>Source\ProjectGate\Public\TurnBasedSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\ProjectGate\Public\TurnBasedSystem\TurnBasedCharacter.h">
       <Filter>Source\ProjectGate\Public\TurnBasedSystem</Filter>
     </ClInclude>
     <Filter Include="Source\ProjectGate\Public\TurnBasedSystem\UI">
