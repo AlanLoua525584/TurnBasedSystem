@@ -1,9 +1,11 @@
+
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+
 #include "TurnBasedCharacter.generated.h"
 
 //«Å§i©e°U
