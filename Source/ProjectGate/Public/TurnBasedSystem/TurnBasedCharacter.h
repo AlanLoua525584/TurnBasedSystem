@@ -81,6 +81,18 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Turn System")
 	bool IsMyTurn() const;
 
+	//設置網格管理器
+	UFUNCTION(BlueprintCallable, Category = "Grid|Movement")
+	void SetGridManager(AGridManager* Manager);
+
+	//網格移動
+	UFUNCTION(BlueprintCallable , Category = "Grid|Movement")
+	bool MoveToGridPosition(FIntPoint TargetGridPos);
+
+	//顯示移動範圍
+	UFUNCTION(BlueprintCallable, Category = "Grid|Movement")
+	void ShowMovementRange();
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -90,10 +102,26 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Turn System")
 	bool bIsMyTurn = false;
 
+	UPROPERTY()
+	class AGridManager* GridManager;
+
+	//當前所在的網格坐標
+	UPROPERTY(BlueprintReadOnly,Category = "Grid|Movement")
+	FIntPoint CurrentGridPosition;
+
+	//移動相關
+	UPROPERTY(BlueprintReadOnly,Category = "Movement")
+	bool bIsMoving = false;
+
+	//移動速度 單位/秒
+	UPROPERTY(EditAnyWhere, BlueprintReadWrite , Category = "Movement")
+	float GridMoveSpeed = 300.0f;
+
+
 
 private:
 	//移動相關
-	bool bIsMoving = false;
+	/*bool bIsMoving = false;*/
 	FVector MoveTargetLocation;
 
 	//輔助函數

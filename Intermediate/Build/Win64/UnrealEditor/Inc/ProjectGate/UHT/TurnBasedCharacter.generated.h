@@ -17,6 +17,7 @@
 PRAGMA_DISABLE_DEPRECATION_WARNINGS
 
 class AActor;
+class AGridManager;
 
 // ********** Begin Delegate FOnActionPointsChanged ************************************************
 #define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_TurnBasedCharacter_h_12_DELEGATE \
@@ -34,6 +35,9 @@ PROJECTGATE_API void FOnActionPerformed_DelegateWrapper(const FMulticastScriptDe
 
 // ********** Begin Class ATurnBasedCharacter ******************************************************
 #define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_TurnBasedCharacter_h_18_RPC_WRAPPERS_NO_PURE_DECLS \
+	DECLARE_FUNCTION(execShowMovementRange); \
+	DECLARE_FUNCTION(execMoveToGridPosition); \
+	DECLARE_FUNCTION(execSetGridManager); \
 	DECLARE_FUNCTION(execIsMyTurn); \
 	DECLARE_FUNCTION(execOnTurnEnd); \
 	DECLARE_FUNCTION(execOnTurnStart); \

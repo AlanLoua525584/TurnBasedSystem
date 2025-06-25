@@ -5,8 +5,17 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Engine/Engine.h"
-#include "Public/DebugHelper.h"
+#include "Components/SkeletalMeshComponent.h"
 #include "DrawDebugHelpers.h"
+#include "TurnBasedSystem/GridManager.h"
+#include "GameFramework/CharacterMovementComponent.h"
+#include "AIController.h"
+#include "Navigation/PathFollowingComponent.h"
+#include "Kismet/GameplayStatics.h" 
+
+
+#include "Public/DebugHelper.h"
+
 
 // Sets default values
 ATurnBasedCharacter::ATurnBasedCharacter()
@@ -27,10 +36,141 @@ void ATurnBasedCharacter::BeginPlay()
 	//初始化行動點數
 	CurrentActionPoints = MaxActionPoints;
 
+	// 嘗試找到場景中的 GridManager
+	TArray<AActor*>FoundActors;
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), AGridManager::StaticClass(), FoundActors);
+
 	Debug::Print(FString::Printf(TEXT("%s initialized with %d AP"),
 		*GetActorLabel(), CurrentActionPoints), FColor::Green);
 
 }
+
+void ATurnBasedCharacter::SetGridManager(AGridManager* Manager)
+{
+	GridManager = Manager;
+
+	if (GridManager)
+	{
+		//更新當前網格位置
+		CurrentGridPosition = GridManager->WorldToGrid(GetActorLocation());
+
+		//將角色對齊到網格
+		FVector GridWorldPos = GridManager->GridToWorld(CurrentGridPosition);
+		SetActorLocation(GridWorldPos);
+
+		//標記網格為已佔用
+		GridManager->SetCellOccupied(CurrentGridPosition, this);
+
+		Debug::Print(FString::Printf(TEXT("%s placed at grid position (%d, %d)"),
+			*GetActorLabel(), CurrentGridPosition.X, CurrentGridPosition.Y), FColor::Green);
+	}
+}
+
+bool ATurnBasedCharacter::MoveToGridPosition(FIntPoint TargetGridPos)
+{
+	if (!GridManager)
+	{
+		Debug::Print(TEXT("GridManager not set! Cannot move."), FColor::Red);
+		return false;
+	}
+
+	//檢查是否輪到自己
+	if (!bIsMyTurn)
+	{
+		Debug::Print(TEXT("Not your turn!"), FColor::Red);
+		return false;
+	}
+
+	//檢查是否是在移動
+
+    if (bIsMoving)
+	{
+		Debug::Print(TEXT("Already moving!"), FColor::Red);
+		return false;
+	}
+
+
+	//獲取可移動範圍
+	TArray<FIntPoint> MovementRange = GridManager->GetMovementRange(
+		CurrentGridPosition,
+		CurrentActionPoints / MoveActionCost // 根據AP計算可移動格數
+	);
+
+	//檢查目標位置是否在可移動範圍內
+	if (!MovementRange.Contains(TargetGridPos))
+	{
+		Debug::Print(TEXT("Target position out of movement range!"), FColor::Red);
+		return false;
+	}
+
+	//計算路徑(簡單版本直接移動)
+	FVector TargetWorldPos = GridManager->GridToWorld(TargetGridPos);
+	
+	//計算移動成本
+	int32 Distance = FMath::Abs(TargetGridPos.X - CurrentGridPosition.X)+
+		             FMath::Abs(TargetGridPos.Y - CurrentGridPosition.Y);
+
+	int32 APCost = Distance * MoveActionCost;
+
+
+	if (!CanPerformAction(APCost))
+	{
+		Debug::Print(TEXT("Not enough Action Points!"), FColor::Red);
+		return false;
+	}
+
+
+	//清除當前佔用
+	GridManager->ClearCellOccupation(CurrentGridPosition);
+
+	//執行移動
+	bIsMoving = true;
+
+	//使用AI移動(如有AIController)
+	if (AAIController* AIController = Cast<AAIController>(GetController()))
+	{
+		AIController->MoveToLocation(TargetWorldPos, 5.0f);
+	}
+	else
+	{
+		//簡單移動
+		SetActorLocation(TargetWorldPos);
+	}
+
+	//更新位置
+	CurrentGridPosition = TargetGridPos;
+	GridManager->SetCellOccupied(CurrentGridPosition, this);
+
+	//消耗AP
+	ConsumeActionPoints(APCost);
+
+
+	//清除高亮
+	GridManager->ClearHighlights();
+
+	bIsMoving = false;
+
+	Debug::Print(FString::Printf(TEXT("%s moved to (%d, %d), Cost: %d AP"),
+		*GetActorLabel(), TargetGridPos.X, TargetGridPos.Y, APCost), FColor::Green);
+
+	return true;
+	
+}
+
+void ATurnBasedCharacter::ShowMovementRange()
+{
+	if (!GridManager || !bIsMyTurn)
+		return;
+
+
+	int32 MoveRange = CurrentActionPoints / MoveActionCost;
+	GridManager->ShowMovementRange(CurrentGridPosition, MoveRange);
+
+	Debug::Print(FString::Printf(TEXT("Showing movement range: %d cells"), MoveRange), FColor::Cyan);
+
+}
+
+
 
 void ATurnBasedCharacter::ResetActionPoints()
 {
@@ -150,8 +290,23 @@ void ATurnBasedCharacter::OnTurnStart()
 	ResetActionPoints();
 
 	//視覺提示-改變角色外觀或顏色
-	GetCapsuleComponent()->SetRenderCustomDepth(true);
-	GetCapsuleComponent()->SetCustomDepthStencilValue(252); 
+
+	if (USkeletalMeshComponent* MeshComp = GetMesh())
+	{
+		MeshComp->SetRenderCustomDepth(true);
+		MeshComp->SetCustomDepthStencilValue(252); // 綠色輪廓
+
+		Debug::Print(FString::Printf(TEXT("%s: Highlight enabled"), *GetActorLabel()), FColor::Green);
+	}
+	else
+	{
+		Debug::Print(TEXT("Failed to get Mesh Component for highlight!"), FColor::Red);
+	}
+
+
+	//顯示移動範圍
+	ShowMovementRange();
+
 
 	FString Msg = FString::Printf(TEXT("=== %s's Turn Started ==="), *GetActorLabel());
 	Debug::Print(Msg, FColor::Cyan, 3);
@@ -163,10 +318,19 @@ void ATurnBasedCharacter::OnTurnEnd()
 	bIsMyTurn = false;
 
 	//視覺提示-恢復角色外觀或顏色
-	GetCapsuleComponent()->SetRenderCustomDepth(false);
+	if (USkeletalMeshComponent* MeshComp = GetMesh())
+	{
+		MeshComp->SetRenderCustomDepth(false);
+	}
 
 	FString Msg = FString::Printf(TEXT("=== %s's Turn Ended ==="), *GetActorLabel());
 	Debug::Print(Msg, FColor::Orange, 2);
+
+	//消除移動範圍顯示
+	if (GridManager)
+	{
+		GridManager->ClearHighlights();
+	}
 
 }
 
@@ -248,6 +412,10 @@ bool ATurnBasedCharacter::IsMyTurn() const
 {
 	return false;
 }
+
+
+
+
 
 
 

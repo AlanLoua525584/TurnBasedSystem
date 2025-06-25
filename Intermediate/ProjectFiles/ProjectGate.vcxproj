@@ -262,6 +262,9 @@
     <None Include="..\..\Config\DefaultGame.ini"/>
     <None Include="..\..\Config\DefaultInput.ini"/>
     <None Include="..\..\Source\ProjectGate\ProjectGate.Build.cs"/>
+    <ClCompile Include="..\..\Source\ProjectGate\Private\FreeCameraPawn.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
     <ClCompile Include="..\..\Source\ProjectGate\Private\ProjectGate.cpp">
       <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
@@ -274,6 +277,15 @@
     <ClCompile Include="..\..\Source\ProjectGate\Private\ProjectGatePlayerController.cpp">
       <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
+    <ClCompile Include="..\..\Source\ProjectGate\Private\TurnBasedSystem\GridManager.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\ProjectGate\Private\TurnBasedSystem\GridPathfindingComponent.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\ProjectGate\Private\TurnBasedSystem\GridPlayerController.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
     <ClCompile Include="..\..\Source\ProjectGate\Private\TurnBasedSystem\SimpleTurnManager.cpp">
       <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
@@ -284,10 +296,14 @@
       <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <ClInclude Include="..\..\Source\ProjectGate\Public\DebugHelper.h"/>
+    <ClInclude Include="..\..\Source\ProjectGate\Public\FreeCameraPawn.h"/>
     <ClInclude Include="..\..\Source\ProjectGate\Public\ProjectGate.h"/>
     <ClInclude Include="..\..\Source\ProjectGate\Public\ProjectGateCharacter.h"/>
     <ClInclude Include="..\..\Source\ProjectGate\Public\ProjectGateGameMode.h"/>
     <ClInclude Include="..\..\Source\ProjectGate\Public\ProjectGatePlayerController.h"/>
+    <ClInclude Include="..\..\Source\ProjectGate\Public\TurnBasedSystem\GridManager.h"/>
+    <ClInclude Include="..\..\Source\ProjectGate\Public\TurnBasedSystem\GridPathfindingComponent.h"/>
+    <ClInclude Include="..\..\Source\ProjectGate\Public\TurnBasedSystem\GridPlayerController.h"/>
     <ClInclude Include="..\..\Source\ProjectGate\Public\TurnBasedSystem\SimpleTurnManager.h"/>
     <ClInclude Include="..\..\Source\ProjectGate\Public\TurnBasedSystem\TurnBasedCharacter.h"/>
     <ClInclude Include="..\..\Source\ProjectGate\Public\TurnBasedSystem\UI\TurnDisplayWidget.h"/>

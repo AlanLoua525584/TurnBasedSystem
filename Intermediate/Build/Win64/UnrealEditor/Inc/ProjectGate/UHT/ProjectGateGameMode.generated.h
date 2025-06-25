@@ -20,14 +20,14 @@ class AActor;
 enum class ETurnPhase : uint8;
 
 // ********** Begin Class AProjectGateGameMode *****************************************************
-#define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_ProjectGateGameMode_h_21_RPC_WRAPPERS_NO_PURE_DECLS \
+#define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_ProjectGateGameMode_h_22_RPC_WRAPPERS_NO_PURE_DECLS \
 	DECLARE_FUNCTION(execOnPhaseChanged); \
 	DECLARE_FUNCTION(execOnTurnChanged);
 
 
 PROJECTGATE_API UClass* Z_Construct_UClass_AProjectGateGameMode_NoRegister();
 
-#define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_ProjectGateGameMode_h_21_INCLASS_NO_PURE_DECLS \
+#define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_ProjectGateGameMode_h_22_INCLASS_NO_PURE_DECLS \
 private: \
 	static void StaticRegisterNativesAProjectGateGameMode(); \
 	friend struct Z_Construct_UClass_AProjectGateGameMode_Statics; \
@@ -38,7 +38,7 @@ public: \
 	DECLARE_SERIALIZER(AProjectGateGameMode)
 
 
-#define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_ProjectGateGameMode_h_21_ENHANCED_CONSTRUCTORS \
+#define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_ProjectGateGameMode_h_22_ENHANCED_CONSTRUCTORS \
 	/** Deleted move- and copy-constructors, should never be used */ \
 	AProjectGateGameMode(AProjectGateGameMode&&) = delete; \
 	AProjectGateGameMode(const AProjectGateGameMode&) = delete; \
@@ -48,13 +48,13 @@ public: \
 	NO_API virtual ~AProjectGateGameMode();
 
 
-#define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_ProjectGateGameMode_h_18_PROLOG
-#define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_ProjectGateGameMode_h_21_GENERATED_BODY \
+#define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_ProjectGateGameMode_h_19_PROLOG
+#define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_ProjectGateGameMode_h_22_GENERATED_BODY \
 PRAGMA_DISABLE_DEPRECATION_WARNINGS \
 public: \
-	FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_ProjectGateGameMode_h_21_RPC_WRAPPERS_NO_PURE_DECLS \
-	FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_ProjectGateGameMode_h_21_INCLASS_NO_PURE_DECLS \
-	FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_ProjectGateGameMode_h_21_ENHANCED_CONSTRUCTORS \
+	FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_ProjectGateGameMode_h_22_RPC_WRAPPERS_NO_PURE_DECLS \
+	FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_ProjectGateGameMode_h_22_INCLASS_NO_PURE_DECLS \
+	FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_ProjectGateGameMode_h_22_ENHANCED_CONSTRUCTORS \
 private: \
 PRAGMA_ENABLE_DEPRECATION_WARNINGS
 

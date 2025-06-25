@@ -10,6 +10,7 @@
 #include "TurnBasedSystem/TurnBasedCharacter.h"
 #include "Blueprint/UserWidget.h"
 #include "Kismet/GameplayStatics.h"
+#include "FreeCameraPawn.h"
 
 AProjectGateGameMode::AProjectGateGameMode()
 {
@@ -22,6 +23,9 @@ void AProjectGateGameMode::BeginPlay()
     Super::BeginPlay();
 
     Debug::Print(TEXT("=== GameMode BeginPlay ==="), FColor::Cyan);
+
+    //生成自由鏡頭
+	SpawnFreeCameraPawn();
 
     // 生成回合管理器
     if (GetWorld())
@@ -167,6 +171,60 @@ void AProjectGateGameMode::BeginPlay()
     Debug::Print(TEXT("Manual control mode enabled - use buttons to control turns"), FColor::Yellow);
 }
 
+void AProjectGateGameMode::SpawnFreeCameraPawn()
+{
+    if (!FreeCameraPawnClass)
+    {
+        Debug::Print(TEXT("FreeCameraPawnClass not set in GameMode!"), FColor::Red);
+        return;
+    }
+
+    // 計算初始位置（場景中心上方）
+	FVector SpawnLocation = FVector(0.0f, 0.0f, 1000.0f);
+	FRotator SpawnRotation = FRotator(-45.0f, 0.0f, 0.0f); // 向下看
+
+	// 創建自由鏡頭 Pawn
+    FActorSpawnParameters SpawnParams;
+    SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+
+    FreeCameraPawn = GetWorld()->SpawnActor<AFreeCameraPawn>(
+        FreeCameraPawnClass,
+        SpawnLocation,
+        SpawnRotation,
+        SpawnParams
+    );
+
+    if (FreeCameraPawn)
+    {
+        // 讓玩家控制相機
+        APlayerController* PC = GetWorld()->GetFirstPlayerController();
+        if (PC)
+        {
+            PC->Possess(FreeCameraPawn);
+            PC->SetViewTarget(FreeCameraPawn);
+
+            // 設置輸入模式
+            FInputModeGameAndUI InputMode;
+            InputMode.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
+            InputMode.SetHideCursorDuringCapture(false);
+            PC->SetInputMode(InputMode);
+            PC->bShowMouseCursor = true;
+
+            Debug::Print(TEXT("Free Camera Pawn spawned and possessed"), FColor::Green);
+        }
+
+        // 設置相機邊界（可選）
+        FreeCameraPawn->SetMovementBounds(
+            FVector(-5000, -5000, 100),    // 最小邊界
+            FVector(5000, 5000, 3000)       // 最大邊界
+        );
+	}
+	else
+	{
+		Debug::Print(TEXT("Failed to spawn FreeCameraPawn!"), FColor::Red);
+	}
+}
+
 void AProjectGateGameMode::OnTurnChanged(AActor* CurrentCharacter)
 {
     //先結束前一個角色的回合
@@ -177,6 +235,12 @@ void AProjectGateGameMode::OnTurnChanged(AActor* CurrentCharacter)
 			PrevTurnChar->OnTurnEnd();
         }
     }
+	// 自動聚焦到當前角色
+    if (bAutoFocusCurrentCharacter && FreeCameraPawn && CurrentCharacter)
+    {
+		FreeCameraPawn->FocusOnActor(CurrentCharacter, FocusDistance);
+    }
+
 
     if (CurrentCharacter)
     {
@@ -275,4 +339,7 @@ void AProjectGateGameMode::TestNextPhase()
             Debug::Print(StatusMsg, FColor::White, 3);  // Key = 3
         }
     }
+
+	
+
 }
