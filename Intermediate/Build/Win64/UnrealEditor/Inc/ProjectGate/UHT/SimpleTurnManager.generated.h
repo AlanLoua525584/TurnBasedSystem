@@ -40,6 +40,7 @@ PROJECTGATE_API void FOnPhaseChanged_DelegateWrapper(const FMulticastScriptDeleg
 	DECLARE_FUNCTION(execGetCurrentTurnCharacter); \
 	DECLARE_FUNCTION(execGetTurnCount); \
 	DECLARE_FUNCTION(execGetCurrentPhase); \
+	DECLARE_FUNCTION(execPossessCurrentTurnCharacter); \
 	DECLARE_FUNCTION(execNextPhase); \
 	DECLARE_FUNCTION(execNextTurn); \
 	DECLARE_FUNCTION(execStartBattle); \

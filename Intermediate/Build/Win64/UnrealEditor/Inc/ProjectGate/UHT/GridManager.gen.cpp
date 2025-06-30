@@ -17,8 +17,10 @@ COREUOBJECT_API UScriptStruct* Z_Construct_UScriptStruct_FVector();
 ENGINE_API UClass* Z_Construct_UClass_AActor();
 ENGINE_API UClass* Z_Construct_UClass_AActor_NoRegister();
 ENGINE_API UClass* Z_Construct_UClass_UInstancedStaticMeshComponent_NoRegister();
+ENGINE_API UClass* Z_Construct_UClass_UMaterialInstanceDynamic_NoRegister();
 PROJECTGATE_API UClass* Z_Construct_UClass_AGridManager();
 PROJECTGATE_API UClass* Z_Construct_UClass_AGridManager_NoRegister();
+PROJECTGATE_API UClass* Z_Construct_UClass_UGridVisualComponent_NoRegister();
 PROJECTGATE_API UEnum* Z_Construct_UEnum_ProjectGate_EGridType();
 PROJECTGATE_API UScriptStruct* Z_Construct_UScriptStruct_FGridCell();
 UPackage* Z_Construct_UPackage__Script_ProjectGate();
@@ -46,7 +48,7 @@ struct Z_Construct_UEnum_ProjectGate_EGridType_Statics
 		{ "Blocked.Name", "EGridType::Blocked" },
 		{ "BlueprintType", "true" },
 #if !UE_BUILD_SHIPPING
-		{ "Comment", "//\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbdT\xef\xbf\xbd|\n" },
+		{ "Comment", "// Grid Type Enum\n" },
 #endif
 		{ "Difficult.DisplayName", "Difficult Terrain" },
 		{ "Difficult.Name", "EGridType::Difficult" },
@@ -56,12 +58,12 @@ struct Z_Construct_UEnum_ProjectGate_EGridType_Statics
 		{ "Normal.DisplayName", "Normal" },
 		{ "Normal.Name", "EGridType::Normal" },
 #if !UE_BUILD_SHIPPING
-		{ "ToolTip", "\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbdT\xef\xbf\xbd|" },
+		{ "ToolTip", "Grid Type Enum" },
 #endif
-		{ "Water.Comment", "//\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xd3\xa7\xef\xbf\xbdhAP\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\n" },
+		{ "Water.Comment", "// Cost more AP to move\n" },
 		{ "Water.DisplayName", "Water" },
 		{ "Water.Name", "EGridType::Water" },
-		{ "Water.ToolTip", "\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xd3\xa7\xef\xbf\xbdhAP\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd" },
+		{ "Water.ToolTip", "Cost more AP to move" },
 	};
 #endif // WITH_METADATA
 	static constexpr UECodeGen_Private::FEnumeratorParam Enumerators[] = {
@@ -111,11 +113,11 @@ struct Z_Construct_UScriptStruct_FGridCell_Statics
 	static constexpr UECodeGen_Private::FMetaDataPairParam Struct_MetaDataParams[] = {
 		{ "BlueprintType", "true" },
 #if !UE_BUILD_SHIPPING
-		{ "Comment", "//\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd""c\xef\xbf\xbd\xef\xbf\xbd\n" },
+		{ "Comment", "// Grid Cell Structure\n" },
 #endif
 		{ "ModuleRelativePath", "Public/TurnBasedSystem/GridManager.h" },
 #if !UE_BUILD_SHIPPING
-		{ "ToolTip", "\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd""c\xef\xbf\xbd\xef\xbf\xbd" },
+		{ "ToolTip", "Grid Cell Structure" },
 #endif
 	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_WorldLocation_MetaData[] = {
@@ -141,11 +143,11 @@ struct Z_Construct_UScriptStruct_FGridCell_Statics
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_MovementCost_MetaData[] = {
 		{ "Category", "GridCell" },
 #if !UE_BUILD_SHIPPING
-		{ "Comment", "// \xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xca\xa6\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd]\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xd3\xa4k\xef\xbf\xbdZ\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbdt\xef\xbf\xbd\xce\xb7\xc7\xb3\xc6\xa1^\n" },
+		{ "Comment", "// Movement cost (for future pathfinding system)\n" },
 #endif
 		{ "ModuleRelativePath", "Public/TurnBasedSystem/GridManager.h" },
 #if !UE_BUILD_SHIPPING
-		{ "ToolTip", "\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xca\xa6\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd]\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xd3\xa4k\xef\xbf\xbdZ\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbdt\xef\xbf\xbd\xce\xb7\xc7\xb3\xc6\xa1^" },
+		{ "ToolTip", "Movement cost (for future pathfinding system)" },
 #endif
 	};
 #endif // WITH_METADATA
@@ -167,7 +169,7 @@ struct Z_Construct_UScriptStruct_FGridCell_Statics
 const UECodeGen_Private::FStructPropertyParams Z_Construct_UScriptStruct_FGridCell_Statics::NewProp_WorldLocation = { "WorldLocation", nullptr, (EPropertyFlags)0x0010000000000004, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(FGridCell, WorldLocation), Z_Construct_UScriptStruct_FVector, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_WorldLocation_MetaData), NewProp_WorldLocation_MetaData) };
 const UECodeGen_Private::FStructPropertyParams Z_Construct_UScriptStruct_FGridCell_Statics::NewProp_GridCoordinate = { "GridCoordinate", nullptr, (EPropertyFlags)0x0010000000000004, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(FGridCell, GridCoordinate), Z_Construct_UScriptStruct_FIntPoint, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_GridCoordinate_MetaData), NewProp_GridCoordinate_MetaData) };
 const UECodeGen_Private::FBytePropertyParams Z_Construct_UScriptStruct_FGridCell_Statics::NewProp_GridType_Underlying = { "UnderlyingType", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Byte, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, 0, nullptr, METADATA_PARAMS(0, nullptr) };
-const UECodeGen_Private::FEnumPropertyParams Z_Construct_UScriptStruct_FGridCell_Statics::NewProp_GridType = { "GridType", nullptr, (EPropertyFlags)0x0010000000000004, UECodeGen_Private::EPropertyGenFlags::Enum, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(FGridCell, GridType), Z_Construct_UEnum_ProjectGate_EGridType, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_GridType_MetaData), NewProp_GridType_MetaData) }; // 692839897
+const UECodeGen_Private::FEnumPropertyParams Z_Construct_UScriptStruct_FGridCell_Statics::NewProp_GridType = { "GridType", nullptr, (EPropertyFlags)0x0010000000000004, UECodeGen_Private::EPropertyGenFlags::Enum, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(FGridCell, GridType), Z_Construct_UEnum_ProjectGate_EGridType, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_GridType_MetaData), NewProp_GridType_MetaData) }; // 2717124246
 void Z_Construct_UScriptStruct_FGridCell_Statics::NewProp_bIsOccupied_SetBit(void* Obj)
 {
 	((FGridCell*)Obj)->bIsOccupied = 1;
@@ -207,6 +209,55 @@ UScriptStruct* Z_Construct_UScriptStruct_FGridCell()
 	return Z_Registration_Info_UScriptStruct_FGridCell.InnerSingleton;
 }
 // ********** End ScriptStruct FGridCell ***********************************************************
+
+// ********** Begin Class AGridManager Function AnimateHighlight ***********************************
+struct Z_Construct_UFunction_AGridManager_AnimateHighlight_Statics
+{
+	struct GridManager_eventAnimateHighlight_Parms
+	{
+		float DeltaTime;
+	};
+#if WITH_METADATA
+	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
+		{ "Category", "Grid|Visualization" },
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "// Animation effects\n" },
+#endif
+		{ "ModuleRelativePath", "Public/TurnBasedSystem/GridManager.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "Animation effects" },
+#endif
+	};
+#endif // WITH_METADATA
+	static const UECodeGen_Private::FFloatPropertyParams NewProp_DeltaTime;
+	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
+	static const UECodeGen_Private::FFunctionParams FuncParams;
+};
+const UECodeGen_Private::FFloatPropertyParams Z_Construct_UFunction_AGridManager_AnimateHighlight_Statics::NewProp_DeltaTime = { "DeltaTime", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(GridManager_eventAnimateHighlight_Parms, DeltaTime), METADATA_PARAMS(0, nullptr) };
+const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_AGridManager_AnimateHighlight_Statics::PropPointers[] = {
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_AGridManager_AnimateHighlight_Statics::NewProp_DeltaTime,
+};
+static_assert(UE_ARRAY_COUNT(Z_Construct_UFunction_AGridManager_AnimateHighlight_Statics::PropPointers) < 2048);
+const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_AGridManager_AnimateHighlight_Statics::FuncParams = { { (UObject*(*)())Z_Construct_UClass_AGridManager, nullptr, "AnimateHighlight", Z_Construct_UFunction_AGridManager_AnimateHighlight_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_AGridManager_AnimateHighlight_Statics::PropPointers), sizeof(Z_Construct_UFunction_AGridManager_AnimateHighlight_Statics::GridManager_eventAnimateHighlight_Parms), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x04020401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_AGridManager_AnimateHighlight_Statics::Function_MetaDataParams), Z_Construct_UFunction_AGridManager_AnimateHighlight_Statics::Function_MetaDataParams)},  };
+static_assert(sizeof(Z_Construct_UFunction_AGridManager_AnimateHighlight_Statics::GridManager_eventAnimateHighlight_Parms) < MAX_uint16);
+UFunction* Z_Construct_UFunction_AGridManager_AnimateHighlight()
+{
+	static UFunction* ReturnFunction = nullptr;
+	if (!ReturnFunction)
+	{
+		UECodeGen_Private::ConstructUFunction(&ReturnFunction, Z_Construct_UFunction_AGridManager_AnimateHighlight_Statics::FuncParams);
+	}
+	return ReturnFunction;
+}
+DEFINE_FUNCTION(AGridManager::execAnimateHighlight)
+{
+	P_GET_PROPERTY(FFloatProperty,Z_Param_DeltaTime);
+	P_FINISH;
+	P_NATIVE_BEGIN;
+	P_THIS->AnimateHighlight(Z_Param_DeltaTime);
+	P_NATIVE_END;
+}
+// ********** End Class AGridManager Function AnimateHighlight *************************************
 
 // ********** Begin Class AGridManager Function CanMoveThrough *************************************
 struct Z_Construct_UFunction_AGridManager_CanMoveThrough_Statics
@@ -259,6 +310,36 @@ DEFINE_FUNCTION(AGridManager::execCanMoveThrough)
 	P_NATIVE_END;
 }
 // ********** End Class AGridManager Function CanMoveThrough ***************************************
+
+// ********** Begin Class AGridManager Function ClearAllVisuals ************************************
+struct Z_Construct_UFunction_AGridManager_ClearAllVisuals_Statics
+{
+#if WITH_METADATA
+	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
+		{ "Category", "Grid|Visualization" },
+		{ "ModuleRelativePath", "Public/TurnBasedSystem/GridManager.h" },
+	};
+#endif // WITH_METADATA
+	static const UECodeGen_Private::FFunctionParams FuncParams;
+};
+const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_AGridManager_ClearAllVisuals_Statics::FuncParams = { { (UObject*(*)())Z_Construct_UClass_AGridManager, nullptr, "ClearAllVisuals", nullptr, 0, 0, RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x04020401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_AGridManager_ClearAllVisuals_Statics::Function_MetaDataParams), Z_Construct_UFunction_AGridManager_ClearAllVisuals_Statics::Function_MetaDataParams)},  };
+UFunction* Z_Construct_UFunction_AGridManager_ClearAllVisuals()
+{
+	static UFunction* ReturnFunction = nullptr;
+	if (!ReturnFunction)
+	{
+		UECodeGen_Private::ConstructUFunction(&ReturnFunction, Z_Construct_UFunction_AGridManager_ClearAllVisuals_Statics::FuncParams);
+	}
+	return ReturnFunction;
+}
+DEFINE_FUNCTION(AGridManager::execClearAllVisuals)
+{
+	P_FINISH;
+	P_NATIVE_BEGIN;
+	P_THIS->ClearAllVisuals();
+	P_NATIVE_END;
+}
+// ********** End Class AGridManager Function ClearAllVisuals **************************************
 
 // ********** Begin Class AGridManager Function ClearCellOccupation ********************************
 struct Z_Construct_UFunction_AGridManager_ClearCellOccupation_Statics
@@ -342,6 +423,54 @@ DEFINE_FUNCTION(AGridManager::execClearHighlights)
 }
 // ********** End Class AGridManager Function ClearHighlights **************************************
 
+// ********** Begin Class AGridManager Function GetCellSize ****************************************
+struct Z_Construct_UFunction_AGridManager_GetCellSize_Statics
+{
+	struct GridManager_eventGetCellSize_Parms
+	{
+		float ReturnValue;
+	};
+#if WITH_METADATA
+	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
+		{ "Category", "Grid" },
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "// \xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbdl\xef\xbf\xbdj\xef\xbf\xbdp\n" },
+#endif
+		{ "ModuleRelativePath", "Public/TurnBasedSystem/GridManager.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbdl\xef\xbf\xbdj\xef\xbf\xbdp" },
+#endif
+	};
+#endif // WITH_METADATA
+	static const UECodeGen_Private::FFloatPropertyParams NewProp_ReturnValue;
+	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
+	static const UECodeGen_Private::FFunctionParams FuncParams;
+};
+const UECodeGen_Private::FFloatPropertyParams Z_Construct_UFunction_AGridManager_GetCellSize_Statics::NewProp_ReturnValue = { "ReturnValue", nullptr, (EPropertyFlags)0x0010000000000580, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(GridManager_eventGetCellSize_Parms, ReturnValue), METADATA_PARAMS(0, nullptr) };
+const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_AGridManager_GetCellSize_Statics::PropPointers[] = {
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_AGridManager_GetCellSize_Statics::NewProp_ReturnValue,
+};
+static_assert(UE_ARRAY_COUNT(Z_Construct_UFunction_AGridManager_GetCellSize_Statics::PropPointers) < 2048);
+const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_AGridManager_GetCellSize_Statics::FuncParams = { { (UObject*(*)())Z_Construct_UClass_AGridManager, nullptr, "GetCellSize", Z_Construct_UFunction_AGridManager_GetCellSize_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_AGridManager_GetCellSize_Statics::PropPointers), sizeof(Z_Construct_UFunction_AGridManager_GetCellSize_Statics::GridManager_eventGetCellSize_Parms), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x54020401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_AGridManager_GetCellSize_Statics::Function_MetaDataParams), Z_Construct_UFunction_AGridManager_GetCellSize_Statics::Function_MetaDataParams)},  };
+static_assert(sizeof(Z_Construct_UFunction_AGridManager_GetCellSize_Statics::GridManager_eventGetCellSize_Parms) < MAX_uint16);
+UFunction* Z_Construct_UFunction_AGridManager_GetCellSize()
+{
+	static UFunction* ReturnFunction = nullptr;
+	if (!ReturnFunction)
+	{
+		UECodeGen_Private::ConstructUFunction(&ReturnFunction, Z_Construct_UFunction_AGridManager_GetCellSize_Statics::FuncParams);
+	}
+	return ReturnFunction;
+}
+DEFINE_FUNCTION(AGridManager::execGetCellSize)
+{
+	P_FINISH;
+	P_NATIVE_BEGIN;
+	*(float*)Z_Param__Result=P_THIS->GetCellSize();
+	P_NATIVE_END;
+}
+// ********** End Class AGridManager Function GetCellSize ******************************************
+
 // ********** Begin Class AGridManager Function GetGridCell ****************************************
 struct Z_Construct_UFunction_AGridManager_GetGridCell_Statics
 {
@@ -355,11 +484,11 @@ struct Z_Construct_UFunction_AGridManager_GetGridCell_Statics
 	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
 		{ "Category", "Grid" },
 #if !UE_BUILD_SHIPPING
-		{ "Comment", "//\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbdH\xef\xbf\xbd\xef\xbf\xbd\n" },
+		{ "Comment", "// Get grid information\n" },
 #endif
 		{ "ModuleRelativePath", "Public/TurnBasedSystem/GridManager.h" },
 #if !UE_BUILD_SHIPPING
-		{ "ToolTip", "\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbdH\xef\xbf\xbd\xef\xbf\xbd" },
+		{ "ToolTip", "Get grid information" },
 #endif
 	};
 #endif // WITH_METADATA
@@ -371,7 +500,7 @@ struct Z_Construct_UFunction_AGridManager_GetGridCell_Statics
 	static const UECodeGen_Private::FFunctionParams FuncParams;
 };
 const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_AGridManager_GetGridCell_Statics::NewProp_GridCoord = { "GridCoord", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(GridManager_eventGetGridCell_Parms, GridCoord), Z_Construct_UScriptStruct_FIntPoint, METADATA_PARAMS(0, nullptr) };
-const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_AGridManager_GetGridCell_Statics::NewProp_OutCell = { "OutCell", nullptr, (EPropertyFlags)0x0010000000000180, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(GridManager_eventGetGridCell_Parms, OutCell), Z_Construct_UScriptStruct_FGridCell, METADATA_PARAMS(0, nullptr) }; // 1518523518
+const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_AGridManager_GetGridCell_Statics::NewProp_OutCell = { "OutCell", nullptr, (EPropertyFlags)0x0010000000000180, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(GridManager_eventGetGridCell_Parms, OutCell), Z_Construct_UScriptStruct_FGridCell, METADATA_PARAMS(0, nullptr) }; // 952307137
 void Z_Construct_UFunction_AGridManager_GetGridCell_Statics::NewProp_ReturnValue_SetBit(void* Obj)
 {
 	((GridManager_eventGetGridCell_Parms*)Obj)->ReturnValue = 1;
@@ -418,11 +547,11 @@ struct Z_Construct_UFunction_AGridManager_GetMovementCostBetween_Statics
 	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
 		{ "Category", "Grid|Movement" },
 #if !UE_BUILD_SHIPPING
-		{ "Comment", "//\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xd3\xa4k\xef\xbf\xbdZ\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xca\xa8t\xef\xbf\xbd\xce\xb7\xc7\xb3\xc6\xaa\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd""f\n" },
+		{ "Comment", "// Interface for future free movement system\n" },
 #endif
 		{ "ModuleRelativePath", "Public/TurnBasedSystem/GridManager.h" },
 #if !UE_BUILD_SHIPPING
-		{ "ToolTip", "\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xd3\xa4k\xef\xbf\xbdZ\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xca\xa8t\xef\xbf\xbd\xce\xb7\xc7\xb3\xc6\xaa\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd""f" },
+		{ "ToolTip", "Interface for future free movement system" },
 #endif
 	};
 #endif // WITH_METADATA
@@ -476,11 +605,11 @@ struct Z_Construct_UFunction_AGridManager_GetMovementRange_Statics
 	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
 		{ "Category", "Grid|Movement" },
 #if !UE_BUILD_SHIPPING
-		{ "Comment", "//\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd|\xef\xbf\xbdM\xef\xbf\xbd""d\xef\xbf\xbd\xef\xbf\xbdp\xef\xbf\xbd\xef\xbf\xbd\n" },
+		{ "Comment", "// Path and range calculation\n" },
 #endif
 		{ "ModuleRelativePath", "Public/TurnBasedSystem/GridManager.h" },
 #if !UE_BUILD_SHIPPING
-		{ "ToolTip", "\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd|\xef\xbf\xbdM\xef\xbf\xbd""d\xef\xbf\xbd\xef\xbf\xbdp\xef\xbf\xbd\xef\xbf\xbd" },
+		{ "ToolTip", "Path and range calculation" },
 #endif
 	};
 #endif // WITH_METADATA
@@ -529,7 +658,7 @@ struct Z_Construct_UFunction_AGridManager_GetPath_Statics
 {
 	struct GridManager_eventGetPath_Parms
 	{
-		FIntPoint StarCoord;
+		FIntPoint StartCoord;
 		FIntPoint EndCoord;
 		TArray<FIntPoint> ReturnValue;
 	};
@@ -539,19 +668,19 @@ struct Z_Construct_UFunction_AGridManager_GetPath_Statics
 		{ "ModuleRelativePath", "Public/TurnBasedSystem/GridManager.h" },
 	};
 #endif // WITH_METADATA
-	static const UECodeGen_Private::FStructPropertyParams NewProp_StarCoord;
+	static const UECodeGen_Private::FStructPropertyParams NewProp_StartCoord;
 	static const UECodeGen_Private::FStructPropertyParams NewProp_EndCoord;
 	static const UECodeGen_Private::FStructPropertyParams NewProp_ReturnValue_Inner;
 	static const UECodeGen_Private::FArrayPropertyParams NewProp_ReturnValue;
 	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
 	static const UECodeGen_Private::FFunctionParams FuncParams;
 };
-const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_AGridManager_GetPath_Statics::NewProp_StarCoord = { "StarCoord", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(GridManager_eventGetPath_Parms, StarCoord), Z_Construct_UScriptStruct_FIntPoint, METADATA_PARAMS(0, nullptr) };
+const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_AGridManager_GetPath_Statics::NewProp_StartCoord = { "StartCoord", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(GridManager_eventGetPath_Parms, StartCoord), Z_Construct_UScriptStruct_FIntPoint, METADATA_PARAMS(0, nullptr) };
 const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_AGridManager_GetPath_Statics::NewProp_EndCoord = { "EndCoord", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(GridManager_eventGetPath_Parms, EndCoord), Z_Construct_UScriptStruct_FIntPoint, METADATA_PARAMS(0, nullptr) };
 const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_AGridManager_GetPath_Statics::NewProp_ReturnValue_Inner = { "ReturnValue", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, 0, Z_Construct_UScriptStruct_FIntPoint, METADATA_PARAMS(0, nullptr) };
 const UECodeGen_Private::FArrayPropertyParams Z_Construct_UFunction_AGridManager_GetPath_Statics::NewProp_ReturnValue = { "ReturnValue", nullptr, (EPropertyFlags)0x0010000000000580, UECodeGen_Private::EPropertyGenFlags::Array, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(GridManager_eventGetPath_Parms, ReturnValue), EArrayPropertyFlags::None, METADATA_PARAMS(0, nullptr) };
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_AGridManager_GetPath_Statics::PropPointers[] = {
-	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_AGridManager_GetPath_Statics::NewProp_StarCoord,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_AGridManager_GetPath_Statics::NewProp_StartCoord,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_AGridManager_GetPath_Statics::NewProp_EndCoord,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_AGridManager_GetPath_Statics::NewProp_ReturnValue_Inner,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_AGridManager_GetPath_Statics::NewProp_ReturnValue,
@@ -570,11 +699,11 @@ UFunction* Z_Construct_UFunction_AGridManager_GetPath()
 }
 DEFINE_FUNCTION(AGridManager::execGetPath)
 {
-	P_GET_STRUCT(FIntPoint,Z_Param_StarCoord);
+	P_GET_STRUCT(FIntPoint,Z_Param_StartCoord);
 	P_GET_STRUCT(FIntPoint,Z_Param_EndCoord);
 	P_FINISH;
 	P_NATIVE_BEGIN;
-	*(TArray<FIntPoint>*)Z_Param__Result=P_THIS->GetPath(Z_Param_StarCoord,Z_Param_EndCoord);
+	*(TArray<FIntPoint>*)Z_Param__Result=P_THIS->GetPath(Z_Param_StartCoord,Z_Param_EndCoord);
 	P_NATIVE_END;
 }
 // ********** End Class AGridManager Function GetPath **********************************************
@@ -644,11 +773,11 @@ struct Z_Construct_UFunction_AGridManager_GridToWorld_Statics
 	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
 		{ "Category", "Grid" },
 #if !UE_BUILD_SHIPPING
-		{ "Comment", "//\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xe0\xb4\xab\n" },
+		{ "Comment", "// Coordinate conversion\n" },
 #endif
 		{ "ModuleRelativePath", "Public/TurnBasedSystem/GridManager.h" },
 #if !UE_BUILD_SHIPPING
-		{ "ToolTip", "\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xe0\xb4\xab" },
+		{ "ToolTip", "Coordinate conversion" },
 #endif
 	};
 #endif // WITH_METADATA
@@ -799,11 +928,11 @@ struct Z_Construct_UFunction_AGridManager_SetCellOccupied_Statics
 	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
 		{ "Category", "Grid|Occupancy" },
 #if !UE_BUILD_SHIPPING
-		{ "Comment", "//\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xce\xba\xde\xb2z\n" },
+		{ "Comment", "// Occupancy management\n" },
 #endif
 		{ "ModuleRelativePath", "Public/TurnBasedSystem/GridManager.h" },
 #if !UE_BUILD_SHIPPING
-		{ "ToolTip", "\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xce\xba\xde\xb2z" },
+		{ "ToolTip", "Occupancy management" },
 #endif
 	};
 #endif // WITH_METADATA
@@ -849,6 +978,49 @@ DEFINE_FUNCTION(AGridManager::execSetCellOccupied)
 }
 // ********** End Class AGridManager Function SetCellOccupied **************************************
 
+// ********** Begin Class AGridManager Function ShowHoverCell **************************************
+struct Z_Construct_UFunction_AGridManager_ShowHoverCell_Statics
+{
+	struct GridManager_eventShowHoverCell_Parms
+	{
+		FIntPoint GridCoord;
+	};
+#if WITH_METADATA
+	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
+		{ "Category", "Grid|Visualization" },
+		{ "ModuleRelativePath", "Public/TurnBasedSystem/GridManager.h" },
+	};
+#endif // WITH_METADATA
+	static const UECodeGen_Private::FStructPropertyParams NewProp_GridCoord;
+	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
+	static const UECodeGen_Private::FFunctionParams FuncParams;
+};
+const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_AGridManager_ShowHoverCell_Statics::NewProp_GridCoord = { "GridCoord", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(GridManager_eventShowHoverCell_Parms, GridCoord), Z_Construct_UScriptStruct_FIntPoint, METADATA_PARAMS(0, nullptr) };
+const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_AGridManager_ShowHoverCell_Statics::PropPointers[] = {
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_AGridManager_ShowHoverCell_Statics::NewProp_GridCoord,
+};
+static_assert(UE_ARRAY_COUNT(Z_Construct_UFunction_AGridManager_ShowHoverCell_Statics::PropPointers) < 2048);
+const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_AGridManager_ShowHoverCell_Statics::FuncParams = { { (UObject*(*)())Z_Construct_UClass_AGridManager, nullptr, "ShowHoverCell", Z_Construct_UFunction_AGridManager_ShowHoverCell_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_AGridManager_ShowHoverCell_Statics::PropPointers), sizeof(Z_Construct_UFunction_AGridManager_ShowHoverCell_Statics::GridManager_eventShowHoverCell_Parms), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x04820401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_AGridManager_ShowHoverCell_Statics::Function_MetaDataParams), Z_Construct_UFunction_AGridManager_ShowHoverCell_Statics::Function_MetaDataParams)},  };
+static_assert(sizeof(Z_Construct_UFunction_AGridManager_ShowHoverCell_Statics::GridManager_eventShowHoverCell_Parms) < MAX_uint16);
+UFunction* Z_Construct_UFunction_AGridManager_ShowHoverCell()
+{
+	static UFunction* ReturnFunction = nullptr;
+	if (!ReturnFunction)
+	{
+		UECodeGen_Private::ConstructUFunction(&ReturnFunction, Z_Construct_UFunction_AGridManager_ShowHoverCell_Statics::FuncParams);
+	}
+	return ReturnFunction;
+}
+DEFINE_FUNCTION(AGridManager::execShowHoverCell)
+{
+	P_GET_STRUCT(FIntPoint,Z_Param_GridCoord);
+	P_FINISH;
+	P_NATIVE_BEGIN;
+	P_THIS->ShowHoverCell(Z_Param_GridCoord);
+	P_NATIVE_END;
+}
+// ********** End Class AGridManager Function ShowHoverCell ****************************************
+
 // ********** Begin Class AGridManager Function ShowMovementRange **********************************
 struct Z_Construct_UFunction_AGridManager_ShowMovementRange_Statics
 {
@@ -861,11 +1033,11 @@ struct Z_Construct_UFunction_AGridManager_ShowMovementRange_Statics
 	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
 		{ "Category", "Grid|Visualization" },
 #if !UE_BUILD_SHIPPING
-		{ "Comment", "//\xef\xbf\xbd\xef\xbf\xbd\xc4\xb1\xef\xbf\xbd\xef\xbf\xbd\n" },
+		{ "Comment", "// Visualization\n" },
 #endif
 		{ "ModuleRelativePath", "Public/TurnBasedSystem/GridManager.h" },
 #if !UE_BUILD_SHIPPING
-		{ "ToolTip", "\xef\xbf\xbd\xef\xbf\xbd\xc4\xb1\xef\xbf\xbd\xef\xbf\xbd" },
+		{ "ToolTip", "Visualization" },
 #endif
 	};
 #endif // WITH_METADATA
@@ -955,9 +1127,12 @@ void AGridManager::StaticRegisterNativesAGridManager()
 {
 	UClass* Class = AGridManager::StaticClass();
 	static const FNameNativePtrPair Funcs[] = {
+		{ "AnimateHighlight", &AGridManager::execAnimateHighlight },
 		{ "CanMoveThrough", &AGridManager::execCanMoveThrough },
+		{ "ClearAllVisuals", &AGridManager::execClearAllVisuals },
 		{ "ClearCellOccupation", &AGridManager::execClearCellOccupation },
 		{ "ClearHighlights", &AGridManager::execClearHighlights },
+		{ "GetCellSize", &AGridManager::execGetCellSize },
 		{ "GetGridCell", &AGridManager::execGetGridCell },
 		{ "GetMovementCostBetween", &AGridManager::execGetMovementCostBetween },
 		{ "GetMovementRange", &AGridManager::execGetMovementRange },
@@ -967,6 +1142,7 @@ void AGridManager::StaticRegisterNativesAGridManager()
 		{ "HighlightPath", &AGridManager::execHighlightPath },
 		{ "IsValidGridPosition", &AGridManager::execIsValidGridPosition },
 		{ "SetCellOccupied", &AGridManager::execSetCellOccupied },
+		{ "ShowHoverCell", &AGridManager::execShowHoverCell },
 		{ "ShowMovementRange", &AGridManager::execShowMovementRange },
 		{ "WorldToGrid", &AGridManager::execWorldToGrid },
 	};
@@ -1011,11 +1187,11 @@ struct Z_Construct_UClass_AGridManager_Statics
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_GridSizeX_MetaData[] = {
 		{ "Category", "Grid Settings" },
 #if !UE_BUILD_SHIPPING
-		{ "Comment", "//\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbdj\xef\xbf\xbdp\n" },
+		{ "Comment", "// Grid size\n" },
 #endif
 		{ "ModuleRelativePath", "Public/TurnBasedSystem/GridManager.h" },
 #if !UE_BUILD_SHIPPING
-		{ "ToolTip", "\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbdj\xef\xbf\xbdp" },
+		{ "ToolTip", "Grid size" },
 #endif
 	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_GridSizeY_MetaData[] = {
@@ -1025,44 +1201,71 @@ struct Z_Construct_UClass_AGridManager_Statics
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_CellSize_MetaData[] = {
 		{ "Category", "Grid Settings" },
 #if !UE_BUILD_SHIPPING
-		{ "Comment", "//\xef\xbf\xbd""C\xef\xbf\xbd\xd3\xae\xef\xbf\xbdl\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbdj\xef\xbf\xbdp\n" },
+		{ "Comment", "// Size of each cell\n" },
 #endif
 		{ "ModuleRelativePath", "Public/TurnBasedSystem/GridManager.h" },
 #if !UE_BUILD_SHIPPING
-		{ "ToolTip", "\xef\xbf\xbd""C\xef\xbf\xbd\xd3\xae\xef\xbf\xbdl\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbdj\xef\xbf\xbdp" },
+		{ "ToolTip", "Size of each cell" },
 #endif
 	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_GridCells_MetaData[] = {
 		{ "Category", "Grid" },
 #if !UE_BUILD_SHIPPING
-		{ "Comment", "//\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xc6\xbe\xef\xbf\xbd\n" },
+		{ "Comment", "// Grid data\n" },
 #endif
 		{ "ModuleRelativePath", "Public/TurnBasedSystem/GridManager.h" },
 #if !UE_BUILD_SHIPPING
-		{ "ToolTip", "\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xc6\xbe\xef\xbf\xbd" },
+		{ "ToolTip", "Grid data" },
 #endif
 	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_GridMeshComponent_MetaData[] = {
 		{ "Category", "Grid Components" },
 #if !UE_BUILD_SHIPPING
-		{ "Comment", "//\xef\xbf\xbd\xef\xbf\xbd\xc4\xb1\xef\xbf\xbd\xc6\xb2\xd5\xa5\xef\xbf\xbd\n" },
+		{ "Comment", "// Visualization components\n" },
 #endif
 		{ "EditInline", "true" },
 		{ "ModuleRelativePath", "Public/TurnBasedSystem/GridManager.h" },
 #if !UE_BUILD_SHIPPING
-		{ "ToolTip", "\xef\xbf\xbd\xef\xbf\xbd\xc4\xb1\xef\xbf\xbd\xc6\xb2\xd5\xa5\xef\xbf\xbd" },
+		{ "ToolTip", "Visualization components" },
 #endif
 	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_HighlightMeshComponent_MetaData[] = {
 		{ "Category", "Grid Components" },
-#if !UE_BUILD_SHIPPING
-		{ "Comment", "//\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbdG\xef\xbf\xbd\xef\xbf\xbd\xdc\xb2\xd5\xa5\xef\xbf\xbd\n" },
-#endif
 		{ "EditInline", "true" },
 		{ "ModuleRelativePath", "Public/TurnBasedSystem/GridManager.h" },
+	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_PathMeshComponent_MetaData[] = {
+		{ "Category", "Grid Components" },
+		{ "EditInline", "true" },
+		{ "ModuleRelativePath", "Public/TurnBasedSystem/GridManager.h" },
+	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_HoverMeshComponent_MetaData[] = {
+		{ "Category", "Grid Components" },
+		{ "EditInline", "true" },
+		{ "ModuleRelativePath", "Public/TurnBasedSystem/GridManager.h" },
+	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_VisualComponent_MetaData[] = {
+		{ "Category", "Grid Components" },
+		{ "EditInline", "true" },
+		{ "ModuleRelativePath", "Public/TurnBasedSystem/GridManager.h" },
+	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_GridMaterialInstance_MetaData[] = {
 #if !UE_BUILD_SHIPPING
-		{ "ToolTip", "\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbdG\xef\xbf\xbd\xef\xbf\xbd\xdc\xb2\xd5\xa5\xef\xbf\xbd" },
+		{ "Comment", "// Material instances\n" },
 #endif
+		{ "ModuleRelativePath", "Public/TurnBasedSystem/GridManager.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "Material instances" },
+#endif
+	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_HighlightMaterialInstance_MetaData[] = {
+		{ "ModuleRelativePath", "Public/TurnBasedSystem/GridManager.h" },
+	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_PathMaterialInstance_MetaData[] = {
+		{ "ModuleRelativePath", "Public/TurnBasedSystem/GridManager.h" },
+	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_HoverMaterialInstance_MetaData[] = {
+		{ "ModuleRelativePath", "Public/TurnBasedSystem/GridManager.h" },
 	};
 #endif // WITH_METADATA
 	static const UECodeGen_Private::FIntPropertyParams NewProp_GridSizeX;
@@ -1072,22 +1275,33 @@ struct Z_Construct_UClass_AGridManager_Statics
 	static const UECodeGen_Private::FArrayPropertyParams NewProp_GridCells;
 	static const UECodeGen_Private::FObjectPropertyParams NewProp_GridMeshComponent;
 	static const UECodeGen_Private::FObjectPropertyParams NewProp_HighlightMeshComponent;
+	static const UECodeGen_Private::FObjectPropertyParams NewProp_PathMeshComponent;
+	static const UECodeGen_Private::FObjectPropertyParams NewProp_HoverMeshComponent;
+	static const UECodeGen_Private::FObjectPropertyParams NewProp_VisualComponent;
+	static const UECodeGen_Private::FObjectPropertyParams NewProp_GridMaterialInstance;
+	static const UECodeGen_Private::FObjectPropertyParams NewProp_HighlightMaterialInstance;
+	static const UECodeGen_Private::FObjectPropertyParams NewProp_PathMaterialInstance;
+	static const UECodeGen_Private::FObjectPropertyParams NewProp_HoverMaterialInstance;
 	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
 	static UObject* (*const DependentSingletons[])();
 	static constexpr FClassFunctionLinkInfo FuncInfo[] = {
+		{ &Z_Construct_UFunction_AGridManager_AnimateHighlight, "AnimateHighlight" }, // 535641264
 		{ &Z_Construct_UFunction_AGridManager_CanMoveThrough, "CanMoveThrough" }, // 2882043185
+		{ &Z_Construct_UFunction_AGridManager_ClearAllVisuals, "ClearAllVisuals" }, // 3428753471
 		{ &Z_Construct_UFunction_AGridManager_ClearCellOccupation, "ClearCellOccupation" }, // 820402839
 		{ &Z_Construct_UFunction_AGridManager_ClearHighlights, "ClearHighlights" }, // 631733642
-		{ &Z_Construct_UFunction_AGridManager_GetGridCell, "GetGridCell" }, // 3201151067
-		{ &Z_Construct_UFunction_AGridManager_GetMovementCostBetween, "GetMovementCostBetween" }, // 2945166956
-		{ &Z_Construct_UFunction_AGridManager_GetMovementRange, "GetMovementRange" }, // 4201168833
-		{ &Z_Construct_UFunction_AGridManager_GetPath, "GetPath" }, // 1985598267
+		{ &Z_Construct_UFunction_AGridManager_GetCellSize, "GetCellSize" }, // 50210406
+		{ &Z_Construct_UFunction_AGridManager_GetGridCell, "GetGridCell" }, // 2467477932
+		{ &Z_Construct_UFunction_AGridManager_GetMovementCostBetween, "GetMovementCostBetween" }, // 1701430879
+		{ &Z_Construct_UFunction_AGridManager_GetMovementRange, "GetMovementRange" }, // 2972940687
+		{ &Z_Construct_UFunction_AGridManager_GetPath, "GetPath" }, // 1370845101
 		{ &Z_Construct_UFunction_AGridManager_GetPathCost, "GetPathCost" }, // 1539056635
-		{ &Z_Construct_UFunction_AGridManager_GridToWorld, "GridToWorld" }, // 2327315463
+		{ &Z_Construct_UFunction_AGridManager_GridToWorld, "GridToWorld" }, // 2830368761
 		{ &Z_Construct_UFunction_AGridManager_HighlightPath, "HighlightPath" }, // 1402660069
 		{ &Z_Construct_UFunction_AGridManager_IsValidGridPosition, "IsValidGridPosition" }, // 1886291397
-		{ &Z_Construct_UFunction_AGridManager_SetCellOccupied, "SetCellOccupied" }, // 1554045745
-		{ &Z_Construct_UFunction_AGridManager_ShowMovementRange, "ShowMovementRange" }, // 4244846012
+		{ &Z_Construct_UFunction_AGridManager_SetCellOccupied, "SetCellOccupied" }, // 3783823412
+		{ &Z_Construct_UFunction_AGridManager_ShowHoverCell, "ShowHoverCell" }, // 156502426
+		{ &Z_Construct_UFunction_AGridManager_ShowMovementRange, "ShowMovementRange" }, // 2433952361
 		{ &Z_Construct_UFunction_AGridManager_WorldToGrid, "WorldToGrid" }, // 2195196924
 	};
 	static_assert(UE_ARRAY_COUNT(FuncInfo) < 2048);
@@ -1099,10 +1313,17 @@ struct Z_Construct_UClass_AGridManager_Statics
 const UECodeGen_Private::FIntPropertyParams Z_Construct_UClass_AGridManager_Statics::NewProp_GridSizeX = { "GridSizeX", nullptr, (EPropertyFlags)0x0020080000000005, UECodeGen_Private::EPropertyGenFlags::Int, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AGridManager, GridSizeX), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_GridSizeX_MetaData), NewProp_GridSizeX_MetaData) };
 const UECodeGen_Private::FIntPropertyParams Z_Construct_UClass_AGridManager_Statics::NewProp_GridSizeY = { "GridSizeY", nullptr, (EPropertyFlags)0x0020080000000005, UECodeGen_Private::EPropertyGenFlags::Int, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AGridManager, GridSizeY), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_GridSizeY_MetaData), NewProp_GridSizeY_MetaData) };
 const UECodeGen_Private::FFloatPropertyParams Z_Construct_UClass_AGridManager_Statics::NewProp_CellSize = { "CellSize", nullptr, (EPropertyFlags)0x0020080000000005, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AGridManager, CellSize), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_CellSize_MetaData), NewProp_CellSize_MetaData) };
-const UECodeGen_Private::FStructPropertyParams Z_Construct_UClass_AGridManager_Statics::NewProp_GridCells_Inner = { "GridCells", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, 0, Z_Construct_UScriptStruct_FGridCell, METADATA_PARAMS(0, nullptr) }; // 1518523518
-const UECodeGen_Private::FArrayPropertyParams Z_Construct_UClass_AGridManager_Statics::NewProp_GridCells = { "GridCells", nullptr, (EPropertyFlags)0x0020080000000014, UECodeGen_Private::EPropertyGenFlags::Array, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AGridManager, GridCells), EArrayPropertyFlags::None, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_GridCells_MetaData), NewProp_GridCells_MetaData) }; // 1518523518
+const UECodeGen_Private::FStructPropertyParams Z_Construct_UClass_AGridManager_Statics::NewProp_GridCells_Inner = { "GridCells", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, 0, Z_Construct_UScriptStruct_FGridCell, METADATA_PARAMS(0, nullptr) }; // 952307137
+const UECodeGen_Private::FArrayPropertyParams Z_Construct_UClass_AGridManager_Statics::NewProp_GridCells = { "GridCells", nullptr, (EPropertyFlags)0x0020080000000014, UECodeGen_Private::EPropertyGenFlags::Array, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AGridManager, GridCells), EArrayPropertyFlags::None, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_GridCells_MetaData), NewProp_GridCells_MetaData) }; // 952307137
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_AGridManager_Statics::NewProp_GridMeshComponent = { "GridMeshComponent", nullptr, (EPropertyFlags)0x00200800000a001d, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AGridManager, GridMeshComponent), Z_Construct_UClass_UInstancedStaticMeshComponent_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_GridMeshComponent_MetaData), NewProp_GridMeshComponent_MetaData) };
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_AGridManager_Statics::NewProp_HighlightMeshComponent = { "HighlightMeshComponent", nullptr, (EPropertyFlags)0x00200800000a001d, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AGridManager, HighlightMeshComponent), Z_Construct_UClass_UInstancedStaticMeshComponent_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_HighlightMeshComponent_MetaData), NewProp_HighlightMeshComponent_MetaData) };
+const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_AGridManager_Statics::NewProp_PathMeshComponent = { "PathMeshComponent", nullptr, (EPropertyFlags)0x00200800000a001d, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AGridManager, PathMeshComponent), Z_Construct_UClass_UInstancedStaticMeshComponent_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_PathMeshComponent_MetaData), NewProp_PathMeshComponent_MetaData) };
+const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_AGridManager_Statics::NewProp_HoverMeshComponent = { "HoverMeshComponent", nullptr, (EPropertyFlags)0x00200800000a001d, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AGridManager, HoverMeshComponent), Z_Construct_UClass_UInstancedStaticMeshComponent_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_HoverMeshComponent_MetaData), NewProp_HoverMeshComponent_MetaData) };
+const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_AGridManager_Statics::NewProp_VisualComponent = { "VisualComponent", nullptr, (EPropertyFlags)0x00200800000a001d, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AGridManager, VisualComponent), Z_Construct_UClass_UGridVisualComponent_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_VisualComponent_MetaData), NewProp_VisualComponent_MetaData) };
+const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_AGridManager_Statics::NewProp_GridMaterialInstance = { "GridMaterialInstance", nullptr, (EPropertyFlags)0x0020080000000000, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AGridManager, GridMaterialInstance), Z_Construct_UClass_UMaterialInstanceDynamic_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_GridMaterialInstance_MetaData), NewProp_GridMaterialInstance_MetaData) };
+const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_AGridManager_Statics::NewProp_HighlightMaterialInstance = { "HighlightMaterialInstance", nullptr, (EPropertyFlags)0x0020080000000000, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AGridManager, HighlightMaterialInstance), Z_Construct_UClass_UMaterialInstanceDynamic_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_HighlightMaterialInstance_MetaData), NewProp_HighlightMaterialInstance_MetaData) };
+const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_AGridManager_Statics::NewProp_PathMaterialInstance = { "PathMaterialInstance", nullptr, (EPropertyFlags)0x0020080000000000, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AGridManager, PathMaterialInstance), Z_Construct_UClass_UMaterialInstanceDynamic_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_PathMaterialInstance_MetaData), NewProp_PathMaterialInstance_MetaData) };
+const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_AGridManager_Statics::NewProp_HoverMaterialInstance = { "HoverMaterialInstance", nullptr, (EPropertyFlags)0x0020080000000000, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AGridManager, HoverMaterialInstance), Z_Construct_UClass_UMaterialInstanceDynamic_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_HoverMaterialInstance_MetaData), NewProp_HoverMaterialInstance_MetaData) };
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UClass_AGridManager_Statics::PropPointers[] = {
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AGridManager_Statics::NewProp_GridSizeX,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AGridManager_Statics::NewProp_GridSizeY,
@@ -1111,6 +1332,13 @@ const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UClass_AGridMana
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AGridManager_Statics::NewProp_GridCells,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AGridManager_Statics::NewProp_GridMeshComponent,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AGridManager_Statics::NewProp_HighlightMeshComponent,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AGridManager_Statics::NewProp_PathMeshComponent,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AGridManager_Statics::NewProp_HoverMeshComponent,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AGridManager_Statics::NewProp_VisualComponent,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AGridManager_Statics::NewProp_GridMaterialInstance,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AGridManager_Statics::NewProp_HighlightMaterialInstance,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AGridManager_Statics::NewProp_PathMaterialInstance,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AGridManager_Statics::NewProp_HoverMaterialInstance,
 };
 static_assert(UE_ARRAY_COUNT(Z_Construct_UClass_AGridManager_Statics::PropPointers) < 2048);
 UObject* (*const Z_Construct_UClass_AGridManager_Statics::DependentSingletons[])() = {
@@ -1149,16 +1377,16 @@ AGridManager::~AGridManager() {}
 struct Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_GridManager_h__Script_ProjectGate_Statics
 {
 	static constexpr FEnumRegisterCompiledInInfo EnumInfo[] = {
-		{ EGridType_StaticEnum, TEXT("EGridType"), &Z_Registration_Info_UEnum_EGridType, CONSTRUCT_RELOAD_VERSION_INFO(FEnumReloadVersionInfo, 692839897U) },
+		{ EGridType_StaticEnum, TEXT("EGridType"), &Z_Registration_Info_UEnum_EGridType, CONSTRUCT_RELOAD_VERSION_INFO(FEnumReloadVersionInfo, 2717124246U) },
 	};
 	static constexpr FStructRegisterCompiledInInfo ScriptStructInfo[] = {
-		{ FGridCell::StaticStruct, Z_Construct_UScriptStruct_FGridCell_Statics::NewStructOps, TEXT("GridCell"), &Z_Registration_Info_UScriptStruct_FGridCell, CONSTRUCT_RELOAD_VERSION_INFO(FStructReloadVersionInfo, sizeof(FGridCell), 1518523518U) },
+		{ FGridCell::StaticStruct, Z_Construct_UScriptStruct_FGridCell_Statics::NewStructOps, TEXT("GridCell"), &Z_Registration_Info_UScriptStruct_FGridCell, CONSTRUCT_RELOAD_VERSION_INFO(FStructReloadVersionInfo, sizeof(FGridCell), 952307137U) },
 	};
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_AGridManager, AGridManager::StaticClass, TEXT("AGridManager"), &Z_Registration_Info_UClass_AGridManager, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(AGridManager), 145155079U) },
+		{ Z_Construct_UClass_AGridManager, AGridManager::StaticClass, TEXT("AGridManager"), &Z_Registration_Info_UClass_AGridManager, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(AGridManager), 3577099972U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_GridManager_h__Script_ProjectGate_2831587440(TEXT("/Script/ProjectGate"),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_GridManager_h__Script_ProjectGate_3323035808(TEXT("/Script/ProjectGate"),
 	Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_GridManager_h__Script_ProjectGate_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_GridManager_h__Script_ProjectGate_Statics::ClassInfo),
 	Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_GridManager_h__Script_ProjectGate_Statics::ScriptStructInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_GridManager_h__Script_ProjectGate_Statics::ScriptStructInfo),
 	Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_GridManager_h__Script_ProjectGate_Statics::EnumInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_GridManager_h__Script_ProjectGate_Statics::EnumInfo));

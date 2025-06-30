@@ -4,7 +4,10 @@
 #include "TurnBasedSystem/GridPlayerController.h"
 #include "TurnBasedSystem/GridManager.h"
 #include "TurnBasedSystem/SimpleTurnManager.h"
+#include "TurnBasedSystem/EnhancedMovementSystem.h"
 #include "TurnBasedSystem/TurnBasedCharacter.h"
+#include "TurnBasedSystem/UI/TurnDisplayWidget.h"
+#include "ProjectGateGameMode.h"
 #include "Engine/World.h"
 #include "Engine/LocalPlayer.h"
 #include "DrawDebugHelpers.h"
@@ -13,46 +16,130 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "InputMappingContext.h"
+#include "Camera/CameraComponent.h"
+#include "GameFramework/SpringArmComponent.h"
+#include "Components/SphereComponent.h"
+
 
 #include "Public/DebugHelper.h"
 
 AGridPlayerController::AGridPlayerController()
 {
+	bAutoManageActiveCameraTarget = false; //禁用相機
 	bShowMouseCursor = true;
 	bEnableClickEvents = true;
 	bEnableMouseOverEvents = true;
+	PrimaryActorTick.bCanEverTick = true;
 }
+
+
 
 void AGridPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
 
-	// 找到 GridManager 
+	//設置相機系統
+	SetupCamera();
 
+	//查找管理器
+	FindManagers();
+
+	// 設置輸入模式
+	FInputModeGameAndUI InputMode;
+	InputMode.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
+	InputMode.SetHideCursorDuringCapture(false);
+	SetInputMode(InputMode);
+	
+	// 添加輸入映射上下文
+	if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer()))
+		{
+			if (GridInputMappingContext)
+			{
+				Subsystem->AddMappingContext(GridInputMappingContext, 0);
+				Debug::Print(TEXT("Input Mapping Context added successfully"), FColor::Green);
+			}
+			else
+			{
+				Debug::Print(TEXT("ERROR: GridInputMappingContext is null!"), FColor::Red);
+			}
+		}
+
+}
+
+//相機設置將來需要調整
+
+void AGridPlayerController::SetupCamera()
+{
+	Debug::Print(TEXT("SetupCamera"));
+
+	//創建相機Pawn
+	FActorSpawnParameters SpawnParams;
+	SpawnParams.Owner = this;
+
+	CameraPawn = GetWorld()->
+		SpawnActor<AActor>(
+			AActor::StaticClass(),
+		FVector(0, 0, 1000), FRotator(-45, 0, 0), SpawnParams);
+
+
+	if (!CameraPawn)
+	{
+		Debug::Print(TEXT("Failed to create camera pawn!"), FColor::Red);
+		return;
+   }
+
+
+   //創建根組件
+	USphereComponent* RootComp = NewObject<USphereComponent>(CameraPawn, TEXT("RootComponent"));
+	RootComp->InitSphereRadius(50.0f);
+	RootComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	CameraPawn->SetRootComponent(RootComp);
+	RootComp->RegisterComponent();
+
+	//創建 Spring Arm
+	SpringArmComponent = NewObject<USpringArmComponent>(CameraPawn, TEXT("SpringArm"));
+	SpringArmComponent->SetupAttachment(RootComp);
+	SpringArmComponent->TargetArmLength = 800.0f;
+	SpringArmComponent->SetRelativeRotation(FRotator(-45.0f, 0.0f, 0.0f));
+	SpringArmComponent->bDoCollisionTest = false;
+	SpringArmComponent->bUsePawnControlRotation = false;
+	SpringArmComponent->RegisterComponent();
+
+	//創建Camera
+	CameraComponent = NewObject<UCameraComponent>(CameraPawn, TEXT("Camera"));
+	CameraComponent->SetupAttachment(SpringArmComponent, USpringArmComponent::SocketName);
+	CameraComponent->RegisterComponent();
+
+	//設置為視角目標
+	SetViewTarget(CameraPawn);
+
+	Debug::Print(TEXT("Camera system initialized"), FColor::Green);
+
+}
+
+void AGridPlayerController::FindManagers()
+{
+	// 查找 GridManager
 	TArray<AActor*> FoundActors;
 	UGameplayStatics::GetAllActorsOfClass(GetWorld(), AGridManager::StaticClass(), FoundActors);
 
 	if (FoundActors.Num() > 0)
 	{
-		GridManager = Cast<AGridManager>(FoundActors[0]); 
+		GridManager = Cast<AGridManager>(FoundActors[0]);
 		if (GridManager)
 		{
 			Debug::Print(TEXT("GridManager found!"), FColor::Green);
 		}
 	}
 
-
-
-
-	// 清空陣列，重新搜尋 TurnManager
+	// 查找 TurnManager
 	FoundActors.Empty();
 	UGameplayStatics::GetAllActorsOfClass(GetWorld(), ASimpleTurnManager::StaticClass(), FoundActors);
 
-
-	// 找到 TurnManager
 	if (FoundActors.Num() > 0)
 	{
 		TurnManager = Cast<ASimpleTurnManager>(FoundActors[0]);
+		if (TurnManager)
 		{
 			Debug::Print(TEXT("TurnManager found!"), FColor::Green);
 		}
@@ -61,32 +148,6 @@ void AGridPlayerController::BeginPlay()
 	{
 		Debug::Print(TEXT("TurnManager not found!"), FColor::Red);
 	}
-
-
-
-	// 設置輸入模式
-	FInputModeGameAndUI InputMode;
-	InputMode.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
-	InputMode.SetHideCursorDuringCapture(false);
-	SetInputMode(InputMode);
-
-	//添加輸入映射上下文
-	if(UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer()))
-	{
-		if (GridInputMappingContext)
-		{
-			Subsystem->AddMappingContext(GridInputMappingContext, 0);
-
-			Debug::Print(TEXT("Input Mapping Context added"), FColor::Green);
-		}
-		else
-		{
-			Debug::Print(TEXT("GridInputMappingContext is null! Please set it in Blueprint"), FColor::Red);
-		}
-
-	
-	}
-
 }
 
 
@@ -101,6 +162,7 @@ void AGridPlayerController::SetupInputComponent()
 		if (ClickAction)
 		{
 			EnhancedInputComponent->BindAction(ClickAction, ETriggerEvent::Triggered, this, &AGridPlayerController::OnClick);
+			Debug::Print(TEXT("ClickWorking"));
 		}
 
 		//綁定顯示範圍動作
@@ -126,51 +188,230 @@ void AGridPlayerController::SetupInputComponent()
 			EnhancedInputComponent->BindAction(CancelAction, ETriggerEvent::Triggered, this, &AGridPlayerController::OnCancel);
 		}
 
+		// 綁定動態模式切換（Space鍵）
+		if (DynamicModeAction)
+		{
+			EnhancedInputComponent->BindAction(DynamicModeAction, ETriggerEvent::Started, this, &AGridPlayerController::OnDynamicMode);
+			Debug::Print(TEXT("DynamicModeAction bound"), FColor::Green);
+		}
+		else
+		{
+			Debug::Print(TEXT("WARNING: DynamicModeAction is null!"), FColor::Yellow);
+		}
+
+		// 綁定移動輸入（WASD）
+		if (MoveAction)
+		{
+			EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AGridPlayerController::OnMove);
+			Debug::Print(TEXT("MoveAction bound"), FColor::Green);
+		}
+		else
+		{
+			Debug::Print(TEXT("WARNING: MoveAction is null!"), FColor::Yellow);
+		}
+
+		//相機控制綁定
+		if (CameraMoveAction)
+		{
+			EnhancedInputComponent->BindAction(CameraMoveAction, ETriggerEvent::Triggered, this, &AGridPlayerController::OnCameraMove);
+		}
+
+		if (CameraRotateAction)
+		{
+			EnhancedInputComponent->BindAction(CameraRotateAction, ETriggerEvent::Triggered, this, &AGridPlayerController::OnCameraRotate);
+
+		}
+
+		if (CameraZoomAction)
+		{
+			EnhancedInputComponent->BindAction(CameraZoomAction, ETriggerEvent::Triggered, this, &AGridPlayerController::OnCameraZoom);
+		}
+
+		if (ToggleFocus)
+		{
+			EnhancedInputComponent->BindAction(ToggleFocus, ETriggerEvent::Triggered, this, &AGridPlayerController::OnToggleFocus);
+		}
+
+
+		// Shift 和右鍵（使用傳統綁定）
+		InputComponent->BindAction("Shift", IE_Pressed, this, &AGridPlayerController::OnShiftPressed);
+		InputComponent->BindAction("Shift", IE_Released, this, &AGridPlayerController::OnShiftReleased);
+		InputComponent->BindAction("RightMouseButton", IE_Pressed, this, &AGridPlayerController::OnRightMousePressed);
+		InputComponent->BindAction("RightMouseButton", IE_Released, this, &AGridPlayerController::OnRightMouseReleased);
+
+
+	}
+}
+
+void AGridPlayerController::PlayerTick(float DeltaTime)
+{
+	Super::PlayerTick(DeltaTime);
+
+	// 更新相機移動
+	UpdateCameraMovement(DeltaTime);
+}
+
+void AGridPlayerController::OnDynamicMode()
+{
+
+	// 獲取當前控制的角色
+	ATurnBasedCharacter* ControlledCharacter = GetControlledTurnCharacter();
+	if (!ControlledCharacter)
+	{
+		Debug::Print(TEXT("Not controlling any character!"), FColor::Red);
+		return;
 	}
 
+	// 檢查是否是該角色的回合
+	if (!ControlledCharacter->IsMyTurn())
+	{
+		Debug::Print(TEXT("Not this character's turn!"), FColor::Yellow);
+		return;
+	}
 
-	/*舊綁定
-	InputComponent->BindAction("LeftMouseClick", IE_Pressed, this, &AGridPlayerController::OnLeftMouseClick);
-	InputComponent->BindAction("RightMouseClick", IE_Pressed, this, &AGridPlayerController::OnRightMouseClick);
-	*/
+	// 獲取 EnhancedMovementSystem
+	UEnhancedMovementSystem* MovementSystem = ControlledCharacter->FindComponentByClass<UEnhancedMovementSystem>();
+	if (!MovementSystem)
+	{
+		Debug::Print(TEXT("No EnhancedMovementSystem on character!"), FColor::Red);
+		return;
+	}
+
+	// 切換模式
+	bIsInDynamicMode = !bIsInDynamicMode;
+
+	if (bIsInDynamicMode)
+	{
+		// 進入動態模式時自動切到Focus模式
+		if (!bIsFocusMode)
+		{
+			OnToggleFocus(FInputActionValue());
+		}
+
+
+		MovementSystem->SwitchMovementMode(ECustomMovementMode::DynamicMove);
+		Debug::Print(TEXT("===== DYNAMIC MOVEMENT MODE: ON ====="), FColor::Green, 5.0f);
+
+	}
+	else
+	{
+		MovementSystem->SwitchMovementMode(ECustomMovementMode::Idle);
+		Debug::Print(TEXT("===== DYNAMIC MOVEMENT MODE: OFF ====="), FColor::Red, 5.0f);
+
+
+		// 離開動態模式時切換相機模式
+		if (bIsFocusMode)
+		{
+			OnToggleFocus(FInputActionValue());
+		}
+	}
 
 }
 
-void AGridPlayerController::OnLeftMouseClick()
+void AGridPlayerController::OnMove(const FInputActionValue& Value)
 {
-	return;
+	
+	// 只在動態模式下處理移動
+	if (!bIsInDynamicMode)
+	{
+		return;
+	}
+
+	// 獲取輸入向量
+	FVector2D MovementVector = Value.Get<FVector2D>();
+
+	// 獲取當前控制的角色
+	ATurnBasedCharacter* ControlledCharacter = GetControlledTurnCharacter();
+	if (!ControlledCharacter) return;
+
+	UEnhancedMovementSystem* MovementSystem = ControlledCharacter->FindComponentByClass<UEnhancedMovementSystem>();
+	if (!MovementSystem) return;
+
+	MovementSystem->ProcessMovementInput(MovementVector);
+
+
 }
 
-void AGridPlayerController::OnRightMouseClick()
+UEnhancedMovementSystem* AGridPlayerController::GetControlledMovementSystem() const
 {
-	return;
+	
+	if (!TurnManager) return nullptr;
+
+	AActor* CurrentActor = TurnManager->GetCurrentTurnCharacter();
+	if (!CurrentActor) return nullptr;
+
+	ATurnBasedCharacter* TurnCharacter = Cast<ATurnBasedCharacter>(CurrentActor);
+	if (!TurnCharacter) return nullptr;
+
+	return TurnCharacter->FindComponentByClass<UEnhancedMovementSystem>();
 }
+
+
+void AGridPlayerController::ShowModeNotification(const FString& ModeName)
+{
+	// 簡單的螢幕訊息
+	if (GEngine)
+	{
+		GEngine->AddOnScreenDebugMessage(
+			-1,                          // Key (-1 = 不覆蓋)
+			3.0f,                        // 持續時間
+			FColor::Yellow,              // 顏色
+			ModeName,                    // 訊息
+			true,                        // 較新的在上
+			FVector2D(2.0f, 2.0f)       // 文字縮放
+		);
+	}
+
+	// 或使用 Debug::Print
+	Debug::Print(ModeName, FColor::Yellow);
+
+}
+
+
+
 
 void AGridPlayerController::OnClick()
 {
+
+	Debug::Print(TEXT("Clicking"));
+
 	if (!GridManager || !TurnManager)
 	{
 		Debug::Print(TEXT("GridManager or TurnManager is null!"), FColor::Red);
 		return;
 	}
 
+	// 調試訊息
+	
+		Debug::Print(FString::Printf(TEXT("Turn Count: %d"), TurnManager->GetTurnCount()), FColor::Yellow);
+		Debug::Print(FString::Printf(TEXT("Characters in order: %d"), TurnManager->GetTurnOrder().Num()), FColor::Yellow);
 
+		
 
-	//獲取當前回合的角色
+		// 獲取當前回合的角色（只定義一次）
+		AActor* CurrentActor = TurnManager->GetCurrentTurnCharacter();
+		if (!CurrentActor)
+		{
+			Debug::Print(TEXT("No current character!"), FColor::Red);
+			return;
+		}
 
+		Debug::Print(FString::Printf(TEXT("Current: %s"), *CurrentActor->GetName()), FColor::Green);
 
-	ATurnBasedCharacter* CurrentCharacter = GetCurrentTurnCharacter();
-	if (!CurrentCharacter)
-	{
-		Debug::Print(TEXT("No current character"), FColor::Orange);
-		return;
-	}
+		// 轉換為 TurnBasedCharacter
+		ATurnBasedCharacter* CurrentCharacter = Cast<ATurnBasedCharacter>(CurrentActor);
+		if (!CurrentCharacter)
+		{
+			Debug::Print(TEXT("Current actor is not a TurnBasedCharacter"), FColor::Red);
+			return;
+		}
 
-	if (!CurrentCharacter->IsPlayerControlled())
-	{
-		Debug::Print(TEXT("Not player's turn!"), FColor::Yellow);
-		return;
-	}
+		// 檢查是否為玩家控制
+		if (!CurrentCharacter->bIsPlayerControlled)
+		{
+			Debug::Print(TEXT("Not player controlled character!"), FColor::Yellow);
+			return;
+		}
 
 	// 獲取點擊的網格位置
 	FIntPoint ClickedGridPos;
@@ -194,45 +435,314 @@ void AGridPlayerController::OnClick()
 		Debug::Print(TEXT("Cannot move to that position"), FColor::Red);
 	}
 
+	if (!CurrentCharacter)
+	{
+		Debug::Print(TEXT("No current character or not player's turn!"), FColor::Red);
+		return;
+	}
 
 }
 
 void AGridPlayerController::OnShowRange()
 {
 	//顯示當前角色的移動範圍
-	if (ATurnBasedCharacter* CurrentCharacter = GetCurrentTurnCharacter())
+	if (!TurnManager)
 	{
-		if (CurrentCharacter->IsPlayerControlled())
-		{
-			CurrentCharacter->ShowMovementRange();
-			Debug::Print(TEXT("Showing movement range"), FColor::Blue);
-		}
+		Debug::Print(TEXT("TurnManager is null!"), FColor::Red);
+		return;
+	}
+
+	AActor* CurrentActor = TurnManager->GetCurrentTurnCharacter();
+	if (!CurrentActor)
+	{
+		Debug::Print(TEXT("No current character"), FColor::Orange);
+		return;
+	}
+
+	ATurnBasedCharacter* CurrentCharacter = Cast<ATurnBasedCharacter>(CurrentActor);
+	if (!CurrentCharacter)
+	{
+		Debug::Print(TEXT("Current actor is not a TurnBasedCharacter"), FColor::Red);
+		return;
+	}
+
+	if (CurrentCharacter->bIsPlayerControlled)
+	{
+		CurrentCharacter->ShowMovementRange();
+		Debug::Print(TEXT("Showing movement range"), FColor::Blue);
+	}
+	else
+	{
+		Debug::Print(TEXT("Not player's turn!"), FColor::Yellow);
 	}
 	
 }
 
+
+
+void AGridPlayerController::OnCameraMove(const FInputActionValue& Value)
+{
+	FVector2D MoveVector = Value.Get<FVector2D>();
+
+	if (CameraPawn && SpringArmComponent)
+	{
+		//獲取相機前向和右向
+		FRotator CamRotation = SpringArmComponent->GetComponentRotation();
+		CamRotation.Pitch = 0.0f;
+
+		FVector Forward = FRotationMatrix(CamRotation).GetUnitAxis(EAxis::X);
+		FVector Right = FRotationMatrix(CamRotation).GetUnitAxis(EAxis::Y);
+
+		//計算移動方向
+		FVector MoveDirection = (Forward * MoveVector.Y + Right * MoveVector.X);
+		MoveDirection.Normalize();
+
+		//增加到速度
+		float MoveSpeed = bIsShiftPressed ? CameraFastMoveSpeed : CameraBaseMoveSpeed;
+		CameraVelocity += MoveDirection * MoveSpeed;
+
+	}
+
+}
+
 void AGridPlayerController::OnCameraRotate(const FInputActionValue& Value)
 {
+	if (!bIsRightMousePressed || !SpringArmComponent) return;
 
-	//獲取輸入值
-	float RotateAmount = Value.Get<float>();
-	CurrentCameraRotation += RotateAmount *45.0f *GetWorld()->GetDeltaSeconds();
+	FVector2D RotateVector = Value.Get<FVector2D>();
 
-	//這裡應該更新相機旋轉
-	Debug::Print(FString::Printf(TEXT("Camera Rotation: %.1f"), CurrentCameraRotation), FColor::Cyan);
-
+	// rotate Spring Arm
+	FRotator NewRotation = SpringArmComponent->GetRelativeRotation();
+	NewRotation.Yaw += RotateVector.X;
+	NewRotation.Pitch = FMath::Clamp(NewRotation.Pitch + RotateVector.Y, -80.0f, -10.0f);
+	SpringArmComponent->SetRelativeRotation(NewRotation);
 }
 
 void AGridPlayerController::OnCameraZoom(const FInputActionValue& Value)
 {
-	//獲取輸入值
-	float ZoomAmount = Value.Get<float>();
-	CurrentCameraZoom = FMath::Clamp(CurrentCameraZoom + ZoomAmount * 100.0f, 500.0f, 2000.0f);
+	if (!SpringArmComponent) return;
 
-	// 這裡應該更新相機距離
-	Debug::Print(FString::Printf(TEXT("Camera Zoom: %.1f"), CurrentCameraZoom), FColor::Cyan);
+	float ZoomValue = Value.Get<float>();
+    float NewLength = SpringArmComponent->TargetArmLength - (ZoomValue * ZoomSpeed);
+	
+	SpringArmComponent->TargetArmLength = FMath::Clamp(NewLength, MinZoomLength, MaxZoomLength);
 
 }
+
+void AGridPlayerController::UpdateCameraMovement(float DeltaTime)
+{
+	if (!CameraPawn) return;
+
+	// 平滑減速
+	CameraVelocity = FMath::VInterpTo(CameraVelocity, FVector::ZeroVector, DeltaTime, 5.0f);
+
+	// 應用移動
+	if (!CameraVelocity.IsNearlyZero())
+	{
+		FVector NewLocation = CameraPawn->GetActorLocation() + CameraVelocity * DeltaTime;
+		
+		CameraPawn->SetActorLocation(NewLocation);
+	}
+}
+
+void AGridPlayerController::OnPossess(APawn* InPawn)
+{
+	Super::OnPossess(InPawn);
+
+	// 重置相機狀態
+	if (bIsFocusMode)
+	{
+		// 可選：保持Focus模式到新角色
+		//FocusOnCurrentTurnCharacter();
+
+		// 或者：自動切回自由相機
+		 SetViewTarget(CameraPawn);
+		 bIsFocusMode = false;
+	}
+
+
+
+
+	// 重置動態模式
+	bIsInDynamicMode = false;
+
+	if (ATurnBasedCharacter* TurnCharacter = Cast<ATurnBasedCharacter>(InPawn))
+	{
+		Debug::Print(FString::Printf(TEXT("GridPlayerController possessed: %s"),
+			*TurnCharacter->GetActorLabel()), FColor::Green);
+	}
+}
+
+void AGridPlayerController::OnUnPossess()
+{
+	// 離開動態模式
+	if (bIsInDynamicMode)
+	{
+		bIsInDynamicMode = false;
+		Debug::Print(TEXT("Exited dynamic mode due to unpossess"), FColor::Yellow);
+	}
+
+	Super::OnUnPossess();
+}
+
+void AGridPlayerController::OnRightMousePressed()
+{
+	bIsRightMousePressed = true;
+	bShowMouseCursor = false;
+	SetInputMode(FInputModeGameOnly());
+}
+
+void AGridPlayerController::OnRightMouseReleased()
+{
+	bIsRightMousePressed = false;
+	bShowMouseCursor = true;
+
+	FInputModeGameAndUI InputMode;
+	InputMode.SetHideCursorDuringCapture(false);
+	SetInputMode(InputMode);
+}
+
+void AGridPlayerController::OnToggleFocus(const FInputActionValue& Value)
+{
+
+	
+
+	// 檢查冷卻時間
+	float CurrentTime = GetWorld()->GetTimeSeconds();
+	if (CurrentTime - LastToggleFocusTime < ToggleFocusCooldown)
+	{
+		Debug::Print(TEXT("Focus toggle on cooldown"), FColor::Yellow);
+		return;
+	}
+
+	LastToggleFocusTime = CurrentTime;
+
+	// 確保有角色可以Focus
+	ATurnBasedCharacter* CurrentCharacter = GetCurrentTurnCharacter();
+	if (!CurrentCharacter)
+	{
+		Debug::Print(TEXT("No character to focus on"), FColor::Red);
+		return;
+	}
+
+	if (bIsFocusMode)
+	{
+
+		// 切回自由相機
+		SetViewTarget(CameraPawn);
+		bIsFocusMode = false;
+		Debug::Print(TEXT("Switched to Free Camera"), FColor::Yellow);
+	}
+	else
+	{
+		// 切到角色相機
+		FocusOnCurrentTurnCharacter();
+		bIsFocusMode = true;
+		Debug::Print(TEXT("Switched to Character Focus"), FColor::Green);
+	}
+
+	// 更新 UI 顯示
+	if (AProjectGateGameMode* GameMode = Cast<AProjectGateGameMode>(GetWorld()->GetAuthGameMode()))
+	{
+		if (UTurnDisplayWidget* TurnWidget = GameMode->GetTurnDisplayWidget())
+		{
+			TurnWidget->UpdateCameraMode(bIsFocusMode);
+		}
+	}
+}
+
+
+void AGridPlayerController::FocusOnActor(AActor* TargetActor, float Distance)
+{
+	if (!TargetActor || !CameraPawn || !SpringArmComponent) return;
+
+	FVector TargetLocation = TargetActor->GetActorLocation();
+
+	// 計算相機位置
+	FRotator CurrentRotation = SpringArmComponent->GetRelativeRotation();
+	FVector CameraOffset = CurrentRotation.Vector() * -Distance;
+	FVector NewLocation = TargetLocation + CameraOffset;
+
+	CameraPawn->SetActorLocation(NewLocation);
+	SpringArmComponent->TargetArmLength = Distance;
+
+	Debug::Print(FString::Printf(TEXT("1Camera focused on %s"), *TargetActor->GetActorLabel()), FColor::Green);
+}
+
+void AGridPlayerController::FocusOnCurrentTurnCharacter()
+{
+
+	// 優先使用當前 Possessed 的 Pawn
+	ATurnBasedCharacter* CurrentTurnCharacter = Cast<ATurnBasedCharacter>(GetPawn());
+
+	// 如果沒有 Possessed Pawn，才從 TurnManager 獲取
+	if (!CurrentTurnCharacter && TurnManager)
+	{
+		AActor* CurrentActor = TurnManager->GetCurrentTurnCharacter();
+		CurrentTurnCharacter = Cast<ATurnBasedCharacter>(CurrentActor);
+	}
+
+	if (!CurrentTurnCharacter)
+	{
+		SetViewTarget(CameraPawn);
+		bIsFocusMode = false;
+		Debug::Print(TEXT("No character to focus - returning to free camera"), FColor::Yellow);
+		return;
+	}
+
+	// 強制立即切換（不使用 Blend）
+	SetViewTarget(CurrentTurnCharacter);
+
+	Debug::Print(FString::Printf(TEXT("Camera focused on %s (Possessed: %s)"),
+		*CurrentTurnCharacter->GetActorLabel(),
+		GetPawn() == CurrentTurnCharacter ? TEXT("YES") : TEXT("NO")), FColor::Green);
+
+
+
+
+
+	/*
+	if (!TurnManager)
+	{
+		Debug::Print(TEXT("TurnManager is null!"), FColor::Red);
+		return;
+	}
+
+	// 直接從 TurnManager 取得當前角色
+	AActor* CurrentActor = TurnManager->GetCurrentTurnCharacter();
+	ATurnBasedCharacter* CurrentTurnCharacter = Cast<ATurnBasedCharacter>(CurrentActor);
+
+	if (!CurrentTurnCharacter)
+	{
+		// 沒有角色時回到自由相機
+		SetViewTarget(CameraPawn);
+		bIsFocusMode = false;
+		Debug::Print(TEXT("No character to focus - returning to free camera"), FColor::Yellow);
+		return;
+
+
+		// 使用混合切換以獲得平滑效果
+		SetViewTargetWithBlend(CurrentTurnCharacter, 0.5f);
+
+		Debug::Print(FString::Printf(TEXT("2Camera focused on %s"),
+			*CurrentTurnCharacter->GetActorLabel()), FColor::Green);
+	}
+	*/
+	
+	
+}
+
+
+FVector AGridPlayerController::GetCameraLocation() const
+{
+	return CameraComponent ? CameraComponent->GetComponentLocation() : FVector::ZeroVector;
+}
+
+FRotator AGridPlayerController::GetCameraRotation() const
+{
+	return CameraComponent ? CameraComponent->GetComponentRotation() : FRotator::ZeroRotator;
+}
+
 
 void AGridPlayerController::OnCancel()
 {
@@ -285,9 +795,28 @@ bool AGridPlayerController::GetGridPositionUnderCursor(FIntPoint& OutGridPos)
 
 ATurnBasedCharacter* AGridPlayerController::GetCurrentTurnCharacter()
 {
+
+
 	if (!TurnManager)
 		return nullptr;
 
 	AActor* CurrentActor = TurnManager->GetCurrentTurnCharacter();
-	return Cast<ATurnBasedCharacter>(CurrentActor);
+	if (!CurrentActor)
+		return nullptr;
+
+
+	ATurnBasedCharacter* TurnCharacter = Cast<ATurnBasedCharacter>(CurrentActor);
+
+	// 只返回玩家控制的角色
+	if (TurnCharacter && TurnCharacter->bIsPlayerControlled)
+	{
+		return TurnCharacter;
+	}
+
+	return nullptr;
+}
+
+ATurnBasedCharacter* AGridPlayerController::GetControlledTurnCharacter() const
+{
+	return Cast<ATurnBasedCharacter>(GetPawn());
 }

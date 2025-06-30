@@ -6,6 +6,7 @@
 #include "Components/Button.h"
 #include "Components/VerticalBox.h"
 #include "Components/VerticalBoxSlot.h"
+#include "Components/ProgressBar.h"
 #include "Public/DebugHelper.h"
 
 
@@ -183,5 +184,71 @@ void UTurnDisplayWidget::UpdateTurnOrder(const TArray<FString>& CharacterNames, 
 
 		}
 	}
+}
+
+void UTurnDisplayWidget::UpdateCameraMode(bool bIsFocusMode)
+{
+	if (CameraModeText)
+	{
+		FString ModeText = bIsFocusMode ? TEXT("FOCUS MODE") : TEXT("FREE CAMERA");
+		FSlateColor ModeColor = bIsFocusMode ?
+			FSlateColor(FLinearColor::Yellow) :
+			FSlateColor(FLinearColor::Red);
+
+		CameraModeText->SetText(FText::FromString(ModeText));
+		CameraModeText->SetColorAndOpacity(ModeColor);
+	}
+
+}
+
+void UTurnDisplayWidget::UpdateActionPoints(int32 CurrentAP, int32 MaxAP)
+{
+	// 更新文字顯示
+	if (ActionPointsText)
+	{
+		FString APString = FString::Printf(TEXT("AP: %d / %d"), CurrentAP, MaxAP);
+		ActionPointsText->SetText(FText::FromString(APString));
+
+		// 根據剩餘AP改變顏色
+		FSlateColor TextColor;
+		if (CurrentAP <= 0)
+		{
+			TextColor = FSlateColor(FLinearColor::Red);  // 無AP - 紅色
+		}
+		else if (CurrentAP <= MaxAP * 0.3f)
+		{
+			TextColor = FSlateColor(FLinearColor::Yellow);  // 低AP - 黃色
+		}
+		else
+		{
+			TextColor = FSlateColor(FLinearColor::Green);  // 充足AP - 綠色
+		}
+
+		ActionPointsText->SetColorAndOpacity(TextColor);
+	}
+
+	// 更新進度條
+	if (ActionPointsBar && MaxAP > 0)
+	{
+		float Percent = (float)CurrentAP / (float)MaxAP;
+		ActionPointsBar->SetPercent(Percent);
+
+		//根據百分比改變進度條顏色
+		FLinearColor BarColor;
+		if (Percent <= 0.0f)
+		{
+			BarColor = FLinearColor::Red;
+		}
+		else if (Percent <= 0.3f)
+		{
+			BarColor = FLinearColor::Yellow;
+		}
+		else
+		{
+			BarColor = FLinearColor::Green;
+		}
+		ActionPointsBar->SetFillColorAndOpacity(BarColor);
+	}
+
 }
 

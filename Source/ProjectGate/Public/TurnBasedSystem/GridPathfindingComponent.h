@@ -8,24 +8,24 @@
 
 class AGridManager;
 
-UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
+UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
 class PROJECTGATE_API UGridPathfindingComponent : public UActorComponent
 {
 	GENERATED_BODY()
 
-public:	
+public:
 	// Sets default values for this component's properties
 	UGridPathfindingComponent();
 
-	//初始化
-	UFUNCTION(BlueprintCallable,Category = "Pathfinding")
+	// Initialize
+	UFUNCTION(BlueprintCallable, Category = "Pathfinding")
 	void InitializeGrid(AGridManager* InGridManager);
 
-	//尋找路徑
-	UFUNCTION(BlueprintCallable,Category = "Pathfingding")
+	// Find path
+	UFUNCTION(BlueprintCallable, Category = "Pathfingding")
 	TArray<FIntPoint> FindPath(FIntPoint StartPos, FIntPoint EndPos);
 
-	//計算路徑成本
+	// Calculate path cost
 	UFUNCTION(BlueprintPure, Category = "Pathfinding")
 	int32 CalculatePathCost(const TArray<FIntPoint>& Path)const;
 
@@ -36,20 +36,20 @@ protected:
 	AGridManager* GridManager;
 
 
-public:	
+public:
 
-	//A*尋路節點
+	// A* pathfinding node
 	struct FPathNode
 	{
 		FIntPoint Position;
-		float GCost; // 從起點到當前節點的成本
-		float HCost; // 從當前節點到終點的估計成本
+		float GCost; // Cost from start to current node
+		float HCost; // Heuristic cost from current node to end
 		float FCost() const { return GCost + HCost; }
 		FPathNode* Parent;
 
 		FPathNode()
 		{
-			Position = FIntPoint(0,0);
+			Position = FIntPoint(0, 0);
 			GCost = 0.0f;
 			HCost = 0.0f;
 			Parent = nullptr;
@@ -58,10 +58,10 @@ public:
 
 	};
 
-	//計算曼哈頓距離
+	// Calculate Manhattan distance
 	float CalculateHeuristic(FIntPoint From, FIntPoint To)const;
 
-	//重建路徑
+	// Reconstruct path
 	TArray<FIntPoint>ReconstructPath(FPathNode* EndNode)const;
 
 };

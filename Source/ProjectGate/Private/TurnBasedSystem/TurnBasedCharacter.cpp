@@ -2,15 +2,21 @@
 
 
 #include "TurnBasedSystem/TurnBasedCharacter.h"
+#include "TurnBasedSystem/GridVisualComponent.h"
+#include "TurnBasedSystem/EnhancedMovementSystem.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Engine/Engine.h"
+#include "Engine/World.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "DrawDebugHelpers.h"
 #include "TurnBasedSystem/GridManager.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "AIController.h"
+#include "TimerManager.h"
 #include "Navigation/PathFollowingComponent.h"
+#include "Camera/CameraComponent.h"
+#include "GameFramework/SpringArmComponent.h"
 #include "Kismet/GameplayStatics.h" 
 
 
@@ -20,11 +26,36 @@
 // Sets default values
 ATurnBasedCharacter::ATurnBasedCharacter()
 {
+	//create Visual Component
+	GridVisualComponent = CreateDefaultSubobject<UGridVisualComponent>(TEXT("GridVisualComponent"));
+
+	EnhancedMovementSystem = CreateDefaultSubobject<UEnhancedMovementSystem>(TEXT("EnhancedMovementSystem"));
+	
+	/* === 相機系統 === */
+	// 建立 Spring Arm
+	CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
+	CameraBoom->SetupAttachment(RootComponent);
+	CameraBoom->TargetArmLength = 300.0f;                     // 距離角色
+	CameraBoom->bUsePawnControlRotation = true;               // 跟隨控制器旋轉
+	CameraBoom->SocketOffset = FVector(0.0f, 60.0f, 70.0f);   // 向右偏移一點（越肩）
+	CameraBoom->SetRelativeRotation(FRotator(-10.0f, 0.0f, 0.0f)); // 輕微往下看
+
+	// 建立相機
+	FollowCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("FollowCamera"));
+	FollowCamera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName);
+	FollowCamera->bUsePawnControlRotation = false;
+
+
+
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
 	//設定預設移動速度
 	GetCharacterMovement()->MaxWalkSpeed = MoveSpeed;
+
+
+
+
 }
 
 
@@ -36,12 +67,45 @@ void ATurnBasedCharacter::BeginPlay()
 	//初始化行動點數
 	CurrentActionPoints = MaxActionPoints;
 
+	// 確保角色有 AIController（用於網格移動）
+	if (!GetController())
+	{
+		SpawnDefaultController();
+		Debug::Print(FString::Printf(TEXT("%s: Spawned default controller"), *GetActorLabel()), FColor::Yellow);
+	}
+
+
+	// 初始化 EnhancedMovementSystem
+	if (EnhancedMovementSystem)
+	{
+		// 設置初始值
+		EnhancedMovementSystem->MaxMovementResource = 100.0f;
+		EnhancedMovementSystem->CurrentMovementResource = 100.0f;
+		EnhancedMovementSystem->DynamicMoveSpeed = 400.0f;
+
+		// 確保系統正確初始化
+		Debug::Print(TEXT("EnhancedMovementSystem initialized in TurnBasedCharacter"), FColor::Green);
+	}
+	else
+	{
+		Debug::Print(TEXT("ERROR: EnhancedMovementSystem is null in BeginPlay!"), FColor::Red);
+	}
+
+
+
 	// 嘗試找到場景中的 GridManager
 	TArray<AActor*>FoundActors;
 	UGameplayStatics::GetAllActorsOfClass(GetWorld(), AGridManager::StaticClass(), FoundActors);
 
-	Debug::Print(FString::Printf(TEXT("%s initialized with %d AP"),
-		*GetActorLabel(), CurrentActionPoints), FColor::Green);
+	if (FoundActors.Num() > 0)
+	{
+		SetGridManager(Cast<AGridManager>(FoundActors[0]));
+		Debug::Print(TEXT("GridManager found and set!"), FColor::Green);
+	}
+	else
+	{
+		Debug::Print(TEXT("ERROR: No GridManager found in scene!"), FColor::Red);
+	}
 
 }
 
@@ -60,6 +124,12 @@ void ATurnBasedCharacter::SetGridManager(AGridManager* Manager)
 
 		//標記網格為已佔用
 		GridManager->SetCellOccupied(CurrentGridPosition, this);
+
+		// 初始化 GridVisualComponent
+		if (GridVisualComponent)
+		{
+			GridVisualComponent->Initialize(GridManager);
+		}
 
 		Debug::Print(FString::Printf(TEXT("%s placed at grid position (%d, %d)"),
 			*GetActorLabel(), CurrentGridPosition.X, CurrentGridPosition.Y), FColor::Green);
@@ -162,6 +232,7 @@ void ATurnBasedCharacter::ShowMovementRange()
 	if (!GridManager || !bIsMyTurn)
 		return;
 
+	Debug::Print(FString::Printf(TEXT("=== %s: Showing Movement Range ==="), *GetActorLabel()), FColor::Magenta);
 
 	int32 MoveRange = CurrentActionPoints / MoveActionCost;
 	GridManager->ShowMovementRange(CurrentGridPosition, MoveRange);
@@ -171,6 +242,12 @@ void ATurnBasedCharacter::ShowMovementRange()
 }
 
 
+
+bool ATurnBasedCharacter::CanPerformDynamicMovement() const
+{
+	if (!EnhancedMovementSystem) return false;
+	return bIsMyTurn && EnhancedMovementSystem->CanMove();
+}
 
 void ATurnBasedCharacter::ResetActionPoints()
 {
@@ -226,7 +303,7 @@ bool ATurnBasedCharacter::TryMove(FVector TargetLocation)
 	MoveTargetLocation = TargetLocation;
 
 	//執行移動
-	PerfromMove();
+	PerformMove();
 
 	//消耗行動點
 	ConsumeActionPoints(MoveActionCost);
@@ -334,7 +411,7 @@ void ATurnBasedCharacter::OnTurnEnd()
 
 }
 
-void ATurnBasedCharacter::PerfromMove()
+void ATurnBasedCharacter::PerformMove()
 {
 	//簡單移動邏輯
 	bIsMoving = true;
@@ -410,7 +487,7 @@ void ATurnBasedCharacter::PerformAttack(AActor* TargetActor)
 
 bool ATurnBasedCharacter::IsMyTurn() const
 {
-	return false;
+	return bIsMyTurn;  // 直接返回 bIsMyTurn，而不是返回 false
 }
 
 
@@ -437,3 +514,50 @@ void ATurnBasedCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInput
 
 }
 
+void ATurnBasedCharacter::TestVisualization()
+{
+	Debug::Print(TEXT("=== Testing Visualization System ==="), FColor::Magenta);
+
+	if (GridManager)
+	{
+		// 直接調用 GridManager 的視覺化
+		GridManager->ShowMovementRange(CurrentGridPosition, 3);
+	}
+
+	if (GridVisualComponent)
+	{
+		// 直接調用組件的視覺化
+		GridVisualComponent->ShowMovementRange(CurrentGridPosition, 3);
+	}
+}
+
+void ATurnBasedCharacter::TestDifferentVisuals()
+{
+	if (!GridManager) return;
+
+	// 測試移動範圍（綠色）
+	GridManager->ShowMovementRange(CurrentGridPosition, 3);
+
+	// 延遲顯示攻擊範圍（紅色）
+	GetWorld()->GetTimerManager().SetTimerForNextTick([this]()
+		{
+			if (GridVisualComponent)
+			{
+				GridVisualComponent->ShowAttackRange(CurrentGridPosition, 200.0f);
+			}
+		});
+
+	// 測試路徑（藍色）
+	TArray<FIntPoint> TestPath = {
+		CurrentGridPosition,
+		CurrentGridPosition + FIntPoint(1, 0),
+		CurrentGridPosition + FIntPoint(2, 0),
+		CurrentGridPosition + FIntPoint(2, 1)
+	};
+
+	if (GridVisualComponent)
+	{
+		GridVisualComponent->ShowPath(TestPath);
+	}
+
+}

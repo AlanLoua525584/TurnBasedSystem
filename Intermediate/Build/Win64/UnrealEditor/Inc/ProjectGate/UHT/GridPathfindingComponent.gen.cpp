@@ -32,11 +32,11 @@ struct Z_Construct_UFunction_UGridPathfindingComponent_CalculatePathCost_Statics
 	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
 		{ "Category", "Pathfinding" },
 #if !UE_BUILD_SHIPPING
-		{ "Comment", "//\xef\xbf\xbdp\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd|\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\n" },
+		{ "Comment", "// Calculate path cost\n" },
 #endif
 		{ "ModuleRelativePath", "Public/TurnBasedSystem/GridPathfindingComponent.h" },
 #if !UE_BUILD_SHIPPING
-		{ "ToolTip", "\xef\xbf\xbdp\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd|\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd" },
+		{ "ToolTip", "Calculate path cost" },
 #endif
 	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_Path_MetaData[] = {
@@ -92,11 +92,11 @@ struct Z_Construct_UFunction_UGridPathfindingComponent_FindPath_Statics
 	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
 		{ "Category", "Pathfingding" },
 #if !UE_BUILD_SHIPPING
-		{ "Comment", "//\xef\xbf\xbdM\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd|\n" },
+		{ "Comment", "// Find path\n" },
 #endif
 		{ "ModuleRelativePath", "Public/TurnBasedSystem/GridPathfindingComponent.h" },
 #if !UE_BUILD_SHIPPING
-		{ "ToolTip", "\xef\xbf\xbdM\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd|" },
+		{ "ToolTip", "Find path" },
 #endif
 	};
 #endif // WITH_METADATA
@@ -151,11 +151,11 @@ struct Z_Construct_UFunction_UGridPathfindingComponent_InitializeGrid_Statics
 	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
 		{ "Category", "Pathfinding" },
 #if !UE_BUILD_SHIPPING
-		{ "Comment", "//\xef\xbf\xbd\xef\xbf\xbdl\xef\xbf\xbd\xef\xbf\xbd\n" },
+		{ "Comment", "// Initialize\n" },
 #endif
 		{ "ModuleRelativePath", "Public/TurnBasedSystem/GridPathfindingComponent.h" },
 #if !UE_BUILD_SHIPPING
-		{ "ToolTip", "\xef\xbf\xbd\xef\xbf\xbdl\xef\xbf\xbd\xef\xbf\xbd" },
+		{ "ToolTip", "Initialize" },
 #endif
 	};
 #endif // WITH_METADATA
@@ -246,9 +246,9 @@ struct Z_Construct_UClass_UGridPathfindingComponent_Statics
 	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
 	static UObject* (*const DependentSingletons[])();
 	static constexpr FClassFunctionLinkInfo FuncInfo[] = {
-		{ &Z_Construct_UFunction_UGridPathfindingComponent_CalculatePathCost, "CalculatePathCost" }, // 364971641
-		{ &Z_Construct_UFunction_UGridPathfindingComponent_FindPath, "FindPath" }, // 979701018
-		{ &Z_Construct_UFunction_UGridPathfindingComponent_InitializeGrid, "InitializeGrid" }, // 3789014571
+		{ &Z_Construct_UFunction_UGridPathfindingComponent_CalculatePathCost, "CalculatePathCost" }, // 2524191608
+		{ &Z_Construct_UFunction_UGridPathfindingComponent_FindPath, "FindPath" }, // 1807113102
+		{ &Z_Construct_UFunction_UGridPathfindingComponent_InitializeGrid, "InitializeGrid" }, // 1991086669
 	};
 	static_assert(UE_ARRAY_COUNT(FuncInfo) < 2048);
 	static constexpr FCppClassTypeInfoStatic StaticCppClassTypeInfo = {
@@ -297,10 +297,10 @@ UGridPathfindingComponent::~UGridPathfindingComponent() {}
 struct Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_GridPathfindingComponent_h__Script_ProjectGate_Statics
 {
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_UGridPathfindingComponent, UGridPathfindingComponent::StaticClass, TEXT("UGridPathfindingComponent"), &Z_Registration_Info_UClass_UGridPathfindingComponent, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UGridPathfindingComponent), 1919659192U) },
+		{ Z_Construct_UClass_UGridPathfindingComponent, UGridPathfindingComponent::StaticClass, TEXT("UGridPathfindingComponent"), &Z_Registration_Info_UClass_UGridPathfindingComponent, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UGridPathfindingComponent), 4108884351U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_GridPathfindingComponent_h__Script_ProjectGate_3149614449(TEXT("/Script/ProjectGate"),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_GridPathfindingComponent_h__Script_ProjectGate_1365498689(TEXT("/Script/ProjectGate"),
 	Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_GridPathfindingComponent_h__Script_ProjectGate_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_GridPathfindingComponent_h__Script_ProjectGate_Statics::ClassInfo),
 	nullptr, 0,
 	nullptr, 0);

@@ -24,6 +24,99 @@ PROJECTGATE_API UEnum* Z_Construct_UEnum_ProjectGate_ETurnPhase();
 UPackage* Z_Construct_UPackage__Script_ProjectGate();
 // ********** End Cross Module References **********************************************************
 
+// ********** Begin Class AProjectGateGameMode Function GetTurnDisplayWidget ***********************
+struct Z_Construct_UFunction_AProjectGateGameMode_GetTurnDisplayWidget_Statics
+{
+	struct ProjectGateGameMode_eventGetTurnDisplayWidget_Parms
+	{
+		UTurnDisplayWidget* ReturnValue;
+	};
+#if WITH_METADATA
+	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
+		{ "Category", "UI" },
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "// \xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd Turn Display Widget\n" },
+#endif
+		{ "ModuleRelativePath", "Public/ProjectGateGameMode.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd Turn Display Widget" },
+#endif
+	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_ReturnValue_MetaData[] = {
+		{ "EditInline", "true" },
+	};
+#endif // WITH_METADATA
+	static const UECodeGen_Private::FObjectPropertyParams NewProp_ReturnValue;
+	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
+	static const UECodeGen_Private::FFunctionParams FuncParams;
+};
+const UECodeGen_Private::FObjectPropertyParams Z_Construct_UFunction_AProjectGateGameMode_GetTurnDisplayWidget_Statics::NewProp_ReturnValue = { "ReturnValue", nullptr, (EPropertyFlags)0x0010000000080588, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(ProjectGateGameMode_eventGetTurnDisplayWidget_Parms, ReturnValue), Z_Construct_UClass_UTurnDisplayWidget_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_ReturnValue_MetaData), NewProp_ReturnValue_MetaData) };
+const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_AProjectGateGameMode_GetTurnDisplayWidget_Statics::PropPointers[] = {
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_AProjectGateGameMode_GetTurnDisplayWidget_Statics::NewProp_ReturnValue,
+};
+static_assert(UE_ARRAY_COUNT(Z_Construct_UFunction_AProjectGateGameMode_GetTurnDisplayWidget_Statics::PropPointers) < 2048);
+const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_AProjectGateGameMode_GetTurnDisplayWidget_Statics::FuncParams = { { (UObject*(*)())Z_Construct_UClass_AProjectGateGameMode, nullptr, "GetTurnDisplayWidget", Z_Construct_UFunction_AProjectGateGameMode_GetTurnDisplayWidget_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_AProjectGateGameMode_GetTurnDisplayWidget_Statics::PropPointers), sizeof(Z_Construct_UFunction_AProjectGateGameMode_GetTurnDisplayWidget_Statics::ProjectGateGameMode_eventGetTurnDisplayWidget_Parms), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x54020401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_AProjectGateGameMode_GetTurnDisplayWidget_Statics::Function_MetaDataParams), Z_Construct_UFunction_AProjectGateGameMode_GetTurnDisplayWidget_Statics::Function_MetaDataParams)},  };
+static_assert(sizeof(Z_Construct_UFunction_AProjectGateGameMode_GetTurnDisplayWidget_Statics::ProjectGateGameMode_eventGetTurnDisplayWidget_Parms) < MAX_uint16);
+UFunction* Z_Construct_UFunction_AProjectGateGameMode_GetTurnDisplayWidget()
+{
+	static UFunction* ReturnFunction = nullptr;
+	if (!ReturnFunction)
+	{
+		UECodeGen_Private::ConstructUFunction(&ReturnFunction, Z_Construct_UFunction_AProjectGateGameMode_GetTurnDisplayWidget_Statics::FuncParams);
+	}
+	return ReturnFunction;
+}
+DEFINE_FUNCTION(AProjectGateGameMode::execGetTurnDisplayWidget)
+{
+	P_FINISH;
+	P_NATIVE_BEGIN;
+	*(UTurnDisplayWidget**)Z_Param__Result=P_THIS->GetTurnDisplayWidget();
+	P_NATIVE_END;
+}
+// ********** End Class AProjectGateGameMode Function GetTurnDisplayWidget *************************
+
+// ********** Begin Class AProjectGateGameMode Function OnAPChanged ********************************
+struct Z_Construct_UFunction_AProjectGateGameMode_OnAPChanged_Statics
+{
+	struct ProjectGateGameMode_eventOnAPChanged_Parms
+	{
+		int32 NewAP;
+	};
+#if WITH_METADATA
+	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
+		{ "ModuleRelativePath", "Public/ProjectGateGameMode.h" },
+	};
+#endif // WITH_METADATA
+	static const UECodeGen_Private::FIntPropertyParams NewProp_NewAP;
+	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
+	static const UECodeGen_Private::FFunctionParams FuncParams;
+};
+const UECodeGen_Private::FIntPropertyParams Z_Construct_UFunction_AProjectGateGameMode_OnAPChanged_Statics::NewProp_NewAP = { "NewAP", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Int, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(ProjectGateGameMode_eventOnAPChanged_Parms, NewAP), METADATA_PARAMS(0, nullptr) };
+const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_AProjectGateGameMode_OnAPChanged_Statics::PropPointers[] = {
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_AProjectGateGameMode_OnAPChanged_Statics::NewProp_NewAP,
+};
+static_assert(UE_ARRAY_COUNT(Z_Construct_UFunction_AProjectGateGameMode_OnAPChanged_Statics::PropPointers) < 2048);
+const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_AProjectGateGameMode_OnAPChanged_Statics::FuncParams = { { (UObject*(*)())Z_Construct_UClass_AProjectGateGameMode, nullptr, "OnAPChanged", Z_Construct_UFunction_AProjectGateGameMode_OnAPChanged_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_AProjectGateGameMode_OnAPChanged_Statics::PropPointers), sizeof(Z_Construct_UFunction_AProjectGateGameMode_OnAPChanged_Statics::ProjectGateGameMode_eventOnAPChanged_Parms), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x00020401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_AProjectGateGameMode_OnAPChanged_Statics::Function_MetaDataParams), Z_Construct_UFunction_AProjectGateGameMode_OnAPChanged_Statics::Function_MetaDataParams)},  };
+static_assert(sizeof(Z_Construct_UFunction_AProjectGateGameMode_OnAPChanged_Statics::ProjectGateGameMode_eventOnAPChanged_Parms) < MAX_uint16);
+UFunction* Z_Construct_UFunction_AProjectGateGameMode_OnAPChanged()
+{
+	static UFunction* ReturnFunction = nullptr;
+	if (!ReturnFunction)
+	{
+		UECodeGen_Private::ConstructUFunction(&ReturnFunction, Z_Construct_UFunction_AProjectGateGameMode_OnAPChanged_Statics::FuncParams);
+	}
+	return ReturnFunction;
+}
+DEFINE_FUNCTION(AProjectGateGameMode::execOnAPChanged)
+{
+	P_GET_PROPERTY(FIntProperty,Z_Param_NewAP);
+	P_FINISH;
+	P_NATIVE_BEGIN;
+	P_THIS->OnAPChanged(Z_Param_NewAP);
+	P_NATIVE_END;
+}
+// ********** End Class AProjectGateGameMode Function OnAPChanged **********************************
+
 // ********** Begin Class AProjectGateGameMode Function OnPhaseChanged *****************************
 struct Z_Construct_UFunction_AProjectGateGameMode_OnPhaseChanged_Statics
 {
@@ -127,6 +220,8 @@ void AProjectGateGameMode::StaticRegisterNativesAProjectGateGameMode()
 {
 	UClass* Class = AProjectGateGameMode::StaticClass();
 	static const FNameNativePtrPair Funcs[] = {
+		{ "GetTurnDisplayWidget", &AProjectGateGameMode::execGetTurnDisplayWidget },
+		{ "OnAPChanged", &AProjectGateGameMode::execOnAPChanged },
 		{ "OnPhaseChanged", &AProjectGateGameMode::execOnPhaseChanged },
 		{ "OnTurnChanged", &AProjectGateGameMode::execOnTurnChanged },
 	};
@@ -175,10 +270,6 @@ struct Z_Construct_UClass_AProjectGateGameMode_Statics
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Simple GameMode for a third person game" },
 #endif
-	};
-	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_FreeCameraPawnClass_MetaData[] = {
-		{ "Category", "Camera" },
-		{ "ModuleRelativePath", "Public/ProjectGateGameMode.h" },
 	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_FreeCameraPawn_MetaData[] = {
 #if !UE_BUILD_SHIPPING
@@ -236,7 +327,6 @@ struct Z_Construct_UClass_AProjectGateGameMode_Statics
 #endif
 	};
 #endif // WITH_METADATA
-	static const UECodeGen_Private::FClassPropertyParams NewProp_FreeCameraPawnClass;
 	static const UECodeGen_Private::FObjectPropertyParams NewProp_FreeCameraPawn;
 	static void NewProp_bAutoFocusCurrentCharacter_SetBit(void* Obj);
 	static const UECodeGen_Private::FBoolPropertyParams NewProp_bAutoFocusCurrentCharacter;
@@ -248,6 +338,8 @@ struct Z_Construct_UClass_AProjectGateGameMode_Statics
 	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
 	static UObject* (*const DependentSingletons[])();
 	static constexpr FClassFunctionLinkInfo FuncInfo[] = {
+		{ &Z_Construct_UFunction_AProjectGateGameMode_GetTurnDisplayWidget, "GetTurnDisplayWidget" }, // 3514545476
+		{ &Z_Construct_UFunction_AProjectGateGameMode_OnAPChanged, "OnAPChanged" }, // 2365455300
 		{ &Z_Construct_UFunction_AProjectGateGameMode_OnPhaseChanged, "OnPhaseChanged" }, // 3792010443
 		{ &Z_Construct_UFunction_AProjectGateGameMode_OnTurnChanged, "OnTurnChanged" }, // 1761269530
 	};
@@ -257,7 +349,6 @@ struct Z_Construct_UClass_AProjectGateGameMode_Statics
 	};
 	static const UECodeGen_Private::FClassParams ClassParams;
 };
-const UECodeGen_Private::FClassPropertyParams Z_Construct_UClass_AProjectGateGameMode_Statics::NewProp_FreeCameraPawnClass = { "FreeCameraPawnClass", nullptr, (EPropertyFlags)0x0024080000010001, UECodeGen_Private::EPropertyGenFlags::Class, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AProjectGateGameMode, FreeCameraPawnClass), Z_Construct_UClass_UClass, Z_Construct_UClass_AFreeCameraPawn_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_FreeCameraPawnClass_MetaData), NewProp_FreeCameraPawnClass_MetaData) };
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_AProjectGateGameMode_Statics::NewProp_FreeCameraPawn = { "FreeCameraPawn", nullptr, (EPropertyFlags)0x0020080000000000, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AProjectGateGameMode, FreeCameraPawn), Z_Construct_UClass_AFreeCameraPawn_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_FreeCameraPawn_MetaData), NewProp_FreeCameraPawn_MetaData) };
 void Z_Construct_UClass_AProjectGateGameMode_Statics::NewProp_bAutoFocusCurrentCharacter_SetBit(void* Obj)
 {
@@ -270,7 +361,6 @@ const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_AProjectGateGa
 const UECodeGen_Private::FClassPropertyParams Z_Construct_UClass_AProjectGateGameMode_Statics::NewProp_TurnDisplayWidgetClass = { "TurnDisplayWidgetClass", nullptr, (EPropertyFlags)0x0044000000010001, UECodeGen_Private::EPropertyGenFlags::Class, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AProjectGateGameMode, TurnDisplayWidgetClass), Z_Construct_UClass_UClass, Z_Construct_UClass_UTurnDisplayWidget_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_TurnDisplayWidgetClass_MetaData), NewProp_TurnDisplayWidgetClass_MetaData) };
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_AProjectGateGameMode_Statics::NewProp_PreviousCharacter = { "PreviousCharacter", nullptr, (EPropertyFlags)0x0040000000000000, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AProjectGateGameMode, PreviousCharacter), Z_Construct_UClass_AActor_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_PreviousCharacter_MetaData), NewProp_PreviousCharacter_MetaData) };
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UClass_AProjectGateGameMode_Statics::PropPointers[] = {
-	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AProjectGateGameMode_Statics::NewProp_FreeCameraPawnClass,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AProjectGateGameMode_Statics::NewProp_FreeCameraPawn,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AProjectGateGameMode_Statics::NewProp_bAutoFocusCurrentCharacter,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AProjectGateGameMode_Statics::NewProp_FocusDistance,
@@ -316,10 +406,10 @@ AProjectGateGameMode::~AProjectGateGameMode() {}
 struct Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_ProjectGateGameMode_h__Script_ProjectGate_Statics
 {
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_AProjectGateGameMode, AProjectGateGameMode::StaticClass, TEXT("AProjectGateGameMode"), &Z_Registration_Info_UClass_AProjectGateGameMode, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(AProjectGateGameMode), 3516581488U) },
+		{ Z_Construct_UClass_AProjectGateGameMode, AProjectGateGameMode::StaticClass, TEXT("AProjectGateGameMode"), &Z_Registration_Info_UClass_AProjectGateGameMode, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(AProjectGateGameMode), 3304108339U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_ProjectGateGameMode_h__Script_ProjectGate_2578857675(TEXT("/Script/ProjectGate"),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_ProjectGateGameMode_h__Script_ProjectGate_1802366714(TEXT("/Script/ProjectGate"),
 	Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_ProjectGateGameMode_h__Script_ProjectGate_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_ProjectGateGameMode_h__Script_ProjectGate_Statics::ClassInfo),
 	nullptr, 0,
 	nullptr, 0);

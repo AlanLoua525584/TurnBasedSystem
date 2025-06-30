@@ -45,6 +45,12 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Turn System")
 	void NextPhase();
 
+	// 讓 PlayerController Possess 當前回合角色
+	UFUNCTION(BlueprintCallable, Category = "Turn System")
+	void PossessCurrentTurnCharacter();
+
+
+
 	/*GetCurrentPhase*/ 
 	UFUNCTION(BlueprintCallable, Category = "Turn System")
 	ETurnPhase GetCurrentPhase() const;

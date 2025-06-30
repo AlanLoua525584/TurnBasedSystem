@@ -38,6 +38,13 @@ public:
     UFUNCTION(BlueprintCallable, Category = "Turn Display")
     void UpdateTurnOrder(const TArray<FString>& CharacterNames, int32 CurrentIndex);
 
+    UFUNCTION(BlueprintCallable, Category = "Turn Display")
+    void UpdateCameraMode(bool bIsFocusMode);
+
+    UFUNCTION(BlueprintCallable, Category = "Turn Display")
+    void UpdateActionPoints(int32 CurrentAP, int32 MaxAP);
+
+
 
 protected:
     // 綁定到 UI 的文字元件
@@ -58,6 +65,16 @@ protected:
 
     UPROPERTY(meta = (BindWidget))
     class UVerticalBox* OrderListBox;
+
+    UPROPERTY(meta = (BindWidget))
+    class UTextBlock* CameraModeText;
+
+    // === AP 顯示元件 ===
+    UPROPERTY(meta = (BindWidget))
+    class UTextBlock* ActionPointsText;
+
+    UPROPERTY(meta = (BindWidget))
+    class UProgressBar* ActionPointsBar;
 
 
     // 初始化

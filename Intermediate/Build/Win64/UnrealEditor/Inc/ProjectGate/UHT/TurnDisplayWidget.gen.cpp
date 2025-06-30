@@ -16,6 +16,7 @@ PROJECTGATE_API UClass* Z_Construct_UClass_UTurnDisplayWidget();
 PROJECTGATE_API UClass* Z_Construct_UClass_UTurnDisplayWidget_NoRegister();
 PROJECTGATE_API UEnum* Z_Construct_UEnum_ProjectGate_ETurnPhase();
 UMG_API UClass* Z_Construct_UClass_UButton_NoRegister();
+UMG_API UClass* Z_Construct_UClass_UProgressBar_NoRegister();
 UMG_API UClass* Z_Construct_UClass_UTextBlock_NoRegister();
 UMG_API UClass* Z_Construct_UClass_UUserWidget();
 UMG_API UClass* Z_Construct_UClass_UVerticalBox_NoRegister();
@@ -85,6 +86,102 @@ DEFINE_FUNCTION(UTurnDisplayWidget::execHandleNextPhaseClicked)
 	P_NATIVE_END;
 }
 // ********** End Class UTurnDisplayWidget Function HandleNextPhaseClicked *************************
+
+// ********** Begin Class UTurnDisplayWidget Function UpdateActionPoints ***************************
+struct Z_Construct_UFunction_UTurnDisplayWidget_UpdateActionPoints_Statics
+{
+	struct TurnDisplayWidget_eventUpdateActionPoints_Parms
+	{
+		int32 CurrentAP;
+		int32 MaxAP;
+	};
+#if WITH_METADATA
+	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
+		{ "Category", "Turn Display" },
+		{ "ModuleRelativePath", "Public/TurnBasedSystem/UI/TurnDisplayWidget.h" },
+	};
+#endif // WITH_METADATA
+	static const UECodeGen_Private::FIntPropertyParams NewProp_CurrentAP;
+	static const UECodeGen_Private::FIntPropertyParams NewProp_MaxAP;
+	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
+	static const UECodeGen_Private::FFunctionParams FuncParams;
+};
+const UECodeGen_Private::FIntPropertyParams Z_Construct_UFunction_UTurnDisplayWidget_UpdateActionPoints_Statics::NewProp_CurrentAP = { "CurrentAP", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Int, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(TurnDisplayWidget_eventUpdateActionPoints_Parms, CurrentAP), METADATA_PARAMS(0, nullptr) };
+const UECodeGen_Private::FIntPropertyParams Z_Construct_UFunction_UTurnDisplayWidget_UpdateActionPoints_Statics::NewProp_MaxAP = { "MaxAP", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Int, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(TurnDisplayWidget_eventUpdateActionPoints_Parms, MaxAP), METADATA_PARAMS(0, nullptr) };
+const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_UTurnDisplayWidget_UpdateActionPoints_Statics::PropPointers[] = {
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UTurnDisplayWidget_UpdateActionPoints_Statics::NewProp_CurrentAP,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UTurnDisplayWidget_UpdateActionPoints_Statics::NewProp_MaxAP,
+};
+static_assert(UE_ARRAY_COUNT(Z_Construct_UFunction_UTurnDisplayWidget_UpdateActionPoints_Statics::PropPointers) < 2048);
+const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_UTurnDisplayWidget_UpdateActionPoints_Statics::FuncParams = { { (UObject*(*)())Z_Construct_UClass_UTurnDisplayWidget, nullptr, "UpdateActionPoints", Z_Construct_UFunction_UTurnDisplayWidget_UpdateActionPoints_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_UTurnDisplayWidget_UpdateActionPoints_Statics::PropPointers), sizeof(Z_Construct_UFunction_UTurnDisplayWidget_UpdateActionPoints_Statics::TurnDisplayWidget_eventUpdateActionPoints_Parms), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x04020401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_UTurnDisplayWidget_UpdateActionPoints_Statics::Function_MetaDataParams), Z_Construct_UFunction_UTurnDisplayWidget_UpdateActionPoints_Statics::Function_MetaDataParams)},  };
+static_assert(sizeof(Z_Construct_UFunction_UTurnDisplayWidget_UpdateActionPoints_Statics::TurnDisplayWidget_eventUpdateActionPoints_Parms) < MAX_uint16);
+UFunction* Z_Construct_UFunction_UTurnDisplayWidget_UpdateActionPoints()
+{
+	static UFunction* ReturnFunction = nullptr;
+	if (!ReturnFunction)
+	{
+		UECodeGen_Private::ConstructUFunction(&ReturnFunction, Z_Construct_UFunction_UTurnDisplayWidget_UpdateActionPoints_Statics::FuncParams);
+	}
+	return ReturnFunction;
+}
+DEFINE_FUNCTION(UTurnDisplayWidget::execUpdateActionPoints)
+{
+	P_GET_PROPERTY(FIntProperty,Z_Param_CurrentAP);
+	P_GET_PROPERTY(FIntProperty,Z_Param_MaxAP);
+	P_FINISH;
+	P_NATIVE_BEGIN;
+	P_THIS->UpdateActionPoints(Z_Param_CurrentAP,Z_Param_MaxAP);
+	P_NATIVE_END;
+}
+// ********** End Class UTurnDisplayWidget Function UpdateActionPoints *****************************
+
+// ********** Begin Class UTurnDisplayWidget Function UpdateCameraMode *****************************
+struct Z_Construct_UFunction_UTurnDisplayWidget_UpdateCameraMode_Statics
+{
+	struct TurnDisplayWidget_eventUpdateCameraMode_Parms
+	{
+		bool bIsFocusMode;
+	};
+#if WITH_METADATA
+	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
+		{ "Category", "Turn Display" },
+		{ "ModuleRelativePath", "Public/TurnBasedSystem/UI/TurnDisplayWidget.h" },
+	};
+#endif // WITH_METADATA
+	static void NewProp_bIsFocusMode_SetBit(void* Obj);
+	static const UECodeGen_Private::FBoolPropertyParams NewProp_bIsFocusMode;
+	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
+	static const UECodeGen_Private::FFunctionParams FuncParams;
+};
+void Z_Construct_UFunction_UTurnDisplayWidget_UpdateCameraMode_Statics::NewProp_bIsFocusMode_SetBit(void* Obj)
+{
+	((TurnDisplayWidget_eventUpdateCameraMode_Parms*)Obj)->bIsFocusMode = 1;
+}
+const UECodeGen_Private::FBoolPropertyParams Z_Construct_UFunction_UTurnDisplayWidget_UpdateCameraMode_Statics::NewProp_bIsFocusMode = { "bIsFocusMode", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Bool | UECodeGen_Private::EPropertyGenFlags::NativeBool, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, sizeof(bool), sizeof(TurnDisplayWidget_eventUpdateCameraMode_Parms), &Z_Construct_UFunction_UTurnDisplayWidget_UpdateCameraMode_Statics::NewProp_bIsFocusMode_SetBit, METADATA_PARAMS(0, nullptr) };
+const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_UTurnDisplayWidget_UpdateCameraMode_Statics::PropPointers[] = {
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UTurnDisplayWidget_UpdateCameraMode_Statics::NewProp_bIsFocusMode,
+};
+static_assert(UE_ARRAY_COUNT(Z_Construct_UFunction_UTurnDisplayWidget_UpdateCameraMode_Statics::PropPointers) < 2048);
+const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_UTurnDisplayWidget_UpdateCameraMode_Statics::FuncParams = { { (UObject*(*)())Z_Construct_UClass_UTurnDisplayWidget, nullptr, "UpdateCameraMode", Z_Construct_UFunction_UTurnDisplayWidget_UpdateCameraMode_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_UTurnDisplayWidget_UpdateCameraMode_Statics::PropPointers), sizeof(Z_Construct_UFunction_UTurnDisplayWidget_UpdateCameraMode_Statics::TurnDisplayWidget_eventUpdateCameraMode_Parms), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x04020401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_UTurnDisplayWidget_UpdateCameraMode_Statics::Function_MetaDataParams), Z_Construct_UFunction_UTurnDisplayWidget_UpdateCameraMode_Statics::Function_MetaDataParams)},  };
+static_assert(sizeof(Z_Construct_UFunction_UTurnDisplayWidget_UpdateCameraMode_Statics::TurnDisplayWidget_eventUpdateCameraMode_Parms) < MAX_uint16);
+UFunction* Z_Construct_UFunction_UTurnDisplayWidget_UpdateCameraMode()
+{
+	static UFunction* ReturnFunction = nullptr;
+	if (!ReturnFunction)
+	{
+		UECodeGen_Private::ConstructUFunction(&ReturnFunction, Z_Construct_UFunction_UTurnDisplayWidget_UpdateCameraMode_Statics::FuncParams);
+	}
+	return ReturnFunction;
+}
+DEFINE_FUNCTION(UTurnDisplayWidget::execUpdateCameraMode)
+{
+	P_GET_UBOOL(Z_Param_bIsFocusMode);
+	P_FINISH;
+	P_NATIVE_BEGIN;
+	P_THIS->UpdateCameraMode(Z_Param_bIsFocusMode);
+	P_NATIVE_END;
+}
+// ********** End Class UTurnDisplayWidget Function UpdateCameraMode *******************************
 
 // ********** Begin Class UTurnDisplayWidget Function UpdateCurrentCharacter ***********************
 struct Z_Construct_UFunction_UTurnDisplayWidget_UpdateCurrentCharacter_Statics
@@ -288,6 +385,8 @@ void UTurnDisplayWidget::StaticRegisterNativesUTurnDisplayWidget()
 	static const FNameNativePtrPair Funcs[] = {
 		{ "HandleEndTurnClicked", &UTurnDisplayWidget::execHandleEndTurnClicked },
 		{ "HandleNextPhaseClicked", &UTurnDisplayWidget::execHandleNextPhaseClicked },
+		{ "UpdateActionPoints", &UTurnDisplayWidget::execUpdateActionPoints },
+		{ "UpdateCameraMode", &UTurnDisplayWidget::execUpdateCameraMode },
 		{ "UpdateCurrentCharacter", &UTurnDisplayWidget::execUpdateCurrentCharacter },
 		{ "UpdatePhase", &UTurnDisplayWidget::execUpdatePhase },
 		{ "UpdateTurnCount", &UTurnDisplayWidget::execUpdateTurnCount },
@@ -367,6 +466,27 @@ struct Z_Construct_UClass_UTurnDisplayWidget_Statics
 		{ "EditInline", "true" },
 		{ "ModuleRelativePath", "Public/TurnBasedSystem/UI/TurnDisplayWidget.h" },
 	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_CameraModeText_MetaData[] = {
+		{ "BindWidget", "" },
+		{ "EditInline", "true" },
+		{ "ModuleRelativePath", "Public/TurnBasedSystem/UI/TurnDisplayWidget.h" },
+	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_ActionPointsText_MetaData[] = {
+		{ "BindWidget", "" },
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "// === AP \xef\xbf\xbd\xef\xbf\xbd\xdc\xa4\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd ===\n" },
+#endif
+		{ "EditInline", "true" },
+		{ "ModuleRelativePath", "Public/TurnBasedSystem/UI/TurnDisplayWidget.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "=== AP \xef\xbf\xbd\xef\xbf\xbd\xdc\xa4\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd ===" },
+#endif
+	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_ActionPointsBar_MetaData[] = {
+		{ "BindWidget", "" },
+		{ "EditInline", "true" },
+		{ "ModuleRelativePath", "Public/TurnBasedSystem/UI/TurnDisplayWidget.h" },
+	};
 #endif // WITH_METADATA
 	static const UECodeGen_Private::FObjectPropertyParams NewProp_TurnCountText;
 	static const UECodeGen_Private::FObjectPropertyParams NewProp_CurrentCharacterText;
@@ -374,11 +494,16 @@ struct Z_Construct_UClass_UTurnDisplayWidget_Statics
 	static const UECodeGen_Private::FObjectPropertyParams NewProp_NextPhaseButton;
 	static const UECodeGen_Private::FObjectPropertyParams NewProp_EndTurnButton;
 	static const UECodeGen_Private::FObjectPropertyParams NewProp_OrderListBox;
+	static const UECodeGen_Private::FObjectPropertyParams NewProp_CameraModeText;
+	static const UECodeGen_Private::FObjectPropertyParams NewProp_ActionPointsText;
+	static const UECodeGen_Private::FObjectPropertyParams NewProp_ActionPointsBar;
 	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
 	static UObject* (*const DependentSingletons[])();
 	static constexpr FClassFunctionLinkInfo FuncInfo[] = {
 		{ &Z_Construct_UFunction_UTurnDisplayWidget_HandleEndTurnClicked, "HandleEndTurnClicked" }, // 2395198862
 		{ &Z_Construct_UFunction_UTurnDisplayWidget_HandleNextPhaseClicked, "HandleNextPhaseClicked" }, // 182892488
+		{ &Z_Construct_UFunction_UTurnDisplayWidget_UpdateActionPoints, "UpdateActionPoints" }, // 481437736
+		{ &Z_Construct_UFunction_UTurnDisplayWidget_UpdateCameraMode, "UpdateCameraMode" }, // 4016839498
 		{ &Z_Construct_UFunction_UTurnDisplayWidget_UpdateCurrentCharacter, "UpdateCurrentCharacter" }, // 31170205
 		{ &Z_Construct_UFunction_UTurnDisplayWidget_UpdatePhase, "UpdatePhase" }, // 3192808887
 		{ &Z_Construct_UFunction_UTurnDisplayWidget_UpdateTurnCount, "UpdateTurnCount" }, // 1909222742
@@ -396,6 +521,9 @@ const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_UTurnDisplayWi
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_UTurnDisplayWidget_Statics::NewProp_NextPhaseButton = { "NextPhaseButton", nullptr, (EPropertyFlags)0x0020080000080008, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UTurnDisplayWidget, NextPhaseButton), Z_Construct_UClass_UButton_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_NextPhaseButton_MetaData), NewProp_NextPhaseButton_MetaData) };
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_UTurnDisplayWidget_Statics::NewProp_EndTurnButton = { "EndTurnButton", nullptr, (EPropertyFlags)0x0020080000080008, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UTurnDisplayWidget, EndTurnButton), Z_Construct_UClass_UButton_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_EndTurnButton_MetaData), NewProp_EndTurnButton_MetaData) };
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_UTurnDisplayWidget_Statics::NewProp_OrderListBox = { "OrderListBox", nullptr, (EPropertyFlags)0x0020080000080008, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UTurnDisplayWidget, OrderListBox), Z_Construct_UClass_UVerticalBox_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_OrderListBox_MetaData), NewProp_OrderListBox_MetaData) };
+const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_UTurnDisplayWidget_Statics::NewProp_CameraModeText = { "CameraModeText", nullptr, (EPropertyFlags)0x0020080000080008, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UTurnDisplayWidget, CameraModeText), Z_Construct_UClass_UTextBlock_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_CameraModeText_MetaData), NewProp_CameraModeText_MetaData) };
+const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_UTurnDisplayWidget_Statics::NewProp_ActionPointsText = { "ActionPointsText", nullptr, (EPropertyFlags)0x0020080000080008, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UTurnDisplayWidget, ActionPointsText), Z_Construct_UClass_UTextBlock_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_ActionPointsText_MetaData), NewProp_ActionPointsText_MetaData) };
+const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_UTurnDisplayWidget_Statics::NewProp_ActionPointsBar = { "ActionPointsBar", nullptr, (EPropertyFlags)0x0020080000080008, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UTurnDisplayWidget, ActionPointsBar), Z_Construct_UClass_UProgressBar_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_ActionPointsBar_MetaData), NewProp_ActionPointsBar_MetaData) };
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UClass_UTurnDisplayWidget_Statics::PropPointers[] = {
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UTurnDisplayWidget_Statics::NewProp_TurnCountText,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UTurnDisplayWidget_Statics::NewProp_CurrentCharacterText,
@@ -403,6 +531,9 @@ const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UClass_UTurnDisp
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UTurnDisplayWidget_Statics::NewProp_NextPhaseButton,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UTurnDisplayWidget_Statics::NewProp_EndTurnButton,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UTurnDisplayWidget_Statics::NewProp_OrderListBox,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UTurnDisplayWidget_Statics::NewProp_CameraModeText,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UTurnDisplayWidget_Statics::NewProp_ActionPointsText,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UTurnDisplayWidget_Statics::NewProp_ActionPointsBar,
 };
 static_assert(UE_ARRAY_COUNT(Z_Construct_UClass_UTurnDisplayWidget_Statics::PropPointers) < 2048);
 UObject* (*const Z_Construct_UClass_UTurnDisplayWidget_Statics::DependentSingletons[])() = {
@@ -442,10 +573,10 @@ UTurnDisplayWidget::~UTurnDisplayWidget() {}
 struct Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_UI_TurnDisplayWidget_h__Script_ProjectGate_Statics
 {
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_UTurnDisplayWidget, UTurnDisplayWidget::StaticClass, TEXT("UTurnDisplayWidget"), &Z_Registration_Info_UClass_UTurnDisplayWidget, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UTurnDisplayWidget), 3196202273U) },
+		{ Z_Construct_UClass_UTurnDisplayWidget, UTurnDisplayWidget::StaticClass, TEXT("UTurnDisplayWidget"), &Z_Registration_Info_UClass_UTurnDisplayWidget, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UTurnDisplayWidget), 701113024U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_UI_TurnDisplayWidget_h__Script_ProjectGate_1107241504(TEXT("/Script/ProjectGate"),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_UI_TurnDisplayWidget_h__Script_ProjectGate_3854430212(TEXT("/Script/ProjectGate"),
 	Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_UI_TurnDisplayWidget_h__Script_ProjectGate_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_UI_TurnDisplayWidget_h__Script_ProjectGate_Statics::ClassInfo),
 	nullptr, 0,
 	nullptr, 0);

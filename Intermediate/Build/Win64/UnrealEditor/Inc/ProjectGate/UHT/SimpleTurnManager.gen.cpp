@@ -519,6 +519,42 @@ DEFINE_FUNCTION(ASimpleTurnManager::execNextTurn)
 }
 // ********** End Class ASimpleTurnManager Function NextTurn ***************************************
 
+// ********** Begin Class ASimpleTurnManager Function PossessCurrentTurnCharacter ******************
+struct Z_Construct_UFunction_ASimpleTurnManager_PossessCurrentTurnCharacter_Statics
+{
+#if WITH_METADATA
+	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
+		{ "Category", "Turn System" },
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "// \xef\xbf\xbd\xef\xbf\xbd PlayerController Possess \xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd""e\xef\xbf\xbd^\xef\xbf\xbdX\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\n" },
+#endif
+		{ "ModuleRelativePath", "Public/TurnBasedSystem/SimpleTurnManager.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "\xef\xbf\xbd\xef\xbf\xbd PlayerController Possess \xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd""e\xef\xbf\xbd^\xef\xbf\xbdX\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd" },
+#endif
+	};
+#endif // WITH_METADATA
+	static const UECodeGen_Private::FFunctionParams FuncParams;
+};
+const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_ASimpleTurnManager_PossessCurrentTurnCharacter_Statics::FuncParams = { { (UObject*(*)())Z_Construct_UClass_ASimpleTurnManager, nullptr, "PossessCurrentTurnCharacter", nullptr, 0, 0, RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x04020401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_ASimpleTurnManager_PossessCurrentTurnCharacter_Statics::Function_MetaDataParams), Z_Construct_UFunction_ASimpleTurnManager_PossessCurrentTurnCharacter_Statics::Function_MetaDataParams)},  };
+UFunction* Z_Construct_UFunction_ASimpleTurnManager_PossessCurrentTurnCharacter()
+{
+	static UFunction* ReturnFunction = nullptr;
+	if (!ReturnFunction)
+	{
+		UECodeGen_Private::ConstructUFunction(&ReturnFunction, Z_Construct_UFunction_ASimpleTurnManager_PossessCurrentTurnCharacter_Statics::FuncParams);
+	}
+	return ReturnFunction;
+}
+DEFINE_FUNCTION(ASimpleTurnManager::execPossessCurrentTurnCharacter)
+{
+	P_FINISH;
+	P_NATIVE_BEGIN;
+	P_THIS->PossessCurrentTurnCharacter();
+	P_NATIVE_END;
+}
+// ********** End Class ASimpleTurnManager Function PossessCurrentTurnCharacter ********************
+
 // ********** Begin Class ASimpleTurnManager Function StartBattle **********************************
 struct Z_Construct_UFunction_ASimpleTurnManager_StartBattle_Statics
 {
@@ -562,6 +598,7 @@ void ASimpleTurnManager::StaticRegisterNativesASimpleTurnManager()
 		{ "GetTurnOrder", &ASimpleTurnManager::execGetTurnOrder },
 		{ "NextPhase", &ASimpleTurnManager::execNextPhase },
 		{ "NextTurn", &ASimpleTurnManager::execNextTurn },
+		{ "PossessCurrentTurnCharacter", &ASimpleTurnManager::execPossessCurrentTurnCharacter },
 		{ "StartBattle", &ASimpleTurnManager::execStartBattle },
 	};
 	FNativeFunctionRegistrar::RegisterFunctions(Class, Funcs, UE_ARRAY_COUNT(Funcs));
@@ -635,6 +672,7 @@ struct Z_Construct_UClass_ASimpleTurnManager_Statics
 		{ &Z_Construct_UFunction_ASimpleTurnManager_GetTurnOrder, "GetTurnOrder" }, // 2779018252
 		{ &Z_Construct_UFunction_ASimpleTurnManager_NextPhase, "NextPhase" }, // 3175668522
 		{ &Z_Construct_UFunction_ASimpleTurnManager_NextTurn, "NextTurn" }, // 4041743731
+		{ &Z_Construct_UFunction_ASimpleTurnManager_PossessCurrentTurnCharacter, "PossessCurrentTurnCharacter" }, // 3713163859
 		{ &Z_Construct_UFunction_ASimpleTurnManager_StartBattle, "StartBattle" }, // 3802053970
 	};
 	static_assert(UE_ARRAY_COUNT(FuncInfo) < 2048);
@@ -693,10 +731,10 @@ struct Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_P
 		{ ETurnPhase_StaticEnum, TEXT("ETurnPhase"), &Z_Registration_Info_UEnum_ETurnPhase, CONSTRUCT_RELOAD_VERSION_INFO(FEnumReloadVersionInfo, 1421385386U) },
 	};
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_ASimpleTurnManager, ASimpleTurnManager::StaticClass, TEXT("ASimpleTurnManager"), &Z_Registration_Info_UClass_ASimpleTurnManager, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(ASimpleTurnManager), 1916301188U) },
+		{ Z_Construct_UClass_ASimpleTurnManager, ASimpleTurnManager::StaticClass, TEXT("ASimpleTurnManager"), &Z_Registration_Info_UClass_ASimpleTurnManager, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(ASimpleTurnManager), 1508254522U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_SimpleTurnManager_h__Script_ProjectGate_3194679347(TEXT("/Script/ProjectGate"),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_SimpleTurnManager_h__Script_ProjectGate_1677566926(TEXT("/Script/ProjectGate"),
 	Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_SimpleTurnManager_h__Script_ProjectGate_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_SimpleTurnManager_h__Script_ProjectGate_Statics::ClassInfo),
 	nullptr, 0,
 	Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_SimpleTurnManager_h__Script_ProjectGate_Statics::EnumInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_SimpleTurnManager_h__Script_ProjectGate_Statics::EnumInfo));

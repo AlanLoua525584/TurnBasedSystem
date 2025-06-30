@@ -60,6 +60,9 @@
     <Filter Include="Source\ProjectGate\Private\TurnBasedSystem">
       <UniqueIdentifier>{589773EB-8A58-3F36-AEAD-ACBE7E97E255}</UniqueIdentifier>
     </Filter>
+    <ClCompile Include="..\..\Source\ProjectGate\Private\TurnBasedSystem\EnhancedMovementSystem.cpp">
+      <Filter>Source\ProjectGate\Private\TurnBasedSystem</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Source\ProjectGate\Private\TurnBasedSystem\GridManager.cpp">
       <Filter>Source\ProjectGate\Private\TurnBasedSystem</Filter>
     </ClCompile>
@@ -67,6 +70,12 @@
       <Filter>Source\ProjectGate\Private\TurnBasedSystem</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\ProjectGate\Private\TurnBasedSystem\GridPlayerController.cpp">
+      <Filter>Source\ProjectGate\Private\TurnBasedSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\ProjectGate\Private\TurnBasedSystem\GridVisualComponent.cpp">
+      <Filter>Source\ProjectGate\Private\TurnBasedSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\ProjectGate\Private\TurnBasedSystem\IntegratedGridController.cpp">
       <Filter>Source\ProjectGate\Private\TurnBasedSystem</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\ProjectGate\Private\TurnBasedSystem\SimpleTurnManager.cpp">
@@ -105,6 +114,9 @@
     <Filter Include="Source\ProjectGate\Public\TurnBasedSystem">
       <UniqueIdentifier>{B24F2539-56DC-3150-829E-86689005E029}</UniqueIdentifier>
     </Filter>
+    <ClInclude Include="..\..\Source\ProjectGate\Public\TurnBasedSystem\EnhancedMovementSystem.h">
+      <Filter>Source\ProjectGate\Public\TurnBasedSystem</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\ProjectGate\Public\TurnBasedSystem\GridManager.h">
       <Filter>Source\ProjectGate\Public\TurnBasedSystem</Filter>
     </ClInclude>
@@ -112,6 +124,12 @@
       <Filter>Source\ProjectGate\Public\TurnBasedSystem</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\ProjectGate\Public\TurnBasedSystem\GridPlayerController.h">
+      <Filter>Source\ProjectGate\Public\TurnBasedSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\ProjectGate\Public\TurnBasedSystem\GridVisualComponent.h">
+      <Filter>Source\ProjectGate\Public\TurnBasedSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\ProjectGate\Public\TurnBasedSystem\IntegratedGridController.h">
       <Filter>Source\ProjectGate\Public\TurnBasedSystem</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\ProjectGate\Public\TurnBasedSystem\SimpleTurnManager.h">

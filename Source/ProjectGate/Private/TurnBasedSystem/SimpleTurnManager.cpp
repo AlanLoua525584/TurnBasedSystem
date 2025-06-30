@@ -3,6 +3,11 @@
 
 #include "TurnBasedSystem/SimpleTurnManager.h"
 #include "Public/DebugHelper.h"
+#include "TurnBasedSystem/TurnBasedCharacter.h"
+#include "TurnBasedSystem/GridPlayerController.h"
+#include "Kismet/GameplayStatics.h" 
+#include "Engine/World.h"
+#include "TimerManager.h"
 
 // Sets default values
 ASimpleTurnManager::ASimpleTurnManager()
@@ -36,24 +41,27 @@ void ASimpleTurnManager::StartBattle()
 		return;
 	}
 
-	CurrentTurnIndex = 0;
+	bBattleStarted = true;
+	CurrentTurnIndex = 0; // Reset to the first character
 	CurrentPhase = ETurnPhase::TurnStart;
 	TurnCount = 1; // Initialize turn count
 
+	Debug::Print(FString::Printf(TEXT("Battle started with %d characters."), TurnOrder.Num()), FColor::Green);
+
+
+	// Start The First character turn
+
+	if (ATurnBasedCharacter* FirstCharacter = Cast<ATurnBasedCharacter>(TurnOrder[CurrentTurnIndex]))
+	{
+		FirstCharacter->OnTurnStart();
+	}
+
+	// Possess The First Character
+	PossessCurrentTurnCharacter();
+
+
 	OnTurnChanged.Broadcast(GetCurrentTurnCharacter());
 	OnPhaseChanged.Broadcast(GetCurrentTurnCharacter(), CurrentPhase);
-
-	bBattleStarted = true;
-	CurrentTurnIndex = 0; // Reset to the first character
-
-	UE_LOG(LogTemp, Warning, TEXT("Battle started with %d characters."), TurnOrder.Num());
-
-	//TheFirstTurn
-
-	if (OnTurnChanged.IsBound())
-	{
-		OnTurnChanged.Broadcast(TurnOrder[CurrentTurnIndex]);
-	}
 
 
 }
@@ -61,6 +69,12 @@ void ASimpleTurnManager::StartBattle()
 void ASimpleTurnManager::NextTurn()
 {
 	if (!bBattleStarted || TurnOrder.Num() == 0)return;
+
+	//結束當前角色的回合
+	if (ATurnBasedCharacter* CurrentCharacter = Cast<ATurnBasedCharacter>(TurnOrder[CurrentTurnIndex]))
+	{
+		CurrentCharacter->OnTurnEnd();
+	}
 
 	// Move to the next character in the turn order
 
@@ -75,22 +89,67 @@ void ASimpleTurnManager::NextTurn()
 	Debug::Print(FString::Printf(TEXT("Turn %d started."), TurnCount), FColor::Green);
 	}
 
+	//開始新角色的回合
+	if (ATurnBasedCharacter* NewCharacter = Cast<ATurnBasedCharacter>(TurnOrder[CurrentTurnIndex]))
+	{
+		NewCharacter->OnTurnStart();
+		Debug::Print(FString::Printf(TEXT("Turn changed to: %s"), *NewCharacter->GetActorLabel()), FColor::Cyan);
+	}
+
+	//Possess 新角色
+
+
+	//廣播事件
 	OnTurnChanged.Broadcast(GetCurrentTurnCharacter());
 	OnPhaseChanged.Broadcast(GetCurrentTurnCharacter(), CurrentPhase);
+}
 
-	if (CurrentTurnIndex >= TurnOrder.Num())
+void ASimpleTurnManager::PossessCurrentTurnCharacter()
+{
+	// 獲取 PlayerController
+	AGridPlayerController* PC = Cast<AGridPlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
+	if (!PC)
 	{
-		CurrentTurnIndex = 0; // Loop back to the first character
+		Debug::Print(TEXT("ERROR: No GridPlayerController found!"), FColor::Red);
+		return;
 	}
 
-	UE_LOG(LogTemp, Warning, TEXT("Turn changed to: %s"), *TurnOrder[CurrentTurnIndex]->GetName());
-
-	//Notice Turn Changed
-
-	if (OnTurnChanged.IsBound())
+	// 獲取當前回合角色
+	ATurnBasedCharacter* CurrentCharacter = Cast<ATurnBasedCharacter>(GetCurrentTurnCharacter());
+	if (!CurrentCharacter)
 	{
-		OnTurnChanged.Broadcast(TurnOrder[CurrentTurnIndex]);
+		Debug::Print(TEXT("ERROR: No current character to possess!"), FColor::Red);
+		return;
 	}
+
+	// 只 Possess 玩家控制的角色
+	if (CurrentCharacter->bIsPlayerControlled)
+	{
+		// 檢查是否已經在控制這個角色
+		if (PC->GetPawn() != CurrentCharacter)
+		{
+			PC->Possess(CurrentCharacter);
+			Debug::Print(FString::Printf(TEXT("Possessed %s"), *CurrentCharacter->GetActorLabel()), FColor::Green);
+		}
+
+		// 聚焦相機到角色
+		PC->FocusOnActor(CurrentCharacter, 600.0f);
+
+
+
+		// 重置動態模式狀態
+		PC->bIsInDynamicMode = false;
+	}
+	else
+	{
+		// AI 控制的角色，取消 Possess
+		if (PC->GetPawn())
+		{
+			PC->UnPossess();
+			Debug::Print(TEXT("UnPossessed for AI turn"), FColor::Yellow);
+		}
+	}
+
 }
 
 void ASimpleTurnManager::NextPhase()
@@ -141,6 +200,8 @@ void ASimpleTurnManager::NextPhase()
 
 }
 
+
+
 ETurnPhase ASimpleTurnManager::GetCurrentPhase() const
 {
 	return CurrentPhase;
@@ -173,7 +234,30 @@ int32 ASimpleTurnManager::GetCurrentCharacterIndex() const
 void ASimpleTurnManager::BeginPlay()
 {
 	Super::BeginPlay();
+
+	//自動尋找並加入所有TurnBasedCharacter
 	
+	TArray<AActor*> FoundCharacters;
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), ATurnBasedCharacter::StaticClass(), FoundCharacters);
+
+	Debug::Print(FString::Printf(TEXT("Found %d TurnBasedCharacters"), FoundCharacters.Num()), FColor::Yellow);
+
+	for (AActor* Actor : FoundCharacters)
+	{
+		AddCharacter(Actor);
+		Debug::Print(FString::Printf(TEXT("Added: %s"), *Actor->GetName()), FColor::Green);
+	}
+
+	// 如果有角色，自動開始戰鬥
+	if (TurnOrder.Num() > 0)
+	{
+		// 延遲一幀開始，確保所有東西都初始化完成
+		GetWorld()->GetTimerManager().SetTimerForNextTick([this]()
+			{
+				StartBattle();
+				Debug::Print(TEXT("Battle Auto-Started!"), FColor::Green);
+			});
+	}
 }
 
 // Called every frame

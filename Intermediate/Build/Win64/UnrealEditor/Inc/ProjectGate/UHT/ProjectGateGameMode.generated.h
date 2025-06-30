@@ -17,10 +17,13 @@
 PRAGMA_DISABLE_DEPRECATION_WARNINGS
 
 class AActor;
+class UTurnDisplayWidget;
 enum class ETurnPhase : uint8;
 
 // ********** Begin Class AProjectGateGameMode *****************************************************
 #define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_ProjectGateGameMode_h_22_RPC_WRAPPERS_NO_PURE_DECLS \
+	DECLARE_FUNCTION(execOnAPChanged); \
+	DECLARE_FUNCTION(execGetTurnDisplayWidget); \
 	DECLARE_FUNCTION(execOnPhaseChanged); \
 	DECLARE_FUNCTION(execOnTurnChanged);
 

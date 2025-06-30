@@ -20,7 +20,7 @@ class AActor;
 struct FGridCell;
 
 // ********** Begin ScriptStruct FGridCell *********************************************************
-#define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_GridManager_h_28_GENERATED_BODY \
+#define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_GridManager_h_24_GENERATED_BODY \
 	friend struct Z_Construct_UScriptStruct_FGridCell_Statics; \
 	PROJECTGATE_API static class UScriptStruct* StaticStruct();
 
@@ -29,11 +29,14 @@ struct FGridCell;
 // ********** End ScriptStruct FGridCell ***********************************************************
 
 // ********** Begin Class AGridManager *************************************************************
-#define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_GridManager_h_64_RPC_WRAPPERS_NO_PURE_DECLS \
+#define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_GridManager_h_55_RPC_WRAPPERS_NO_PURE_DECLS \
 	DECLARE_FUNCTION(execCanMoveThrough); \
 	DECLARE_FUNCTION(execGetMovementCostBetween); \
-	DECLARE_FUNCTION(execHighlightPath); \
+	DECLARE_FUNCTION(execAnimateHighlight); \
+	DECLARE_FUNCTION(execClearAllVisuals); \
 	DECLARE_FUNCTION(execClearHighlights); \
+	DECLARE_FUNCTION(execHighlightPath); \
+	DECLARE_FUNCTION(execShowHoverCell); \
 	DECLARE_FUNCTION(execShowMovementRange); \
 	DECLARE_FUNCTION(execClearCellOccupation); \
 	DECLARE_FUNCTION(execSetCellOccupied); \
@@ -43,12 +46,13 @@ struct FGridCell;
 	DECLARE_FUNCTION(execIsValidGridPosition); \
 	DECLARE_FUNCTION(execGetGridCell); \
 	DECLARE_FUNCTION(execWorldToGrid); \
-	DECLARE_FUNCTION(execGridToWorld);
+	DECLARE_FUNCTION(execGridToWorld); \
+	DECLARE_FUNCTION(execGetCellSize);
 
 
 PROJECTGATE_API UClass* Z_Construct_UClass_AGridManager_NoRegister();
 
-#define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_GridManager_h_64_INCLASS_NO_PURE_DECLS \
+#define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_GridManager_h_55_INCLASS_NO_PURE_DECLS \
 private: \
 	static void StaticRegisterNativesAGridManager(); \
 	friend struct Z_Construct_UClass_AGridManager_Statics; \
@@ -59,7 +63,7 @@ public: \
 	DECLARE_SERIALIZER(AGridManager)
 
 
-#define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_GridManager_h_64_ENHANCED_CONSTRUCTORS \
+#define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_GridManager_h_55_ENHANCED_CONSTRUCTORS \
 	/** Deleted move- and copy-constructors, should never be used */ \
 	AGridManager(AGridManager&&) = delete; \
 	AGridManager(const AGridManager&) = delete; \
@@ -69,13 +73,13 @@ public: \
 	NO_API virtual ~AGridManager();
 
 
-#define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_GridManager_h_61_PROLOG
-#define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_GridManager_h_64_GENERATED_BODY \
+#define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_GridManager_h_52_PROLOG
+#define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_GridManager_h_55_GENERATED_BODY \
 PRAGMA_DISABLE_DEPRECATION_WARNINGS \
 public: \
-	FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_GridManager_h_64_RPC_WRAPPERS_NO_PURE_DECLS \
-	FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_GridManager_h_64_INCLASS_NO_PURE_DECLS \
-	FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_GridManager_h_64_ENHANCED_CONSTRUCTORS \
+	FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_GridManager_h_55_RPC_WRAPPERS_NO_PURE_DECLS \
+	FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_GridManager_h_55_INCLASS_NO_PURE_DECLS \
+	FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_GridManager_h_55_ENHANCED_CONSTRUCTORS \
 private: \
 PRAGMA_ENABLE_DEPRECATION_WARNINGS
 

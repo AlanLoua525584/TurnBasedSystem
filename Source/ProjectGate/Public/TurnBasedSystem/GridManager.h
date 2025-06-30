@@ -1,161 +1,184 @@
 #pragma once
 
-// Fill out your copyright notice in the Description page of Project Settings.
-
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "Math/Intpoint.h"
-
-
+#include "Math/IntPoint.h"
+#include "TurnBasedSystem/GridVisualComponent.h"
 #include "GridManager.generated.h"
-//網格類型枚舉
 
+// Grid Type Enum
 UENUM(BlueprintType)
 enum class EGridType : uint8
 {
-	Normal   UMETA(DisplayName = "Normal"),
-	Blocked UMETA(DisplayName = "Blocked"),
-	Difficult UMETA(DisplayName = "Difficult Terrain"),//消耗更多AP移動
-	Water UMETA(DisplayName = "Water"),
-	HighGround UMETA(DisplayName = "High Ground")
+    Normal      UMETA(DisplayName = "Normal"),
+    Blocked     UMETA(DisplayName = "Blocked"),
+    Difficult   UMETA(DisplayName = "Difficult Terrain"), // Cost more AP to move
+    Water       UMETA(DisplayName = "Water"),
+    HighGround  UMETA(DisplayName = "High Ground")
 };
 
-//網格類型結構體
-
+// Grid Cell Structure
 USTRUCT(BlueprintType)
 struct FGridCell
 {
-	GENERATED_BODY()
+    GENERATED_BODY()
 
-	UPROPERTY(BlueprintReadWrite)
-	FVector WorldLocation;
+    UPROPERTY(BlueprintReadWrite)
+    FVector WorldLocation;
 
-	UPROPERTY(BlueprintReadWrite)
-	FIntPoint GridCoordinate;
+    UPROPERTY(BlueprintReadWrite)
+    FIntPoint GridCoordinate;
 
-	UPROPERTY(BlueprintReadWrite)
-	EGridType GridType = EGridType::Normal;
+    UPROPERTY(BlueprintReadWrite)
+    EGridType GridType = EGridType::Normal;
 
-	UPROPERTY(BlueprintReadWrite)
-	bool bIsOccupied = false;
+    UPROPERTY(BlueprintReadWrite)
+    bool bIsOccupied = false;
 
-	UPROPERTY(BlueprintReadWrite)
-	AActor* OccupyingActor = nullptr;
+    UPROPERTY(BlueprintReadWrite)
+    AActor* OccupyingActor = nullptr;
 
-	// 移動成本（為未來女武神式系統準備）
-	UPROPERTY(BlueprintReadWrite)
-	int32 MovementCost = 1;
+    // Movement cost (for future pathfinding system)
+    UPROPERTY(BlueprintReadWrite)
+    int32 MovementCost = 1;
 
-	FGridCell()
-	{
-		WorldLocation = FVector::ZeroVector;
-		GridCoordinate = FIntPoint(0, 0);
-	}
-
+    FGridCell()
+    {
+        WorldLocation = FVector::ZeroVector;
+        GridCoordinate = FIntPoint(0, 0);
+    }
 };
-
-
-
-
 
 UCLASS()
 class PROJECTGATE_API AGridManager : public AActor
 {
-	GENERATED_BODY()
+    GENERATED_BODY()
 
 public:
-	// Sets default values for this actor's properties
-	AGridManager();
+    AGridManager();
+
+    // 獲取格子大小
+    UFUNCTION(BlueprintCallable, Category = "Grid")
+    float GetCellSize() const { return CellSize; }
 
 protected:
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
+    virtual void BeginPlay() override;
 
+    // Grid size
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Grid Settings")
+    int32 GridSizeX = 20;
 
-	//網格大小
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Grid Settings")
-	int32 GridSizeX = 20;
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Grid Settings")
+    int32 GridSizeY = 20;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Grid Settings")
-	int32 GridSizeY = 20;
+    // Size of each cell
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Grid Settings")
+    float CellSize = 100.0f;
 
-	//每個格子的大小
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Grid Settings")
-	float CellSize = 100.0f;
+    // Grid data
+    UPROPERTY(BlueprintReadOnly, Category = "Grid")
+    TArray<FGridCell> GridCells;
 
-	//網格數據
-	UPROPERTY(BlueprintReadOnly, Category = "Grid")
-	TArray<FGridCell>GridCells;
+    // Visualization components
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Grid Components")
+    class UInstancedStaticMeshComponent* GridMeshComponent;
 
-	//視覺化組件
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Grid Components")
+    class UInstancedStaticMeshComponent* HighlightMeshComponent;
+
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Grid Components")
+    class UInstancedStaticMeshComponent* PathMeshComponent;
+
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Grid Components")
+    class UInstancedStaticMeshComponent* HoverMeshComponent;
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Grid Components")
-	class UInstancedStaticMeshComponent* GridMeshComponent;
-
-	//高亮顯示組件
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Grid Components")
-	class UInstancedStaticMeshComponent* HighlightMeshComponent;
+    class UGridVisualComponent* VisualComponent;
 
 
+    // Material instances
+    UPROPERTY()
+    class UMaterialInstanceDynamic* GridMaterialInstance;
+
+    UPROPERTY()
+    class UMaterialInstanceDynamic* HighlightMaterialInstance;
+
+    UPROPERTY()
+    class UMaterialInstanceDynamic* PathMaterialInstance;
+
+    UPROPERTY()
+    class UMaterialInstanceDynamic* HoverMaterialInstance;
 
 private:
-	//網格生成
-	void GenerateGrid();
-	void CreateGridVisualization();
+    // Grid generation
+    void GenerateGrid();
+    void CreateGridVisualization();
+    void CreateGridMaterials();
 
-	//內部使用的2D數組 (方便訪問)
-	TArray<TArray<FGridCell>> Grid2D;
+    // Internal 2D array (for easier access)
+    TArray<TArray<FGridCell>> Grid2D;
 
-
+    // Helper functions
+    FLinearColor GetGridTypeColor(EGridType GridType) const;
 
 public:
-	//== 核心功能==
+    // == Core Functions ==
 
-	//坐標轉換
-	UFUNCTION(BlueprintCallable, Category = "Grid")
-	FVector GridToWorld(FIntPoint GridCoord)const;
+    // Coordinate conversion
+    UFUNCTION(BlueprintCallable, Category = "Grid")
+    FVector GridToWorld(FIntPoint GridCoord) const;
 
-	UFUNCTION(BlueprintCallable, Category = "Grid")
-	FIntPoint WorldToGrid(FVector WorldLocation)const;
+    UFUNCTION(BlueprintCallable, Category = "Grid")
+    FIntPoint WorldToGrid(FVector WorldLocation) const;
 
-	//獲取網格信息
-	UFUNCTION(BlueprintCallable, Category = "Grid")
-	bool GetGridCell(FIntPoint GridCoord, FGridCell& OutCell)const;
+    // Get grid information
+    UFUNCTION(BlueprintCallable, Category = "Grid")
+    bool GetGridCell(FIntPoint GridCoord, FGridCell& OutCell) const;
 
-	UFUNCTION(BlueprintCallable, Category = "Grid")
-	bool IsValidGridPosition(FIntPoint GridCoord)const;
+    UFUNCTION(BlueprintCallable, Category = "Grid")
+    bool IsValidGridPosition(FIntPoint GridCoord) const;
 
-	//路徑和範圍計算
-	UFUNCTION(BlueprintCallable, Category = "Grid|Movement")
-	TArray<FIntPoint>GetMovementRange(FIntPoint StartCoord, int32 MovePoints)const;
+    // Path and range calculation
+    UFUNCTION(BlueprintCallable, Category = "Grid|Movement")
+    TArray<FIntPoint> GetMovementRange(FIntPoint StartCoord, int32 MovePoints) const;
 
-	UFUNCTION(BlueprintCallable, Category = "Grid|Movement")
-	TArray<FIntPoint>GetPath(FIntPoint StarCoord, FIntPoint EndCoord)const;
+    UFUNCTION(BlueprintCallable, Category = "Grid|Movement")
+    TArray<FIntPoint> GetPath(FIntPoint StartCoord, FIntPoint EndCoord) const;
 
-	UFUNCTION(BlueprintCallable, Category = "Grid|Movement")
-	int32 GetPathCost(const TArray<FIntPoint>& Path)const;
+    UFUNCTION(BlueprintCallable, Category = "Grid|Movement")
+    int32 GetPathCost(const TArray<FIntPoint>& Path) const;
 
-	//佔用管理
-	UFUNCTION(BlueprintCallable, Category = "Grid|Occupancy")
-	bool SetCellOccupied(FIntPoint GridCoord, AActor* Occupant);
+    // Occupancy management
+    UFUNCTION(BlueprintCallable, Category = "Grid|Occupancy")
+    bool SetCellOccupied(FIntPoint GridCoord, AActor* Occupant);
 
-	UFUNCTION(BlueprintCallable, Category = "Grid|Occupancy")
-	bool ClearCellOccupation(FIntPoint GridCoord);
+    UFUNCTION(BlueprintCallable, Category = "Grid|Occupancy")
+    bool ClearCellOccupation(FIntPoint GridCoord);
 
-	//視覺化
-	UFUNCTION(BlueprintCallable, Category = "Grid|Visualization")
-	void ShowMovementRange(FIntPoint CenterCoord, int32 Range);
+    // Visualization
+    UFUNCTION(BlueprintCallable, Category = "Grid|Visualization")
+    void ShowMovementRange(FIntPoint CenterCoord, int32 Range);
 
-	UFUNCTION(BlueprintCallable, Category = "Grid|Visualization")
-	void ClearHighlights();
+    UFUNCTION(BlueprintCallable, Category = "Grid|Visualization")
+    void ShowHoverCell(FIntPoint GridCoord);
 
-	UFUNCTION(BlueprintCallable, Category = "Grid|Visualization")
-	void HighlightPath(const TArray<FIntPoint>& Path);
+    UFUNCTION(BlueprintCallable, Category = "Grid|Visualization")
+    void HighlightPath(const TArray<FIntPoint>& Path);
 
-	//為未來女武神式移動系統準備的接口
-	UFUNCTION(BlueprintCallable, Category = "Grid|Movement")
-	float GetMovementCostBetween(FVector StartPos, FVector EndPos)const;
+    UFUNCTION(BlueprintCallable, Category = "Grid|Visualization")
+    void ClearHighlights();
 
-	UFUNCTION(BlueprintCallable, Category = "Grid|Movement")
-	bool CanMoveThrough(FVector Position)const;
+    UFUNCTION(BlueprintCallable, Category = "Grid|Visualization")
+    void ClearAllVisuals();
 
+    // Animation effects
+    UFUNCTION(BlueprintCallable, Category = "Grid|Visualization")
+    void AnimateHighlight(float DeltaTime);
+
+    // Interface for future free movement system
+    UFUNCTION(BlueprintCallable, Category = "Grid|Movement")
+    float GetMovementCostBetween(FVector StartPos, FVector EndPos) const;
+
+    UFUNCTION(BlueprintCallable, Category = "Grid|Movement")
+    bool CanMoveThrough(FVector Position) const;
 };

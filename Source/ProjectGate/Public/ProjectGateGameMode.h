@@ -28,10 +28,6 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
-	virtual void SpawnFreeCameraPawn();
-
-    UPROPERTY(EditDefaultsOnly, Category = "Camera")
-	TSubclassOf<AFreeCameraPawn> FreeCameraPawnClass; 
 
     //當前鏡頭實例
     UPROPERTY()
@@ -73,7 +69,14 @@ private:
     void TestNextPhase();
     FTimerHandle PhaseTestTimer;
 
+public:
 
+    // 獲取 Turn Display Widget
+    UFUNCTION(BlueprintCallable, Category = "UI")
+    UTurnDisplayWidget* GetTurnDisplayWidget() const { return TurnDisplayWidget; }
+
+    UFUNCTION()
+    void OnAPChanged(int32 NewAP);
 
 };
 

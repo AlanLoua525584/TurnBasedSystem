@@ -8,6 +8,8 @@
 #include "Materials/MaterialInstanceDynamic.h"
 #include "Engine/StaticMesh.h"
 #include "Public/DebugHelper.h"
+#include "Components/DecalComponent.h"
+#include "Materials/Material.h"
 
 // Sets default values
 AGridManager::AGridManager()
@@ -22,10 +24,25 @@ AGridManager::AGridManager()
 	//創建網格視覺化組件
 	GridMeshComponent = CreateDefaultSubobject<UInstancedStaticMeshComponent>(TEXT("GridMeshComponent"));
 	GridMeshComponent->SetupAttachment(RootComponent);
+	GridMeshComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
-	//創建高亮組件
+	//創建高亮組件 - 用於顯示移動範圍
 	HighlightMeshComponent = CreateDefaultSubobject<UInstancedStaticMeshComponent>(TEXT("HighlightMeshComponent"));
 	HighlightMeshComponent->SetupAttachment(RootComponent);
+	HighlightMeshComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
+	//創建路徑高亮組件
+	PathMeshComponent = CreateDefaultSubobject<UInstancedStaticMeshComponent>(TEXT("PathMeshComponent"));
+	PathMeshComponent->SetupAttachment(RootComponent);
+	PathMeshComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
+	//創建滑鼠懸停高亮組件
+	HoverMeshComponent = CreateDefaultSubobject<UInstancedStaticMeshComponent>(TEXT("HoverMeshComponent"));
+	HoverMeshComponent->SetupAttachment(RootComponent);
+	HoverMeshComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
+	// 創建視覺組件
+	VisualComponent = CreateDefaultSubobject<UGridVisualComponent>(TEXT("VisualComponent"));
 
 }
 
@@ -39,6 +56,18 @@ void AGridManager::BeginPlay()
 
 	Debug::Print(FString::Printf(TEXT("Grid Generated: %d x %d"), GridSizeX, GridSizeY), FColor::Green);
 
+	//visual component初始化
+
+	if (VisualComponent)
+	{
+		VisualComponent->Initialize(this);
+		Debug::Print(TEXT("GridManager: VisualComponent initialized"), FColor::Green);
+	}
+	else
+	{
+		Debug::Print(TEXT("ERROR: GridManager has no VisualComponent!"), FColor::Red);
+	}
+	
 
 }
 
@@ -87,38 +116,180 @@ void AGridManager::CreateGridVisualization()
 
 	if (!PlaneMesh)return;
 
+	//設定所有組件的Mesh
 	GridMeshComponent->SetStaticMesh(PlaneMesh);
+	HighlightMeshComponent->SetStaticMesh(PlaneMesh);
+	PathMeshComponent->SetStaticMesh(PlaneMesh);
+	HoverMeshComponent->SetStaticMesh(PlaneMesh);
 
-	//設置網格材質
-	
-	UMaterialInterface* GridMaterial = LoadObject<UMaterialInterface>(nullptr,
-		TEXT("/Engine/BasicShapes/BasicShapeMaterial.BasicShapeMaterial"));
-
-	
-	if (GridMaterial)
-	{
-		UMaterialInstanceDynamic* GridMat = UMaterialInstanceDynamic::Create(GridMaterial, this);
-		GridMat->SetVectorParameterValue("Color", FLinearColor(0.5f, 0.5f, 0.5f, 0.5f));
-		GridMeshComponent->SetMaterial(0, GridMat);
-	
-	}
+	//創建網格材質
+	CreateGridMaterials();
 
 	//創建網格實例
 	for (const FGridCell& Cell : GridCells)
 	{
 		FTransform CellTransform;
 		CellTransform.SetLocation(Cell.WorldLocation);
-		CellTransform.SetScale3D(FVector(CellSize / 100.0f));// Plane 預設大小是 100
+		CellTransform.SetScale3D(FVector(CellSize / 100.0f*0.95f)); // // 稍微縮小避免重疊
 
-		//根據格子類型設置不同高度或顏色
+		//根據格子類型設置不同高度
 		if (Cell.GridType == EGridType::Blocked)
 		{
-			CellTransform.SetLocation(Cell.WorldLocation + FVector(0, 0, 10));
+			CellTransform.SetLocation(Cell.WorldLocation + FVector(0, 0, 25)); // 提升高度
 		}
 
-		GridMeshComponent->AddInstance(CellTransform);
+		int32 InstanceIndex = GridMeshComponent->AddInstance(CellTransform);
+
+		// 根據格子類型設置不同顏色
+		if (GridMaterialInstance)
+		{
+			FLinearColor CellColor = GetGridTypeColor(Cell.GridType);
+			GridMeshComponent->SetCustomDataValue(InstanceIndex, 0, CellColor.R);
+			GridMeshComponent->SetCustomDataValue(InstanceIndex, 1, CellColor.G);
+			GridMeshComponent->SetCustomDataValue(InstanceIndex, 2, CellColor.B);
+		}
+
 	}
 
+}
+
+void AGridManager::CreateGridMaterials()
+{
+	//載入基礎材質
+	UMaterialInterface* BaseMaterial = LoadObject<UMaterialInterface>(nullptr,
+		TEXT("/Engine/BasicShapes/BasicShapeMaterial.BasicShapeMaterial"));
+
+	if (BaseMaterial)
+	{
+		//網格材質
+		GridMaterialInstance = UMaterialInstanceDynamic::Create(BaseMaterial, this);
+		GridMaterialInstance->SetVectorParameterValue("Color", FLinearColor(0.3f, 0.3f, 0.3f, 1.0f)); 
+		GridMeshComponent->SetMaterial(0, GridMaterialInstance);
+
+		//移動範圍高亮材質 -半透明綠色
+		HighlightMaterialInstance = UMaterialInstanceDynamic::Create(BaseMaterial, this);
+		HighlightMaterialInstance->SetVectorParameterValue("Color", FLinearColor(0.0f, 1.0f, 0.0f, 0.5f)); // 半透明綠色
+		HighlightMaterialInstance->SetScalarParameterValue("Opacity", 0.5f);
+		HighlightMeshComponent->SetMaterial(0, HighlightMaterialInstance);
+
+		//路徑高亮材質 -半透明藍色
+		PathMaterialInstance = UMaterialInstanceDynamic::Create(BaseMaterial, this);
+		PathMaterialInstance->SetVectorParameterValue("Color", FLinearColor(0.0f, 0.0f, 1.0f, 0.5f)); // 半透明藍色
+		PathMaterialInstance->SetScalarParameterValue("Opacity", 0.5f);
+		PathMeshComponent->SetMaterial(0, PathMaterialInstance);
+
+		//滑鼠懸停高亮材質 -半透明黃色
+		HoverMaterialInstance = UMaterialInstanceDynamic::Create(BaseMaterial, this);
+		HoverMaterialInstance->SetVectorParameterValue("Color", FLinearColor(1.0f, 1.0f, 0.0f, 0.5f)); // 半透明黃色
+		HoverMaterialInstance->SetScalarParameterValue("Opacity", 0.5f);
+		HoverMeshComponent->SetMaterial(0, HoverMaterialInstance);
+	}
+}
+
+void AGridManager::ShowMovementRange(FIntPoint CenterCoord, int32 Range)
+{
+
+	if (VisualComponent)
+	{
+		Debug::Print(TEXT("Showing movement range working!!"), FColor::Red);
+		VisualComponent->ShowMovementRange(CenterCoord, Range);
+	
+	}
+
+	TArray<FIntPoint>ReachableCells = GetMovementRange(CenterCoord, Range);
+
+	/*
+	//為每個可達格子添加高亮實例
+	for (const FIntPoint& Coord : ReachableCells)
+	{
+		FVector WorldPos = GridToWorld(Coord);
+		FTransform HighlightTransform;
+		HighlightTransform.SetLocation(WorldPos + FVector(0, 0, 5));//稍微提升高度
+		HighlightTransform.SetScale3D(FVector(CellSize / 100.0f * 0.90f)); // 稍微縮小避免重疊
+	
+		int32 InstanceIndex = HighlightMeshComponent->AddInstance(HighlightTransform);
+
+		//根據距離設定不同的透明度
+		float Distance = FMath::Abs(Coord.X - CenterCoord.X) + FMath::Abs(Coord.Y - CenterCoord.Y);
+		float Alpha = FMath::GetMappedRangeValueClamped(FVector2D(0, Range), FVector2D(0.5f, 1.0f), Distance);
+
+		if (HighlightMaterialInstance)
+		{
+			HighlightMeshComponent->SetCustomDataValue(InstanceIndex, 0,Alpha) ;
+		}
+	
+
+	}
+	
+	Debug::Print(FString::Printf(TEXT("Showing %d reachable cells"), ReachableCells.Num(), FColor::Green));
+	*/
+}
+
+void AGridManager::ShowHoverCell(FIntPoint GridCoord)
+{
+	//清除之前的懸停高亮
+	HoverMeshComponent->ClearInstances();
+
+	if (!IsValidGridPosition(GridCoord))
+		return;
+
+	FVector WorldPos = GridToWorld(GridCoord);
+	FTransform HoverTransform;
+	HoverTransform.SetLocation(WorldPos + FVector(0, 0, 7)); //稍微提升高度
+	HoverTransform.SetScale3D(FVector(CellSize / 100.0f * 0.85f)); // 稍微縮小避免重疊
+
+	HoverMeshComponent->AddInstance(HoverTransform);
+
+}
+
+
+void AGridManager::HighlightPath(const TArray<FIntPoint>& Path)
+{
+	//清除之前的路徑高亮
+	PathMeshComponent->ClearInstances();
+
+	for (int32 i = 0;i < Path.Num(); i++)
+	{
+		FVector WorldPos = GridToWorld(Path[i]);
+		FTransform PathTransform;
+		PathTransform.SetLocation(WorldPos + FVector(0, 0, 6)); //介於網格和懸停之間
+
+		//路徑上的格子大小遞減
+		float Scale = FMath::GetMappedRangeValueClamped(
+			FVector2D(0, Path.Num() - 1), FVector2D(0.8f, 0.6f), i
+		);
+		PathTransform.SetScale3D(FVector(CellSize / 100.0f * Scale)); // 稍微縮小避免重疊
+		int32 InstanceIndex = PathMeshComponent->AddInstance(PathTransform);
+
+		//設定路徑顏色漸變
+		if (PathMaterialInstance)
+		{
+			float ColorIntensity = FMath::GetMappedRangeValueClamped(
+				FVector2D(0, Path.Num() - 1), 
+				FVector2D(0.5f, 1.0f),
+				i
+			);
+			PathMeshComponent->SetCustomDataValue(InstanceIndex, 0, ColorIntensity);
+		}
+	}
+}
+
+void AGridManager::ClearHighlights()
+{
+	HighlightMeshComponent->ClearInstances();
+	PathMeshComponent->ClearInstances();
+}
+
+void AGridManager::ClearAllVisuals()
+{
+	ClearHighlights();
+	HoverMeshComponent->ClearInstances();
+}
+
+
+FLinearColor AGridManager::GetGridTypeColor(EGridType GridType) const
+{
+	return FLinearColor();
 }
 
 FVector AGridManager::GridToWorld(FIntPoint GridCoord) const
@@ -225,49 +396,18 @@ TArray<FIntPoint> AGridManager::GetMovementRange(FIntPoint StartCoord, int32 Mov
 	return ReachableCells;
 }
 
-void AGridManager::ShowMovementRange(FIntPoint CenterCoord, int32 Range)
+
+
+void AGridManager::AnimateHighlight(float DeltaTime)
 {
+	if (!HighlightMaterialInstance)
+		return;
 
-	ClearHighlights();
+	//創建脈動效果
+	float PulseValue = (FMath::Sin(GetWorld()->GetTimeSeconds() * 2.0f) + 1.0f) * 0.5f;
+	float Alpha = FMath::Lerp(0.3f, 0.6f, PulseValue);
 
-	TArray<FIntPoint>ReachableCells = GetMovementRange(CenterCoord, Range);
-
-	//載入高亮 mesh
-	UStaticMesh* HighlightMesh = LoadObject<UStaticMesh>(nullptr,
-		TEXT("/Engine/BasicShapes/Plane.Plane"));
-
-	if (!HighlightMesh) return;
-
-	HighlightMeshComponent->SetStaticMesh(HighlightMesh);
-
-	//創建高亮材質
-	UMaterialInterface* HighlightMaterial = LoadObject<UMaterialInterface>(nullptr,
-		TEXT("/Engine/BasicShapes/BasicShapeMaterial.BasicShapeMaterial"));
-
-	if(HighlightMaterial)
-		{
-		UMaterialInstanceDynamic* HighlightMat = UMaterialInstanceDynamic::Create(HighlightMaterial, this);
-		HighlightMat->SetVectorParameterValue("Color", FLinearColor(0, 1, 0, 0.5f)); // 半透明綠色
-		HighlightMeshComponent->SetMaterial(0, HighlightMat);
-		}
-
-
-	//為每個可到達的格子創建高亮
-	for (const FIntPoint& Coord : ReachableCells)
-	{
-		FVector WorldPos = GridToWorld(Coord);
-		FTransform HighlightTransform;
-		HighlightTransform.SetLocation(WorldPos + FVector(0, 0, 5)); // 稍微抬高
-		HighlightTransform.SetScale3D(FVector(CellSize / 100.0f * 0.9f)); // 稍微小一點
-
-		HighlightMeshComponent->AddInstance(HighlightTransform);
-	}
-
-}
-
-void AGridManager::ClearHighlights()
-{
-	HighlightMeshComponent->ClearInstances();
+	HighlightMaterialInstance->SetScalarParameterValue("Opacity", Alpha);
 
 }
 
@@ -337,9 +477,6 @@ int32 AGridManager::GetPathCost(const TArray<FIntPoint>& Path) const
 
 
 
-void AGridManager::HighlightPath(const TArray<FIntPoint>& Path)
-{
-}
 
 
 

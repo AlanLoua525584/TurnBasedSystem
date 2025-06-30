@@ -17,13 +17,13 @@ AFreeCameraPawn::AFreeCameraPawn()
 {
     PrimaryActorTick.bCanEverTick = true;
 
-    // 創建碰撞組件作為根組件
+    // Create collision component as root component
     USphereComponent* CollisionComponent = CreateDefaultSubobject<USphereComponent>(TEXT("CollisionComponent"));
     CollisionComponent->InitSphereRadius(50.0f);
     CollisionComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
     RootComponent = CollisionComponent;
 
-    // 創建彈簧臂組件
+    // Create spring arm component
     SpringArmComponent = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArm"));
     SpringArmComponent->SetupAttachment(RootComponent);
     SpringArmComponent->TargetArmLength = 800.0f;
@@ -34,17 +34,17 @@ AFreeCameraPawn::AFreeCameraPawn()
     SpringArmComponent->bInheritYaw = true;
     SpringArmComponent->bInheritRoll = false;
 
-    // 創建相機組件
+    // Create camera component
     CameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
     CameraComponent->SetupAttachment(SpringArmComponent, USpringArmComponent::SocketName);
 
-    // 創建移動組件
+    // Create movement component
     UFloatingPawnMovement* MovementComponent = CreateDefaultSubobject<UFloatingPawnMovement>(TEXT("MovementComponent"));
     MovementComponent->MaxSpeed = BaseMoveSpeed;
     MovementComponent->Acceleration = 2000.0f;
     MovementComponent->Deceleration = 4000.0f;
 
-    // 設置 Pawn 使用控制器旋轉
+    // Set Pawn to use controller rotation
     bUseControllerRotationPitch = false;
     bUseControllerRotationYaw = false;
     bUseControllerRotationRoll = false;
@@ -56,7 +56,7 @@ void AFreeCameraPawn::BeginPlay()
 
     Debug::Print(TEXT("Free Camera Pawn Activated"), FColor::Cyan);
 
-    // 設置初始位置
+    // Set initial position
     if (APlayerController* PC = Cast<APlayerController>(GetController()))
     {
         PC->SetViewTarget(this);
@@ -67,16 +67,16 @@ void AFreeCameraPawn::Tick(float DeltaTime)
 {
     Super::Tick(DeltaTime);
 
-    // 處理邊緣滾動
+    // Process edge scrolling
     if (bEnableEdgeScrolling && !bIsRightMousePressed)
     {
         HandleEdgeScrolling(DeltaTime);
     }
 
-    // 更新平滑移動
+    // Update smooth movement
     UpdateMovement(DeltaTime);
 
-    // 跟隨目標
+    // Follow target
     if (FollowTarget)
     {
         FVector TargetLocation = FollowTarget->GetActorLocation();
@@ -85,7 +85,7 @@ void AFreeCameraPawn::Tick(float DeltaTime)
         SetActorLocation(NewLocation);
     }
 
-    // 應用邊界限制
+    // Apply boundary limits
     if (bUseBounds)
     {
         FVector CurrentLocation = GetActorLocation();
@@ -100,29 +100,29 @@ void AFreeCameraPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 {
     Super::SetupPlayerInputComponent(PlayerInputComponent);
 
-    // 移動輸入
+    // Movement input
     PlayerInputComponent->BindAxis("MoveForward", this, &AFreeCameraPawn::MoveForward);
     PlayerInputComponent->BindAxis("MoveRight", this, &AFreeCameraPawn::MoveRight);
     PlayerInputComponent->BindAxis("MoveUp", this, &AFreeCameraPawn::MoveUp);
 
-    // 旋轉輸入（滑鼠）
+    // Rotation input (Mouse)
     PlayerInputComponent->BindAxis("Turn", this, &AFreeCameraPawn::AddControllerYawInput);
     PlayerInputComponent->BindAxis("LookUp", this, &AFreeCameraPawn::AddControllerPitchInput);
 
-    // 旋轉輸入（鍵盤）
+    // Rotation input (Keyboard)
     PlayerInputComponent->BindAxis("TurnRate", this, &AFreeCameraPawn::TurnAtRate);
     PlayerInputComponent->BindAxis("LookUpRate", this, &AFreeCameraPawn::LookUpAtRate);
 
-    // 縮放輸入
+    // Zoom input
     PlayerInputComponent->BindAxis("Zoom", this, &AFreeCameraPawn::Zoom);
     PlayerInputComponent->BindAction("ZoomIn", IE_Pressed, this, &AFreeCameraPawn::ZoomIn);
     PlayerInputComponent->BindAction("ZoomOut", IE_Pressed, this, &AFreeCameraPawn::ZoomOut);
 
-    // 修飾鍵
+    // Modifier keys
     PlayerInputComponent->BindAction("Shift", IE_Pressed, this, &AFreeCameraPawn::OnShiftPressed);
     PlayerInputComponent->BindAction("Shift", IE_Released, this, &AFreeCameraPawn::OnShiftReleased);
 
-    // 滑鼠按鈕
+    // Mouse buttons
     PlayerInputComponent->BindAction("RightMouseButton", IE_Pressed, this, &AFreeCameraPawn::OnRightMousePressed);
     PlayerInputComponent->BindAction("RightMouseButton", IE_Released, this, &AFreeCameraPawn::OnRightMouseReleased);
 }
@@ -131,7 +131,7 @@ void AFreeCameraPawn::MoveForward(float Value)
 {
     if (Value != 0.0f)
     {
-        // 獲取相機的前向向量（忽略 Pitch）
+        // Get camera forward vector (ignore Pitch)
         FRotator Rotation = SpringArmComponent->GetComponentRotation();
         Rotation.Pitch = 0.0f;
         FVector Direction = Rotation.Vector();
@@ -144,7 +144,7 @@ void AFreeCameraPawn::MoveRight(float Value)
 {
     if (Value != 0.0f)
     {
-        // 獲取相機的右向向量
+        // Get camera right vector
         FRotator Rotation = SpringArmComponent->GetComponentRotation();
         FVector Direction = FRotationMatrix(Rotation).GetScaledAxis(EAxis::Y);
 
@@ -162,7 +162,7 @@ void AFreeCameraPawn::MoveUp(float Value)
 
 void AFreeCameraPawn::UpdateMovement(float DeltaTime)
 {
-    // 標準化目標速度
+    // Normalize target velocity
     if (!TargetVelocity.IsNearlyZero())
     {
         TargetVelocity.Normalize();
@@ -170,17 +170,17 @@ void AFreeCameraPawn::UpdateMovement(float DeltaTime)
         TargetVelocity *= MoveSpeed;
     }
 
-    // 平滑插值到目標速度
+    // Smooth interpolation to target velocity
     CurrentVelocity = FMath::VInterpTo(CurrentVelocity, TargetVelocity, DeltaTime, MovementSmoothness);
 
-    // 應用移動
+    // Apply movement
     if (!CurrentVelocity.IsNearlyZero())
     {
         FVector NewLocation = GetActorLocation() + CurrentVelocity * DeltaTime;
         SetActorLocation(NewLocation);
     }
 
-    // 重置目標速度
+    // Reset target velocity
     TargetVelocity = FVector::ZeroVector;
 }
 
@@ -204,7 +204,7 @@ void AFreeCameraPawn::AddControllerYawInput(float Val)
 {
     if (Val != 0.0f && bIsRightMousePressed)
     {
-        // 直接修改 SpringArm 的旋轉
+        // Directly modify SpringArm rotation
         FRotator NewRotation = SpringArmComponent->GetRelativeRotation();
         NewRotation.Yaw += Val;
         SpringArmComponent->SetRelativeRotation(NewRotation);
@@ -215,7 +215,7 @@ void AFreeCameraPawn::AddControllerPitchInput(float Val)
 {
     if (Val != 0.0f && bIsRightMousePressed)
     {
-        // 直接修改 SpringArm 的旋轉，並限制俯仰角
+        // Directly modify SpringArm rotation with pitch limits
         FRotator NewRotation = SpringArmComponent->GetRelativeRotation();
         NewRotation.Pitch = FMath::Clamp(NewRotation.Pitch + Val, -80.0f, -10.0f);
         SpringArmComponent->SetRelativeRotation(NewRotation);
@@ -281,7 +281,7 @@ void AFreeCameraPawn::HandleEdgeScrolling(float DeltaTime)
 
         FVector MoveDirection = FVector::ZeroVector;
 
-        // 檢查邊緣
+        // Check edges
         if (MousePosition.X <= EdgeScrollBorder)
         {
             float ScrollStrength = 1.0f - (MousePosition.X / EdgeScrollBorder);
@@ -316,12 +316,12 @@ void AFreeCameraPawn::FocusOnActor(AActor* TargetActor, float Distance)
 
     FVector TargetLocation = TargetActor->GetActorLocation();
 
-    // 計算相機應該在的位置
+    // Calculate camera position
     FRotator CurrentRotation = SpringArmComponent->GetRelativeRotation();
     FVector CameraOffset = CurrentRotation.Vector() * -Distance;
     FVector NewLocation = TargetLocation + CameraOffset;
 
-    // 平滑移動到新位置
+    // Smooth movement to new position
     SetActorLocation(NewLocation);
     SpringArmComponent->TargetArmLength = Distance;
 
