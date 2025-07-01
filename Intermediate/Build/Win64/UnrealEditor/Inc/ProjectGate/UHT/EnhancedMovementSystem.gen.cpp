@@ -1432,6 +1432,56 @@ struct Z_Construct_UClass_UEnhancedMovementSystem_Statics
 		{ "Category", "Movement|Events" },
 		{ "ModuleRelativePath", "Public/TurnBasedSystem/EnhancedMovementSystem.h" },
 	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_bConsumeAPWhileMoving_MetaData[] = {
+		{ "Category", "Movement|AP Integration" },
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "// === AP \xef\xbf\xbd\xef\xbf\xbdX\xef\xbf\xbd]\xef\xbf\xbdm ===\n" },
+#endif
+		{ "ModuleRelativePath", "Public/TurnBasedSystem/EnhancedMovementSystem.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "=== AP \xef\xbf\xbd\xef\xbf\xbdX\xef\xbf\xbd]\xef\xbf\xbdm ===" },
+#endif
+	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_APCostPerSecond_MetaData[] = {
+		{ "Category", "Movement|AP Integration" },
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "// \xef\xbf\xbdO\xef\xbf\xbd_\xef\xbf\xbd""b\xef\xbf\xbd\xca\xba""A\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xca\xae\xc9\xae\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd AP\n" },
+#endif
+		{ "ModuleRelativePath", "Public/TurnBasedSystem/EnhancedMovementSystem.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "\xef\xbf\xbdO\xef\xbf\xbd_\xef\xbf\xbd""b\xef\xbf\xbd\xca\xba""A\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xca\xae\xc9\xae\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd AP" },
+#endif
+	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_APCostMultiplierWalk_MetaData[] = {
+		{ "Category", "Movement|AP Integration" },
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "// \xef\xbf\xbd""C\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xc2\xa6 AP \xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\n" },
+#endif
+		{ "ModuleRelativePath", "Public/TurnBasedSystem/EnhancedMovementSystem.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "\xef\xbf\xbd""C\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xc2\xa6 AP \xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd" },
+#endif
+	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_APCostMultiplierRun_MetaData[] = {
+		{ "Category", "Movement|AP Integration" },
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "// \xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd AP \xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xd3\xad\xef\xbf\xbd\xef\xbf\xbdv\n" },
+#endif
+		{ "ModuleRelativePath", "Public/TurnBasedSystem/EnhancedMovementSystem.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd AP \xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xd3\xad\xef\xbf\xbd\xef\xbf\xbdv" },
+#endif
+	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_APCostMultiplierSprint_MetaData[] = {
+		{ "Category", "Movement|AP Integration" },
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "// \xef\xbf\xbd]\xef\xbf\xbd""B AP \xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xd3\xad\xef\xbf\xbd\xef\xbf\xbdv\n" },
+#endif
+		{ "ModuleRelativePath", "Public/TurnBasedSystem/EnhancedMovementSystem.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "\xef\xbf\xbd]\xef\xbf\xbd""B AP \xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xd3\xad\xef\xbf\xbd\xef\xbf\xbdv" },
+#endif
+	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_OwnerCharacter_MetaData[] = {
 		{ "ModuleRelativePath", "Public/TurnBasedSystem/EnhancedMovementSystem.h" },
 	};
@@ -1472,6 +1522,12 @@ struct Z_Construct_UClass_UEnhancedMovementSystem_Statics
 	static const UECodeGen_Private::FMulticastDelegatePropertyParams NewProp_OnResourceDepleted;
 	static const UECodeGen_Private::FMulticastDelegatePropertyParams NewProp_OnStartMove;
 	static const UECodeGen_Private::FMulticastDelegatePropertyParams NewProp_OnStopMove;
+	static void NewProp_bConsumeAPWhileMoving_SetBit(void* Obj);
+	static const UECodeGen_Private::FBoolPropertyParams NewProp_bConsumeAPWhileMoving;
+	static const UECodeGen_Private::FFloatPropertyParams NewProp_APCostPerSecond;
+	static const UECodeGen_Private::FFloatPropertyParams NewProp_APCostMultiplierWalk;
+	static const UECodeGen_Private::FFloatPropertyParams NewProp_APCostMultiplierRun;
+	static const UECodeGen_Private::FFloatPropertyParams NewProp_APCostMultiplierSprint;
 	static const UECodeGen_Private::FObjectPropertyParams NewProp_OwnerCharacter;
 	static const UECodeGen_Private::FObjectPropertyParams NewProp_MovementComponent;
 	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
@@ -1537,6 +1593,15 @@ const UECodeGen_Private::FMulticastDelegatePropertyParams Z_Construct_UClass_UEn
 const UECodeGen_Private::FMulticastDelegatePropertyParams Z_Construct_UClass_UEnhancedMovementSystem_Statics::NewProp_OnResourceDepleted = { "OnResourceDepleted", nullptr, (EPropertyFlags)0x0010000010080000, UECodeGen_Private::EPropertyGenFlags::InlineMulticastDelegate, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEnhancedMovementSystem, OnResourceDepleted), Z_Construct_UDelegateFunction_ProjectGate_OnResourceDepleted__DelegateSignature, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_OnResourceDepleted_MetaData), NewProp_OnResourceDepleted_MetaData) }; // 471144130
 const UECodeGen_Private::FMulticastDelegatePropertyParams Z_Construct_UClass_UEnhancedMovementSystem_Statics::NewProp_OnStartMove = { "OnStartMove", nullptr, (EPropertyFlags)0x0010000010080000, UECodeGen_Private::EPropertyGenFlags::InlineMulticastDelegate, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEnhancedMovementSystem, OnStartMove), Z_Construct_UDelegateFunction_ProjectGate_OnStartMove__DelegateSignature, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_OnStartMove_MetaData), NewProp_OnStartMove_MetaData) }; // 766765884
 const UECodeGen_Private::FMulticastDelegatePropertyParams Z_Construct_UClass_UEnhancedMovementSystem_Statics::NewProp_OnStopMove = { "OnStopMove", nullptr, (EPropertyFlags)0x0010000010080000, UECodeGen_Private::EPropertyGenFlags::InlineMulticastDelegate, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEnhancedMovementSystem, OnStopMove), Z_Construct_UDelegateFunction_ProjectGate_OnStopMove__DelegateSignature, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_OnStopMove_MetaData), NewProp_OnStopMove_MetaData) }; // 827298695
+void Z_Construct_UClass_UEnhancedMovementSystem_Statics::NewProp_bConsumeAPWhileMoving_SetBit(void* Obj)
+{
+	((UEnhancedMovementSystem*)Obj)->bConsumeAPWhileMoving = 1;
+}
+const UECodeGen_Private::FBoolPropertyParams Z_Construct_UClass_UEnhancedMovementSystem_Statics::NewProp_bConsumeAPWhileMoving = { "bConsumeAPWhileMoving", nullptr, (EPropertyFlags)0x0010000000000001, UECodeGen_Private::EPropertyGenFlags::Bool | UECodeGen_Private::EPropertyGenFlags::NativeBool, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, sizeof(bool), sizeof(UEnhancedMovementSystem), &Z_Construct_UClass_UEnhancedMovementSystem_Statics::NewProp_bConsumeAPWhileMoving_SetBit, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_bConsumeAPWhileMoving_MetaData), NewProp_bConsumeAPWhileMoving_MetaData) };
+const UECodeGen_Private::FFloatPropertyParams Z_Construct_UClass_UEnhancedMovementSystem_Statics::NewProp_APCostPerSecond = { "APCostPerSecond", nullptr, (EPropertyFlags)0x0010000000000001, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEnhancedMovementSystem, APCostPerSecond), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_APCostPerSecond_MetaData), NewProp_APCostPerSecond_MetaData) };
+const UECodeGen_Private::FFloatPropertyParams Z_Construct_UClass_UEnhancedMovementSystem_Statics::NewProp_APCostMultiplierWalk = { "APCostMultiplierWalk", nullptr, (EPropertyFlags)0x0010000000000001, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEnhancedMovementSystem, APCostMultiplierWalk), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_APCostMultiplierWalk_MetaData), NewProp_APCostMultiplierWalk_MetaData) };
+const UECodeGen_Private::FFloatPropertyParams Z_Construct_UClass_UEnhancedMovementSystem_Statics::NewProp_APCostMultiplierRun = { "APCostMultiplierRun", nullptr, (EPropertyFlags)0x0010000000000001, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEnhancedMovementSystem, APCostMultiplierRun), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_APCostMultiplierRun_MetaData), NewProp_APCostMultiplierRun_MetaData) };
+const UECodeGen_Private::FFloatPropertyParams Z_Construct_UClass_UEnhancedMovementSystem_Statics::NewProp_APCostMultiplierSprint = { "APCostMultiplierSprint", nullptr, (EPropertyFlags)0x0010000000000001, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEnhancedMovementSystem, APCostMultiplierSprint), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_APCostMultiplierSprint_MetaData), NewProp_APCostMultiplierSprint_MetaData) };
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_UEnhancedMovementSystem_Statics::NewProp_OwnerCharacter = { "OwnerCharacter", nullptr, (EPropertyFlags)0x0040000000000000, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEnhancedMovementSystem, OwnerCharacter), Z_Construct_UClass_ACharacter_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_OwnerCharacter_MetaData), NewProp_OwnerCharacter_MetaData) };
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_UEnhancedMovementSystem_Statics::NewProp_MovementComponent = { "MovementComponent", nullptr, (EPropertyFlags)0x0040000000080008, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEnhancedMovementSystem, MovementComponent), Z_Construct_UClass_UCharacterMovementComponent_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_MovementComponent_MetaData), NewProp_MovementComponent_MetaData) };
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UClass_UEnhancedMovementSystem_Statics::PropPointers[] = {
@@ -1570,6 +1635,11 @@ const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UClass_UEnhanced
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UEnhancedMovementSystem_Statics::NewProp_OnResourceDepleted,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UEnhancedMovementSystem_Statics::NewProp_OnStartMove,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UEnhancedMovementSystem_Statics::NewProp_OnStopMove,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UEnhancedMovementSystem_Statics::NewProp_bConsumeAPWhileMoving,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UEnhancedMovementSystem_Statics::NewProp_APCostPerSecond,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UEnhancedMovementSystem_Statics::NewProp_APCostMultiplierWalk,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UEnhancedMovementSystem_Statics::NewProp_APCostMultiplierRun,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UEnhancedMovementSystem_Statics::NewProp_APCostMultiplierSprint,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UEnhancedMovementSystem_Statics::NewProp_OwnerCharacter,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UEnhancedMovementSystem_Statics::NewProp_MovementComponent,
 };
@@ -1615,10 +1685,10 @@ struct Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_P
 		{ ECustomMovementMode_StaticEnum, TEXT("ECustomMovementMode"), &Z_Registration_Info_UEnum_ECustomMovementMode, CONSTRUCT_RELOAD_VERSION_INFO(FEnumReloadVersionInfo, 675425914U) },
 	};
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_UEnhancedMovementSystem, UEnhancedMovementSystem::StaticClass, TEXT("UEnhancedMovementSystem"), &Z_Registration_Info_UClass_UEnhancedMovementSystem, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UEnhancedMovementSystem), 2097349203U) },
+		{ Z_Construct_UClass_UEnhancedMovementSystem, UEnhancedMovementSystem::StaticClass, TEXT("UEnhancedMovementSystem"), &Z_Registration_Info_UClass_UEnhancedMovementSystem, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UEnhancedMovementSystem), 402035343U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_EnhancedMovementSystem_h__Script_ProjectGate_1543758778(TEXT("/Script/ProjectGate"),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_EnhancedMovementSystem_h__Script_ProjectGate_487646815(TEXT("/Script/ProjectGate"),
 	Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_EnhancedMovementSystem_h__Script_ProjectGate_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_EnhancedMovementSystem_h__Script_ProjectGate_Statics::ClassInfo),
 	nullptr, 0,
 	Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_EnhancedMovementSystem_h__Script_ProjectGate_Statics::EnumInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_EnhancedMovementSystem_h__Script_ProjectGate_Statics::EnumInfo));

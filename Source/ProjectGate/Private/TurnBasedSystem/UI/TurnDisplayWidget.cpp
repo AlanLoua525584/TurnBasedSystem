@@ -252,3 +252,28 @@ void UTurnDisplayWidget::UpdateActionPoints(int32 CurrentAP, int32 MaxAP)
 
 }
 
+void UTurnDisplayWidget::UpdateStamina(float CurrentStamina, float MaxStamina)
+{
+	if (StaminaText)
+	{
+		FString StaminaString = FString::Printf(TEXT("Stamina: %.0f / %.0f"), CurrentStamina, MaxStamina);
+		StaminaText->SetText(FText::FromString(StaminaString));
+	}
+
+	if (StaminaBar && MaxStamina > 0)
+	{
+		float Percent = CurrentStamina / MaxStamina;
+		StaminaBar->SetPercent(Percent);
+
+		// 根據百分比改變顏色
+		FLinearColor BarColor = FMath::Lerp(
+			FLinearColor::Red,
+			FLinearColor::Green,
+			Percent
+		);
+		StaminaBar->SetFillColorAndOpacity(BarColor);
+	}
+
+
+}
+

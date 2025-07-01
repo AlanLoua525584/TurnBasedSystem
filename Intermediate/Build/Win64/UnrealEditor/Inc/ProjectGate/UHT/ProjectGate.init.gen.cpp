@@ -20,6 +20,7 @@ void EmptyLinkFunctionForGeneratedCodeProjectGate_init() {}
 	PROJECTGATE_API UFunction* Z_Construct_UDelegateFunction_ProjectGate_OnStartMove__DelegateSignature();
 	PROJECTGATE_API UFunction* Z_Construct_UDelegateFunction_ProjectGate_OnStopMove__DelegateSignature();
 	PROJECTGATE_API UFunction* Z_Construct_UDelegateFunction_ProjectGate_OnTurnChanged__DelegateSignature();
+	PROJECTGATE_API UFunction* Z_Construct_UDelegateFunction_ProjectGate_UIOnMovementModeChanged__DelegateSignature();
 	static FPackageRegistrationInfo Z_Registration_Info_UPackage__Script_ProjectGate;
 	FORCENOINLINE UPackage* Z_Construct_UPackage__Script_ProjectGate()
 	{
@@ -39,19 +40,20 @@ void EmptyLinkFunctionForGeneratedCodeProjectGate_init() {}
 				(UObject* (*)())Z_Construct_UDelegateFunction_ProjectGate_OnStartMove__DelegateSignature,
 				(UObject* (*)())Z_Construct_UDelegateFunction_ProjectGate_OnStopMove__DelegateSignature,
 				(UObject* (*)())Z_Construct_UDelegateFunction_ProjectGate_OnTurnChanged__DelegateSignature,
+				(UObject* (*)())Z_Construct_UDelegateFunction_ProjectGate_UIOnMovementModeChanged__DelegateSignature,
 			};
 			static const UECodeGen_Private::FPackageParams PackageParams = {
 				"/Script/ProjectGate",
 				SingletonFuncArray,
 				UE_ARRAY_COUNT(SingletonFuncArray),
 				PKG_CompiledIn | 0x00000000,
-				0x1E3F8309,
-				0x14B2AB9C,
+				0xD43FA156,
+				0xBE4E535A,
 				METADATA_PARAMS(0, nullptr)
 			};
 			UECodeGen_Private::ConstructUPackage(Z_Registration_Info_UPackage__Script_ProjectGate.OuterSingleton, PackageParams);
 		}
 		return Z_Registration_Info_UPackage__Script_ProjectGate.OuterSingleton;
 	}
-	static FRegisterCompiledInInfo Z_CompiledInDeferPackage_UPackage__Script_ProjectGate(Z_Construct_UPackage__Script_ProjectGate, TEXT("/Script/ProjectGate"), Z_Registration_Info_UPackage__Script_ProjectGate, CONSTRUCT_RELOAD_VERSION_INFO(FPackageReloadVersionInfo, 0x1E3F8309, 0x14B2AB9C));
+	static FRegisterCompiledInInfo Z_CompiledInDeferPackage_UPackage__Script_ProjectGate(Z_Construct_UPackage__Script_ProjectGate, TEXT("/Script/ProjectGate"), Z_Registration_Info_UPackage__Script_ProjectGate, CONSTRUCT_RELOAD_VERSION_INFO(FPackageReloadVersionInfo, 0xD43FA156, 0xBE4E535A));
 PRAGMA_ENABLE_DEPRECATION_WARNINGS

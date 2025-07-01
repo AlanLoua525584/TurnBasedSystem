@@ -18,6 +18,7 @@ class UEnhancedMovementSystem;
 class UCameraComponent;
 class USpringArmComponent;
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FUIOnMovementModeChanged, bool, bIsDynamicMode);
 
 /**
  * 
@@ -52,12 +53,20 @@ public:
 	UPROPERTY()
 	bool bIsFocusMode = false;
 
+
+
 	// 當前控制的相機 Actor
 	UPROPERTY()
 	class AActor* CameraPawn;
 
 	UFUNCTION(BlueprintCallable, Category = "Camera")
 	AActor* GetCameraPawn() const { return CameraPawn; }
+
+
+	//處理切換時的視覺效果
+
+	UPROPERTY(BlueprintAssignable, Category = "Movement")
+	FUIOnMovementModeChanged UIOnMovementModeChanged;
 
 protected:
 	virtual void BeginPlay() override;
@@ -116,6 +125,9 @@ protected:
 
 	UFUNCTION()
 	void OnDynamicMode();
+
+	UFUNCTION()
+	void SwitchMovementMode();
 
 	UFUNCTION()
 	void OnMove(const FInputActionValue& Value);

@@ -37,6 +37,7 @@ PROJECTGATE_API void FOnActionPerformed_DelegateWrapper(const FMulticastScriptDe
 // ********** Begin Class ATurnBasedCharacter ******************************************************
 #define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_TurnBasedCharacter_h_24_RPC_WRAPPERS_NO_PURE_DECLS \
 	DECLARE_FUNCTION(execGetEnhancedMovementSystem); \
+	DECLARE_FUNCTION(execUpdateGridPositionFromWorld); \
 	DECLARE_FUNCTION(execShowMovementRange); \
 	DECLARE_FUNCTION(execMoveToGridPosition); \
 	DECLARE_FUNCTION(execSetGridManager); \
@@ -50,6 +51,7 @@ PROJECTGATE_API void FOnActionPerformed_DelegateWrapper(const FMulticastScriptDe
 	DECLARE_FUNCTION(execCanPerformAction); \
 	DECLARE_FUNCTION(execResetActionPoints); \
 	DECLARE_FUNCTION(execCanPerformDynamicMovement); \
+	DECLARE_FUNCTION(execGetGridManager); \
 	DECLARE_FUNCTION(execGetMaxActionPoints); \
 	DECLARE_FUNCTION(execGetCurrentActionPoints); \
 	DECLARE_FUNCTION(execGetCharacterDisplayName); \

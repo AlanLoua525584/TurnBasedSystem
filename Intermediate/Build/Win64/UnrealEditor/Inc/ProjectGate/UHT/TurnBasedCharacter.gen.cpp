@@ -411,6 +411,54 @@ DEFINE_FUNCTION(ATurnBasedCharacter::execGetEnhancedMovementSystem)
 }
 // ********** End Class ATurnBasedCharacter Function GetEnhancedMovementSystem *********************
 
+// ********** Begin Class ATurnBasedCharacter Function GetGridManager ******************************
+struct Z_Construct_UFunction_ATurnBasedCharacter_GetGridManager_Statics
+{
+	struct TurnBasedCharacter_eventGetGridManager_Parms
+	{
+		AGridManager* ReturnValue;
+	};
+#if WITH_METADATA
+	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
+		{ "Category", "Grid" },
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "//GetGridManager\n" },
+#endif
+		{ "ModuleRelativePath", "Public/TurnBasedSystem/TurnBasedCharacter.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "GetGridManager" },
+#endif
+	};
+#endif // WITH_METADATA
+	static const UECodeGen_Private::FObjectPropertyParams NewProp_ReturnValue;
+	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
+	static const UECodeGen_Private::FFunctionParams FuncParams;
+};
+const UECodeGen_Private::FObjectPropertyParams Z_Construct_UFunction_ATurnBasedCharacter_GetGridManager_Statics::NewProp_ReturnValue = { "ReturnValue", nullptr, (EPropertyFlags)0x0010000000000580, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(TurnBasedCharacter_eventGetGridManager_Parms, ReturnValue), Z_Construct_UClass_AGridManager_NoRegister, METADATA_PARAMS(0, nullptr) };
+const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_ATurnBasedCharacter_GetGridManager_Statics::PropPointers[] = {
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_ATurnBasedCharacter_GetGridManager_Statics::NewProp_ReturnValue,
+};
+static_assert(UE_ARRAY_COUNT(Z_Construct_UFunction_ATurnBasedCharacter_GetGridManager_Statics::PropPointers) < 2048);
+const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_ATurnBasedCharacter_GetGridManager_Statics::FuncParams = { { (UObject*(*)())Z_Construct_UClass_ATurnBasedCharacter, nullptr, "GetGridManager", Z_Construct_UFunction_ATurnBasedCharacter_GetGridManager_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_ATurnBasedCharacter_GetGridManager_Statics::PropPointers), sizeof(Z_Construct_UFunction_ATurnBasedCharacter_GetGridManager_Statics::TurnBasedCharacter_eventGetGridManager_Parms), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x54020401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_ATurnBasedCharacter_GetGridManager_Statics::Function_MetaDataParams), Z_Construct_UFunction_ATurnBasedCharacter_GetGridManager_Statics::Function_MetaDataParams)},  };
+static_assert(sizeof(Z_Construct_UFunction_ATurnBasedCharacter_GetGridManager_Statics::TurnBasedCharacter_eventGetGridManager_Parms) < MAX_uint16);
+UFunction* Z_Construct_UFunction_ATurnBasedCharacter_GetGridManager()
+{
+	static UFunction* ReturnFunction = nullptr;
+	if (!ReturnFunction)
+	{
+		UECodeGen_Private::ConstructUFunction(&ReturnFunction, Z_Construct_UFunction_ATurnBasedCharacter_GetGridManager_Statics::FuncParams);
+	}
+	return ReturnFunction;
+}
+DEFINE_FUNCTION(ATurnBasedCharacter::execGetGridManager)
+{
+	P_FINISH;
+	P_NATIVE_BEGIN;
+	*(AGridManager**)Z_Param__Result=P_THIS->GetGridManager();
+	P_NATIVE_END;
+}
+// ********** End Class ATurnBasedCharacter Function GetGridManager ********************************
+
 // ********** Begin Class ATurnBasedCharacter Function GetIsPlayerControlled ***********************
 struct Z_Construct_UFunction_ATurnBasedCharacter_GetIsPlayerControlled_Statics
 {
@@ -1014,6 +1062,42 @@ DEFINE_FUNCTION(ATurnBasedCharacter::execTryMove)
 }
 // ********** End Class ATurnBasedCharacter Function TryMove ***************************************
 
+// ********** Begin Class ATurnBasedCharacter Function UpdateGridPositionFromWorld *****************
+struct Z_Construct_UFunction_ATurnBasedCharacter_UpdateGridPositionFromWorld_Statics
+{
+#if WITH_METADATA
+	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
+		{ "Category", "Grid|Movement" },
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "//UpdateGridPosition\n" },
+#endif
+		{ "ModuleRelativePath", "Public/TurnBasedSystem/TurnBasedCharacter.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "UpdateGridPosition" },
+#endif
+	};
+#endif // WITH_METADATA
+	static const UECodeGen_Private::FFunctionParams FuncParams;
+};
+const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_ATurnBasedCharacter_UpdateGridPositionFromWorld_Statics::FuncParams = { { (UObject*(*)())Z_Construct_UClass_ATurnBasedCharacter, nullptr, "UpdateGridPositionFromWorld", nullptr, 0, 0, RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x04020401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_ATurnBasedCharacter_UpdateGridPositionFromWorld_Statics::Function_MetaDataParams), Z_Construct_UFunction_ATurnBasedCharacter_UpdateGridPositionFromWorld_Statics::Function_MetaDataParams)},  };
+UFunction* Z_Construct_UFunction_ATurnBasedCharacter_UpdateGridPositionFromWorld()
+{
+	static UFunction* ReturnFunction = nullptr;
+	if (!ReturnFunction)
+	{
+		UECodeGen_Private::ConstructUFunction(&ReturnFunction, Z_Construct_UFunction_ATurnBasedCharacter_UpdateGridPositionFromWorld_Statics::FuncParams);
+	}
+	return ReturnFunction;
+}
+DEFINE_FUNCTION(ATurnBasedCharacter::execUpdateGridPositionFromWorld)
+{
+	P_FINISH;
+	P_NATIVE_BEGIN;
+	P_THIS->UpdateGridPositionFromWorld();
+	P_NATIVE_END;
+}
+// ********** End Class ATurnBasedCharacter Function UpdateGridPositionFromWorld *******************
+
 // ********** Begin Class ATurnBasedCharacter ******************************************************
 void ATurnBasedCharacter::StaticRegisterNativesATurnBasedCharacter()
 {
@@ -1025,6 +1109,7 @@ void ATurnBasedCharacter::StaticRegisterNativesATurnBasedCharacter()
 		{ "GetCharacterDisplayName", &ATurnBasedCharacter::execGetCharacterDisplayName },
 		{ "GetCurrentActionPoints", &ATurnBasedCharacter::execGetCurrentActionPoints },
 		{ "GetEnhancedMovementSystem", &ATurnBasedCharacter::execGetEnhancedMovementSystem },
+		{ "GetGridManager", &ATurnBasedCharacter::execGetGridManager },
 		{ "GetIsPlayerControlled", &ATurnBasedCharacter::execGetIsPlayerControlled },
 		{ "GetMaxActionPoints", &ATurnBasedCharacter::execGetMaxActionPoints },
 		{ "IsMyTurn", &ATurnBasedCharacter::execIsMyTurn },
@@ -1038,6 +1123,7 @@ void ATurnBasedCharacter::StaticRegisterNativesATurnBasedCharacter()
 		{ "ShowMovementRange", &ATurnBasedCharacter::execShowMovementRange },
 		{ "TryAttack", &ATurnBasedCharacter::execTryAttack },
 		{ "TryMove", &ATurnBasedCharacter::execTryMove },
+		{ "UpdateGridPositionFromWorld", &ATurnBasedCharacter::execUpdateGridPositionFromWorld },
 	};
 	FNativeFunctionRegistrar::RegisterFunctions(Class, Funcs, UE_ARRAY_COUNT(Funcs));
 }
@@ -1261,6 +1347,7 @@ struct Z_Construct_UClass_ATurnBasedCharacter_Statics
 		{ &Z_Construct_UFunction_ATurnBasedCharacter_GetCharacterDisplayName, "GetCharacterDisplayName" }, // 885833762
 		{ &Z_Construct_UFunction_ATurnBasedCharacter_GetCurrentActionPoints, "GetCurrentActionPoints" }, // 284205969
 		{ &Z_Construct_UFunction_ATurnBasedCharacter_GetEnhancedMovementSystem, "GetEnhancedMovementSystem" }, // 3010979660
+		{ &Z_Construct_UFunction_ATurnBasedCharacter_GetGridManager, "GetGridManager" }, // 998814976
 		{ &Z_Construct_UFunction_ATurnBasedCharacter_GetIsPlayerControlled, "GetIsPlayerControlled" }, // 3164430840
 		{ &Z_Construct_UFunction_ATurnBasedCharacter_GetMaxActionPoints, "GetMaxActionPoints" }, // 832912254
 		{ &Z_Construct_UFunction_ATurnBasedCharacter_IsMyTurn, "IsMyTurn" }, // 1760035642
@@ -1274,6 +1361,7 @@ struct Z_Construct_UClass_ATurnBasedCharacter_Statics
 		{ &Z_Construct_UFunction_ATurnBasedCharacter_ShowMovementRange, "ShowMovementRange" }, // 4152946337
 		{ &Z_Construct_UFunction_ATurnBasedCharacter_TryAttack, "TryAttack" }, // 3244038415
 		{ &Z_Construct_UFunction_ATurnBasedCharacter_TryMove, "TryMove" }, // 8073906
+		{ &Z_Construct_UFunction_ATurnBasedCharacter_UpdateGridPositionFromWorld, "UpdateGridPositionFromWorld" }, // 836284827
 	};
 	static_assert(UE_ARRAY_COUNT(FuncInfo) < 2048);
 	static constexpr FCppClassTypeInfoStatic StaticCppClassTypeInfo = {
@@ -1370,10 +1458,10 @@ ATurnBasedCharacter::~ATurnBasedCharacter() {}
 struct Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_TurnBasedCharacter_h__Script_ProjectGate_Statics
 {
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_ATurnBasedCharacter, ATurnBasedCharacter::StaticClass, TEXT("ATurnBasedCharacter"), &Z_Registration_Info_UClass_ATurnBasedCharacter, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(ATurnBasedCharacter), 1723275426U) },
+		{ Z_Construct_UClass_ATurnBasedCharacter, ATurnBasedCharacter::StaticClass, TEXT("ATurnBasedCharacter"), &Z_Registration_Info_UClass_ATurnBasedCharacter, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(ATurnBasedCharacter), 1033571658U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_TurnBasedCharacter_h__Script_ProjectGate_3959565994(TEXT("/Script/ProjectGate"),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_TurnBasedCharacter_h__Script_ProjectGate_1589781588(TEXT("/Script/ProjectGate"),
 	Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_TurnBasedCharacter_h__Script_ProjectGate_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_TurnBasedCharacter_h__Script_ProjectGate_Statics::ClassInfo),
 	nullptr, 0,
 	nullptr, 0);

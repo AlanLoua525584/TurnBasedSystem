@@ -77,6 +77,10 @@ public:
     UFUNCTION(BlueprintCallable, Category = "Turn System")
     int32 GetMaxActionPoints() const { return MaxActionPoints; }
 
+    //GetGridManager
+    UFUNCTION(BlueprintPure, Category = "Grid")
+    AGridManager* GetGridManager() const { return GridManager; }
+
     // 檢查是否可以執行動態移動
     UFUNCTION(BlueprintPure, Category = "Turn System")
     bool CanPerformDynamicMovement() const;
@@ -131,6 +135,11 @@ public:
     // Show Movement Range
     UFUNCTION(BlueprintCallable, Category = "Grid|Movement")
     void ShowMovementRange();
+
+    //UpdateGridPosition
+    UFUNCTION(BlueprintCallable, Category = "Grid|Movement")
+    void UpdateGridPositionFromWorld();
+
 
     //===組件===
 

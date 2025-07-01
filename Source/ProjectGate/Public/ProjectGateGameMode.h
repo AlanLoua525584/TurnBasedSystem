@@ -41,6 +41,8 @@ protected:
     UPROPERTY(EditDefaultsOnly, Category = "Camera")
     float FocusDistance = 800.0f;
 
+   
+
 
 private:
     // 回合管理器
@@ -77,6 +79,9 @@ public:
 
     UFUNCTION()
     void OnAPChanged(int32 NewAP);
+
+    UFUNCTION()
+    void OnStaminaChanged(float NewResource);
 
 };
 

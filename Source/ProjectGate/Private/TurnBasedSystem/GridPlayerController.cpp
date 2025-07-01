@@ -249,6 +249,20 @@ void AGridPlayerController::PlayerTick(float DeltaTime)
 
 	// 更新相機移動
 	UpdateCameraMovement(DeltaTime);
+
+	//網格位置同步
+	//只在動態模式下同步網格
+	if (bIsInDynamicMode)
+	{
+		ATurnBasedCharacter* ControlledCharacter = GetControlledTurnCharacter();
+		if (ControlledCharacter && ControlledCharacter->IsMyTurn())
+		{
+			// 使用現有的 UpdateGridPositionFromWorld 函數
+			ControlledCharacter->UpdateGridPositionFromWorld();
+		}
+	}
+
+
 }
 
 void AGridPlayerController::OnDynamicMode()
@@ -277,34 +291,98 @@ void AGridPlayerController::OnDynamicMode()
 		return;
 	}
 
+
+	// 獲取視覺組件
+	UGridVisualComponent* VisualComp = ControlledCharacter->FindComponentByClass<UGridVisualComponent>();
+	if (!VisualComp)
+	{
+		Debug::Print(TEXT("ERROR: No GridVisualComponent found!"), FColor::Red);
+		return;
+	}
+
+
 	// 切換模式
 	bIsInDynamicMode = !bIsInDynamicMode;
 
 	if (bIsInDynamicMode)
-	{
+	{   //== 進入動態模式 ==
+
 		// 進入動態模式時自動切到Focus模式
 		if (!bIsFocusMode)
 		{
 			OnToggleFocus(FInputActionValue());
 		}
 
-
+		//啟動動態移動系統
 		MovementSystem->SwitchMovementMode(ECustomMovementMode::DynamicMove);
+
+		//清除網格視覺
+		VisualComp->ClearAllVisuals();
+
 		Debug::Print(TEXT("===== DYNAMIC MOVEMENT MODE: ON ====="), FColor::Green, 5.0f);
 
 	}
 	else
 	{
+		//停止動態移動
 		MovementSystem->SwitchMovementMode(ECustomMovementMode::Idle);
-		Debug::Print(TEXT("===== DYNAMIC MOVEMENT MODE: OFF ====="), FColor::Red, 5.0f);
 
 
-		// 離開動態模式時切換相機模式
+		//顯示網格範圍
+		ControlledCharacter->ShowMovementRange();
+
+		// 切換回自由相機
 		if (bIsFocusMode)
 		{
 			OnToggleFocus(FInputActionValue());
 		}
+
+		Debug::Print(TEXT("===== DYNAMIC MOVEMENT MODE: OFF ====="), FColor::Red, 5.0f);
+
+
 	}
+
+	//通知UI更新
+	UIOnMovementModeChanged.Broadcast(bIsInDynamicMode);
+}
+
+void AGridPlayerController::SwitchMovementMode()
+{
+	/*
+	ATurnBasedCharacter* ControlledCharacter = GetControlledTurnCharacter();
+	if (!ControlledCharacter || !ControlledCharacter->IsMyTurn())
+	{
+		Debug::Print(TEXT("Cannot switch mode: Not your turn or no controlled character"), FColor::Red);
+		return;
+	}
+
+	// 切換模式
+	bIsInDynamicMode = !bIsInDynamicMode;
+
+	// 獲取視覺組件
+	UGridVisualComponent* VisualComp = ControlledCharacter->FindComponentByClass<UGridVisualComponent>();
+	if (!VisualComp)
+	{
+		Debug::Print(TEXT("ERROR: No GridVisualComponent found!"), FColor::Red);
+		return;
+	}
+
+	if (bIsInDynamicMode)
+	{
+		// 動態模式：清除所有網格視覺
+		VisualComp->ClearAllVisuals();
+		Debug::Print(TEXT("Switched to Dynamic Mode - Grid visuals cleared"), FColor::Blue);
+	}
+	else
+	{
+		// 網格模式：顯示移動範圍
+		ControlledCharacter->ShowMovementRange();
+		Debug::Print(TEXT("Switched to Grid Mode - Showing movement range"), FColor::Green);
+	}
+
+	// 通知 UI 更新
+	UIOnMovementModeChanged.Broadcast(bIsInDynamicMode);
+	*/
 
 }
 
@@ -375,6 +453,46 @@ void AGridPlayerController::OnClick()
 
 	Debug::Print(TEXT("Clicking"));
 
+	if (!GridManager)
+	{
+		Debug::Print(TEXT("GridManager is null!"), FColor::Red);
+		return;
+	}
+
+	ATurnBasedCharacter* ControlledCharacter = GetControlledTurnCharacter();
+	if (!ControlledCharacter)
+	{
+		Debug::Print(TEXT("No controlled character!"), FColor::Red);
+		return;
+	}
+
+	// 檢查是否是這角色的回合
+	if (!ControlledCharacter->IsMyTurn())
+	{
+		Debug::Print(TEXT("Not this character's turn!"), FColor::Yellow);
+		return;
+	}
+
+	FIntPoint ClickedGridPos;
+	if (!GetGridPositionUnderCursor(ClickedGridPos))
+	{
+		Debug::Print(TEXT("Invalid grid position"), FColor::Orange);
+		return;
+	}
+
+	Debug::Print(FString::Printf(TEXT("Clicked Grid: (%d, %d)"), ClickedGridPos.X, ClickedGridPos.Y), FColor::Cyan);
+
+	if (ControlledCharacter->MoveToGridPosition(ClickedGridPos))
+	{
+		Debug::Print(TEXT("Move command executed"), FColor::Green);
+	}
+	else
+	{
+		Debug::Print(TEXT("Cannot move to that position"), FColor::Red);
+	}
+
+
+	/*
 	if (!GridManager || !TurnManager)
 	{
 		Debug::Print(TEXT("GridManager or TurnManager is null!"), FColor::Red);
@@ -440,7 +558,7 @@ void AGridPlayerController::OnClick()
 		Debug::Print(TEXT("No current character or not player's turn!"), FColor::Red);
 		return;
 	}
-
+	*/
 }
 
 void AGridPlayerController::OnShowRange()

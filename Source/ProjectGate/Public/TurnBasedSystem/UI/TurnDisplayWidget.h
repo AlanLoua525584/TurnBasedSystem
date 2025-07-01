@@ -44,7 +44,15 @@ public:
     UFUNCTION(BlueprintCallable, Category = "Turn Display")
     void UpdateActionPoints(int32 CurrentAP, int32 MaxAP);
 
+    // 耐力顯示
+    UPROPERTY(meta = (BindWidget))
+    class UTextBlock* StaminaText;
 
+    UPROPERTY(meta = (BindWidget))
+    class UProgressBar* StaminaBar;
+
+    UFUNCTION(BlueprintCallable, Category = "UI")
+    void UpdateStamina(float CurrentStamina, float MaxStamina);
 
 protected:
     // 綁定到 UI 的文字元件

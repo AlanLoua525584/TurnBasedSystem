@@ -189,40 +189,11 @@ void AGridManager::CreateGridMaterials()
 void AGridManager::ShowMovementRange(FIntPoint CenterCoord, int32 Range)
 {
 
-	if (VisualComponent)
-	{
-		Debug::Print(TEXT("Showing movement range working!!"), FColor::Red);
-		VisualComponent->ShowMovementRange(CenterCoord, Range);
-	
-	}
 
 	TArray<FIntPoint>ReachableCells = GetMovementRange(CenterCoord, Range);
+	Debug::Print(FString::Printf(TEXT("Calculated %d reachable cells"), ReachableCells.Num()), FColor::Green);
 
-	/*
-	//為每個可達格子添加高亮實例
-	for (const FIntPoint& Coord : ReachableCells)
-	{
-		FVector WorldPos = GridToWorld(Coord);
-		FTransform HighlightTransform;
-		HighlightTransform.SetLocation(WorldPos + FVector(0, 0, 5));//稍微提升高度
-		HighlightTransform.SetScale3D(FVector(CellSize / 100.0f * 0.90f)); // 稍微縮小避免重疊
-	
-		int32 InstanceIndex = HighlightMeshComponent->AddInstance(HighlightTransform);
 
-		//根據距離設定不同的透明度
-		float Distance = FMath::Abs(Coord.X - CenterCoord.X) + FMath::Abs(Coord.Y - CenterCoord.Y);
-		float Alpha = FMath::GetMappedRangeValueClamped(FVector2D(0, Range), FVector2D(0.5f, 1.0f), Distance);
-
-		if (HighlightMaterialInstance)
-		{
-			HighlightMeshComponent->SetCustomDataValue(InstanceIndex, 0,Alpha) ;
-		}
-	
-
-	}
-	
-	Debug::Print(FString::Printf(TEXT("Showing %d reachable cells"), ReachableCells.Num(), FColor::Green));
-	*/
 }
 
 void AGridManager::ShowHoverCell(FIntPoint GridCoord)

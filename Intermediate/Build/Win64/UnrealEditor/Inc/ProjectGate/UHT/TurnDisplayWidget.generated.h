@@ -22,6 +22,7 @@ enum class ETurnPhase : uint8;
 #define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_UI_TurnDisplayWidget_h_20_RPC_WRAPPERS_NO_PURE_DECLS \
 	DECLARE_FUNCTION(execHandleEndTurnClicked); \
 	DECLARE_FUNCTION(execHandleNextPhaseClicked); \
+	DECLARE_FUNCTION(execUpdateStamina); \
 	DECLARE_FUNCTION(execUpdateActionPoints); \
 	DECLARE_FUNCTION(execUpdateCameraMode); \
 	DECLARE_FUNCTION(execUpdateTurnOrder); \

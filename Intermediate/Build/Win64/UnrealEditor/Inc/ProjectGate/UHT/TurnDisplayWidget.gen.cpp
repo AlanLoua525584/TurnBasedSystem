@@ -275,6 +275,54 @@ DEFINE_FUNCTION(UTurnDisplayWidget::execUpdatePhase)
 }
 // ********** End Class UTurnDisplayWidget Function UpdatePhase ************************************
 
+// ********** Begin Class UTurnDisplayWidget Function UpdateStamina ********************************
+struct Z_Construct_UFunction_UTurnDisplayWidget_UpdateStamina_Statics
+{
+	struct TurnDisplayWidget_eventUpdateStamina_Parms
+	{
+		float CurrentStamina;
+		float MaxStamina;
+	};
+#if WITH_METADATA
+	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
+		{ "Category", "UI" },
+		{ "ModuleRelativePath", "Public/TurnBasedSystem/UI/TurnDisplayWidget.h" },
+	};
+#endif // WITH_METADATA
+	static const UECodeGen_Private::FFloatPropertyParams NewProp_CurrentStamina;
+	static const UECodeGen_Private::FFloatPropertyParams NewProp_MaxStamina;
+	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
+	static const UECodeGen_Private::FFunctionParams FuncParams;
+};
+const UECodeGen_Private::FFloatPropertyParams Z_Construct_UFunction_UTurnDisplayWidget_UpdateStamina_Statics::NewProp_CurrentStamina = { "CurrentStamina", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(TurnDisplayWidget_eventUpdateStamina_Parms, CurrentStamina), METADATA_PARAMS(0, nullptr) };
+const UECodeGen_Private::FFloatPropertyParams Z_Construct_UFunction_UTurnDisplayWidget_UpdateStamina_Statics::NewProp_MaxStamina = { "MaxStamina", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(TurnDisplayWidget_eventUpdateStamina_Parms, MaxStamina), METADATA_PARAMS(0, nullptr) };
+const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_UTurnDisplayWidget_UpdateStamina_Statics::PropPointers[] = {
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UTurnDisplayWidget_UpdateStamina_Statics::NewProp_CurrentStamina,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UTurnDisplayWidget_UpdateStamina_Statics::NewProp_MaxStamina,
+};
+static_assert(UE_ARRAY_COUNT(Z_Construct_UFunction_UTurnDisplayWidget_UpdateStamina_Statics::PropPointers) < 2048);
+const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_UTurnDisplayWidget_UpdateStamina_Statics::FuncParams = { { (UObject*(*)())Z_Construct_UClass_UTurnDisplayWidget, nullptr, "UpdateStamina", Z_Construct_UFunction_UTurnDisplayWidget_UpdateStamina_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_UTurnDisplayWidget_UpdateStamina_Statics::PropPointers), sizeof(Z_Construct_UFunction_UTurnDisplayWidget_UpdateStamina_Statics::TurnDisplayWidget_eventUpdateStamina_Parms), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x04020401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_UTurnDisplayWidget_UpdateStamina_Statics::Function_MetaDataParams), Z_Construct_UFunction_UTurnDisplayWidget_UpdateStamina_Statics::Function_MetaDataParams)},  };
+static_assert(sizeof(Z_Construct_UFunction_UTurnDisplayWidget_UpdateStamina_Statics::TurnDisplayWidget_eventUpdateStamina_Parms) < MAX_uint16);
+UFunction* Z_Construct_UFunction_UTurnDisplayWidget_UpdateStamina()
+{
+	static UFunction* ReturnFunction = nullptr;
+	if (!ReturnFunction)
+	{
+		UECodeGen_Private::ConstructUFunction(&ReturnFunction, Z_Construct_UFunction_UTurnDisplayWidget_UpdateStamina_Statics::FuncParams);
+	}
+	return ReturnFunction;
+}
+DEFINE_FUNCTION(UTurnDisplayWidget::execUpdateStamina)
+{
+	P_GET_PROPERTY(FFloatProperty,Z_Param_CurrentStamina);
+	P_GET_PROPERTY(FFloatProperty,Z_Param_MaxStamina);
+	P_FINISH;
+	P_NATIVE_BEGIN;
+	P_THIS->UpdateStamina(Z_Param_CurrentStamina,Z_Param_MaxStamina);
+	P_NATIVE_END;
+}
+// ********** End Class UTurnDisplayWidget Function UpdateStamina **********************************
+
 // ********** Begin Class UTurnDisplayWidget Function UpdateTurnCount ******************************
 struct Z_Construct_UFunction_UTurnDisplayWidget_UpdateTurnCount_Statics
 {
@@ -389,6 +437,7 @@ void UTurnDisplayWidget::StaticRegisterNativesUTurnDisplayWidget()
 		{ "UpdateCameraMode", &UTurnDisplayWidget::execUpdateCameraMode },
 		{ "UpdateCurrentCharacter", &UTurnDisplayWidget::execUpdateCurrentCharacter },
 		{ "UpdatePhase", &UTurnDisplayWidget::execUpdatePhase },
+		{ "UpdateStamina", &UTurnDisplayWidget::execUpdateStamina },
 		{ "UpdateTurnCount", &UTurnDisplayWidget::execUpdateTurnCount },
 		{ "UpdateTurnOrder", &UTurnDisplayWidget::execUpdateTurnOrder },
 	};
@@ -428,6 +477,22 @@ struct Z_Construct_UClass_UTurnDisplayWidget_Statics
 #if WITH_METADATA
 	static constexpr UECodeGen_Private::FMetaDataPairParam Class_MetaDataParams[] = {
 		{ "IncludePath", "TurnBasedSystem/UI/TurnDisplayWidget.h" },
+		{ "ModuleRelativePath", "Public/TurnBasedSystem/UI/TurnDisplayWidget.h" },
+	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_StaminaText_MetaData[] = {
+		{ "BindWidget", "" },
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "// \xef\xbf\xbd@\xef\xbf\xbdO\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\n" },
+#endif
+		{ "EditInline", "true" },
+		{ "ModuleRelativePath", "Public/TurnBasedSystem/UI/TurnDisplayWidget.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "\xef\xbf\xbd@\xef\xbf\xbdO\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd" },
+#endif
+	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_StaminaBar_MetaData[] = {
+		{ "BindWidget", "" },
+		{ "EditInline", "true" },
 		{ "ModuleRelativePath", "Public/TurnBasedSystem/UI/TurnDisplayWidget.h" },
 	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_TurnCountText_MetaData[] = {
@@ -488,6 +553,8 @@ struct Z_Construct_UClass_UTurnDisplayWidget_Statics
 		{ "ModuleRelativePath", "Public/TurnBasedSystem/UI/TurnDisplayWidget.h" },
 	};
 #endif // WITH_METADATA
+	static const UECodeGen_Private::FObjectPropertyParams NewProp_StaminaText;
+	static const UECodeGen_Private::FObjectPropertyParams NewProp_StaminaBar;
 	static const UECodeGen_Private::FObjectPropertyParams NewProp_TurnCountText;
 	static const UECodeGen_Private::FObjectPropertyParams NewProp_CurrentCharacterText;
 	static const UECodeGen_Private::FObjectPropertyParams NewProp_PhaseText;
@@ -506,6 +573,7 @@ struct Z_Construct_UClass_UTurnDisplayWidget_Statics
 		{ &Z_Construct_UFunction_UTurnDisplayWidget_UpdateCameraMode, "UpdateCameraMode" }, // 4016839498
 		{ &Z_Construct_UFunction_UTurnDisplayWidget_UpdateCurrentCharacter, "UpdateCurrentCharacter" }, // 31170205
 		{ &Z_Construct_UFunction_UTurnDisplayWidget_UpdatePhase, "UpdatePhase" }, // 3192808887
+		{ &Z_Construct_UFunction_UTurnDisplayWidget_UpdateStamina, "UpdateStamina" }, // 2375569204
 		{ &Z_Construct_UFunction_UTurnDisplayWidget_UpdateTurnCount, "UpdateTurnCount" }, // 1909222742
 		{ &Z_Construct_UFunction_UTurnDisplayWidget_UpdateTurnOrder, "UpdateTurnOrder" }, // 777601712
 	};
@@ -515,6 +583,8 @@ struct Z_Construct_UClass_UTurnDisplayWidget_Statics
 	};
 	static const UECodeGen_Private::FClassParams ClassParams;
 };
+const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_UTurnDisplayWidget_Statics::NewProp_StaminaText = { "StaminaText", nullptr, (EPropertyFlags)0x0010000000080008, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UTurnDisplayWidget, StaminaText), Z_Construct_UClass_UTextBlock_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_StaminaText_MetaData), NewProp_StaminaText_MetaData) };
+const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_UTurnDisplayWidget_Statics::NewProp_StaminaBar = { "StaminaBar", nullptr, (EPropertyFlags)0x0010000000080008, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UTurnDisplayWidget, StaminaBar), Z_Construct_UClass_UProgressBar_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_StaminaBar_MetaData), NewProp_StaminaBar_MetaData) };
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_UTurnDisplayWidget_Statics::NewProp_TurnCountText = { "TurnCountText", nullptr, (EPropertyFlags)0x0020080000080008, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UTurnDisplayWidget, TurnCountText), Z_Construct_UClass_UTextBlock_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_TurnCountText_MetaData), NewProp_TurnCountText_MetaData) };
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_UTurnDisplayWidget_Statics::NewProp_CurrentCharacterText = { "CurrentCharacterText", nullptr, (EPropertyFlags)0x0020080000080008, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UTurnDisplayWidget, CurrentCharacterText), Z_Construct_UClass_UTextBlock_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_CurrentCharacterText_MetaData), NewProp_CurrentCharacterText_MetaData) };
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_UTurnDisplayWidget_Statics::NewProp_PhaseText = { "PhaseText", nullptr, (EPropertyFlags)0x0020080000080008, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UTurnDisplayWidget, PhaseText), Z_Construct_UClass_UTextBlock_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_PhaseText_MetaData), NewProp_PhaseText_MetaData) };
@@ -525,6 +595,8 @@ const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_UTurnDisplayWi
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_UTurnDisplayWidget_Statics::NewProp_ActionPointsText = { "ActionPointsText", nullptr, (EPropertyFlags)0x0020080000080008, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UTurnDisplayWidget, ActionPointsText), Z_Construct_UClass_UTextBlock_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_ActionPointsText_MetaData), NewProp_ActionPointsText_MetaData) };
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_UTurnDisplayWidget_Statics::NewProp_ActionPointsBar = { "ActionPointsBar", nullptr, (EPropertyFlags)0x0020080000080008, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UTurnDisplayWidget, ActionPointsBar), Z_Construct_UClass_UProgressBar_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_ActionPointsBar_MetaData), NewProp_ActionPointsBar_MetaData) };
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UClass_UTurnDisplayWidget_Statics::PropPointers[] = {
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UTurnDisplayWidget_Statics::NewProp_StaminaText,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UTurnDisplayWidget_Statics::NewProp_StaminaBar,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UTurnDisplayWidget_Statics::NewProp_TurnCountText,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UTurnDisplayWidget_Statics::NewProp_CurrentCharacterText,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UTurnDisplayWidget_Statics::NewProp_PhaseText,
@@ -573,10 +645,10 @@ UTurnDisplayWidget::~UTurnDisplayWidget() {}
 struct Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_UI_TurnDisplayWidget_h__Script_ProjectGate_Statics
 {
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_UTurnDisplayWidget, UTurnDisplayWidget::StaticClass, TEXT("UTurnDisplayWidget"), &Z_Registration_Info_UClass_UTurnDisplayWidget, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UTurnDisplayWidget), 701113024U) },
+		{ Z_Construct_UClass_UTurnDisplayWidget, UTurnDisplayWidget::StaticClass, TEXT("UTurnDisplayWidget"), &Z_Registration_Info_UClass_UTurnDisplayWidget, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UTurnDisplayWidget), 958781610U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_UI_TurnDisplayWidget_h__Script_ProjectGate_3854430212(TEXT("/Script/ProjectGate"),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_UI_TurnDisplayWidget_h__Script_ProjectGate_488711217(TEXT("/Script/ProjectGate"),
 	Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_UI_TurnDisplayWidget_h__Script_ProjectGate_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_UI_TurnDisplayWidget_h__Script_ProjectGate_Statics::ClassInfo),
 	nullptr, 0,
 	nullptr, 0);

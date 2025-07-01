@@ -5,7 +5,10 @@
 #include "GameFramework/Character.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/PlayerController.h"
+#include "TurnBasedSystem/TurnBasedCharacter.h"
 #include "TurnBasedSystem/GridPlayerController.h"
+#include "TurnBasedSystem//GridVisualComponent.h"
+#include "TurnBasedSystem//GridManager.h"
 #include "Engine/World.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "Public/DebugHelper.h"
@@ -305,11 +308,53 @@ void UEnhancedMovementSystem::ProcessMovementInput(const FVector2D& InputVector)
 
 void UEnhancedMovementSystem::ConsumeResource(float DeltaTime)
 {
+
+	// Movement Resource 消耗
 	float ConsumptionRate = GetResourceConsumptionRate();
 	float Consumption = ConsumptionRate * DeltaTime;
 	CurrentMovementResource = FMath::Max(0.0f, CurrentMovementResource - Consumption);
 
 	OnResourceChanged.Broadcast(CurrentMovementResource);
+
+	// 新增：同時消耗 AP
+	if (bConsumeAPWhileMoving)
+	{
+		if (ATurnBasedCharacter* TurnChar = Cast<ATurnBasedCharacter>(OwnerCharacter))
+		{
+			// 計算 AP 消耗
+			float APCost = APCostPerSecond * DeltaTime;
+
+			// 根據步態調整 AP 消耗
+			switch (CurrentGait)
+			{
+			case EALSGait::Walking:
+				APCost *= APCostMultiplierWalk;
+				break;
+			case EALSGait::Running:
+				APCost *= APCostMultiplierRun;
+				break;
+			case EALSGait::Sprinting:
+				APCost *= APCostMultiplierSprint;
+				break;
+			}
+
+			// 累積 AP 消耗，避免頻繁的小數消耗
+			AccumulatedAPCost += APCost;
+
+			// 當累積超過 1 時才實際扣除
+			if (AccumulatedAPCost >= 1.0f)
+			{
+				int32 APToConsume = FMath::FloorToInt(AccumulatedAPCost);
+				TurnChar->ConsumeActionPoints(APToConsume);
+				AccumulatedAPCost -= APToConsume;
+
+				Debug::Print(FString::Printf(TEXT("Dynamic Move consumed %d AP"), APToConsume), FColor::Yellow);
+			}
+		}
+	}
+
+
+
 	CheckResourceDepletion();
 }
 
@@ -354,6 +399,16 @@ void UEnhancedMovementSystem::StartDynamicMovement()
 	AccumulatedDistance = 0.0f;
 	UpdateMovementSpeed();
 
+	// 關閉網格高亮（移動範圍）
+	if (ATurnBasedCharacter* TurnChar = Cast<ATurnBasedCharacter>(OwnerCharacter))
+	{
+		if (TurnChar->GetGridManager())
+		{
+			TurnChar->GetGridManager()->ClearHighlights();
+			Debug::Print(TEXT("Cleared Movement Range on DynamicMove Start"), FColor::Yellow);
+		}
+	}
+
 	//如果使用ALS，設置初始步態
 	if (bUseALSIntergration)
 	{
@@ -362,10 +417,20 @@ void UEnhancedMovementSystem::StartDynamicMovement()
 
 	OnStartMove.Broadcast();
 
+
+
 }
 
 void UEnhancedMovementSystem::StopDynamicMovement()
 {
+	// 更新角色的網格位置
+	if (ATurnBasedCharacter* TurnChar = Cast<ATurnBasedCharacter>(OwnerCharacter))
+	{
+		TurnChar->UpdateGridPositionFromWorld();
+	}
+
+
+
 	SwitchMovementMode(ECustomMovementMode::Idle);
 	OnStopMove.Broadcast();
 }
@@ -427,12 +492,37 @@ void UEnhancedMovementSystem::UpdateMovementSpeed()
 
 void UEnhancedMovementSystem::CheckResourceDepletion()
 {
+	bool bShouldStop = false;
+	FString StopReason;
+
+	//Check Movement Resource
 	if (CurrentMovementResource <= 0)
+	{
+		bShouldStop = true;
+		StopReason = TEXT("Run Out of Stamina");
+	
+	}
+
+	//檢查AP（如果啟用 AP 消耗）
+	if (bConsumeAPWhileMoving)
+	{
+		if (ATurnBasedCharacter* TurnChar = Cast<ATurnBasedCharacter>(OwnerCharacter))
+		{
+			if (TurnChar->GetCurrentActionPoints() <= 0)
+			{
+				bShouldStop = true;
+				StopReason = TEXT("No Action Points left!");
+			}
+		}
+	}
+
+    //停止移動
+	if (bShouldStop)
 	{
 		OnResourceDepleted.Broadcast();
 		StopDynamicMovement();
+		Debug::Print(FString::Printf(TEXT("Movement stopped: %s"), *StopReason), FColor::Red);
 	}
-
 }
 
 

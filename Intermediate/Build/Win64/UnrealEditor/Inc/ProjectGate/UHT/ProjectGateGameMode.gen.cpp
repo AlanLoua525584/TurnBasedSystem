@@ -167,6 +167,48 @@ DEFINE_FUNCTION(AProjectGateGameMode::execOnPhaseChanged)
 }
 // ********** End Class AProjectGateGameMode Function OnPhaseChanged *******************************
 
+// ********** Begin Class AProjectGateGameMode Function OnStaminaChanged ***************************
+struct Z_Construct_UFunction_AProjectGateGameMode_OnStaminaChanged_Statics
+{
+	struct ProjectGateGameMode_eventOnStaminaChanged_Parms
+	{
+		float NewResource;
+	};
+#if WITH_METADATA
+	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
+		{ "ModuleRelativePath", "Public/ProjectGateGameMode.h" },
+	};
+#endif // WITH_METADATA
+	static const UECodeGen_Private::FFloatPropertyParams NewProp_NewResource;
+	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
+	static const UECodeGen_Private::FFunctionParams FuncParams;
+};
+const UECodeGen_Private::FFloatPropertyParams Z_Construct_UFunction_AProjectGateGameMode_OnStaminaChanged_Statics::NewProp_NewResource = { "NewResource", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(ProjectGateGameMode_eventOnStaminaChanged_Parms, NewResource), METADATA_PARAMS(0, nullptr) };
+const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_AProjectGateGameMode_OnStaminaChanged_Statics::PropPointers[] = {
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_AProjectGateGameMode_OnStaminaChanged_Statics::NewProp_NewResource,
+};
+static_assert(UE_ARRAY_COUNT(Z_Construct_UFunction_AProjectGateGameMode_OnStaminaChanged_Statics::PropPointers) < 2048);
+const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_AProjectGateGameMode_OnStaminaChanged_Statics::FuncParams = { { (UObject*(*)())Z_Construct_UClass_AProjectGateGameMode, nullptr, "OnStaminaChanged", Z_Construct_UFunction_AProjectGateGameMode_OnStaminaChanged_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_AProjectGateGameMode_OnStaminaChanged_Statics::PropPointers), sizeof(Z_Construct_UFunction_AProjectGateGameMode_OnStaminaChanged_Statics::ProjectGateGameMode_eventOnStaminaChanged_Parms), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x00020401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_AProjectGateGameMode_OnStaminaChanged_Statics::Function_MetaDataParams), Z_Construct_UFunction_AProjectGateGameMode_OnStaminaChanged_Statics::Function_MetaDataParams)},  };
+static_assert(sizeof(Z_Construct_UFunction_AProjectGateGameMode_OnStaminaChanged_Statics::ProjectGateGameMode_eventOnStaminaChanged_Parms) < MAX_uint16);
+UFunction* Z_Construct_UFunction_AProjectGateGameMode_OnStaminaChanged()
+{
+	static UFunction* ReturnFunction = nullptr;
+	if (!ReturnFunction)
+	{
+		UECodeGen_Private::ConstructUFunction(&ReturnFunction, Z_Construct_UFunction_AProjectGateGameMode_OnStaminaChanged_Statics::FuncParams);
+	}
+	return ReturnFunction;
+}
+DEFINE_FUNCTION(AProjectGateGameMode::execOnStaminaChanged)
+{
+	P_GET_PROPERTY(FFloatProperty,Z_Param_NewResource);
+	P_FINISH;
+	P_NATIVE_BEGIN;
+	P_THIS->OnStaminaChanged(Z_Param_NewResource);
+	P_NATIVE_END;
+}
+// ********** End Class AProjectGateGameMode Function OnStaminaChanged *****************************
+
 // ********** Begin Class AProjectGateGameMode Function OnTurnChanged ******************************
 struct Z_Construct_UFunction_AProjectGateGameMode_OnTurnChanged_Statics
 {
@@ -223,6 +265,7 @@ void AProjectGateGameMode::StaticRegisterNativesAProjectGateGameMode()
 		{ "GetTurnDisplayWidget", &AProjectGateGameMode::execGetTurnDisplayWidget },
 		{ "OnAPChanged", &AProjectGateGameMode::execOnAPChanged },
 		{ "OnPhaseChanged", &AProjectGateGameMode::execOnPhaseChanged },
+		{ "OnStaminaChanged", &AProjectGateGameMode::execOnStaminaChanged },
 		{ "OnTurnChanged", &AProjectGateGameMode::execOnTurnChanged },
 	};
 	FNativeFunctionRegistrar::RegisterFunctions(Class, Funcs, UE_ARRAY_COUNT(Funcs));
@@ -341,6 +384,7 @@ struct Z_Construct_UClass_AProjectGateGameMode_Statics
 		{ &Z_Construct_UFunction_AProjectGateGameMode_GetTurnDisplayWidget, "GetTurnDisplayWidget" }, // 3514545476
 		{ &Z_Construct_UFunction_AProjectGateGameMode_OnAPChanged, "OnAPChanged" }, // 2365455300
 		{ &Z_Construct_UFunction_AProjectGateGameMode_OnPhaseChanged, "OnPhaseChanged" }, // 3792010443
+		{ &Z_Construct_UFunction_AProjectGateGameMode_OnStaminaChanged, "OnStaminaChanged" }, // 2470393181
 		{ &Z_Construct_UFunction_AProjectGateGameMode_OnTurnChanged, "OnTurnChanged" }, // 1761269530
 	};
 	static_assert(UE_ARRAY_COUNT(FuncInfo) < 2048);
@@ -406,10 +450,10 @@ AProjectGateGameMode::~AProjectGateGameMode() {}
 struct Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_ProjectGateGameMode_h__Script_ProjectGate_Statics
 {
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_AProjectGateGameMode, AProjectGateGameMode::StaticClass, TEXT("AProjectGateGameMode"), &Z_Registration_Info_UClass_AProjectGateGameMode, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(AProjectGateGameMode), 3304108339U) },
+		{ Z_Construct_UClass_AProjectGateGameMode, AProjectGateGameMode::StaticClass, TEXT("AProjectGateGameMode"), &Z_Registration_Info_UClass_AProjectGateGameMode, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(AProjectGateGameMode), 2368901954U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_ProjectGateGameMode_h__Script_ProjectGate_1802366714(TEXT("/Script/ProjectGate"),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_ProjectGateGameMode_h__Script_ProjectGate_1606431751(TEXT("/Script/ProjectGate"),
 	Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_ProjectGateGameMode_h__Script_ProjectGate_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_ProjectGateGameMode_h__Script_ProjectGate_Statics::ClassInfo),
 	nullptr, 0,
 	nullptr, 0);

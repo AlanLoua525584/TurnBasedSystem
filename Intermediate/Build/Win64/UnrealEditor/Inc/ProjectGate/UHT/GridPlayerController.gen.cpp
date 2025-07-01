@@ -27,8 +27,58 @@ PROJECTGATE_API UClass* Z_Construct_UClass_AGridPlayerController();
 PROJECTGATE_API UClass* Z_Construct_UClass_AGridPlayerController_NoRegister();
 PROJECTGATE_API UClass* Z_Construct_UClass_ASimpleTurnManager_NoRegister();
 PROJECTGATE_API UClass* Z_Construct_UClass_UEnhancedMovementSystem_NoRegister();
+PROJECTGATE_API UFunction* Z_Construct_UDelegateFunction_ProjectGate_UIOnMovementModeChanged__DelegateSignature();
 UPackage* Z_Construct_UPackage__Script_ProjectGate();
 // ********** End Cross Module References **********************************************************
+
+// ********** Begin Delegate FUIOnMovementModeChanged **********************************************
+struct Z_Construct_UDelegateFunction_ProjectGate_UIOnMovementModeChanged__DelegateSignature_Statics
+{
+	struct _Script_ProjectGate_eventUIOnMovementModeChanged_Parms
+	{
+		bool bIsDynamicMode;
+	};
+#if WITH_METADATA
+	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
+		{ "ModuleRelativePath", "Public/TurnBasedSystem/GridPlayerController.h" },
+	};
+#endif // WITH_METADATA
+	static void NewProp_bIsDynamicMode_SetBit(void* Obj);
+	static const UECodeGen_Private::FBoolPropertyParams NewProp_bIsDynamicMode;
+	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
+	static const UECodeGen_Private::FDelegateFunctionParams FuncParams;
+};
+void Z_Construct_UDelegateFunction_ProjectGate_UIOnMovementModeChanged__DelegateSignature_Statics::NewProp_bIsDynamicMode_SetBit(void* Obj)
+{
+	((_Script_ProjectGate_eventUIOnMovementModeChanged_Parms*)Obj)->bIsDynamicMode = 1;
+}
+const UECodeGen_Private::FBoolPropertyParams Z_Construct_UDelegateFunction_ProjectGate_UIOnMovementModeChanged__DelegateSignature_Statics::NewProp_bIsDynamicMode = { "bIsDynamicMode", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Bool | UECodeGen_Private::EPropertyGenFlags::NativeBool, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, sizeof(bool), sizeof(_Script_ProjectGate_eventUIOnMovementModeChanged_Parms), &Z_Construct_UDelegateFunction_ProjectGate_UIOnMovementModeChanged__DelegateSignature_Statics::NewProp_bIsDynamicMode_SetBit, METADATA_PARAMS(0, nullptr) };
+const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UDelegateFunction_ProjectGate_UIOnMovementModeChanged__DelegateSignature_Statics::PropPointers[] = {
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UDelegateFunction_ProjectGate_UIOnMovementModeChanged__DelegateSignature_Statics::NewProp_bIsDynamicMode,
+};
+static_assert(UE_ARRAY_COUNT(Z_Construct_UDelegateFunction_ProjectGate_UIOnMovementModeChanged__DelegateSignature_Statics::PropPointers) < 2048);
+const UECodeGen_Private::FDelegateFunctionParams Z_Construct_UDelegateFunction_ProjectGate_UIOnMovementModeChanged__DelegateSignature_Statics::FuncParams = { { (UObject*(*)())Z_Construct_UPackage__Script_ProjectGate, nullptr, "UIOnMovementModeChanged__DelegateSignature", Z_Construct_UDelegateFunction_ProjectGate_UIOnMovementModeChanged__DelegateSignature_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UDelegateFunction_ProjectGate_UIOnMovementModeChanged__DelegateSignature_Statics::PropPointers), sizeof(Z_Construct_UDelegateFunction_ProjectGate_UIOnMovementModeChanged__DelegateSignature_Statics::_Script_ProjectGate_eventUIOnMovementModeChanged_Parms), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x00130000, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UDelegateFunction_ProjectGate_UIOnMovementModeChanged__DelegateSignature_Statics::Function_MetaDataParams), Z_Construct_UDelegateFunction_ProjectGate_UIOnMovementModeChanged__DelegateSignature_Statics::Function_MetaDataParams)},  };
+static_assert(sizeof(Z_Construct_UDelegateFunction_ProjectGate_UIOnMovementModeChanged__DelegateSignature_Statics::_Script_ProjectGate_eventUIOnMovementModeChanged_Parms) < MAX_uint16);
+UFunction* Z_Construct_UDelegateFunction_ProjectGate_UIOnMovementModeChanged__DelegateSignature()
+{
+	static UFunction* ReturnFunction = nullptr;
+	if (!ReturnFunction)
+	{
+		UECodeGen_Private::ConstructUDelegateFunction(&ReturnFunction, Z_Construct_UDelegateFunction_ProjectGate_UIOnMovementModeChanged__DelegateSignature_Statics::FuncParams);
+	}
+	return ReturnFunction;
+}
+void FUIOnMovementModeChanged_DelegateWrapper(const FMulticastScriptDelegate& UIOnMovementModeChanged, bool bIsDynamicMode)
+{
+	struct _Script_ProjectGate_eventUIOnMovementModeChanged_Parms
+	{
+		bool bIsDynamicMode;
+	};
+	_Script_ProjectGate_eventUIOnMovementModeChanged_Parms Parms;
+	Parms.bIsDynamicMode=bIsDynamicMode ? true : false;
+	UIOnMovementModeChanged.ProcessMulticastDelegate<UObject>(&Parms);
+}
+// ********** End Delegate FUIOnMovementModeChanged ************************************************
 
 // ********** Begin Class AGridPlayerController Function FocusOnActor ******************************
 struct Z_Construct_UFunction_AGridPlayerController_FocusOnActor_Statics
@@ -366,6 +416,35 @@ DEFINE_FUNCTION(AGridPlayerController::execOnMove)
 }
 // ********** End Class AGridPlayerController Function OnMove **************************************
 
+// ********** Begin Class AGridPlayerController Function SwitchMovementMode ************************
+struct Z_Construct_UFunction_AGridPlayerController_SwitchMovementMode_Statics
+{
+#if WITH_METADATA
+	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
+		{ "ModuleRelativePath", "Public/TurnBasedSystem/GridPlayerController.h" },
+	};
+#endif // WITH_METADATA
+	static const UECodeGen_Private::FFunctionParams FuncParams;
+};
+const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_AGridPlayerController_SwitchMovementMode_Statics::FuncParams = { { (UObject*(*)())Z_Construct_UClass_AGridPlayerController, nullptr, "SwitchMovementMode", nullptr, 0, 0, RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x00080401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_AGridPlayerController_SwitchMovementMode_Statics::Function_MetaDataParams), Z_Construct_UFunction_AGridPlayerController_SwitchMovementMode_Statics::Function_MetaDataParams)},  };
+UFunction* Z_Construct_UFunction_AGridPlayerController_SwitchMovementMode()
+{
+	static UFunction* ReturnFunction = nullptr;
+	if (!ReturnFunction)
+	{
+		UECodeGen_Private::ConstructUFunction(&ReturnFunction, Z_Construct_UFunction_AGridPlayerController_SwitchMovementMode_Statics::FuncParams);
+	}
+	return ReturnFunction;
+}
+DEFINE_FUNCTION(AGridPlayerController::execSwitchMovementMode)
+{
+	P_FINISH;
+	P_NATIVE_BEGIN;
+	P_THIS->SwitchMovementMode();
+	P_NATIVE_END;
+}
+// ********** End Class AGridPlayerController Function SwitchMovementMode **************************
+
 // ********** Begin Class AGridPlayerController ****************************************************
 void AGridPlayerController::StaticRegisterNativesAGridPlayerController()
 {
@@ -379,6 +458,7 @@ void AGridPlayerController::StaticRegisterNativesAGridPlayerController()
 		{ "GetControlledMovementSystem", &AGridPlayerController::execGetControlledMovementSystem },
 		{ "OnDynamicMode", &AGridPlayerController::execOnDynamicMode },
 		{ "OnMove", &AGridPlayerController::execOnMove },
+		{ "SwitchMovementMode", &AGridPlayerController::execSwitchMovementMode },
 	};
 	FNativeFunctionRegistrar::RegisterFunctions(Class, Funcs, UE_ARRAY_COUNT(Funcs));
 }
@@ -436,6 +516,16 @@ struct Z_Construct_UClass_AGridPlayerController_Statics
 		{ "ModuleRelativePath", "Public/TurnBasedSystem/GridPlayerController.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd""e\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xee\xaa\xba\xef\xbf\xbd\xdb\xbe\xef\xbf\xbd Actor" },
+#endif
+	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_UIOnMovementModeChanged_MetaData[] = {
+		{ "Category", "Movement" },
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "//\xef\xbf\xbd""B\xef\xbf\xbdz\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xc9\xaa\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xc4\xb1\xef\xbf\xbd\xc4\xaaG\n" },
+#endif
+		{ "ModuleRelativePath", "Public/TurnBasedSystem/GridPlayerController.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "\xef\xbf\xbd""B\xef\xbf\xbdz\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xc9\xaa\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xc4\xb1\xef\xbf\xbd\xc4\xaaG" },
 #endif
 	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_GridInputMappingContext_MetaData[] = {
@@ -600,6 +690,7 @@ struct Z_Construct_UClass_AGridPlayerController_Statics
 	static void NewProp_bIsFocusMode_SetBit(void* Obj);
 	static const UECodeGen_Private::FBoolPropertyParams NewProp_bIsFocusMode;
 	static const UECodeGen_Private::FObjectPropertyParams NewProp_CameraPawn;
+	static const UECodeGen_Private::FMulticastDelegatePropertyParams NewProp_UIOnMovementModeChanged;
 	static const UECodeGen_Private::FObjectPropertyParams NewProp_GridInputMappingContext;
 	static const UECodeGen_Private::FObjectPropertyParams NewProp_ClickAction;
 	static const UECodeGen_Private::FObjectPropertyParams NewProp_ShowRangeAction;
@@ -632,6 +723,7 @@ struct Z_Construct_UClass_AGridPlayerController_Statics
 		{ &Z_Construct_UFunction_AGridPlayerController_GetControlledMovementSystem, "GetControlledMovementSystem" }, // 2742677246
 		{ &Z_Construct_UFunction_AGridPlayerController_OnDynamicMode, "OnDynamicMode" }, // 1998669579
 		{ &Z_Construct_UFunction_AGridPlayerController_OnMove, "OnMove" }, // 1141482932
+		{ &Z_Construct_UFunction_AGridPlayerController_SwitchMovementMode, "SwitchMovementMode" }, // 1806344397
 	};
 	static_assert(UE_ARRAY_COUNT(FuncInfo) < 2048);
 	static constexpr FCppClassTypeInfoStatic StaticCppClassTypeInfo = {
@@ -650,6 +742,7 @@ void Z_Construct_UClass_AGridPlayerController_Statics::NewProp_bIsFocusMode_SetB
 }
 const UECodeGen_Private::FBoolPropertyParams Z_Construct_UClass_AGridPlayerController_Statics::NewProp_bIsFocusMode = { "bIsFocusMode", nullptr, (EPropertyFlags)0x0010000000000000, UECodeGen_Private::EPropertyGenFlags::Bool | UECodeGen_Private::EPropertyGenFlags::NativeBool, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, sizeof(bool), sizeof(AGridPlayerController), &Z_Construct_UClass_AGridPlayerController_Statics::NewProp_bIsFocusMode_SetBit, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_bIsFocusMode_MetaData), NewProp_bIsFocusMode_MetaData) };
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_AGridPlayerController_Statics::NewProp_CameraPawn = { "CameraPawn", nullptr, (EPropertyFlags)0x0010000000000000, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AGridPlayerController, CameraPawn), Z_Construct_UClass_AActor_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_CameraPawn_MetaData), NewProp_CameraPawn_MetaData) };
+const UECodeGen_Private::FMulticastDelegatePropertyParams Z_Construct_UClass_AGridPlayerController_Statics::NewProp_UIOnMovementModeChanged = { "UIOnMovementModeChanged", nullptr, (EPropertyFlags)0x0010000010080000, UECodeGen_Private::EPropertyGenFlags::InlineMulticastDelegate, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AGridPlayerController, UIOnMovementModeChanged), Z_Construct_UDelegateFunction_ProjectGate_UIOnMovementModeChanged__DelegateSignature, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_UIOnMovementModeChanged_MetaData), NewProp_UIOnMovementModeChanged_MetaData) }; // 2400986885
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_AGridPlayerController_Statics::NewProp_GridInputMappingContext = { "GridInputMappingContext", nullptr, (EPropertyFlags)0x0020080000000005, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AGridPlayerController, GridInputMappingContext), Z_Construct_UClass_UInputMappingContext_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_GridInputMappingContext_MetaData), NewProp_GridInputMappingContext_MetaData) };
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_AGridPlayerController_Statics::NewProp_ClickAction = { "ClickAction", nullptr, (EPropertyFlags)0x0020080000000005, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AGridPlayerController, ClickAction), Z_Construct_UClass_UInputAction_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_ClickAction_MetaData), NewProp_ClickAction_MetaData) };
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_AGridPlayerController_Statics::NewProp_ShowRangeAction = { "ShowRangeAction", nullptr, (EPropertyFlags)0x0020080000000005, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AGridPlayerController, ShowRangeAction), Z_Construct_UClass_UInputAction_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_ShowRangeAction_MetaData), NewProp_ShowRangeAction_MetaData) };
@@ -675,6 +768,7 @@ const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UClass_AGridPlay
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AGridPlayerController_Statics::NewProp_bIsInDynamicMode,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AGridPlayerController_Statics::NewProp_bIsFocusMode,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AGridPlayerController_Statics::NewProp_CameraPawn,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AGridPlayerController_Statics::NewProp_UIOnMovementModeChanged,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AGridPlayerController_Statics::NewProp_GridInputMappingContext,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AGridPlayerController_Statics::NewProp_ClickAction,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AGridPlayerController_Statics::NewProp_ShowRangeAction,
@@ -734,10 +828,10 @@ AGridPlayerController::~AGridPlayerController() {}
 struct Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_GridPlayerController_h__Script_ProjectGate_Statics
 {
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_AGridPlayerController, AGridPlayerController::StaticClass, TEXT("AGridPlayerController"), &Z_Registration_Info_UClass_AGridPlayerController, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(AGridPlayerController), 4066729130U) },
+		{ Z_Construct_UClass_AGridPlayerController, AGridPlayerController::StaticClass, TEXT("AGridPlayerController"), &Z_Registration_Info_UClass_AGridPlayerController, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(AGridPlayerController), 584946448U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_GridPlayerController_h__Script_ProjectGate_2209558436(TEXT("/Script/ProjectGate"),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_GridPlayerController_h__Script_ProjectGate_22995339(TEXT("/Script/ProjectGate"),
 	Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_GridPlayerController_h__Script_ProjectGate_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_GridPlayerController_h__Script_ProjectGate_Statics::ClassInfo),
 	nullptr, 0,
 	nullptr, 0);

@@ -20,10 +20,18 @@ class AActor;
 class UEnhancedMovementSystem;
 struct FInputActionValue;
 
+// ********** Begin Delegate FUIOnMovementModeChanged **********************************************
+#define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_GridPlayerController_h_21_DELEGATE \
+PROJECTGATE_API void FUIOnMovementModeChanged_DelegateWrapper(const FMulticastScriptDelegate& UIOnMovementModeChanged, bool bIsDynamicMode);
+
+
+// ********** End Delegate FUIOnMovementModeChanged ************************************************
+
 // ********** Begin Class AGridPlayerController ****************************************************
-#define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_GridPlayerController_h_28_RPC_WRAPPERS_NO_PURE_DECLS \
+#define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_GridPlayerController_h_29_RPC_WRAPPERS_NO_PURE_DECLS \
 	DECLARE_FUNCTION(execGetControlledMovementSystem); \
 	DECLARE_FUNCTION(execOnMove); \
+	DECLARE_FUNCTION(execSwitchMovementMode); \
 	DECLARE_FUNCTION(execOnDynamicMode); \
 	DECLARE_FUNCTION(execGetCameraPawn); \
 	DECLARE_FUNCTION(execGetCameraRotation); \
@@ -34,7 +42,7 @@ struct FInputActionValue;
 
 PROJECTGATE_API UClass* Z_Construct_UClass_AGridPlayerController_NoRegister();
 
-#define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_GridPlayerController_h_28_INCLASS_NO_PURE_DECLS \
+#define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_GridPlayerController_h_29_INCLASS_NO_PURE_DECLS \
 private: \
 	static void StaticRegisterNativesAGridPlayerController(); \
 	friend struct Z_Construct_UClass_AGridPlayerController_Statics; \
@@ -45,7 +53,7 @@ public: \
 	DECLARE_SERIALIZER(AGridPlayerController)
 
 
-#define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_GridPlayerController_h_28_ENHANCED_CONSTRUCTORS \
+#define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_GridPlayerController_h_29_ENHANCED_CONSTRUCTORS \
 	/** Deleted move- and copy-constructors, should never be used */ \
 	AGridPlayerController(AGridPlayerController&&) = delete; \
 	AGridPlayerController(const AGridPlayerController&) = delete; \
@@ -55,13 +63,13 @@ public: \
 	NO_API virtual ~AGridPlayerController();
 
 
-#define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_GridPlayerController_h_25_PROLOG
-#define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_GridPlayerController_h_28_GENERATED_BODY \
+#define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_GridPlayerController_h_26_PROLOG
+#define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_GridPlayerController_h_29_GENERATED_BODY \
 PRAGMA_DISABLE_DEPRECATION_WARNINGS \
 public: \
-	FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_GridPlayerController_h_28_RPC_WRAPPERS_NO_PURE_DECLS \
-	FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_GridPlayerController_h_28_INCLASS_NO_PURE_DECLS \
-	FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_GridPlayerController_h_28_ENHANCED_CONSTRUCTORS \
+	FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_GridPlayerController_h_29_RPC_WRAPPERS_NO_PURE_DECLS \
+	FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_GridPlayerController_h_29_INCLASS_NO_PURE_DECLS \
+	FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_GridPlayerController_h_29_ENHANCED_CONSTRUCTORS \
 private: \
 PRAGMA_ENABLE_DEPRECATION_WARNINGS
 

@@ -203,6 +203,25 @@ public:
 	UFUNCTION(BlueprintPure, Category = "Movement")
 	bool IsInDynamicMovement() const { return CurrentMovementMode == ECustomMovementMode::DynamicMove; }
 
+	// === AP 整合設置 ===
+	UPROPERTY(EditAnywhere, Category = "Movement|AP Integration")
+	bool bConsumeAPWhileMoving = true;  // 是否在動態移動時消耗 AP
+
+	UPROPERTY(EditAnywhere, Category = "Movement|AP Integration")
+	float APCostPerSecond = 5.0f;  // 每秒基礎 AP 消耗
+
+	UPROPERTY(EditAnywhere, Category = "Movement|AP Integration")
+	float APCostMultiplierWalk = 0.5f;   // 走路 AP 消耗倍率
+
+	UPROPERTY(EditAnywhere, Category = "Movement|AP Integration")
+	float APCostMultiplierRun = 1.0f;    // 跑步 AP 消耗倍率
+
+	UPROPERTY(EditAnywhere, Category = "Movement|AP Integration")
+	float APCostMultiplierSprint = 1.5f; // 衝刺 AP 消耗倍率
+
+	// 累積 AP 消耗（避免每幀消耗小數點）
+	float AccumulatedAPCost = 0.0f;
+
 
 protected:
 	// Called when the game starts

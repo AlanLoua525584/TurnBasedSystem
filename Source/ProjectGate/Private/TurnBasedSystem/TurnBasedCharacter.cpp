@@ -4,6 +4,7 @@
 #include "TurnBasedSystem/TurnBasedCharacter.h"
 #include "TurnBasedSystem/GridVisualComponent.h"
 #include "TurnBasedSystem/EnhancedMovementSystem.h"
+#include "TurnBasedSystem//GridPlayerController.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Engine/Engine.h"
@@ -173,8 +174,6 @@ bool ATurnBasedCharacter::MoveToGridPosition(FIntPoint TargetGridPos)
 		return false;
 	}
 
-	//計算路徑(簡單版本直接移動)
-	FVector TargetWorldPos = GridManager->GridToWorld(TargetGridPos);
 	
 	//計算移動成本
 	int32 Distance = FMath::Abs(TargetGridPos.X - CurrentGridPosition.X)+
@@ -189,12 +188,26 @@ bool ATurnBasedCharacter::MoveToGridPosition(FIntPoint TargetGridPos)
 		return false;
 	}
 
+	//清除舊的視覺化
 
-	//清除當前佔用
+	if (GridVisualComponent)
+	{
+		GridVisualComponent->ClearAllVisuals();
+	}
+	else
+	{
+		GridManager->ClearHighlights();
+	}
+
+	//清除當前格子佔用
 	GridManager->ClearCellOccupation(CurrentGridPosition);
 
 	//執行移動
 	bIsMoving = true;
+
+	//計算路徑(簡單版本直接移動)
+	FVector TargetWorldPos = GridManager->GridToWorld(TargetGridPos);
+
 
 	//使用AI移動(如有AIController)
 	if (AAIController* AIController = Cast<AAIController>(GetController()))
@@ -223,21 +236,58 @@ bool ATurnBasedCharacter::MoveToGridPosition(FIntPoint TargetGridPos)
 	Debug::Print(FString::Printf(TEXT("%s moved to (%d, %d), Cost: %d AP"),
 		*GetActorLabel(), TargetGridPos.X, TargetGridPos.Y, APCost), FColor::Green);
 
+
+	// 如果還有行動點，自動顯示新的移動範圍
+	if (CurrentActionPoints >= MoveActionCost)
+	{
+		ShowMovementRange();
+	}
+
+
+
 	return true;
 	
 }
 
 void ATurnBasedCharacter::ShowMovementRange()
 {
-	if (!GridManager || !bIsMyTurn)
+	if (!GridManager || !bIsMyTurn || !GridVisualComponent)
 		return;
 
 	Debug::Print(FString::Printf(TEXT("=== %s: Showing Movement Range ==="), *GetActorLabel()), FColor::Magenta);
 
+	GridVisualComponent->ClearAllVisuals();
+
 	int32 MoveRange = CurrentActionPoints / MoveActionCost;
-	GridManager->ShowMovementRange(CurrentGridPosition, MoveRange);
+
+	//調用ShowMovementRange
+	GridVisualComponent->ShowMovementRange(CurrentGridPosition, MoveRange);
 
 	Debug::Print(FString::Printf(TEXT("Showing movement range: %d cells"), MoveRange), FColor::Cyan);
+
+}
+
+void ATurnBasedCharacter::UpdateGridPositionFromWorld()
+{
+	if (!GridManager) return;
+
+	// 清除舊位置
+	GridManager->ClearCellOccupation(CurrentGridPosition);
+
+	// 更新到新位置
+	CurrentGridPosition = GridManager->WorldToGrid(GetActorLocation());
+
+	// 標記新位置為已佔用
+	GridManager->SetCellOccupied(CurrentGridPosition, this);
+
+	/*Debug::Print(FString::Printf(TEXT("%s updated grid position to (%d, %d)"),
+		*GetActorLabel(), CurrentGridPosition.X, CurrentGridPosition.Y), FColor::Yellow);
+	*/
+	Debug::PrintCooldown(TEXT("GridPosition"),
+		FString::Printf(TEXT("%s grid position (%d, %d)"), *GetActorLabel(), CurrentGridPosition.X, CurrentGridPosition.Y),
+		FColor::Yellow,
+		1.0f); // 1秒更新一次
+
 
 }
 
@@ -363,6 +413,7 @@ void ATurnBasedCharacter::OnTurnStart()
 {
 	bIsMyTurn = true;
 
+
 	//重置行動點數
 	ResetActionPoints();
 
@@ -380,10 +431,19 @@ void ATurnBasedCharacter::OnTurnStart()
 		Debug::Print(TEXT("Failed to get Mesh Component for highlight!"), FColor::Red);
 	}
 
-
-	//顯示移動範圍
-	ShowMovementRange();
-
+	// 只在非動態模式時顯示移動範圍
+	if (AGridPlayerController* PC = Cast<AGridPlayerController>(GetController()))
+	{
+		if (!PC->bIsInDynamicMode)
+		{
+			ShowMovementRange();
+		}
+	}
+	else
+	{
+		// AI 角色總是顯示範圍
+		ShowMovementRange();
+	}
 
 	FString Msg = FString::Printf(TEXT("=== %s's Turn Started ==="), *GetActorLabel());
 	Debug::Print(Msg, FColor::Cyan, 3);

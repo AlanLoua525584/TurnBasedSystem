@@ -4,6 +4,7 @@
 #include "ProjectGateCharacter.h"
 #include "TurnBasedSystem/SimpleTurnManager.h"
 #include "TurnBasedSystem/GridPlayerController.h"
+#include "TurnBasedSystem/EnhancedMovementSystem.h"
 #include "Public/DebugHelper.h"
 #include "Engine/World.h"
 #include "TimerManager.h"
@@ -150,11 +151,14 @@ void AProjectGateGameMode::BeginPlay()
 void AProjectGateGameMode::OnTurnChanged(AActor* CurrentCharacter)
 {
 
+
     if (!TurnDisplayWidget)
     {
         Debug::Print(TEXT("TurnDisplayWidget is NULL! UI Update skipped"), FColor::Red);
         return;
     }
+
+
 
     // End the previous character's turn
     if (PreviousCharacter)
@@ -162,6 +166,19 @@ void AProjectGateGameMode::OnTurnChanged(AActor* CurrentCharacter)
         if (ATurnBasedCharacter* PrevTurnChar = Cast<ATurnBasedCharacter>(PreviousCharacter))
         {
             PrevTurnChar->OnTurnEnd();
+        }
+
+        if (ATurnBasedCharacter* PrevChar = Cast<ATurnBasedCharacter>(PreviousCharacter))
+        {
+            // 解綁 AP 事件
+            PrevChar->OnActionPointsChanged.RemoveAll(this);
+
+            // 解綁耐力事件
+            if (UEnhancedMovementSystem* PrevMoveSys =
+                PrevChar->FindComponentByClass<UEnhancedMovementSystem>())
+            {
+                PrevMoveSys->OnResourceChanged.RemoveDynamic(this, &AProjectGateGameMode::OnStaminaChanged);
+            }
         }
     }
 
@@ -229,6 +246,25 @@ void AProjectGateGameMode::OnTurnChanged(AActor* CurrentCharacter)
             TurnDisplayWidget->UpdateTurnOrder(CharacterNames, TurnManager->GetCurrentCharacterIndex());
         }
 
+    }
+
+    if (ATurnBasedCharacter* TurnChar = Cast<ATurnBasedCharacter>(CurrentCharacter))
+    {
+        if (UEnhancedMovementSystem* MoveSys = TurnChar->FindComponentByClass<UEnhancedMovementSystem>())
+        {
+            // 初始更新耐力顯示
+            if (TurnDisplayWidget)
+            {
+                TurnDisplayWidget->UpdateStamina(
+                    MoveSys->CurrentMovementResource,
+                    MoveSys->MaxMovementResource
+                );
+            }
+
+            // 綁定耐力變化事件
+            MoveSys->OnResourceChanged.AddDynamic(this, &AProjectGateGameMode::OnStaminaChanged);
+
+        }
     }
 
 
@@ -308,4 +344,23 @@ void AProjectGateGameMode::OnAPChanged(int32 NewAP)
         }
     }
 
+}
+
+void AProjectGateGameMode::OnStaminaChanged(float NewResource)
+{
+    if (TurnDisplayWidget && TurnManager)
+    {
+        if (ATurnBasedCharacter* CurrentChar = Cast<ATurnBasedCharacter>(
+            TurnManager->GetCurrentTurnCharacter()))
+        {
+            if (UEnhancedMovementSystem* CurrentMoveSys =
+                CurrentChar->FindComponentByClass<UEnhancedMovementSystem>())
+            {
+                TurnDisplayWidget->UpdateStamina(
+                    NewResource,
+                    CurrentMoveSys->MaxMovementResource
+                );
+            }
+        }
+    }
 }
