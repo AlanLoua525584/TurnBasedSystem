@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "Camera/CameraComponent.h"
+#include "CombatSystem/CombatComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "TurnBasedCharacter.generated.h"
 
@@ -24,6 +25,8 @@ class PROJECTGATE_API ATurnBasedCharacter : public ACharacter
     GENERATED_BODY()
 
 public:
+
+
     // Sets default values for this character's properties
     ATurnBasedCharacter();
 
@@ -140,6 +143,17 @@ public:
     UFUNCTION(BlueprintCallable, Category = "Grid|Movement")
     void UpdateGridPositionFromWorld();
 
+    // Getter for GridVisualComponent
+    UFUNCTION(BlueprintCallable, Category = "Grid")
+    UGridVisualComponent* GetGridVisualComponent() const { return GridVisualComponent; }
+
+    // Getter for CurrentGridPosition
+    UFUNCTION(BlueprintCallable, Category = "Grid")
+    FIntPoint GetCurrentGridPosition() const { return CurrentGridPosition; }
+
+    // 死亡處理
+    UFUNCTION(BlueprintCallable, Category = "Combat")
+    void OnDeath();
 
     //===組件===
 
@@ -159,6 +173,9 @@ public:
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
     class UEnhancedMovementSystem* EnhancedMovementSystem;
 
+    //=戰鬥組件=
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat")
+    UCombatComponent* CombatComponent;
 
 
 protected:

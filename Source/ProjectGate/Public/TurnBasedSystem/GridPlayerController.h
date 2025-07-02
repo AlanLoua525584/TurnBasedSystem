@@ -40,6 +40,9 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Camera")
 	void FocusOnCurrentTurnCharacter();
 
+	// 攻擊公開函數
+	bool IsInAttackMode() const { return bIsInAttackMode; }
+
 
 	UFUNCTION(BlueprintCallable, Category = "Camera")
 	FVector GetCameraLocation() const;
@@ -101,6 +104,12 @@ protected:
 	//動態移動切換
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
 	class UInputAction* DynamicModeAction;
+
+
+	//進入攻擊狀態
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input|Actions")
+	class UInputAction* AttackModeAction;
+
 
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
@@ -223,6 +232,14 @@ private:
 	void OnRightMouseReleased();
 	void OnToggleFocus(const FInputActionValue& Value);
 	void UpdateCameraMovement(float DeltaTime);
+
+	// 攻擊模式狀態
+	bool bIsInAttackMode = false;
+
+	// 攻擊相關函數
+	void OnAttackMode(const FInputActionValue& Value);
+	void ProcessAttackClick();
+	void ExitAttackMode();
 
 	//==Possess用函數==
 	void OnPossess(APawn* InPawn);

@@ -57,6 +57,18 @@
     <ClCompile Include="..\..\Source\ProjectGate\Private\ProjectGatePlayerController.cpp">
       <Filter>Source\ProjectGate\Private</Filter>
     </ClCompile>
+    <Filter Include="Source\ProjectGate\Private\CombatSystem">
+      <UniqueIdentifier>{F772BF1C-BB40-38D6-A5BB-10EAE9DE2DFF}</UniqueIdentifier>
+    </Filter>
+    <ClCompile Include="..\..\Source\ProjectGate\Private\CombatSystem\CombatComponent.cpp">
+      <Filter>Source\ProjectGate\Private\CombatSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\ProjectGate\Private\CombatSystem\CombatInterface.cpp">
+      <Filter>Source\ProjectGate\Private\CombatSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\ProjectGate\Private\CombatSystem\CombatStats.cpp">
+      <Filter>Source\ProjectGate\Private\CombatSystem</Filter>
+    </ClCompile>
     <Filter Include="Source\ProjectGate\Private\TurnBasedSystem">
       <UniqueIdentifier>{589773EB-8A58-3F36-AEAD-ACBE7E97E255}</UniqueIdentifier>
     </Filter>
@@ -110,6 +122,18 @@
     </ClInclude>
     <ClInclude Include="..\..\Source\ProjectGate\Public\ProjectGatePlayerController.h">
       <Filter>Source\ProjectGate\Public</Filter>
+    </ClInclude>
+    <Filter Include="Source\ProjectGate\Public\CombatSystem">
+      <UniqueIdentifier>{FE42D0C2-F17E-3F23-ABAE-6F6453E41633}</UniqueIdentifier>
+    </Filter>
+    <ClInclude Include="..\..\Source\ProjectGate\Public\CombatSystem\CombatComponent.h">
+      <Filter>Source\ProjectGate\Public\CombatSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\ProjectGate\Public\CombatSystem\CombatInterface.h">
+      <Filter>Source\ProjectGate\Public\CombatSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\ProjectGate\Public\CombatSystem\CombatStats.h">
+      <Filter>Source\ProjectGate\Public\CombatSystem</Filter>
     </ClInclude>
     <Filter Include="Source\ProjectGate\Public\TurnBasedSystem">
       <UniqueIdentifier>{B24F2539-56DC-3150-829E-86689005E029}</UniqueIdentifier>

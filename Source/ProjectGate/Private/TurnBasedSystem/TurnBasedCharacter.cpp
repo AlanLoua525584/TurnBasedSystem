@@ -30,7 +30,12 @@ ATurnBasedCharacter::ATurnBasedCharacter()
 	//create Visual Component
 	GridVisualComponent = CreateDefaultSubobject<UGridVisualComponent>(TEXT("GridVisualComponent"));
 
+	//移動
 	EnhancedMovementSystem = CreateDefaultSubobject<UEnhancedMovementSystem>(TEXT("EnhancedMovementSystem"));
+
+
+	//戰鬥
+	CombatComponent = CreateDefaultSubobject<UCombatComponent>(TEXT("CombatComponent"));
 	
 	/* === 相機系統 === */
 	// 建立 Spring Arm
@@ -289,6 +294,32 @@ void ATurnBasedCharacter::UpdateGridPositionFromWorld()
 		1.0f); // 1秒更新一次
 
 
+}
+
+void ATurnBasedCharacter::OnDeath()
+{
+	Debug::Print(FString::Printf(TEXT("%s has died!"), *GetActorLabel()), FColor::Red);
+
+	// 停止輸入
+	DisableInput(nullptr);
+
+	// 清除高亮
+	if (GridManager)
+	{
+		GridManager->ClearCellOccupation(CurrentGridPosition);
+	}
+
+	// 播放死亡動畫（未來可擴展）
+
+	// 隱藏模型
+	if (USkeletalMeshComponent* MeshComp = GetMesh())
+	{
+		MeshComp->SetVisibility(false);
+		MeshComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	}
+
+	// 也可以 Destroy
+	// Destroy();
 }
 
 

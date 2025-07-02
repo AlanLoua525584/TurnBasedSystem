@@ -49,6 +49,8 @@ void UEnhancedMovementSystem::BeginPlay()
 {
 	Super::BeginPlay();
 
+	
+
 	// 獲取擁有者
 	OwnerCharacter = Cast<ACharacter>(GetOwner());
 	if (OwnerCharacter)

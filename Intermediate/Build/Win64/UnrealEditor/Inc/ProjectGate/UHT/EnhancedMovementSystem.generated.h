@@ -21,63 +21,63 @@ enum class EALSMovementState : uint8;
 enum class ECustomMovementMode : uint8;
 
 // ********** Begin Delegate FOnALSStateChanged ****************************************************
-#define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_EnhancedMovementSystem_h_42_DELEGATE \
+#define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_EnhancedMovementSystem_h_44_DELEGATE \
 PROJECTGATE_API void FOnALSStateChanged_DelegateWrapper(const FMulticastScriptDelegate& OnALSStateChanged, EALSMovementState NewState);
 
 
 // ********** End Delegate FOnALSStateChanged ******************************************************
 
 // ********** Begin Delegate FOnALSGaitChanged *****************************************************
-#define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_EnhancedMovementSystem_h_43_DELEGATE \
+#define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_EnhancedMovementSystem_h_45_DELEGATE \
 PROJECTGATE_API void FOnALSGaitChanged_DelegateWrapper(const FMulticastScriptDelegate& OnALSGaitChanged, EALSGait NewGait);
 
 
 // ********** End Delegate FOnALSGaitChanged *******************************************************
 
 // ********** Begin Delegate FOnMovementDataUpdated ************************************************
-#define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_EnhancedMovementSystem_h_44_DELEGATE \
+#define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_EnhancedMovementSystem_h_46_DELEGATE \
 PROJECTGATE_API void FOnMovementDataUpdated_DelegateWrapper(const FMulticastScriptDelegate& OnMovementDataUpdated, FVector Velocity, float MovementSpeed);
 
 
 // ********** End Delegate FOnMovementDataUpdated **************************************************
 
 // ********** Begin Delegate FOnMovementModeChanged ************************************************
-#define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_EnhancedMovementSystem_h_47_DELEGATE \
+#define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_EnhancedMovementSystem_h_49_DELEGATE \
 PROJECTGATE_API void FOnMovementModeChanged_DelegateWrapper(const FMulticastScriptDelegate& OnMovementModeChanged, ECustomMovementMode NewMode);
 
 
 // ********** End Delegate FOnMovementModeChanged **************************************************
 
 // ********** Begin Delegate FOnResourceChanged ****************************************************
-#define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_EnhancedMovementSystem_h_48_DELEGATE \
+#define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_EnhancedMovementSystem_h_50_DELEGATE \
 PROJECTGATE_API void FOnResourceChanged_DelegateWrapper(const FMulticastScriptDelegate& OnResourceChanged, float CurrentResource);
 
 
 // ********** End Delegate FOnResourceChanged ******************************************************
 
 // ********** Begin Delegate FOnResourceDepleted ***************************************************
-#define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_EnhancedMovementSystem_h_49_DELEGATE \
+#define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_EnhancedMovementSystem_h_51_DELEGATE \
 PROJECTGATE_API void FOnResourceDepleted_DelegateWrapper(const FMulticastScriptDelegate& OnResourceDepleted);
 
 
 // ********** End Delegate FOnResourceDepleted *****************************************************
 
 // ********** Begin Delegate FOnStartMove **********************************************************
-#define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_EnhancedMovementSystem_h_50_DELEGATE \
+#define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_EnhancedMovementSystem_h_52_DELEGATE \
 PROJECTGATE_API void FOnStartMove_DelegateWrapper(const FMulticastScriptDelegate& OnStartMove);
 
 
 // ********** End Delegate FOnStartMove ************************************************************
 
 // ********** Begin Delegate FOnStopMove ***********************************************************
-#define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_EnhancedMovementSystem_h_51_DELEGATE \
+#define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_EnhancedMovementSystem_h_53_DELEGATE \
 PROJECTGATE_API void FOnStopMove_DelegateWrapper(const FMulticastScriptDelegate& OnStopMove);
 
 
 // ********** End Delegate FOnStopMove *************************************************************
 
 // ********** Begin Class UEnhancedMovementSystem **************************************************
-#define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_EnhancedMovementSystem_h_57_RPC_WRAPPERS_NO_PURE_DECLS \
+#define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_EnhancedMovementSystem_h_59_RPC_WRAPPERS_NO_PURE_DECLS \
 	DECLARE_FUNCTION(execIsInDynamicMovement); \
 	DECLARE_FUNCTION(execCalculateMaxRange); \
 	DECLARE_FUNCTION(execGetResourcePercent); \
@@ -97,7 +97,7 @@ PROJECTGATE_API void FOnStopMove_DelegateWrapper(const FMulticastScriptDelegate&
 
 PROJECTGATE_API UClass* Z_Construct_UClass_UEnhancedMovementSystem_NoRegister();
 
-#define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_EnhancedMovementSystem_h_57_INCLASS_NO_PURE_DECLS \
+#define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_EnhancedMovementSystem_h_59_INCLASS_NO_PURE_DECLS \
 private: \
 	static void StaticRegisterNativesUEnhancedMovementSystem(); \
 	friend struct Z_Construct_UClass_UEnhancedMovementSystem_Statics; \
@@ -108,7 +108,7 @@ public: \
 	DECLARE_SERIALIZER(UEnhancedMovementSystem)
 
 
-#define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_EnhancedMovementSystem_h_57_ENHANCED_CONSTRUCTORS \
+#define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_EnhancedMovementSystem_h_59_ENHANCED_CONSTRUCTORS \
 	/** Deleted move- and copy-constructors, should never be used */ \
 	UEnhancedMovementSystem(UEnhancedMovementSystem&&) = delete; \
 	UEnhancedMovementSystem(const UEnhancedMovementSystem&) = delete; \
@@ -118,13 +118,13 @@ public: \
 	NO_API virtual ~UEnhancedMovementSystem();
 
 
-#define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_EnhancedMovementSystem_h_54_PROLOG
-#define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_EnhancedMovementSystem_h_57_GENERATED_BODY \
+#define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_EnhancedMovementSystem_h_56_PROLOG
+#define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_EnhancedMovementSystem_h_59_GENERATED_BODY \
 PRAGMA_DISABLE_DEPRECATION_WARNINGS \
 public: \
-	FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_EnhancedMovementSystem_h_57_RPC_WRAPPERS_NO_PURE_DECLS \
-	FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_EnhancedMovementSystem_h_57_INCLASS_NO_PURE_DECLS \
-	FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_EnhancedMovementSystem_h_57_ENHANCED_CONSTRUCTORS \
+	FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_EnhancedMovementSystem_h_59_RPC_WRAPPERS_NO_PURE_DECLS \
+	FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_EnhancedMovementSystem_h_59_INCLASS_NO_PURE_DECLS \
+	FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_EnhancedMovementSystem_h_59_ENHANCED_CONSTRUCTORS \
 private: \
 PRAGMA_ENABLE_DEPRECATION_WARNINGS
 

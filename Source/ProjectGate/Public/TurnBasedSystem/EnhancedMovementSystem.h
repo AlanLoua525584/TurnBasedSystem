@@ -4,6 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
+#include "GameFramework/CharacterMovementComponent.h"  
+#include "GameFramework/Character.h"   
 
 #include "EnhancedMovementSystem.generated.h"
 
@@ -194,6 +196,11 @@ public:
 	UFUNCTION(BlueprintPure , Category = "Movement")
 	bool CanMove() const {return CurrentMovementResource>0;}
 
+	//==Getter
+
+	UCharacterMovementComponent* GetMovementComponent() const { return MovementComponent; }
+
+
 	UFUNCTION(BlueprintPure, Category = "Movement")
 	float GetResourcePercent() const;
 
@@ -223,6 +230,7 @@ public:
 	float AccumulatedAPCost = 0.0f;
 
 
+
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
@@ -233,8 +241,7 @@ private:
 	UPROPERTY()
 	class ACharacter* OwnerCharacter;
 
-	UPROPERTY()
-	class UCharacterMovementComponent* MovementComponent;
+
 
 	FVector MovementStartPosition;
 	FVector CurrentMovementInput;
@@ -248,4 +255,7 @@ private:
 	void UpdateALSDate(float DeltaTime);
 	void DetermineGaitFromSpeed(float Speed);
 	float GetResourceConsumptionRate() const;
+
+	UPROPERTY()
+	class UCharacterMovementComponent* MovementComponent;
 };

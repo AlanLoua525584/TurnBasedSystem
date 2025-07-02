@@ -280,6 +280,8 @@
 				"D:/UnrealProjects/ProjectGate/Content/ThirdPerson/Blueprints/BP_ThirdPersonPlayerController.uasset",
 				"D:/UnrealProjects/ProjectGate/Content/Input/Actions/TurnBasedSystem/CameraInputs/IA_CameraRotate.uasset",
 				"D:/UnrealProjects/ProjectGate/Content/Input/Actions/TurnBasedSystem/CameraInputs/IA_ToggleFocus.uasset",
+				"D:/UnrealProjects/ProjectGate/Content/Input/Actions/TurnBasedSystem/Attack/IA_AttackMode.uasset",
+				"D:/UnrealProjects/ProjectGate/Content/Input/Actions/TurnBasedSystem/GridInputActions/IA_AttackMode.uasset",
 				"D:/UnrealProjects/ProjectGate/Content/Input/IMC_FreeCamera.uasset",
 				"D:/UnrealProjects/ProjectGate/Content/Input/Actions/TurnBasedSystem/CameraInputs/IA_ZoomCamera.uasset",
 				"D:/UnrealProjects/ProjectGate/Content/Input/Actions/TurnBasedSystem/CameraInputs/IA_RotateCamera.uasset",

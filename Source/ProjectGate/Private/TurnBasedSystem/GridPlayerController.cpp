@@ -7,6 +7,9 @@
 #include "TurnBasedSystem/EnhancedMovementSystem.h"
 #include "TurnBasedSystem/TurnBasedCharacter.h"
 #include "TurnBasedSystem/UI/TurnDisplayWidget.h"
+#include "CombatSystem/CombatComponent.h"
+#include "CombatSystem/CombatInterface.h"
+#include "GameFramework/CharacterMovementComponent.h"
 #include "ProjectGateGameMode.h"
 #include "Engine/World.h"
 #include "Engine/LocalPlayer.h"
@@ -232,6 +235,20 @@ void AGridPlayerController::SetupInputComponent()
 			EnhancedInputComponent->BindAction(ToggleFocus, ETriggerEvent::Triggered, this, &AGridPlayerController::OnToggleFocus);
 		}
 
+		// 攻擊模式綁定
+		if (AttackModeAction)
+		{
+			EnhancedInputComponent->BindAction(AttackModeAction, ETriggerEvent::Started,this, &AGridPlayerController::OnAttackMode);
+
+
+			Debug::Print(TEXT("AttackModeAction bound to Q key"), FColor::Green);
+		}
+		else
+		{
+			Debug::Print(TEXT("WARNING: AttackModeAction is null!"), FColor::Red);
+		}
+
+
 
 		// Shift 和右鍵（使用傳統綁定）
 		InputComponent->BindAction("Shift", IE_Pressed, this, &AGridPlayerController::OnShiftPressed);
@@ -262,6 +279,36 @@ void AGridPlayerController::PlayerTick(float DeltaTime)
 		}
 	}
 
+	// 攻擊模式下的滑鼠懸停檢測（可選）
+	if (bIsInAttackMode)
+	{
+		FHitResult Hit;
+		GetHitResultUnderCursor(ECC_Visibility, false, Hit);
+
+		if (Hit.GetActor())
+		{
+			ATurnBasedCharacter* ControlledCharacter = GetControlledTurnCharacter();
+			if (ControlledCharacter)
+			{
+				UCombatComponent* CombatComp = ControlledCharacter->GetComponentByClass<UCombatComponent>();
+				if (CombatComp && CombatComp->CanAttack(Hit.GetActor()))
+				{
+					// 可以顯示攻擊預覽線或改變游標
+					DrawDebugLine(
+						GetWorld(),
+						ControlledCharacter->GetActorLocation() + FVector(0, 0, 50),
+						Hit.GetActor()->GetActorLocation() + FVector(0, 0, 50),
+						FColor::Red,
+						false,
+						0.0f,
+						0,
+						2.0f
+					);
+				}
+			}
+		}
+	}
+
 
 }
 
@@ -284,7 +331,7 @@ void AGridPlayerController::OnDynamicMode()
 	}
 
 	// 獲取 EnhancedMovementSystem
-	UEnhancedMovementSystem* MovementSystem = ControlledCharacter->FindComponentByClass<UEnhancedMovementSystem>();
+	UEnhancedMovementSystem* MovementSystem = ControlledCharacter->GetComponentByClass<UEnhancedMovementSystem>();
 	if (!MovementSystem)
 	{
 		Debug::Print(TEXT("No EnhancedMovementSystem on character!"), FColor::Red);
@@ -293,7 +340,7 @@ void AGridPlayerController::OnDynamicMode()
 
 
 	// 獲取視覺組件
-	UGridVisualComponent* VisualComp = ControlledCharacter->FindComponentByClass<UGridVisualComponent>();
+	UGridVisualComponent* VisualComp = ControlledCharacter->GetComponentByClass<UGridVisualComponent>();
 	if (!VisualComp)
 	{
 		Debug::Print(TEXT("ERROR: No GridVisualComponent found!"), FColor::Red);
@@ -342,6 +389,15 @@ void AGridPlayerController::OnDynamicMode()
 
 	}
 
+	// 如果退出動態模式，確保也退出攻擊模式
+	if (!bIsInDynamicMode && bIsInAttackMode)
+	{
+		Debug::Print(TEXT("Exiting Attack Mode due to Dynamic Mode switch"), FColor::Yellow);
+		ExitAttackMode();
+	}
+
+
+
 	//通知UI更新
 	UIOnMovementModeChanged.Broadcast(bIsInDynamicMode);
 }
@@ -360,7 +416,7 @@ void AGridPlayerController::SwitchMovementMode()
 	bIsInDynamicMode = !bIsInDynamicMode;
 
 	// 獲取視覺組件
-	UGridVisualComponent* VisualComp = ControlledCharacter->FindComponentByClass<UGridVisualComponent>();
+	UGridVisualComponent* VisualComp = ControlledCharacter->GetComponentByClass<UGridVisualComponent>();
 	if (!VisualComp)
 	{
 		Debug::Print(TEXT("ERROR: No GridVisualComponent found!"), FColor::Red);
@@ -388,7 +444,22 @@ void AGridPlayerController::SwitchMovementMode()
 
 void AGridPlayerController::OnMove(const FInputActionValue& Value)
 {
-	
+	// 攻擊模式下禁止移動
+	if (bIsInAttackMode)
+	{
+		// 可選：顯示提示
+		static float LastWarningTime = 0.0f;
+		float CurrentTime = GetWorld()->GetTimeSeconds();
+		if (CurrentTime - LastWarningTime > 1.0f)  // 每秒最多提示一次
+		{
+			Debug::Print(TEXT("Movement disabled in Attack Mode!"), FColor::Yellow);
+			LastWarningTime = CurrentTime;
+		}
+		return;
+	}
+
+
+
 	// 只在動態模式下處理移動
 	if (!bIsInDynamicMode)
 	{
@@ -402,7 +473,7 @@ void AGridPlayerController::OnMove(const FInputActionValue& Value)
 	ATurnBasedCharacter* ControlledCharacter = GetControlledTurnCharacter();
 	if (!ControlledCharacter) return;
 
-	UEnhancedMovementSystem* MovementSystem = ControlledCharacter->FindComponentByClass<UEnhancedMovementSystem>();
+	UEnhancedMovementSystem* MovementSystem = ControlledCharacter->GetComponentByClass<UEnhancedMovementSystem>();
 	if (!MovementSystem) return;
 
 	MovementSystem->ProcessMovementInput(MovementVector);
@@ -421,7 +492,7 @@ UEnhancedMovementSystem* AGridPlayerController::GetControlledMovementSystem() co
 	ATurnBasedCharacter* TurnCharacter = Cast<ATurnBasedCharacter>(CurrentActor);
 	if (!TurnCharacter) return nullptr;
 
-	return TurnCharacter->FindComponentByClass<UEnhancedMovementSystem>();
+	return TurnCharacter->GetComponentByClass<UEnhancedMovementSystem>();
 }
 
 
@@ -452,6 +523,22 @@ void AGridPlayerController::OnClick()
 {
 
 	Debug::Print(TEXT("Clicking"));
+
+	// 優先處理攻擊模式
+	if (bIsInAttackMode && bIsInDynamicMode)
+	{
+		ProcessAttackClick();
+		return;
+	}
+
+	// 動態模式下不處理普通點擊（除非在攻擊模式）
+	if (bIsInDynamicMode)
+	{
+		Debug::Print(TEXT("Click ignored in Dynamic Mode (Press Q for Attack Mode)"), FColor::Green);
+		return;
+	}
+
+
 
 	if (!GridManager)
 	{
@@ -660,6 +747,162 @@ void AGridPlayerController::UpdateCameraMovement(float DeltaTime)
 		FVector NewLocation = CameraPawn->GetActorLocation() + CameraVelocity * DeltaTime;
 		
 		CameraPawn->SetActorLocation(NewLocation);
+	}
+}
+
+void AGridPlayerController::OnAttackMode(const FInputActionValue& Value)
+{
+
+	Debug::Print(TEXT("Q key pressed!"), FColor::Magenta);
+
+
+	//獲得當前控制角色
+	ATurnBasedCharacter* ControlledCharacter = GetControlledTurnCharacter();
+	if (!ControlledCharacter)
+	{
+		Debug::Print(TEXT("No controlled character!"), FColor::Red);
+		return;
+	}
+
+	if (!ControlledCharacter->IsMyTurn())
+	{
+		Debug::Print(TEXT("Not your turn!"), FColor::Yellow);
+		return;
+	}
+
+	//檢查有沒有CombatComponent
+	UCombatComponent* CombatComp = ControlledCharacter->GetComponentByClass<UCombatComponent>();
+	if (!CombatComp)
+	{
+		Debug::Print(TEXT("Character has no CombatComponent!"), FColor::Red);
+		return;
+	}
+
+
+	// 檢查前置條件
+	if (bIsInAttackMode)
+	{
+		// === 進入攻擊模式 ===
+		Debug::Print(TEXT("=== ATTACK MODE: ON ==="), FColor::Red, 10.0f);
+		ShowModeNotification(TEXT("ATTACK MODE - Click target or press Q to cancel"));
+
+		// 顯示攻擊範圍和可攻擊目標
+		CombatComp->ShowAttackRange();
+
+		// 停止角色移動（直接使用角色的函數）
+		if (UCharacterMovementComponent* CharMoveComp = ControlledCharacter->GetCharacterMovement())
+		{
+			CharMoveComp->StopMovementImmediately();
+		}
+
+		// 改變滑鼠游標（可選）
+		CurrentMouseCursor = EMouseCursor::Crosshairs;
+	}
+	else
+	{
+		// === 退出攻擊模式 ===
+		ExitAttackMode();
+	}
+
+	
+
+	
+
+	// 切換攻擊模式
+	bIsInAttackMode = !bIsInAttackMode;
+
+	if (bIsInAttackMode)
+	{
+		// === 進入攻擊模式 ===
+		Debug::Print(TEXT("=== ATTACK MODE: ON ==="), FColor::Red, 10.0f);
+		ShowModeNotification(TEXT("ATTACK MODE - Click target or press Q to cancel"));
+
+		// 顯示攻擊範圍和可攻擊目標
+		CombatComp->ShowAttackRange();
+
+		// 停止角色移動（如果正在移動）
+		if (UEnhancedMovementSystem* MoveSys = ControlledCharacter->GetComponentByClass<UEnhancedMovementSystem>())
+		{
+			if (MoveSys->GetMovementComponent())
+			{
+				MoveSys->GetMovementComponent()->StopMovementImmediately();
+			}
+		}
+
+		// 改變滑鼠游標（可選）
+		CurrentMouseCursor = EMouseCursor::Crosshairs;
+	}
+	else
+	{
+		// === 退出攻擊模式 ===
+		ExitAttackMode();
+	}
+
+}
+
+void AGridPlayerController::ProcessAttackClick()
+{
+	// 獲取點擊目標
+	FHitResult Hit;
+	GetHitResultUnderCursor(ECC_Visibility, false, Hit);
+
+	// 如果沒點到東西或點到地面，退出攻擊模式
+	if (!Hit.bBlockingHit || !Hit.GetActor())
+	{
+		Debug::Print(TEXT("Clicked empty space - exiting attack mode"), FColor::Yellow);
+		ExitAttackMode();
+		return;
+	}
+
+	AActor* Target = Hit.GetActor();
+	ATurnBasedCharacter* ControlledCharacter = GetControlledTurnCharacter();
+	if (!ControlledCharacter) return;
+
+	UCombatComponent* CombatComp = ControlledCharacter->GetComponentByClass<UCombatComponent>();
+	if (!CombatComp) return;
+
+	// 檢查是否可以攻擊此目標
+	if (CombatComp->CanAttack(Target))
+	{
+		Debug::Print(FString::Printf(TEXT("Attacking %s..."), *Target->GetActorLabel()), FColor::Orange);
+
+		// 執行攻擊
+		if (CombatComp->ExecuteAttack(Target))
+		{
+			Debug::Print(TEXT("Attack executed successfully!"), FColor::Green);
+
+			// 攻擊成功後自動退出攻擊模式
+			ExitAttackMode();
+		}
+		else
+		{
+			Debug::Print(TEXT("Attack failed!"), FColor::Red);
+		}
+	}
+	else
+	{
+		// 簡化的錯誤提示
+		Debug::Print(TEXT("Cannot attack this target!"), FColor::Orange);
+	}
+}
+
+void AGridPlayerController::ExitAttackMode()
+{
+	if (!bIsInAttackMode) return;
+
+	bIsInAttackMode = false;
+	Debug::Print(TEXT("=== ATTACK MODE: OFF ==="), FColor::Blue, 5.0f);
+
+	// 恢復正常游標
+	CurrentMouseCursor = EMouseCursor::Default;
+
+	// 隱藏攻擊範圍
+	if (ATurnBasedCharacter* ControlledCharacter = GetControlledTurnCharacter())
+	{
+		if (UCombatComponent* CombatComp = ControlledCharacter->GetComponentByClass<UCombatComponent>())
+		{
+			CombatComp->HideAttackRange();
+		}
 	}
 }
 
