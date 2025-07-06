@@ -9,6 +9,7 @@
 #include "TurnBasedSystem/UI/TurnDisplayWidget.h"
 #include "CombatSystem/CombatComponent.h"
 #include "CombatSystem/CombatInterface.h"
+#include "CombatSystem/CombatDisplayWidget.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "ProjectGateGameMode.h"
 #include "Engine/World.h"
@@ -46,6 +47,12 @@ void AGridPlayerController::BeginPlay()
 
 	//查找管理器
 	FindManagers();
+
+	// 創建戰鬥 UI
+	CreateCombatUI();
+
+	// 監聽所有角色的血量變化
+	SubscribeToHealthEvents();
 
 	// 設置輸入模式
 	FInputModeGameAndUI InputMode;
@@ -279,6 +286,34 @@ void AGridPlayerController::PlayerTick(float DeltaTime)
 		}
 	}
 
+	// 攻擊模式下的目標高亮和預覽
+	if (bIsInAttackMode)
+	{
+		UpdateAttackTargetHighlight();
+
+		// 可選：繪製攻擊預覽線
+		if (LastHighlightedTarget)
+		{
+			ATurnBasedCharacter* ControlledCharacter = GetControlledTurnCharacter();
+			if (ControlledCharacter)
+			{
+				DrawDebugLine(
+					GetWorld(),
+					ControlledCharacter->GetActorLocation() + FVector(0, 0, 50),
+					LastHighlightedTarget->GetActorLocation() + FVector(0, 0, 50),
+					FColor::Red,
+					false,
+					0.0f,
+					0,
+					2.0f
+				);
+			}
+		}
+	}
+
+
+
+	/*
 	// 攻擊模式下的滑鼠懸停檢測（可選）
 	if (bIsInAttackMode)
 	{
@@ -308,7 +343,7 @@ void AGridPlayerController::PlayerTick(float DeltaTime)
 			}
 		}
 	}
-
+	*/
 
 }
 
@@ -516,8 +551,49 @@ void AGridPlayerController::ShowModeNotification(const FString& ModeName)
 
 }
 
+void AGridPlayerController::HandleDynamicAttackInput()
+{
+	if (!bIsInAttackMode ) return;
+
+	// 獲取控制的角色
+	ATurnBasedCharacter* ControlledCharacter = GetControlledTurnCharacter();
+	if (!ControlledCharacter) return;
+
+	UCombatComponent* Combat = ControlledCharacter->FindComponentByClass<UCombatComponent>();
+	if (!Combat) return;
 
 
+	// 滑鼠懸停時顯示可攻擊目標
+	FHitResult Hit;
+	if (GetHitResultUnderCursor(ECC_Pawn, false, Hit))
+	{
+		AActor* HoverTarget = Hit.GetActor();
+
+		// 使用 CombatComponent 的 CanAttack 檢查
+		if (HoverTarget && Combat->CanAttack(HoverTarget))
+		{
+			// 顯示攻擊預覽
+			ShowAttackPreview(HoverTarget);
+
+			// 左鍵點擊執行攻擊
+			if (IsInputKeyDown(EKeys::LeftMouseButton))
+			{
+				// 檢查角色是否有 ExecuteAnimatedAttack 函數
+				// 如果沒有，直接使用 CombatComponent 的 ExecuteAttack
+				if (Combat->ExecuteAttack(HoverTarget))
+				{
+					Debug::Print(TEXT("Attack executed!"), FColor::Green);
+
+					// 可選：退出攻擊模式
+					if (bAutoExitAttackMode)
+					{
+						ToggleAttackMode();  // 使用這個新函數
+					}
+				}
+			}
+		}
+	}
+}
 
 void AGridPlayerController::OnClick()
 {
@@ -750,6 +826,139 @@ void AGridPlayerController::UpdateCameraMovement(float DeltaTime)
 	}
 }
 
+void AGridPlayerController::SubscribeToHealthEvents()
+{
+	TArray<AActor*> AllCharacters;
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), ATurnBasedCharacter::StaticClass(), AllCharacters);
+
+	for (AActor* Actor : AllCharacters)
+	{
+		if (UCombatComponent* CombatComp = Actor->FindComponentByClass<UCombatComponent>())
+		{
+			// 綁定以傳遞角色參數
+			CombatComp->OnHealthChanged.AddDynamic(this, &AGridPlayerController::OnAnyCharacterHealthChanged);
+		}
+	}
+}
+
+void AGridPlayerController::OnCombatExecuted(AActor* Attacker, AActor* Target, const FDamageResult& DamageResult)
+{
+	// 顯示戰鬥結果
+	if (CombatDisplayWidget)
+	{
+		CombatDisplayWidget->ShowCombatResult(DamageResult);
+	}
+
+	// 可以添加其他效果
+	Debug::Print(FString::Printf(TEXT("Combat Result: %d damage!"),
+		DamageResult.FinalDamage), FColor::Green);
+}
+
+void AGridPlayerController::OnAnyCharacterHealthChanged(AActor* AffectedCharacter, int32 CurrentHealth, int32 MaxHealth)
+{
+	// 如果是當前顯示的目標，更新戰鬥 UI
+	if (AffectedCharacter == LastHighlightedTarget && CombatDisplayWidget)
+	{
+		CombatDisplayWidget->UpdateTargetHealthDisplay(AffectedCharacter);
+	}
+
+	// 如果是玩家控制的角色，可以更新其他 UI
+	if (AffectedCharacter == GetControlledTurnCharacter())
+	{
+		// 更新玩家狀態 UI
+		Debug::Print(FString::Printf(TEXT("Player Health: %d/%d"), CurrentHealth, MaxHealth), FColor::Green);
+	}
+}
+
+void AGridPlayerController::OnCharacterHealthChanged(int32 CurrentHealth, int32 MaxHealth)
+{
+	// 之後更新 UI 或其他視覺反饋
+	Debug::Print(FString::Printf(TEXT("Health Changed: %d / %d"), CurrentHealth, MaxHealth), FColor::Yellow);
+}
+
+void AGridPlayerController::UpdateAttackTargetHighlight()
+{
+	if (!bIsInAttackMode) return;
+
+	AActor* CurrentTarget = nullptr;
+
+	// 嘗試獲取滑鼠下的角色
+	if (!GetCharacterUnderCursor(CurrentTarget))
+	{
+		// 沒有目標，隱藏目標信息
+		if (LastHighlightedTarget)
+		{
+			if (AProjectGateGameMode* GameMode = Cast<AProjectGateGameMode>(GetWorld()->GetAuthGameMode()))
+			{
+				if (UCombatDisplayWidget* CombatWidget = GameMode->GetCombatDisplayWidget())
+				{
+					CombatWidget->HideTargetInfo();
+					CombatWidget->HideDamagePreview();
+				}
+			}
+			LastHighlightedTarget = nullptr;
+		}
+		return;
+	}
+
+	// 如果是相同目標，不需要更新
+	if (CurrentTarget == LastHighlightedTarget) return;
+
+	// 新目標
+	LastHighlightedTarget = CurrentTarget;
+
+	Debug::PrintCooldown(TEXT("HoverTarget"),
+		FString::Printf(TEXT("Hovering over: %s"), *CurrentTarget->GetActorLabel()),
+		FColor::White, 0.5f);
+
+	ATurnBasedCharacter* ControlledCharacter = GetControlledTurnCharacter();
+	if (!ControlledCharacter) return;
+
+	UCombatComponent* CombatComp = ControlledCharacter->GetComponentByClass<UCombatComponent>();
+	if (!CombatComp) return;
+
+	// 檢查是否可以攻擊
+	bool bCanAttack = CombatComp->CanAttack(CurrentTarget);
+
+	// 更新 Combat UI
+	if (AProjectGateGameMode* GameMode = Cast<AProjectGateGameMode>(GetWorld()->GetAuthGameMode()))
+	{
+		if (UCombatDisplayWidget* CombatWidget = GameMode->GetCombatDisplayWidget())
+		{
+			CombatWidget->ShowTargetInfo(CurrentTarget, bCanAttack);
+
+			if (bCanAttack)
+			{
+				// 計算並顯示預期傷害
+				FDamageResult PreviewDamage = CombatComp->CalculateDamage(CurrentTarget);
+				CombatWidget->ShowDamagePreview(PreviewDamage.FinalDamage, PreviewDamage.bIsCritical);
+
+				Debug::PrintCooldown(TEXT("DamagePreview"),
+					FString::Printf(TEXT("Preview Damage: %d%s"),
+						PreviewDamage.FinalDamage,
+						PreviewDamage.bIsCritical ? TEXT(" (CRIT!)") : TEXT("")),
+					FColor::Yellow, 0.5f);
+			}
+			else
+			{
+				CombatWidget->HideDamagePreview();
+			}
+		}
+	}
+}
+
+void AGridPlayerController::OnCombatResultReceived(AActor* Attacker, AActor* Target, const FDamageResult& Result)
+{
+
+	if (AProjectGateGameMode* GameMode = Cast<AProjectGateGameMode>(GetWorld()->GetAuthGameMode()))
+	{
+		if (UCombatDisplayWidget* CombatWidget = GameMode->GetCombatDisplayWidget())
+		{
+			CombatWidget->ShowCombatResult(Result);
+		}
+	}
+}
+
 void AGridPlayerController::OnAttackMode(const FInputActionValue& Value)
 {
 
@@ -797,16 +1006,28 @@ void AGridPlayerController::OnAttackMode(const FInputActionValue& Value)
 
 		// 改變滑鼠游標（可選）
 		CurrentMouseCursor = EMouseCursor::Crosshairs;
+
+		// 更新 Combat UI
+		if (CombatDisplayWidget)
+		{
+			CombatDisplayWidget->SetAttackModeActive(true);
+			Debug::Print(TEXT("Combat UI - Attack Mode Activated"), FColor::Green);
+		}
+
+		// 綁定戰鬥事件
+		if (!CombatComp->OnAttackExecutedWithResult.IsAlreadyBound(this, &AGridPlayerController::OnCombatResultReceived))
+		{
+			CombatComp->OnAttackExecutedWithResult.AddDynamic(
+				this, &AGridPlayerController::OnCombatResultReceived);
+		}
+
+
 	}
 	else
 	{
 		// === 退出攻擊模式 ===
 		ExitAttackMode();
 	}
-
-	
-
-	
 
 	// 切換攻擊模式
 	bIsInAttackMode = !bIsInAttackMode;
@@ -838,23 +1059,59 @@ void AGridPlayerController::OnAttackMode(const FInputActionValue& Value)
 		ExitAttackMode();
 	}
 
+	if (CombatDisplayWidget)
+	{
+		CombatDisplayWidget->SetAttackModeActive(bIsInAttackMode);
+		Debug::Print(TEXT("Called SetAttackModeActive"), FColor::Green);
+	}
+	else
+	{
+		Debug::Print(TEXT("CombatDisplayWidget is NULL!"), FColor::Red);
+	}
+
+	if (bIsInAttackMode)
+	{
+		// 綁定戰鬥事件
+		if (UCombatComponent* CombatComponent = ControlledCharacter->GetComponentByClass<UCombatComponent>())
+		{
+			CombatComponent->OnAttackExecutedWithResult.AddDynamic(
+				this, &AGridPlayerController::OnCombatExecuted
+			);
+		}
+	}
+	else
+	{
+		// 解綁事件
+		if (UCombatComponent* CombatComponent = ControlledCharacter->GetComponentByClass<UCombatComponent>())
+		{
+			CombatComponent->OnAttackExecutedWithResult.RemoveDynamic(
+				this, &AGridPlayerController::OnCombatExecuted
+			);
+		}
+	}
+
 }
 
 void AGridPlayerController::ProcessAttackClick()
 {
-	// 獲取點擊目標
-	FHitResult Hit;
-	GetHitResultUnderCursor(ECC_Visibility, false, Hit);
+	AActor* Target = nullptr;
 
-	// 如果沒點到東西或點到地面，退出攻擊模式
-	if (!Hit.bBlockingHit || !Hit.GetActor())
+	// 使用新的檢測函數
+	if (!GetCharacterUnderCursor(Target))
 	{
-		Debug::Print(TEXT("Clicked empty space - exiting attack mode"), FColor::Yellow);
+		Debug::Print(TEXT("No character under cursor - exiting attack mode"), FColor::Yellow);
 		ExitAttackMode();
 		return;
 	}
 
-	AActor* Target = Hit.GetActor();
+	Debug::Print(FString::Printf(TEXT("Found target: %s"),
+		*Target->GetActorLabel()), FColor::Cyan);
+
+
+
+
+
+	//攻擊邏輯
 	ATurnBasedCharacter* ControlledCharacter = GetControlledTurnCharacter();
 	if (!ControlledCharacter) return;
 
@@ -866,24 +1123,29 @@ void AGridPlayerController::ProcessAttackClick()
 	{
 		Debug::Print(FString::Printf(TEXT("Attacking %s..."), *Target->GetActorLabel()), FColor::Orange);
 
-		// 執行攻擊
-		if (CombatComp->ExecuteAttack(Target))
-		{
-			Debug::Print(TEXT("Attack executed successfully!"), FColor::Green);
 
-			// 攻擊成功後自動退出攻擊模式
-			ExitAttackMode();
-		}
-		else
-		{
-			Debug::Print(TEXT("Attack failed!"), FColor::Red);
-		}
+		// *** 重要修改：調用角色的動畫攻擊函數，而不是直接執行攻擊 ***
+		ControlledCharacter->ExecuteAnimatedAttack(Target);
+
+		// 攻擊成功後自動退出攻擊模式
+		ExitAttackMode();
 	}
 	else
 	{
 		// 簡化的錯誤提示
-		Debug::Print(TEXT("Cannot attack this target!"), FColor::Orange);
+		Debug::Print(TEXT("CanAttack returned false - check debug output"), FColor::Orange);
 	}
+
+	/*
+	// 嘗試用不同的碰撞通道再試一次
+	FHitResult VisibilityHit;
+	if (GetHitResultUnderCursor(ECC_Visibility, false, VisibilityHit) && VisibilityHit.GetActor())
+	{
+		Debug::Print(FString::Printf(TEXT("ECC_Visibility found: %s"),
+			*VisibilityHit.GetActor()->GetName()), FColor::Yellow);
+	}
+	*/
+
 }
 
 void AGridPlayerController::ExitAttackMode()
@@ -902,8 +1164,78 @@ void AGridPlayerController::ExitAttackMode()
 		if (UCombatComponent* CombatComp = ControlledCharacter->GetComponentByClass<UCombatComponent>())
 		{
 			CombatComp->HideAttackRange();
+
+			// 解綁事件
+			CombatComp->OnAttackExecutedWithResult.RemoveDynamic(
+				this, &AGridPlayerController::OnCombatResultReceived);
 		}
 	}
+
+	// 更新 Combat UI
+	if (AProjectGateGameMode* GameMode = Cast<AProjectGateGameMode>(GetWorld()->GetAuthGameMode()))
+	{
+		if (UCombatDisplayWidget* CombatWidget = GameMode->GetCombatDisplayWidget())
+		{
+			CombatWidget->SetAttackModeActive(false);
+			CombatWidget->HideDamagePreview();
+			CombatWidget->HideTargetInfo();
+			Debug::Print(TEXT("Combat UI - Attack Mode Deactivated"), FColor::Green);
+		}
+	}
+
+	// 清除高亮目標
+	LastHighlightedTarget = nullptr;
+
+
+}
+
+void AGridPlayerController::ToggleAttackMode()
+{
+	// 使用現有的 OnAttackMode 邏輯
+	OnAttackMode(FInputActionValue());
+}
+
+void AGridPlayerController::CreateCombatUI()
+{
+	// 假設你在 GameMode 中設置了 Widget 類
+    if (AProjectGateGameMode* GameMode = Cast<AProjectGateGameMode>(GetWorld()->GetAuthGameMode()))
+    {
+        // 需要在 GameMode 中添加 CombatDisplayWidgetClass 屬性
+        TSubclassOf<UCombatDisplayWidget> WidgetClass = GameMode->GetCombatDisplayWidgetClass();
+        if (WidgetClass)
+        {
+            CombatDisplayWidget = CreateWidget<UCombatDisplayWidget>(this, WidgetClass);
+            if (CombatDisplayWidget)
+            {
+                CombatDisplayWidget->AddToViewport(1); // 層級 1，在 TurnDisplay 之上
+                Debug::Print(TEXT("Combat Display UI created"), FColor::Green);
+            }
+        }
+    }
+}
+
+// 修改 ShowAttackPreview
+void AGridPlayerController::ShowAttackPreview(AActor* Target)
+{
+    ATurnBasedCharacter* ControlledCharacter = GetControlledTurnCharacter();
+    if (!ControlledCharacter) return;
+    
+    UCombatComponent* Combat = ControlledCharacter->FindComponentByClass<UCombatComponent>();
+    if (!Combat) return;
+    
+    // 計算預覽傷害
+    FDamageResult PreviewDamage = Combat->CalculateDamage(Target);
+    
+    // 使用新的戰鬥 UI
+    if (CombatDisplayWidget)
+    {
+        CombatDisplayWidget->ShowDamagePreview(
+            PreviewDamage.FinalDamage,
+            PreviewDamage.bIsCritical
+        );
+        
+        CombatDisplayWidget->ShowTargetInfo(Target, true);
+    }
 }
 
 void AGridPlayerController::OnPossess(APawn* InPawn)
@@ -944,6 +1276,109 @@ void AGridPlayerController::OnUnPossess()
 	}
 
 	Super::OnUnPossess();
+}
+
+bool AGridPlayerController::GetCharacterUnderCursor(AActor*& OutCharacter)
+{
+	FVector WorldLocation, WorldDirection;
+	DeprojectMousePositionToWorld(WorldLocation, WorldDirection);
+
+	FVector Start = WorldLocation;
+	FVector End = WorldLocation + WorldDirection * 10000.0f;
+
+	FCollisionQueryParams QueryParams;
+	QueryParams.bTraceComplex = true;
+	QueryParams.bReturnPhysicalMaterial = false;
+
+	// 只檢測 Pawn
+	FCollisionObjectQueryParams ObjectQueryParams;
+	ObjectQueryParams.AddObjectTypesToQuery(ECC_Pawn);
+
+	TArray<FHitResult> Hits;
+	GetWorld()->LineTraceMultiByObjectType(
+		Hits,
+		Start,
+		End,
+		ObjectQueryParams,
+		QueryParams
+	);
+
+	// 找到第一個 TurnBasedCharacter
+	for (const FHitResult& Hit : Hits)
+	{
+		if (Hit.GetActor() && Hit.GetActor()->IsA<ATurnBasedCharacter>())
+		{
+			OutCharacter = Hit.GetActor();
+			/*
+			Debug::Print(FString::Printf(TEXT("Primary detection found: %s"),
+				*OutCharacter->GetName()), FColor::Green);
+				*/
+			Debug::PrintCooldown(TEXT("detection"), (TEXT("Primary detection found: %s"), *OutCharacter->GetName()), FColor::White, 0.5f);
+
+
+			return true;
+		}
+	}
+
+	return false;
+}
+
+bool AGridPlayerController::GetCharacterUnderCursorWithFallback(AActor*& OutCharacter)
+{
+	// 首先嘗試專門的檢測
+	if (GetCharacterUnderCursor(OutCharacter))
+	{
+		return true;
+	}
+
+	Debug::Print(TEXT("Primary detection failed, trying fallback..."), FColor::Yellow);
+
+	// 備用方案：使用 GetHitResultUnderCursor（方案1的改進版）
+	TArray<TEnumAsByte<ECollisionChannel>> Channels = {
+		ECC_Pawn,
+		ECC_WorldDynamic,
+		ECC_Visibility
+	};
+
+	for (auto Channel : Channels)
+	{
+		FHitResult Hit;
+		GetHitResultUnderCursor(Channel, true, Hit);  // bTraceComplex = true
+
+		if (Hit.GetActor() && Hit.GetActor()->IsA<ATurnBasedCharacter>())
+		{
+			OutCharacter = Hit.GetActor();
+			Debug::Print(FString::Printf(TEXT("Fallback found with channel %d: %s"),
+				(int32)Channel, *OutCharacter->GetName()), FColor::Blue);
+			return true;
+		}
+	}
+
+	FVector WorldLocation, WorldDirection;
+	DeprojectMousePositionToWorld(WorldLocation, WorldDirection);
+
+	FVector Start = WorldLocation;
+	FVector End = Start + WorldDirection * 10000.0f;
+
+	TArray<FHitResult> HitResults;
+	GetWorld()->LineTraceMultiByChannel(HitResults, Start, End, ECC_Visibility);
+
+	for (const FHitResult& Hit : HitResults)
+	{
+		if (Hit.GetActor() && Hit.GetActor()->IsA<ATurnBasedCharacter>())
+		{
+			OutCharacter = Hit.GetActor();
+			Debug::Print(FString::Printf(TEXT("Final fallback found: %s"),
+				*OutCharacter->GetName()), FColor::Magenta);
+			return true;
+		}
+	}
+
+
+
+
+
+	return false;
 }
 
 void AGridPlayerController::OnRightMousePressed()

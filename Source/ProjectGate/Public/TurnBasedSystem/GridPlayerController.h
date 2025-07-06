@@ -148,9 +148,14 @@ protected:
 
 	void ShowModeNotification(const FString& ModeName);
 
+	//==攻擊系統==
 
+	//動態攻擊Handle
 
+	void HandleDynamicAttackInput();
 
+	//攻擊效果展示
+	void ShowAttackPreview(AActor* Target);
 
 	// ===核心組件===
 	UPROPERTY()
@@ -233,16 +238,65 @@ private:
 	void OnToggleFocus(const FInputActionValue& Value);
 	void UpdateCameraMovement(float DeltaTime);
 
+	//監聽所有角色的血量變化
+	void SubscribeToHealthEvents();
+
+	// 攻擊模式相關
+	bool bAutoExitAttackMode = true;  // 攻擊後是否自動退出攻擊模式
+
 	// 攻擊模式狀態
 	bool bIsInAttackMode = false;
+
+	UFUNCTION()
+	void OnCombatExecuted(AActor* Attacker, AActor* Target, const FDamageResult& DamageResult);
+
+	// 血量變化處理
+	UFUNCTION()
+	void OnAnyCharacterHealthChanged(AActor* AffectedCharacter, int32 CurrentHealth, int32 MaxHealth);
+
+
+	UFUNCTION()
+	void OnCharacterHealthChanged(int32 CurrentHealth, int32 MaxHealth);
+
+	// 當前高亮的目標
+	UPROPERTY()
+	AActor* CurrentHighlightedTarget;
+
+
+	// 戰鬥 UI
+	UPROPERTY()
+	class UCombatDisplayWidget* CombatDisplayWidget;
+
+	// 攻擊模式滑鼠懸停檢測
+	void UpdateAttackTargetHighlight();
+
+	// 戰鬥結果回調
+	UFUNCTION()
+	void OnCombatResultReceived(AActor* Attacker, AActor* Target, const FDamageResult& Result);
+
+	UPROPERTY()
+	AActor* LastHighlightedTarget = nullptr;  // 上次高亮的目標
 
 	// 攻擊相關函數
 	void OnAttackMode(const FInputActionValue& Value);
 	void ProcessAttackClick();
 	void ExitAttackMode();
 
+
+	// 添加切換攻擊模式函數
+	void ToggleAttackMode();
+
+	// 創建戰鬥 UI
+	void CreateCombatUI();
+
+
 	//==Possess用函數==
 	void OnPossess(APawn* InPawn);
 	void OnUnPossess();
+
+	//Getter
+	bool GetCharacterUnderCursor(AActor*& OutCharacter);
+	bool GetCharacterUnderCursorWithFallback(AActor*& OutCharacter);
+
 
 };

@@ -6,6 +6,7 @@
 
 #include "UObject/GeneratedCppIncludes.h"
 #include "TurnBasedSystem/GridPlayerController.h"
+#include "CombatSystem/CombatStats.h"
 #include "InputActionValue.h"
 
 PRAGMA_DISABLE_DEPRECATION_WARNINGS
@@ -26,8 +27,10 @@ PROJECTGATE_API UClass* Z_Construct_UClass_AGridManager_NoRegister();
 PROJECTGATE_API UClass* Z_Construct_UClass_AGridPlayerController();
 PROJECTGATE_API UClass* Z_Construct_UClass_AGridPlayerController_NoRegister();
 PROJECTGATE_API UClass* Z_Construct_UClass_ASimpleTurnManager_NoRegister();
+PROJECTGATE_API UClass* Z_Construct_UClass_UCombatDisplayWidget_NoRegister();
 PROJECTGATE_API UClass* Z_Construct_UClass_UEnhancedMovementSystem_NoRegister();
 PROJECTGATE_API UFunction* Z_Construct_UDelegateFunction_ProjectGate_UIOnMovementModeChanged__DelegateSignature();
+PROJECTGATE_API UScriptStruct* Z_Construct_UScriptStruct_FDamageResult();
 UPackage* Z_Construct_UPackage__Script_ProjectGate();
 // ********** End Cross Module References **********************************************************
 
@@ -342,6 +345,227 @@ DEFINE_FUNCTION(AGridPlayerController::execGetControlledMovementSystem)
 }
 // ********** End Class AGridPlayerController Function GetControlledMovementSystem *****************
 
+// ********** Begin Class AGridPlayerController Function OnAnyCharacterHealthChanged ***************
+struct Z_Construct_UFunction_AGridPlayerController_OnAnyCharacterHealthChanged_Statics
+{
+	struct GridPlayerController_eventOnAnyCharacterHealthChanged_Parms
+	{
+		AActor* AffectedCharacter;
+		int32 CurrentHealth;
+		int32 MaxHealth;
+	};
+#if WITH_METADATA
+	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "// \xef\xbf\xbd\xef\xbf\xbdq\xef\xbf\xbd\xdc\xa4\xc6\xb3""B\xef\xbf\xbdz\n" },
+#endif
+		{ "ModuleRelativePath", "Public/TurnBasedSystem/GridPlayerController.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "\xef\xbf\xbd\xef\xbf\xbdq\xef\xbf\xbd\xdc\xa4\xc6\xb3""B\xef\xbf\xbdz" },
+#endif
+	};
+#endif // WITH_METADATA
+	static const UECodeGen_Private::FObjectPropertyParams NewProp_AffectedCharacter;
+	static const UECodeGen_Private::FIntPropertyParams NewProp_CurrentHealth;
+	static const UECodeGen_Private::FIntPropertyParams NewProp_MaxHealth;
+	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
+	static const UECodeGen_Private::FFunctionParams FuncParams;
+};
+const UECodeGen_Private::FObjectPropertyParams Z_Construct_UFunction_AGridPlayerController_OnAnyCharacterHealthChanged_Statics::NewProp_AffectedCharacter = { "AffectedCharacter", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(GridPlayerController_eventOnAnyCharacterHealthChanged_Parms, AffectedCharacter), Z_Construct_UClass_AActor_NoRegister, METADATA_PARAMS(0, nullptr) };
+const UECodeGen_Private::FIntPropertyParams Z_Construct_UFunction_AGridPlayerController_OnAnyCharacterHealthChanged_Statics::NewProp_CurrentHealth = { "CurrentHealth", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Int, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(GridPlayerController_eventOnAnyCharacterHealthChanged_Parms, CurrentHealth), METADATA_PARAMS(0, nullptr) };
+const UECodeGen_Private::FIntPropertyParams Z_Construct_UFunction_AGridPlayerController_OnAnyCharacterHealthChanged_Statics::NewProp_MaxHealth = { "MaxHealth", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Int, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(GridPlayerController_eventOnAnyCharacterHealthChanged_Parms, MaxHealth), METADATA_PARAMS(0, nullptr) };
+const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_AGridPlayerController_OnAnyCharacterHealthChanged_Statics::PropPointers[] = {
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_AGridPlayerController_OnAnyCharacterHealthChanged_Statics::NewProp_AffectedCharacter,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_AGridPlayerController_OnAnyCharacterHealthChanged_Statics::NewProp_CurrentHealth,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_AGridPlayerController_OnAnyCharacterHealthChanged_Statics::NewProp_MaxHealth,
+};
+static_assert(UE_ARRAY_COUNT(Z_Construct_UFunction_AGridPlayerController_OnAnyCharacterHealthChanged_Statics::PropPointers) < 2048);
+const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_AGridPlayerController_OnAnyCharacterHealthChanged_Statics::FuncParams = { { (UObject*(*)())Z_Construct_UClass_AGridPlayerController, nullptr, "OnAnyCharacterHealthChanged", Z_Construct_UFunction_AGridPlayerController_OnAnyCharacterHealthChanged_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_AGridPlayerController_OnAnyCharacterHealthChanged_Statics::PropPointers), sizeof(Z_Construct_UFunction_AGridPlayerController_OnAnyCharacterHealthChanged_Statics::GridPlayerController_eventOnAnyCharacterHealthChanged_Parms), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x00040401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_AGridPlayerController_OnAnyCharacterHealthChanged_Statics::Function_MetaDataParams), Z_Construct_UFunction_AGridPlayerController_OnAnyCharacterHealthChanged_Statics::Function_MetaDataParams)},  };
+static_assert(sizeof(Z_Construct_UFunction_AGridPlayerController_OnAnyCharacterHealthChanged_Statics::GridPlayerController_eventOnAnyCharacterHealthChanged_Parms) < MAX_uint16);
+UFunction* Z_Construct_UFunction_AGridPlayerController_OnAnyCharacterHealthChanged()
+{
+	static UFunction* ReturnFunction = nullptr;
+	if (!ReturnFunction)
+	{
+		UECodeGen_Private::ConstructUFunction(&ReturnFunction, Z_Construct_UFunction_AGridPlayerController_OnAnyCharacterHealthChanged_Statics::FuncParams);
+	}
+	return ReturnFunction;
+}
+DEFINE_FUNCTION(AGridPlayerController::execOnAnyCharacterHealthChanged)
+{
+	P_GET_OBJECT(AActor,Z_Param_AffectedCharacter);
+	P_GET_PROPERTY(FIntProperty,Z_Param_CurrentHealth);
+	P_GET_PROPERTY(FIntProperty,Z_Param_MaxHealth);
+	P_FINISH;
+	P_NATIVE_BEGIN;
+	P_THIS->OnAnyCharacterHealthChanged(Z_Param_AffectedCharacter,Z_Param_CurrentHealth,Z_Param_MaxHealth);
+	P_NATIVE_END;
+}
+// ********** End Class AGridPlayerController Function OnAnyCharacterHealthChanged *****************
+
+// ********** Begin Class AGridPlayerController Function OnCharacterHealthChanged ******************
+struct Z_Construct_UFunction_AGridPlayerController_OnCharacterHealthChanged_Statics
+{
+	struct GridPlayerController_eventOnCharacterHealthChanged_Parms
+	{
+		int32 CurrentHealth;
+		int32 MaxHealth;
+	};
+#if WITH_METADATA
+	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
+		{ "ModuleRelativePath", "Public/TurnBasedSystem/GridPlayerController.h" },
+	};
+#endif // WITH_METADATA
+	static const UECodeGen_Private::FIntPropertyParams NewProp_CurrentHealth;
+	static const UECodeGen_Private::FIntPropertyParams NewProp_MaxHealth;
+	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
+	static const UECodeGen_Private::FFunctionParams FuncParams;
+};
+const UECodeGen_Private::FIntPropertyParams Z_Construct_UFunction_AGridPlayerController_OnCharacterHealthChanged_Statics::NewProp_CurrentHealth = { "CurrentHealth", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Int, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(GridPlayerController_eventOnCharacterHealthChanged_Parms, CurrentHealth), METADATA_PARAMS(0, nullptr) };
+const UECodeGen_Private::FIntPropertyParams Z_Construct_UFunction_AGridPlayerController_OnCharacterHealthChanged_Statics::NewProp_MaxHealth = { "MaxHealth", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Int, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(GridPlayerController_eventOnCharacterHealthChanged_Parms, MaxHealth), METADATA_PARAMS(0, nullptr) };
+const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_AGridPlayerController_OnCharacterHealthChanged_Statics::PropPointers[] = {
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_AGridPlayerController_OnCharacterHealthChanged_Statics::NewProp_CurrentHealth,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_AGridPlayerController_OnCharacterHealthChanged_Statics::NewProp_MaxHealth,
+};
+static_assert(UE_ARRAY_COUNT(Z_Construct_UFunction_AGridPlayerController_OnCharacterHealthChanged_Statics::PropPointers) < 2048);
+const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_AGridPlayerController_OnCharacterHealthChanged_Statics::FuncParams = { { (UObject*(*)())Z_Construct_UClass_AGridPlayerController, nullptr, "OnCharacterHealthChanged", Z_Construct_UFunction_AGridPlayerController_OnCharacterHealthChanged_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_AGridPlayerController_OnCharacterHealthChanged_Statics::PropPointers), sizeof(Z_Construct_UFunction_AGridPlayerController_OnCharacterHealthChanged_Statics::GridPlayerController_eventOnCharacterHealthChanged_Parms), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x00040401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_AGridPlayerController_OnCharacterHealthChanged_Statics::Function_MetaDataParams), Z_Construct_UFunction_AGridPlayerController_OnCharacterHealthChanged_Statics::Function_MetaDataParams)},  };
+static_assert(sizeof(Z_Construct_UFunction_AGridPlayerController_OnCharacterHealthChanged_Statics::GridPlayerController_eventOnCharacterHealthChanged_Parms) < MAX_uint16);
+UFunction* Z_Construct_UFunction_AGridPlayerController_OnCharacterHealthChanged()
+{
+	static UFunction* ReturnFunction = nullptr;
+	if (!ReturnFunction)
+	{
+		UECodeGen_Private::ConstructUFunction(&ReturnFunction, Z_Construct_UFunction_AGridPlayerController_OnCharacterHealthChanged_Statics::FuncParams);
+	}
+	return ReturnFunction;
+}
+DEFINE_FUNCTION(AGridPlayerController::execOnCharacterHealthChanged)
+{
+	P_GET_PROPERTY(FIntProperty,Z_Param_CurrentHealth);
+	P_GET_PROPERTY(FIntProperty,Z_Param_MaxHealth);
+	P_FINISH;
+	P_NATIVE_BEGIN;
+	P_THIS->OnCharacterHealthChanged(Z_Param_CurrentHealth,Z_Param_MaxHealth);
+	P_NATIVE_END;
+}
+// ********** End Class AGridPlayerController Function OnCharacterHealthChanged ********************
+
+// ********** Begin Class AGridPlayerController Function OnCombatExecuted **************************
+struct Z_Construct_UFunction_AGridPlayerController_OnCombatExecuted_Statics
+{
+	struct GridPlayerController_eventOnCombatExecuted_Parms
+	{
+		AActor* Attacker;
+		AActor* Target;
+		FDamageResult DamageResult;
+	};
+#if WITH_METADATA
+	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
+		{ "ModuleRelativePath", "Public/TurnBasedSystem/GridPlayerController.h" },
+	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_DamageResult_MetaData[] = {
+		{ "NativeConst", "" },
+	};
+#endif // WITH_METADATA
+	static const UECodeGen_Private::FObjectPropertyParams NewProp_Attacker;
+	static const UECodeGen_Private::FObjectPropertyParams NewProp_Target;
+	static const UECodeGen_Private::FStructPropertyParams NewProp_DamageResult;
+	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
+	static const UECodeGen_Private::FFunctionParams FuncParams;
+};
+const UECodeGen_Private::FObjectPropertyParams Z_Construct_UFunction_AGridPlayerController_OnCombatExecuted_Statics::NewProp_Attacker = { "Attacker", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(GridPlayerController_eventOnCombatExecuted_Parms, Attacker), Z_Construct_UClass_AActor_NoRegister, METADATA_PARAMS(0, nullptr) };
+const UECodeGen_Private::FObjectPropertyParams Z_Construct_UFunction_AGridPlayerController_OnCombatExecuted_Statics::NewProp_Target = { "Target", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(GridPlayerController_eventOnCombatExecuted_Parms, Target), Z_Construct_UClass_AActor_NoRegister, METADATA_PARAMS(0, nullptr) };
+const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_AGridPlayerController_OnCombatExecuted_Statics::NewProp_DamageResult = { "DamageResult", nullptr, (EPropertyFlags)0x0010000008000182, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(GridPlayerController_eventOnCombatExecuted_Parms, DamageResult), Z_Construct_UScriptStruct_FDamageResult, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_DamageResult_MetaData), NewProp_DamageResult_MetaData) }; // 2440303719
+const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_AGridPlayerController_OnCombatExecuted_Statics::PropPointers[] = {
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_AGridPlayerController_OnCombatExecuted_Statics::NewProp_Attacker,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_AGridPlayerController_OnCombatExecuted_Statics::NewProp_Target,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_AGridPlayerController_OnCombatExecuted_Statics::NewProp_DamageResult,
+};
+static_assert(UE_ARRAY_COUNT(Z_Construct_UFunction_AGridPlayerController_OnCombatExecuted_Statics::PropPointers) < 2048);
+const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_AGridPlayerController_OnCombatExecuted_Statics::FuncParams = { { (UObject*(*)())Z_Construct_UClass_AGridPlayerController, nullptr, "OnCombatExecuted", Z_Construct_UFunction_AGridPlayerController_OnCombatExecuted_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_AGridPlayerController_OnCombatExecuted_Statics::PropPointers), sizeof(Z_Construct_UFunction_AGridPlayerController_OnCombatExecuted_Statics::GridPlayerController_eventOnCombatExecuted_Parms), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x00440401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_AGridPlayerController_OnCombatExecuted_Statics::Function_MetaDataParams), Z_Construct_UFunction_AGridPlayerController_OnCombatExecuted_Statics::Function_MetaDataParams)},  };
+static_assert(sizeof(Z_Construct_UFunction_AGridPlayerController_OnCombatExecuted_Statics::GridPlayerController_eventOnCombatExecuted_Parms) < MAX_uint16);
+UFunction* Z_Construct_UFunction_AGridPlayerController_OnCombatExecuted()
+{
+	static UFunction* ReturnFunction = nullptr;
+	if (!ReturnFunction)
+	{
+		UECodeGen_Private::ConstructUFunction(&ReturnFunction, Z_Construct_UFunction_AGridPlayerController_OnCombatExecuted_Statics::FuncParams);
+	}
+	return ReturnFunction;
+}
+DEFINE_FUNCTION(AGridPlayerController::execOnCombatExecuted)
+{
+	P_GET_OBJECT(AActor,Z_Param_Attacker);
+	P_GET_OBJECT(AActor,Z_Param_Target);
+	P_GET_STRUCT_REF(FDamageResult,Z_Param_Out_DamageResult);
+	P_FINISH;
+	P_NATIVE_BEGIN;
+	P_THIS->OnCombatExecuted(Z_Param_Attacker,Z_Param_Target,Z_Param_Out_DamageResult);
+	P_NATIVE_END;
+}
+// ********** End Class AGridPlayerController Function OnCombatExecuted ****************************
+
+// ********** Begin Class AGridPlayerController Function OnCombatResultReceived ********************
+struct Z_Construct_UFunction_AGridPlayerController_OnCombatResultReceived_Statics
+{
+	struct GridPlayerController_eventOnCombatResultReceived_Parms
+	{
+		AActor* Attacker;
+		AActor* Target;
+		FDamageResult Result;
+	};
+#if WITH_METADATA
+	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "// \xef\xbf\xbd\xd4\xb0\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbdG\xef\xbf\xbd^\xef\xbf\xbd\xef\xbf\xbd\n" },
+#endif
+		{ "ModuleRelativePath", "Public/TurnBasedSystem/GridPlayerController.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "\xef\xbf\xbd\xd4\xb0\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbdG\xef\xbf\xbd^\xef\xbf\xbd\xef\xbf\xbd" },
+#endif
+	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_Result_MetaData[] = {
+		{ "NativeConst", "" },
+	};
+#endif // WITH_METADATA
+	static const UECodeGen_Private::FObjectPropertyParams NewProp_Attacker;
+	static const UECodeGen_Private::FObjectPropertyParams NewProp_Target;
+	static const UECodeGen_Private::FStructPropertyParams NewProp_Result;
+	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
+	static const UECodeGen_Private::FFunctionParams FuncParams;
+};
+const UECodeGen_Private::FObjectPropertyParams Z_Construct_UFunction_AGridPlayerController_OnCombatResultReceived_Statics::NewProp_Attacker = { "Attacker", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(GridPlayerController_eventOnCombatResultReceived_Parms, Attacker), Z_Construct_UClass_AActor_NoRegister, METADATA_PARAMS(0, nullptr) };
+const UECodeGen_Private::FObjectPropertyParams Z_Construct_UFunction_AGridPlayerController_OnCombatResultReceived_Statics::NewProp_Target = { "Target", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(GridPlayerController_eventOnCombatResultReceived_Parms, Target), Z_Construct_UClass_AActor_NoRegister, METADATA_PARAMS(0, nullptr) };
+const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_AGridPlayerController_OnCombatResultReceived_Statics::NewProp_Result = { "Result", nullptr, (EPropertyFlags)0x0010000008000182, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(GridPlayerController_eventOnCombatResultReceived_Parms, Result), Z_Construct_UScriptStruct_FDamageResult, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_Result_MetaData), NewProp_Result_MetaData) }; // 2440303719
+const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_AGridPlayerController_OnCombatResultReceived_Statics::PropPointers[] = {
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_AGridPlayerController_OnCombatResultReceived_Statics::NewProp_Attacker,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_AGridPlayerController_OnCombatResultReceived_Statics::NewProp_Target,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_AGridPlayerController_OnCombatResultReceived_Statics::NewProp_Result,
+};
+static_assert(UE_ARRAY_COUNT(Z_Construct_UFunction_AGridPlayerController_OnCombatResultReceived_Statics::PropPointers) < 2048);
+const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_AGridPlayerController_OnCombatResultReceived_Statics::FuncParams = { { (UObject*(*)())Z_Construct_UClass_AGridPlayerController, nullptr, "OnCombatResultReceived", Z_Construct_UFunction_AGridPlayerController_OnCombatResultReceived_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_AGridPlayerController_OnCombatResultReceived_Statics::PropPointers), sizeof(Z_Construct_UFunction_AGridPlayerController_OnCombatResultReceived_Statics::GridPlayerController_eventOnCombatResultReceived_Parms), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x00440401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_AGridPlayerController_OnCombatResultReceived_Statics::Function_MetaDataParams), Z_Construct_UFunction_AGridPlayerController_OnCombatResultReceived_Statics::Function_MetaDataParams)},  };
+static_assert(sizeof(Z_Construct_UFunction_AGridPlayerController_OnCombatResultReceived_Statics::GridPlayerController_eventOnCombatResultReceived_Parms) < MAX_uint16);
+UFunction* Z_Construct_UFunction_AGridPlayerController_OnCombatResultReceived()
+{
+	static UFunction* ReturnFunction = nullptr;
+	if (!ReturnFunction)
+	{
+		UECodeGen_Private::ConstructUFunction(&ReturnFunction, Z_Construct_UFunction_AGridPlayerController_OnCombatResultReceived_Statics::FuncParams);
+	}
+	return ReturnFunction;
+}
+DEFINE_FUNCTION(AGridPlayerController::execOnCombatResultReceived)
+{
+	P_GET_OBJECT(AActor,Z_Param_Attacker);
+	P_GET_OBJECT(AActor,Z_Param_Target);
+	P_GET_STRUCT_REF(FDamageResult,Z_Param_Out_Result);
+	P_FINISH;
+	P_NATIVE_BEGIN;
+	P_THIS->OnCombatResultReceived(Z_Param_Attacker,Z_Param_Target,Z_Param_Out_Result);
+	P_NATIVE_END;
+}
+// ********** End Class AGridPlayerController Function OnCombatResultReceived **********************
+
 // ********** Begin Class AGridPlayerController Function OnDynamicMode *****************************
 struct Z_Construct_UFunction_AGridPlayerController_OnDynamicMode_Statics
 {
@@ -456,6 +680,10 @@ void AGridPlayerController::StaticRegisterNativesAGridPlayerController()
 		{ "GetCameraPawn", &AGridPlayerController::execGetCameraPawn },
 		{ "GetCameraRotation", &AGridPlayerController::execGetCameraRotation },
 		{ "GetControlledMovementSystem", &AGridPlayerController::execGetControlledMovementSystem },
+		{ "OnAnyCharacterHealthChanged", &AGridPlayerController::execOnAnyCharacterHealthChanged },
+		{ "OnCharacterHealthChanged", &AGridPlayerController::execOnCharacterHealthChanged },
+		{ "OnCombatExecuted", &AGridPlayerController::execOnCombatExecuted },
+		{ "OnCombatResultReceived", &AGridPlayerController::execOnCombatResultReceived },
 		{ "OnDynamicMode", &AGridPlayerController::execOnDynamicMode },
 		{ "OnMove", &AGridPlayerController::execOnMove },
 		{ "SwitchMovementMode", &AGridPlayerController::execSwitchMovementMode },
@@ -694,6 +922,28 @@ struct Z_Construct_UClass_AGridPlayerController_Statics
 		{ "Category", "Camera|Zoom" },
 		{ "ModuleRelativePath", "Public/TurnBasedSystem/GridPlayerController.h" },
 	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_CurrentHighlightedTarget_MetaData[] = {
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "// \xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd""e\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbdG\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xd8\xbc\xef\xbf\xbd\n" },
+#endif
+		{ "ModuleRelativePath", "Public/TurnBasedSystem/GridPlayerController.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd""e\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbdG\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xd8\xbc\xef\xbf\xbd" },
+#endif
+	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_CombatDisplayWidget_MetaData[] = {
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "// \xef\xbf\xbd\xd4\xb0\xef\xbf\xbd UI\n" },
+#endif
+		{ "EditInline", "true" },
+		{ "ModuleRelativePath", "Public/TurnBasedSystem/GridPlayerController.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "\xef\xbf\xbd\xd4\xb0\xef\xbf\xbd UI" },
+#endif
+	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_LastHighlightedTarget_MetaData[] = {
+		{ "ModuleRelativePath", "Public/TurnBasedSystem/GridPlayerController.h" },
+	};
 #endif // WITH_METADATA
 	static void NewProp_bIsInDynamicMode_SetBit(void* Obj);
 	static const UECodeGen_Private::FBoolPropertyParams NewProp_bIsInDynamicMode;
@@ -723,6 +973,9 @@ struct Z_Construct_UClass_AGridPlayerController_Statics
 	static const UECodeGen_Private::FFloatPropertyParams NewProp_ZoomSpeed;
 	static const UECodeGen_Private::FFloatPropertyParams NewProp_MinZoomLength;
 	static const UECodeGen_Private::FFloatPropertyParams NewProp_MaxZoomLength;
+	static const UECodeGen_Private::FObjectPropertyParams NewProp_CurrentHighlightedTarget;
+	static const UECodeGen_Private::FObjectPropertyParams NewProp_CombatDisplayWidget;
+	static const UECodeGen_Private::FObjectPropertyParams NewProp_LastHighlightedTarget;
 	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
 	static UObject* (*const DependentSingletons[])();
 	static constexpr FClassFunctionLinkInfo FuncInfo[] = {
@@ -732,6 +985,10 @@ struct Z_Construct_UClass_AGridPlayerController_Statics
 		{ &Z_Construct_UFunction_AGridPlayerController_GetCameraPawn, "GetCameraPawn" }, // 4019684649
 		{ &Z_Construct_UFunction_AGridPlayerController_GetCameraRotation, "GetCameraRotation" }, // 3126027194
 		{ &Z_Construct_UFunction_AGridPlayerController_GetControlledMovementSystem, "GetControlledMovementSystem" }, // 2742677246
+		{ &Z_Construct_UFunction_AGridPlayerController_OnAnyCharacterHealthChanged, "OnAnyCharacterHealthChanged" }, // 1473297580
+		{ &Z_Construct_UFunction_AGridPlayerController_OnCharacterHealthChanged, "OnCharacterHealthChanged" }, // 2852060312
+		{ &Z_Construct_UFunction_AGridPlayerController_OnCombatExecuted, "OnCombatExecuted" }, // 3688089576
+		{ &Z_Construct_UFunction_AGridPlayerController_OnCombatResultReceived, "OnCombatResultReceived" }, // 1307629784
 		{ &Z_Construct_UFunction_AGridPlayerController_OnDynamicMode, "OnDynamicMode" }, // 1998669579
 		{ &Z_Construct_UFunction_AGridPlayerController_OnMove, "OnMove" }, // 1141482932
 		{ &Z_Construct_UFunction_AGridPlayerController_SwitchMovementMode, "SwitchMovementMode" }, // 1806344397
@@ -776,6 +1033,9 @@ const UECodeGen_Private::FFloatPropertyParams Z_Construct_UClass_AGridPlayerCont
 const UECodeGen_Private::FFloatPropertyParams Z_Construct_UClass_AGridPlayerController_Statics::NewProp_ZoomSpeed = { "ZoomSpeed", nullptr, (EPropertyFlags)0x0020080000000005, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AGridPlayerController, ZoomSpeed), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_ZoomSpeed_MetaData), NewProp_ZoomSpeed_MetaData) };
 const UECodeGen_Private::FFloatPropertyParams Z_Construct_UClass_AGridPlayerController_Statics::NewProp_MinZoomLength = { "MinZoomLength", nullptr, (EPropertyFlags)0x0020080000000005, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AGridPlayerController, MinZoomLength), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_MinZoomLength_MetaData), NewProp_MinZoomLength_MetaData) };
 const UECodeGen_Private::FFloatPropertyParams Z_Construct_UClass_AGridPlayerController_Statics::NewProp_MaxZoomLength = { "MaxZoomLength", nullptr, (EPropertyFlags)0x0020080000000005, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AGridPlayerController, MaxZoomLength), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_MaxZoomLength_MetaData), NewProp_MaxZoomLength_MetaData) };
+const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_AGridPlayerController_Statics::NewProp_CurrentHighlightedTarget = { "CurrentHighlightedTarget", nullptr, (EPropertyFlags)0x0040000000000000, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AGridPlayerController, CurrentHighlightedTarget), Z_Construct_UClass_AActor_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_CurrentHighlightedTarget_MetaData), NewProp_CurrentHighlightedTarget_MetaData) };
+const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_AGridPlayerController_Statics::NewProp_CombatDisplayWidget = { "CombatDisplayWidget", nullptr, (EPropertyFlags)0x0040000000080008, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AGridPlayerController, CombatDisplayWidget), Z_Construct_UClass_UCombatDisplayWidget_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_CombatDisplayWidget_MetaData), NewProp_CombatDisplayWidget_MetaData) };
+const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_AGridPlayerController_Statics::NewProp_LastHighlightedTarget = { "LastHighlightedTarget", nullptr, (EPropertyFlags)0x0040000000000000, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AGridPlayerController, LastHighlightedTarget), Z_Construct_UClass_AActor_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_LastHighlightedTarget_MetaData), NewProp_LastHighlightedTarget_MetaData) };
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UClass_AGridPlayerController_Statics::PropPointers[] = {
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AGridPlayerController_Statics::NewProp_bIsInDynamicMode,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AGridPlayerController_Statics::NewProp_bIsFocusMode,
@@ -803,6 +1063,9 @@ const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UClass_AGridPlay
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AGridPlayerController_Statics::NewProp_ZoomSpeed,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AGridPlayerController_Statics::NewProp_MinZoomLength,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AGridPlayerController_Statics::NewProp_MaxZoomLength,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AGridPlayerController_Statics::NewProp_CurrentHighlightedTarget,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AGridPlayerController_Statics::NewProp_CombatDisplayWidget,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AGridPlayerController_Statics::NewProp_LastHighlightedTarget,
 };
 static_assert(UE_ARRAY_COUNT(Z_Construct_UClass_AGridPlayerController_Statics::PropPointers) < 2048);
 UObject* (*const Z_Construct_UClass_AGridPlayerController_Statics::DependentSingletons[])() = {
@@ -841,10 +1104,10 @@ AGridPlayerController::~AGridPlayerController() {}
 struct Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_GridPlayerController_h__Script_ProjectGate_Statics
 {
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_AGridPlayerController, AGridPlayerController::StaticClass, TEXT("AGridPlayerController"), &Z_Registration_Info_UClass_AGridPlayerController, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(AGridPlayerController), 160388833U) },
+		{ Z_Construct_UClass_AGridPlayerController, AGridPlayerController::StaticClass, TEXT("AGridPlayerController"), &Z_Registration_Info_UClass_AGridPlayerController, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(AGridPlayerController), 3685905641U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_GridPlayerController_h__Script_ProjectGate_620196202(TEXT("/Script/ProjectGate"),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_GridPlayerController_h__Script_ProjectGate_3895424036(TEXT("/Script/ProjectGate"),
 	Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_GridPlayerController_h__Script_ProjectGate_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_GridPlayerController_h__Script_ProjectGate_Statics::ClassInfo),
 	nullptr, 0,
 	nullptr, 0);

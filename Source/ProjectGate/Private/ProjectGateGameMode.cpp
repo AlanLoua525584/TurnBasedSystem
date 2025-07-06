@@ -5,6 +5,7 @@
 #include "TurnBasedSystem/SimpleTurnManager.h"
 #include "TurnBasedSystem/GridPlayerController.h"
 #include "TurnBasedSystem/EnhancedMovementSystem.h"
+#include "CombatSystem/CombatDisplayWidget.h"
 #include "Public/DebugHelper.h"
 #include "Engine/World.h"
 #include "TimerManager.h"
@@ -142,6 +143,21 @@ void AProjectGateGameMode::BeginPlay()
 
 
         }
+
+        if (CombatDisplayWidgetClass)
+        {
+            if (PlayerController)
+            {
+       
+                CombatDisplayWidget = CreateWidget<UCombatDisplayWidget>(PlayerController, CombatDisplayWidgetClass);
+                if (CombatDisplayWidget)
+                {
+                    CombatDisplayWidget->AddToViewport();
+                }
+            }
+        }
+
+
     }
 
     Debug::Print(TEXT("Manual control mode enabled - use buttons to control turns"), FColor::Yellow);

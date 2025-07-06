@@ -63,10 +63,16 @@
     <ClCompile Include="..\..\Source\ProjectGate\Private\CombatSystem\CombatComponent.cpp">
       <Filter>Source\ProjectGate\Private\CombatSystem</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Source\ProjectGate\Private\CombatSystem\CombatDisplayWidget.cpp">
+      <Filter>Source\ProjectGate\Private\CombatSystem</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Source\ProjectGate\Private\CombatSystem\CombatInterface.cpp">
       <Filter>Source\ProjectGate\Private\CombatSystem</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\ProjectGate\Private\CombatSystem\CombatStats.cpp">
+      <Filter>Source\ProjectGate\Private\CombatSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\ProjectGate\Private\CombatSystem\HealthPointBarWidget.cpp">
       <Filter>Source\ProjectGate\Private\CombatSystem</Filter>
     </ClCompile>
     <Filter Include="Source\ProjectGate\Private\TurnBasedSystem">
@@ -129,10 +135,16 @@
     <ClInclude Include="..\..\Source\ProjectGate\Public\CombatSystem\CombatComponent.h">
       <Filter>Source\ProjectGate\Public\CombatSystem</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Source\ProjectGate\Public\CombatSystem\CombatDisplayWidget.h">
+      <Filter>Source\ProjectGate\Public\CombatSystem</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\ProjectGate\Public\CombatSystem\CombatInterface.h">
       <Filter>Source\ProjectGate\Public\CombatSystem</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\ProjectGate\Public\CombatSystem\CombatStats.h">
+      <Filter>Source\ProjectGate\Public\CombatSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\ProjectGate\Public\CombatSystem\HealthPointBarWidget.h">
       <Filter>Source\ProjectGate\Public\CombatSystem</Filter>
     </ClInclude>
     <Filter Include="Source\ProjectGate\Public\TurnBasedSystem">

@@ -5,13 +5,19 @@
 #include "TurnBasedSystem/GridVisualComponent.h"
 #include "TurnBasedSystem/EnhancedMovementSystem.h"
 #include "TurnBasedSystem//GridPlayerController.h"
+#include "TurnBasedSystem/SimpleTurnManager.h"
+#include "CombatSystem/CombatInterface.h"
+#include "CombatSystem/CombatStats.h"
+#include "CombatSystem/HealthPointBarWidget.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Components/CapsuleComponent.h"
+#include "Components/WidgetComponent.h"
 #include "Engine/Engine.h"
 #include "Engine/World.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "DrawDebugHelpers.h"
 #include "TurnBasedSystem/GridManager.h"
+#include "Animation/AnimInstance.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "AIController.h"
 #include "TimerManager.h"
@@ -37,6 +43,14 @@ ATurnBasedCharacter::ATurnBasedCharacter()
 	//戰鬥
 	CombatComponent = CreateDefaultSubobject<UCombatComponent>(TEXT("CombatComponent"));
 	
+	// 創建頭頂血條組件
+	HealthBarComponent = CreateDefaultSubobject<UWidgetComponent>(TEXT("HealthBarComponent"));
+	HealthBarComponent->SetupAttachment(RootComponent);
+	HealthBarComponent->SetRelativeLocation(FVector(0, 0, 120.0f)); // 頭頂上方
+	HealthBarComponent->SetWidgetSpace(EWidgetSpace::Screen); // 始終面向屏幕
+	HealthBarComponent->SetDrawSize(FVector2D(200, 30));
+	
+
 	/* === 相機系統 === */
 	// 建立 Spring Arm
 	CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
@@ -64,6 +78,16 @@ ATurnBasedCharacter::ATurnBasedCharacter()
 
 }
 
+
+bool ATurnBasedCharacter::CanBeAttacked_Implementation() const
+{
+	return false;
+}
+
+UCombatComponent* ATurnBasedCharacter::GetCombatComponent_Implementation() const
+{
+	return nullptr;
+}
 
 // Called when the game starts or when spawned
 void ATurnBasedCharacter::BeginPlay()
@@ -111,6 +135,26 @@ void ATurnBasedCharacter::BeginPlay()
 	else
 	{
 		Debug::Print(TEXT("ERROR: No GridManager found in scene!"), FColor::Red);
+	}
+
+	// 設置血條 Widget
+	if (HealthBarComponent && HealthBarWidgetClass)
+	{
+		HealthBarComponent->SetWidgetClass(HealthBarWidgetClass);
+
+		if (UUserWidget* Widget = HealthBarComponent->GetUserWidgetObject())
+		{
+			HealthBarWidget = Cast<UHealthBarWidget>(Widget);
+		}
+	}
+
+	// 綁定血量變化事件
+	if (CombatComponent)
+	{
+		CombatComponent->OnHealthChanged.AddDynamic(this, &ATurnBasedCharacter::OnHealthChanged);
+
+		// 初始化血條顯示
+		UpdateHealthDisplay();
 	}
 
 }
@@ -296,31 +340,166 @@ void ATurnBasedCharacter::UpdateGridPositionFromWorld()
 
 }
 
-void ATurnBasedCharacter::OnDeath()
+void ATurnBasedCharacter::OnDeath_Implementation(AActor* Killer)
 {
-	Debug::Print(FString::Printf(TEXT("%s has died!"), *GetActorLabel()), FColor::Red);
+	if (bIsDying) return; // 防止重複死亡
 
-	// 停止輸入
-	DisableInput(nullptr);
+	bIsDying = true;
 
-	// 清除高亮
+	Debug::Print(FString::Printf(TEXT("=== %s DIED ==="), *GetActorLabel()), FColor::Red, 5.0f);
+	Debug::Print(FString::Printf(TEXT("Killed by: %s"),
+		Killer ? *Killer->GetActorLabel() : TEXT("Unknown")), FColor::Orange);
+
+	// 1. 清理角色狀態
+	CleanupCharacter();
+
+	// 2. 播放死亡效果
+	PlayDeathEffects();
+
+	// 3. 通知回合系統
+	NotifyTurnSystemOfDeath();
+
+	// 4. 播放死亡動畫並設置銷毀計時器
+	if (DeathMontage && GetMesh() && GetMesh()->GetAnimInstance())
+	{
+		float MontageLength = GetMesh()->GetAnimInstance()->Montage_Play(DeathMontage);
+
+		// 使用動畫長度或預設延遲時間
+		float DestroyDelay = FMath::Max(MontageLength, DeathDestroyDelay);
+
+		Debug::Print(FString::Printf(TEXT("Playing death animation, destroy in %.1f seconds"),
+			DestroyDelay), FColor::Yellow);
+
+		GetWorld()->GetTimerManager().SetTimer(
+			DeathTimerHandle,
+			this,
+			&ATurnBasedCharacter::OnDeathAnimationEnd,
+			DestroyDelay,
+			false
+		);
+	}
+	else
+	{
+		Debug::Print(TEXT("No death animation, using default delay"), FColor::Yellow);
+
+		// 沒有動畫時使用預設延遲
+		GetWorld()->GetTimerManager().SetTimer(
+			DeathTimerHandle,
+			this,
+			&ATurnBasedCharacter::OnDeathAnimationEnd,
+			DeathDestroyDelay,
+			false
+		);
+	}
+
+}
+
+void ATurnBasedCharacter::OnDeathAnimationEnd()
+{
+	Debug::Print(FString::Printf(TEXT("%s - Death animation completed, destroying actor"),
+		*GetActorLabel()), FColor::Red);
+
+	// 最後的清理
+	if (Controller)
+	{
+		Controller->UnPossess();
+	}
+
+	// 銷毀角色
+	Destroy();
+}
+
+void ATurnBasedCharacter::NotifyTurnSystemOfDeath()
+{
+	
+	// 查找回合管理器
+	TArray<AActor*> FoundActors;
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), ASimpleTurnManager::StaticClass(), FoundActors);
+
+	if (FoundActors.Num() > 0)
+	{
+		if (ASimpleTurnManager* TurnManager = Cast<ASimpleTurnManager>(FoundActors[0]))
+		{
+			TurnManager->RemoveCharacter(this);
+			Debug::Print(TEXT("Notified turn system of death"), FColor::Green);
+		}
+	}
+	
+}
+
+void ATurnBasedCharacter::PlayDeathEffects()
+{
+	// 1. 生成死亡特效
+	if (DeathEffectClass)
+	{
+		FActorSpawnParameters SpawnParams;
+		SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+
+		AActor* DeathEffect = GetWorld()->SpawnActor<AActor>(
+			DeathEffectClass,
+			GetActorLocation(),
+			GetActorRotation(),
+			SpawnParams
+		);
+
+		Debug::Print(TEXT("Spawned death effect"), FColor::Cyan);
+	}
+
+	
+}
+
+void ATurnBasedCharacter::CleanupCharacter()
+{
+	Debug::Print(TEXT("Cleaning up character..."), FColor::White);
+
+	// 1. 從網格中移除
 	if (GridManager)
 	{
 		GridManager->ClearCellOccupation(CurrentGridPosition);
+		Debug::Print(TEXT("- Cleared grid occupation"), FColor::White);
 	}
 
-	// 播放死亡動畫（未來可擴展）
+	// 2. 禁用碰撞
+	SetActorEnableCollision(false);
+	if (UCapsuleComponent* Capsule = GetCapsuleComponent())
+	{
+		Capsule->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	}
+	Debug::Print(TEXT("- Disabled collision"), FColor::White);
 
-	// 隱藏模型
+	// 3. 禁用輸入
+	if (APlayerController* PC = Cast<APlayerController>(GetController()))
+	{
+		DisableInput(PC);
+		Debug::Print(TEXT("- Disabled input"), FColor::White);
+	}
+
+	// 4. 停止所有高亮效果
 	if (USkeletalMeshComponent* MeshComp = GetMesh())
 	{
-		MeshComp->SetVisibility(false);
-		MeshComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+		MeshComp->SetRenderCustomDepth(false);
 	}
 
-	// 也可以 Destroy
-	// Destroy();
+	// 5. 隱藏血條
+	if (HealthBarComponent)
+	{
+		HealthBarComponent->SetVisibility(false);
+	}
+
+	// 6. 清除視覺組件
+	if (GridVisualComponent)
+	{
+		GridVisualComponent->ClearAllVisuals();
+	}
+
+	// 7. 停止移動
+	if (UCharacterMovementComponent* Movement = GetCharacterMovement())
+	{
+		Movement->StopMovementImmediately();
+		Movement->DisableMovement();
+	}
 }
+
 
 
 
@@ -438,6 +617,59 @@ bool ATurnBasedCharacter::TryAttack(AActor* TargetActor)
 
 
 	return true;
+}
+
+void ATurnBasedCharacter::ExecuteAnimatedAttack(AActor* Target)
+{
+	UCombatComponent* Combat = FindComponentByClass<UCombatComponent>();
+	if (!Combat || !Target) return;
+
+	// 使用現有的 CanAttack 檢查
+	if (!Combat->CanAttack(Target))
+	{
+		Debug::Print(TEXT("Cannot attack target"), FColor::Red);
+		return;
+	}
+
+	// 儲存目標
+	PendingAttackTarget = Target;
+
+	// 面向目標
+	FVector Direction = Target->GetActorLocation() - GetActorLocation();
+	Direction.Z = 0;
+	SetActorRotation(Direction.Rotation());
+
+	// 播放動畫
+	if (AttackMontage && GetMesh() && GetMesh()->GetAnimInstance())
+	{
+		Debug::Print(TEXT("Playing attack animation..."), FColor::Cyan);
+
+		float MontageLength = GetMesh()->GetAnimInstance()->Montage_Play(AttackMontage);
+
+		if (MontageLength > 0.0f)
+		{
+			Debug::Print(FString::Printf(TEXT("Attack montage playing, length: %.2f"), MontageLength), FColor::Green);
+
+			// 在動畫適當時機觸發實際攻擊
+			GetWorld()->GetTimerManager().SetTimer(
+				AttackTimerHandle,
+				this,
+				&ATurnBasedCharacter::OnAttackAnimationHit,
+				AttackAnimationDelay,  // 確保這個值在 TurnBasedCharacter.h 中設置（預設 0.5f）
+				false
+			);
+		}
+		else
+		{
+			Debug::Print(TEXT("ERROR: Montage play failed!"), FColor::Red);
+			OnAttackAnimationHit();  // 直接執行攻擊
+		}
+	}
+	else
+	{
+		// 無動畫直接執行
+		OnAttackAnimationHit();
+	}
 }
 
 void ATurnBasedCharacter::OnTurnStart()
@@ -576,6 +808,65 @@ void ATurnBasedCharacter::PerformAttack(AActor* TargetActor)
 
 }
 
+void ATurnBasedCharacter::OnAttackAnimationHit()
+{
+	if (!PendingAttackTarget.IsValid()) 
+	{
+		Debug::Print(TEXT("ERROR: PendingAttackTarget is invalid!"), FColor::Red);
+		return;
+	}
+
+	Debug::Print(TEXT("Attack animation hit - executing damage"), FColor::Orange);
+
+	UCombatComponent* Combat = FindComponentByClass<UCombatComponent>();
+	if (Combat)
+	{
+		// 使用現有的 ExecuteAttack
+		if (Combat->ExecuteAttack(PendingAttackTarget.Get()))
+		{
+			Debug::Print(TEXT("Attack executed successfully!"), FColor::Green);
+		}
+		else
+		{
+			Debug::Print(TEXT("Attack execution failed!"), FColor::Red);
+		}
+	}
+
+	PendingAttackTarget = nullptr;
+}
+
+void ATurnBasedCharacter::OnHealthChanged(AActor* Character,int32 CurrentHealth, int32 MaxHealth)
+{
+
+
+	Debug::Print(FString::Printf(TEXT("%s Health: %d/%d"),
+		*GetActorLabel(), CurrentHealth, MaxHealth), FColor::Yellow);
+
+	if (Character != this) return;  // 確保是自己
+	UpdateHealthDisplay();
+
+	// 血量低時的視覺反饋
+	if (CurrentHealth > 0 && CurrentHealth <= MaxHealth * 0.3f)
+	{
+		// 可以添加受傷特效或材質閃爍
+		if (USkeletalMeshComponent* MeshComp = GetMesh())
+		{
+			// 暫時變紅
+			MeshComp->SetVectorParameterValueOnMaterials(FName("DamageFlash"), FVector(1, 0, 0));
+
+			// 0.2秒後恢復
+			FTimerHandle FlashTimer;
+			GetWorld()->GetTimerManager().SetTimer(FlashTimer, [this]()
+				{
+					if (USkeletalMeshComponent* MeshComp = GetMesh())
+					{
+						MeshComp->SetVectorParameterValueOnMaterials(FName("DamageFlash"), FVector(0, 0, 0));
+					}
+				}, 0.2f, false);
+		}
+	}
+}
+
 bool ATurnBasedCharacter::IsMyTurn() const
 {
 	return bIsMyTurn;  // 直接返回 bIsMyTurn，而不是返回 false
@@ -651,4 +942,37 @@ void ATurnBasedCharacter::TestDifferentVisuals()
 		GridVisualComponent->ShowPath(TestPath);
 	}
 
+}
+
+void ATurnBasedCharacter::UpdateHealthDisplay()
+{
+
+	if (!CombatComponent || !HealthBarWidget) return;
+
+	int32 CurrentHealth = CombatComponent->GetCurrentHealth();
+	int32 MaxHealth = CombatComponent->GetMaxHealth();
+
+	// 更新血條Widget
+	HealthBarWidget->UpdateHealth(CurrentHealth, MaxHealth);
+
+	// 死亡時隱藏血條
+	if (CurrentHealth <= 0)
+	{
+		HealthBarComponent->SetVisibility(false);
+	}
+
+	Debug::Print(FString::Printf(TEXT("%s Health Display Updated: %d/%d"),
+		*GetActorLabel(), CurrentHealth, MaxHealth), FColor::Green);
+}
+
+bool ATurnBasedCharacter::IsAlive() const
+{
+	if (bIsDying) return false;
+
+	if (CombatComponent)
+	{
+		return CombatComponent->IsAlive();
+	}
+
+	return true;
 }

@@ -20,6 +20,7 @@ PROJECTGATE_API UClass* Z_Construct_UClass_ATurnBasedCharacter_NoRegister();
 PROJECTGATE_API UClass* Z_Construct_UClass_UCombatComponent();
 PROJECTGATE_API UClass* Z_Construct_UClass_UCombatComponent_NoRegister();
 PROJECTGATE_API UFunction* Z_Construct_UDelegateFunction_ProjectGate_OnAttackExecuted__DelegateSignature();
+PROJECTGATE_API UFunction* Z_Construct_UDelegateFunction_ProjectGate_OnAttackExecutedWithResult__DelegateSignature();
 PROJECTGATE_API UFunction* Z_Construct_UDelegateFunction_ProjectGate_OnDamageReceived__DelegateSignature();
 PROJECTGATE_API UFunction* Z_Construct_UDelegateFunction_ProjectGate_OnDeath__DelegateSignature();
 PROJECTGATE_API UFunction* Z_Construct_UDelegateFunction_ProjectGate_OnHealthChanged__DelegateSignature();
@@ -87,7 +88,8 @@ struct Z_Construct_UDelegateFunction_ProjectGate_OnHealthChanged__DelegateSignat
 {
 	struct _Script_ProjectGate_eventOnHealthChanged_Parms
 	{
-		int32 NewHealth;
+		AActor* Character;
+		int32 CurrentHealth;
 		int32 MaxHealth;
 	};
 #if WITH_METADATA
@@ -95,15 +97,18 @@ struct Z_Construct_UDelegateFunction_ProjectGate_OnHealthChanged__DelegateSignat
 		{ "ModuleRelativePath", "Public/CombatSystem/CombatComponent.h" },
 	};
 #endif // WITH_METADATA
-	static const UECodeGen_Private::FIntPropertyParams NewProp_NewHealth;
+	static const UECodeGen_Private::FObjectPropertyParams NewProp_Character;
+	static const UECodeGen_Private::FIntPropertyParams NewProp_CurrentHealth;
 	static const UECodeGen_Private::FIntPropertyParams NewProp_MaxHealth;
 	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
 	static const UECodeGen_Private::FDelegateFunctionParams FuncParams;
 };
-const UECodeGen_Private::FIntPropertyParams Z_Construct_UDelegateFunction_ProjectGate_OnHealthChanged__DelegateSignature_Statics::NewProp_NewHealth = { "NewHealth", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Int, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(_Script_ProjectGate_eventOnHealthChanged_Parms, NewHealth), METADATA_PARAMS(0, nullptr) };
+const UECodeGen_Private::FObjectPropertyParams Z_Construct_UDelegateFunction_ProjectGate_OnHealthChanged__DelegateSignature_Statics::NewProp_Character = { "Character", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(_Script_ProjectGate_eventOnHealthChanged_Parms, Character), Z_Construct_UClass_AActor_NoRegister, METADATA_PARAMS(0, nullptr) };
+const UECodeGen_Private::FIntPropertyParams Z_Construct_UDelegateFunction_ProjectGate_OnHealthChanged__DelegateSignature_Statics::NewProp_CurrentHealth = { "CurrentHealth", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Int, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(_Script_ProjectGate_eventOnHealthChanged_Parms, CurrentHealth), METADATA_PARAMS(0, nullptr) };
 const UECodeGen_Private::FIntPropertyParams Z_Construct_UDelegateFunction_ProjectGate_OnHealthChanged__DelegateSignature_Statics::NewProp_MaxHealth = { "MaxHealth", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Int, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(_Script_ProjectGate_eventOnHealthChanged_Parms, MaxHealth), METADATA_PARAMS(0, nullptr) };
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UDelegateFunction_ProjectGate_OnHealthChanged__DelegateSignature_Statics::PropPointers[] = {
-	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UDelegateFunction_ProjectGate_OnHealthChanged__DelegateSignature_Statics::NewProp_NewHealth,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UDelegateFunction_ProjectGate_OnHealthChanged__DelegateSignature_Statics::NewProp_Character,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UDelegateFunction_ProjectGate_OnHealthChanged__DelegateSignature_Statics::NewProp_CurrentHealth,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UDelegateFunction_ProjectGate_OnHealthChanged__DelegateSignature_Statics::NewProp_MaxHealth,
 };
 static_assert(UE_ARRAY_COUNT(Z_Construct_UDelegateFunction_ProjectGate_OnHealthChanged__DelegateSignature_Statics::PropPointers) < 2048);
@@ -118,15 +123,17 @@ UFunction* Z_Construct_UDelegateFunction_ProjectGate_OnHealthChanged__DelegateSi
 	}
 	return ReturnFunction;
 }
-void FOnHealthChanged_DelegateWrapper(const FMulticastScriptDelegate& OnHealthChanged, int32 NewHealth, int32 MaxHealth)
+void FOnHealthChanged_DelegateWrapper(const FMulticastScriptDelegate& OnHealthChanged, AActor* Character, int32 CurrentHealth, int32 MaxHealth)
 {
 	struct _Script_ProjectGate_eventOnHealthChanged_Parms
 	{
-		int32 NewHealth;
+		AActor* Character;
+		int32 CurrentHealth;
 		int32 MaxHealth;
 	};
 	_Script_ProjectGate_eventOnHealthChanged_Parms Parms;
-	Parms.NewHealth=NewHealth;
+	Parms.Character=Character;
+	Parms.CurrentHealth=CurrentHealth;
 	Parms.MaxHealth=MaxHealth;
 	OnHealthChanged.ProcessMulticastDelegate<UObject>(&Parms);
 }
@@ -225,6 +232,71 @@ void FOnAttackExecuted_DelegateWrapper(const FMulticastScriptDelegate& OnAttackE
 	OnAttackExecuted.ProcessMulticastDelegate<UObject>(&Parms);
 }
 // ********** End Delegate FOnAttackExecuted *******************************************************
+
+// ********** Begin Delegate FOnAttackExecutedWithResult *******************************************
+struct Z_Construct_UDelegateFunction_ProjectGate_OnAttackExecutedWithResult__DelegateSignature_Statics
+{
+	struct _Script_ProjectGate_eventOnAttackExecutedWithResult_Parms
+	{
+		AActor* Attacker;
+		AActor* Target;
+		FDamageResult DamageResult;
+	};
+#if WITH_METADATA
+	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "//==\xef\xbf\xbd\xcb\xae`\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbdG\xef\xbf\xbd""e\xef\xbf\xbdU==\n" },
+#endif
+		{ "ModuleRelativePath", "Public/CombatSystem/CombatComponent.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "==\xef\xbf\xbd\xcb\xae`\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbdG\xef\xbf\xbd""e\xef\xbf\xbdU==" },
+#endif
+	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_DamageResult_MetaData[] = {
+		{ "NativeConst", "" },
+	};
+#endif // WITH_METADATA
+	static const UECodeGen_Private::FObjectPropertyParams NewProp_Attacker;
+	static const UECodeGen_Private::FObjectPropertyParams NewProp_Target;
+	static const UECodeGen_Private::FStructPropertyParams NewProp_DamageResult;
+	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
+	static const UECodeGen_Private::FDelegateFunctionParams FuncParams;
+};
+const UECodeGen_Private::FObjectPropertyParams Z_Construct_UDelegateFunction_ProjectGate_OnAttackExecutedWithResult__DelegateSignature_Statics::NewProp_Attacker = { "Attacker", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(_Script_ProjectGate_eventOnAttackExecutedWithResult_Parms, Attacker), Z_Construct_UClass_AActor_NoRegister, METADATA_PARAMS(0, nullptr) };
+const UECodeGen_Private::FObjectPropertyParams Z_Construct_UDelegateFunction_ProjectGate_OnAttackExecutedWithResult__DelegateSignature_Statics::NewProp_Target = { "Target", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(_Script_ProjectGate_eventOnAttackExecutedWithResult_Parms, Target), Z_Construct_UClass_AActor_NoRegister, METADATA_PARAMS(0, nullptr) };
+const UECodeGen_Private::FStructPropertyParams Z_Construct_UDelegateFunction_ProjectGate_OnAttackExecutedWithResult__DelegateSignature_Statics::NewProp_DamageResult = { "DamageResult", nullptr, (EPropertyFlags)0x0010000008000182, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(_Script_ProjectGate_eventOnAttackExecutedWithResult_Parms, DamageResult), Z_Construct_UScriptStruct_FDamageResult, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_DamageResult_MetaData), NewProp_DamageResult_MetaData) }; // 2440303719
+const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UDelegateFunction_ProjectGate_OnAttackExecutedWithResult__DelegateSignature_Statics::PropPointers[] = {
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UDelegateFunction_ProjectGate_OnAttackExecutedWithResult__DelegateSignature_Statics::NewProp_Attacker,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UDelegateFunction_ProjectGate_OnAttackExecutedWithResult__DelegateSignature_Statics::NewProp_Target,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UDelegateFunction_ProjectGate_OnAttackExecutedWithResult__DelegateSignature_Statics::NewProp_DamageResult,
+};
+static_assert(UE_ARRAY_COUNT(Z_Construct_UDelegateFunction_ProjectGate_OnAttackExecutedWithResult__DelegateSignature_Statics::PropPointers) < 2048);
+const UECodeGen_Private::FDelegateFunctionParams Z_Construct_UDelegateFunction_ProjectGate_OnAttackExecutedWithResult__DelegateSignature_Statics::FuncParams = { { (UObject*(*)())Z_Construct_UPackage__Script_ProjectGate, nullptr, "OnAttackExecutedWithResult__DelegateSignature", Z_Construct_UDelegateFunction_ProjectGate_OnAttackExecutedWithResult__DelegateSignature_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UDelegateFunction_ProjectGate_OnAttackExecutedWithResult__DelegateSignature_Statics::PropPointers), sizeof(Z_Construct_UDelegateFunction_ProjectGate_OnAttackExecutedWithResult__DelegateSignature_Statics::_Script_ProjectGate_eventOnAttackExecutedWithResult_Parms), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x00530000, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UDelegateFunction_ProjectGate_OnAttackExecutedWithResult__DelegateSignature_Statics::Function_MetaDataParams), Z_Construct_UDelegateFunction_ProjectGate_OnAttackExecutedWithResult__DelegateSignature_Statics::Function_MetaDataParams)},  };
+static_assert(sizeof(Z_Construct_UDelegateFunction_ProjectGate_OnAttackExecutedWithResult__DelegateSignature_Statics::_Script_ProjectGate_eventOnAttackExecutedWithResult_Parms) < MAX_uint16);
+UFunction* Z_Construct_UDelegateFunction_ProjectGate_OnAttackExecutedWithResult__DelegateSignature()
+{
+	static UFunction* ReturnFunction = nullptr;
+	if (!ReturnFunction)
+	{
+		UECodeGen_Private::ConstructUDelegateFunction(&ReturnFunction, Z_Construct_UDelegateFunction_ProjectGate_OnAttackExecutedWithResult__DelegateSignature_Statics::FuncParams);
+	}
+	return ReturnFunction;
+}
+void FOnAttackExecutedWithResult_DelegateWrapper(const FMulticastScriptDelegate& OnAttackExecutedWithResult, AActor* Attacker, AActor* Target, FDamageResult const& DamageResult)
+{
+	struct _Script_ProjectGate_eventOnAttackExecutedWithResult_Parms
+	{
+		AActor* Attacker;
+		AActor* Target;
+		FDamageResult DamageResult;
+	};
+	_Script_ProjectGate_eventOnAttackExecutedWithResult_Parms Parms;
+	Parms.Attacker=Attacker;
+	Parms.Target=Target;
+	Parms.DamageResult=DamageResult;
+	OnAttackExecutedWithResult.ProcessMulticastDelegate<UObject>(&Parms);
+}
+// ********** End Delegate FOnAttackExecutedWithResult *********************************************
 
 // ********** Begin Class UCombatComponent Function ApplyDamage ************************************
 struct Z_Construct_UFunction_UCombatComponent_ApplyDamage_Statics
@@ -910,6 +982,10 @@ struct Z_Construct_UClass_UCombatComponent_Statics
 		{ "Category", "Combat" },
 		{ "ModuleRelativePath", "Public/CombatSystem/CombatComponent.h" },
 	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_OnAttackExecutedWithResult_MetaData[] = {
+		{ "Category", "Combat" },
+		{ "ModuleRelativePath", "Public/CombatSystem/CombatComponent.h" },
+	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_OwnerCharacter_MetaData[] = {
 		{ "ModuleRelativePath", "Public/CombatSystem/CombatComponent.h" },
 	};
@@ -926,6 +1002,7 @@ struct Z_Construct_UClass_UCombatComponent_Statics
 	static const UECodeGen_Private::FMulticastDelegatePropertyParams NewProp_OnHealthChanged;
 	static const UECodeGen_Private::FMulticastDelegatePropertyParams NewProp_OnDeath;
 	static const UECodeGen_Private::FMulticastDelegatePropertyParams NewProp_OnAttackExecuted;
+	static const UECodeGen_Private::FMulticastDelegatePropertyParams NewProp_OnAttackExecutedWithResult;
 	static const UECodeGen_Private::FObjectPropertyParams NewProp_OwnerCharacter;
 	static const UECodeGen_Private::FObjectPropertyParams NewProp_GridManager;
 	static const UECodeGen_Private::FObjectPropertyParams NewProp_HighlightedTargets_Inner;
@@ -956,9 +1033,10 @@ struct Z_Construct_UClass_UCombatComponent_Statics
 const UECodeGen_Private::FStructPropertyParams Z_Construct_UClass_UCombatComponent_Statics::NewProp_Stats = { "Stats", nullptr, (EPropertyFlags)0x0010000000000005, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UCombatComponent, Stats), Z_Construct_UScriptStruct_FCombatStats, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_Stats_MetaData), NewProp_Stats_MetaData) }; // 3017904589
 const UECodeGen_Private::FStructPropertyParams Z_Construct_UClass_UCombatComponent_Statics::NewProp_AttackConfig = { "AttackConfig", nullptr, (EPropertyFlags)0x0010000000000005, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UCombatComponent, AttackConfig), Z_Construct_UScriptStruct_FAttackConfig, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_AttackConfig_MetaData), NewProp_AttackConfig_MetaData) }; // 2478238228
 const UECodeGen_Private::FMulticastDelegatePropertyParams Z_Construct_UClass_UCombatComponent_Statics::NewProp_OnDamageReceived = { "OnDamageReceived", nullptr, (EPropertyFlags)0x0010000010080000, UECodeGen_Private::EPropertyGenFlags::InlineMulticastDelegate, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UCombatComponent, OnDamageReceived), Z_Construct_UDelegateFunction_ProjectGate_OnDamageReceived__DelegateSignature, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_OnDamageReceived_MetaData), NewProp_OnDamageReceived_MetaData) }; // 1299699555
-const UECodeGen_Private::FMulticastDelegatePropertyParams Z_Construct_UClass_UCombatComponent_Statics::NewProp_OnHealthChanged = { "OnHealthChanged", nullptr, (EPropertyFlags)0x0010000010080000, UECodeGen_Private::EPropertyGenFlags::InlineMulticastDelegate, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UCombatComponent, OnHealthChanged), Z_Construct_UDelegateFunction_ProjectGate_OnHealthChanged__DelegateSignature, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_OnHealthChanged_MetaData), NewProp_OnHealthChanged_MetaData) }; // 1607079755
+const UECodeGen_Private::FMulticastDelegatePropertyParams Z_Construct_UClass_UCombatComponent_Statics::NewProp_OnHealthChanged = { "OnHealthChanged", nullptr, (EPropertyFlags)0x0010000010080000, UECodeGen_Private::EPropertyGenFlags::InlineMulticastDelegate, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UCombatComponent, OnHealthChanged), Z_Construct_UDelegateFunction_ProjectGate_OnHealthChanged__DelegateSignature, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_OnHealthChanged_MetaData), NewProp_OnHealthChanged_MetaData) }; // 1480368307
 const UECodeGen_Private::FMulticastDelegatePropertyParams Z_Construct_UClass_UCombatComponent_Statics::NewProp_OnDeath = { "OnDeath", nullptr, (EPropertyFlags)0x0010000010080000, UECodeGen_Private::EPropertyGenFlags::InlineMulticastDelegate, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UCombatComponent, OnDeath), Z_Construct_UDelegateFunction_ProjectGate_OnDeath__DelegateSignature, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_OnDeath_MetaData), NewProp_OnDeath_MetaData) }; // 1799124738
 const UECodeGen_Private::FMulticastDelegatePropertyParams Z_Construct_UClass_UCombatComponent_Statics::NewProp_OnAttackExecuted = { "OnAttackExecuted", nullptr, (EPropertyFlags)0x0010000010080000, UECodeGen_Private::EPropertyGenFlags::InlineMulticastDelegate, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UCombatComponent, OnAttackExecuted), Z_Construct_UDelegateFunction_ProjectGate_OnAttackExecuted__DelegateSignature, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_OnAttackExecuted_MetaData), NewProp_OnAttackExecuted_MetaData) }; // 568335998
+const UECodeGen_Private::FMulticastDelegatePropertyParams Z_Construct_UClass_UCombatComponent_Statics::NewProp_OnAttackExecutedWithResult = { "OnAttackExecutedWithResult", nullptr, (EPropertyFlags)0x0010000010080000, UECodeGen_Private::EPropertyGenFlags::InlineMulticastDelegate, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UCombatComponent, OnAttackExecutedWithResult), Z_Construct_UDelegateFunction_ProjectGate_OnAttackExecutedWithResult__DelegateSignature, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_OnAttackExecutedWithResult_MetaData), NewProp_OnAttackExecutedWithResult_MetaData) }; // 4176447062
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_UCombatComponent_Statics::NewProp_OwnerCharacter = { "OwnerCharacter", nullptr, (EPropertyFlags)0x0040000000000000, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UCombatComponent, OwnerCharacter), Z_Construct_UClass_ATurnBasedCharacter_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_OwnerCharacter_MetaData), NewProp_OwnerCharacter_MetaData) };
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_UCombatComponent_Statics::NewProp_GridManager = { "GridManager", nullptr, (EPropertyFlags)0x0040000000000000, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UCombatComponent, GridManager), Z_Construct_UClass_AGridManager_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_GridManager_MetaData), NewProp_GridManager_MetaData) };
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_UCombatComponent_Statics::NewProp_HighlightedTargets_Inner = { "HighlightedTargets", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, 0, Z_Construct_UClass_AActor_NoRegister, METADATA_PARAMS(0, nullptr) };
@@ -970,6 +1048,7 @@ const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UClass_UCombatCo
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UCombatComponent_Statics::NewProp_OnHealthChanged,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UCombatComponent_Statics::NewProp_OnDeath,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UCombatComponent_Statics::NewProp_OnAttackExecuted,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UCombatComponent_Statics::NewProp_OnAttackExecutedWithResult,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UCombatComponent_Statics::NewProp_OwnerCharacter,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UCombatComponent_Statics::NewProp_GridManager,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UCombatComponent_Statics::NewProp_HighlightedTargets_Inner,
@@ -1012,10 +1091,10 @@ UCombatComponent::~UCombatComponent() {}
 struct Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_CombatSystem_CombatComponent_h__Script_ProjectGate_Statics
 {
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_UCombatComponent, UCombatComponent::StaticClass, TEXT("UCombatComponent"), &Z_Registration_Info_UClass_UCombatComponent, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UCombatComponent), 2694990233U) },
+		{ Z_Construct_UClass_UCombatComponent, UCombatComponent::StaticClass, TEXT("UCombatComponent"), &Z_Registration_Info_UClass_UCombatComponent, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UCombatComponent), 4127622887U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_CombatSystem_CombatComponent_h__Script_ProjectGate_1651391903(TEXT("/Script/ProjectGate"),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_CombatSystem_CombatComponent_h__Script_ProjectGate_3059212262(TEXT("/Script/ProjectGate"),
 	Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_CombatSystem_CombatComponent_h__Script_ProjectGate_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_CombatSystem_CombatComponent_h__Script_ProjectGate_Statics::ClassInfo),
 	nullptr, 0,
 	nullptr, 0);

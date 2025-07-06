@@ -41,6 +41,12 @@ protected:
     UPROPERTY(EditDefaultsOnly, Category = "Camera")
     float FocusDistance = 800.0f;
 
+    // UI
+    UPROPERTY(EditDefaultsOnly, Category = "UI")
+    TSubclassOf<class UCombatDisplayWidget> CombatDisplayWidgetClass;
+
+    UPROPERTY()
+    class UCombatDisplayWidget* CombatDisplayWidget;
    
 
 
@@ -52,8 +58,11 @@ private:
     UPROPERTY()
     class UTurnDisplayWidget* TurnDisplayWidget;
 
+    // UI
     UPROPERTY(EditDefaultsOnly , Category = "UI")
     TSubclassOf<class UTurnDisplayWidget> TurnDisplayWidgetClass;
+
+   
 
     //追蹤前一個角色
 	UPROPERTY()
@@ -75,7 +84,17 @@ public:
 
     // 獲取 Turn Display Widget
     UFUNCTION(BlueprintCallable, Category = "UI")
-    UTurnDisplayWidget* GetTurnDisplayWidget() const { return TurnDisplayWidget; }
+    UTurnDisplayWidget* GetTurnDisplayWidget() const { return TurnDisplayWidget;}
+
+    UFUNCTION(BlueprintCallable, Category = "UI")
+    UCombatDisplayWidget* GetCombatDisplayWidget() const { return CombatDisplayWidget; }
+
+    //獲取 CombatDisplayWidget
+    UFUNCTION(BlueprintCallable, Category = "UI")
+    TSubclassOf<class UCombatDisplayWidget> GetCombatDisplayWidgetClass() const { return CombatDisplayWidgetClass; }
+
+
+
 
     UFUNCTION()
     void OnAPChanged(int32 NewAP);

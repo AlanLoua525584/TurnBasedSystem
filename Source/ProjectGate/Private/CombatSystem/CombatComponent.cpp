@@ -34,7 +34,7 @@ void UCombatComponent::BeginPlay()
 
 	// 初始化生命值
 	Stats.CurrentHealth = Stats.MaxHealth;
-	OnHealthChanged.Broadcast(Stats.CurrentHealth, Stats.MaxHealth);
+	OnHealthChanged.Broadcast(GetOwner(), Stats.CurrentHealth, Stats.MaxHealth);
 
 
 }
@@ -46,30 +46,63 @@ void UCombatComponent::InitializeCombat(AGridManager* InGridManager)
 
 bool UCombatComponent::CanAttack(AActor* Target) const
 {
+    Debug::PrintCooldown(TEXT("Attack"),(TEXT("=== CanAttack Check ===")),
+        FColor::Yellow,
+        1.0f); // 1秒更新一次
+
+    if (!Target)
+    {
+        Debug::Print(TEXT("CanAttack: Target is null!"), FColor::Red);
+        return false;
+    }
+
+    Debug::Print(FString::Printf(TEXT("Target: %s (Class: %s)"),
+        *Target->GetName(), *Target->GetClass()->GetName()), FColor::White);
+
+
     if (!IsValidTarget(Target))
     {
+        Debug::Print(TEXT("CanAttack: IsValidTarget failed"), FColor::Red);
+
+        // 檢查具體原因
+        if (Target == GetOwner())
+        {
+            Debug::Print(TEXT("  - Cannot attack self"), FColor::Red);
+        }
+        else if (!Target->Implements<UCombatInterface>() &&
+            !Target->FindComponentByClass<UCombatComponent>())
+        {
+            Debug::Print(TEXT("  - Target has no combat ability"), FColor::Red);
+        }
+        else if (UCombatComponent* TargetCombat = Target->FindComponentByClass<UCombatComponent>())
+        {
+            if (!TargetCombat->IsAlive())
+            {
+                Debug::Print(TEXT("  - Target is dead"), FColor::Red);
+            }
+        }
         return false;
     }
 
     // 檢查自己是否存活
     if (!IsAlive())
     {
+        Debug::Print(TEXT("CanAttack: Attacker is dead"), FColor::Red);
         return false;
     }
 
-    // 檢查目標是否可被攻擊
-    if (Target->Implements<UCombatInterface>())
-    {
-        if (!ICombatInterface::Execute_CanBeAttacked(Target))
-        {
-            return false;
-        }
-    }
 
     // 檢查距離
     float Distance = FVector::Dist(GetOwner()->GetActorLocation(), Target->GetActorLocation());
+    Debug::Print(FString::Printf(TEXT("Distance: %.1f / %.1f"),
+        Distance, AttackConfig.AttackRange), FColor::White);
+    
+    
+    
+    
     if (Distance > AttackConfig.AttackRange)
     {
+        Debug::Print(TEXT("CanAttack: Target out of range"), FColor::Red);
         return false;
     }
 
@@ -84,6 +117,7 @@ bool UCombatComponent::CanAttack(AActor* Target) const
 
         if (GridDistance > 1)
         {
+            Debug::Print(TEXT("CanAttack: Melee target not adjacent"), FColor::Red);
             return false;
         }
     }
@@ -91,9 +125,14 @@ bool UCombatComponent::CanAttack(AActor* Target) const
     // 檢查行動點
     if (OwnerCharacter && !OwnerCharacter->CanPerformAction(AttackConfig.ActionPointCost))
     {
+        Debug::Print(FString::Printf(TEXT("CanAttack: Not enough AP (%d required)"),
+            AttackConfig.ActionPointCost), FColor::Red);
+
         return false;
     }
 
+
+    Debug::Print(TEXT("CanAttack: All checks passed!"), FColor::Green);
     return true;
 }
 
@@ -125,6 +164,7 @@ bool UCombatComponent::ExecuteAttack(AActor* Target)
 
     // 廣播攻擊事件
     OnAttackExecuted.Broadcast(GetOwner(), Target);
+    OnAttackExecutedWithResult.Broadcast(GetOwner(), Target, DamageResult);
 
     // Debug 輸出
     FString AttackMsg = FString::Printf(TEXT("%s attacked %s for %d damage%s!"),
@@ -192,7 +232,7 @@ void UCombatComponent::ApplyDamage(const FDamageResult& DamageResult)
 
     // 廣播事件
     OnDamageReceived.Broadcast(DamageResult);
-    OnHealthChanged.Broadcast(Stats.CurrentHealth, Stats.MaxHealth);
+    OnHealthChanged.Broadcast(GetOwner(), Stats.CurrentHealth, Stats.MaxHealth);
 
     Debug::Print(FString::Printf(TEXT("%s took %d damage! Health: %d/%d"),
         *GetOwner()->GetName(),
@@ -333,6 +373,18 @@ bool UCombatComponent::IsValidTarget(AActor* Target) const
         return false;
     }
 
+
+    // 檢查是否正在死亡
+    if (ATurnBasedCharacter* TurnChar = Cast<ATurnBasedCharacter>(Target))
+    {
+        if (TurnChar->bIsDying)
+        {
+            Debug::Print(TEXT("Target is dying, not valid"), FColor::Red);
+            return false;
+        }
+    }
+
+
     // 檢查是否有戰鬥能力
     bool bHasCombatAbility = Target->Implements<UCombatInterface>() ||
         Target->FindComponentByClass<UCombatComponent>() != nullptr;
@@ -358,12 +410,7 @@ void UCombatComponent::HandleDeath(AActor* Killer)
 {
     OnDeath.Broadcast(Killer);
 
-    // 通知擁有者
-    if (OwnerCharacter)
-    {
-        OwnerCharacter->OnDeath();
-    }
-
+ 
     // 如果實現了接口，調用接口方法
     if (GetOwner()->Implements<UCombatInterface>())
     {

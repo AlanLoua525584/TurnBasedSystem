@@ -15,9 +15,18 @@ class UCombatEffectsComponent;
 
 // === 委託事件 ===
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnDamageReceived, const FDamageResult&, DamageResult);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnHealthChanged, int32, NewHealth, int32, MaxHealth);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnHealthChanged, AActor*, Character, int32, CurrentHealth, int32, MaxHealth);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnDeath, AActor*, Killer);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnAttackExecuted, AActor*, Attacker, AActor*, Target);
+
+//==傷害結果委託==
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(
+    FOnAttackExecutedWithResult,
+    AActor*, Attacker,
+    AActor*, Target,
+    const FDamageResult&, DamageResult
+);
 
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
@@ -40,6 +49,7 @@ public:
 
     UFUNCTION(BlueprintCallable, Category = "Combat")
     bool ExecuteAttack(AActor* Target);
+
 
     UFUNCTION(BlueprintCallable, Category = "Combat")
     FDamageResult CalculateDamage(AActor* Target);
@@ -104,6 +114,9 @@ public:
 
     UPROPERTY(BlueprintAssignable, Category = "Combat")
     FOnAttackExecuted OnAttackExecuted;
+
+    UPROPERTY(BlueprintAssignable, Category = "Combat")
+    FOnAttackExecutedWithResult OnAttackExecutedWithResult;
 
 
 protected:

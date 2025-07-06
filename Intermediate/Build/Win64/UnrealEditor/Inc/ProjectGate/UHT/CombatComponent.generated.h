@@ -29,7 +29,7 @@ PROJECTGATE_API void FOnDamageReceived_DelegateWrapper(const FMulticastScriptDel
 
 // ********** Begin Delegate FOnHealthChanged ******************************************************
 #define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_CombatSystem_CombatComponent_h_18_DELEGATE \
-PROJECTGATE_API void FOnHealthChanged_DelegateWrapper(const FMulticastScriptDelegate& OnHealthChanged, int32 NewHealth, int32 MaxHealth);
+PROJECTGATE_API void FOnHealthChanged_DelegateWrapper(const FMulticastScriptDelegate& OnHealthChanged, AActor* Character, int32 CurrentHealth, int32 MaxHealth);
 
 
 // ********** End Delegate FOnHealthChanged ********************************************************
@@ -48,8 +48,15 @@ PROJECTGATE_API void FOnAttackExecuted_DelegateWrapper(const FMulticastScriptDel
 
 // ********** End Delegate FOnAttackExecuted *******************************************************
 
+// ********** Begin Delegate FOnAttackExecutedWithResult *******************************************
+#define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_CombatSystem_CombatComponent_h_29_DELEGATE \
+PROJECTGATE_API void FOnAttackExecutedWithResult_DelegateWrapper(const FMulticastScriptDelegate& OnAttackExecutedWithResult, AActor* Attacker, AActor* Target, FDamageResult const& DamageResult);
+
+
+// ********** End Delegate FOnAttackExecutedWithResult *********************************************
+
 // ********** Begin Class UCombatComponent *********************************************************
-#define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_CombatSystem_CombatComponent_h_26_RPC_WRAPPERS_NO_PURE_DECLS \
+#define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_CombatSystem_CombatComponent_h_35_RPC_WRAPPERS_NO_PURE_DECLS \
 	DECLARE_FUNCTION(execGetAttackRange); \
 	DECLARE_FUNCTION(execGetAttackCost); \
 	DECLARE_FUNCTION(execGetHealthPercent); \
@@ -67,7 +74,7 @@ PROJECTGATE_API void FOnAttackExecuted_DelegateWrapper(const FMulticastScriptDel
 
 PROJECTGATE_API UClass* Z_Construct_UClass_UCombatComponent_NoRegister();
 
-#define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_CombatSystem_CombatComponent_h_26_INCLASS_NO_PURE_DECLS \
+#define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_CombatSystem_CombatComponent_h_35_INCLASS_NO_PURE_DECLS \
 private: \
 	static void StaticRegisterNativesUCombatComponent(); \
 	friend struct Z_Construct_UClass_UCombatComponent_Statics; \
@@ -78,7 +85,7 @@ public: \
 	DECLARE_SERIALIZER(UCombatComponent)
 
 
-#define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_CombatSystem_CombatComponent_h_26_ENHANCED_CONSTRUCTORS \
+#define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_CombatSystem_CombatComponent_h_35_ENHANCED_CONSTRUCTORS \
 	/** Deleted move- and copy-constructors, should never be used */ \
 	UCombatComponent(UCombatComponent&&) = delete; \
 	UCombatComponent(const UCombatComponent&) = delete; \
@@ -88,13 +95,13 @@ public: \
 	NO_API virtual ~UCombatComponent();
 
 
-#define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_CombatSystem_CombatComponent_h_23_PROLOG
-#define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_CombatSystem_CombatComponent_h_26_GENERATED_BODY \
+#define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_CombatSystem_CombatComponent_h_32_PROLOG
+#define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_CombatSystem_CombatComponent_h_35_GENERATED_BODY \
 PRAGMA_DISABLE_DEPRECATION_WARNINGS \
 public: \
-	FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_CombatSystem_CombatComponent_h_26_RPC_WRAPPERS_NO_PURE_DECLS \
-	FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_CombatSystem_CombatComponent_h_26_INCLASS_NO_PURE_DECLS \
-	FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_CombatSystem_CombatComponent_h_26_ENHANCED_CONSTRUCTORS \
+	FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_CombatSystem_CombatComponent_h_35_RPC_WRAPPERS_NO_PURE_DECLS \
+	FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_CombatSystem_CombatComponent_h_35_INCLASS_NO_PURE_DECLS \
+	FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_CombatSystem_CombatComponent_h_35_ENHANCED_CONSTRUCTORS \
 private: \
 PRAGMA_ENABLE_DEPRECATION_WARNINGS
 

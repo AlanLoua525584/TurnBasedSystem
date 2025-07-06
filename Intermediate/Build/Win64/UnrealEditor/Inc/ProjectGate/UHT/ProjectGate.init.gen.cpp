@@ -12,6 +12,8 @@ void EmptyLinkFunctionForGeneratedCodeProjectGate_init() {}
 	PROJECTGATE_API UFunction* Z_Construct_UDelegateFunction_ProjectGate_OnALSGaitChanged__DelegateSignature();
 	PROJECTGATE_API UFunction* Z_Construct_UDelegateFunction_ProjectGate_OnALSStateChanged__DelegateSignature();
 	PROJECTGATE_API UFunction* Z_Construct_UDelegateFunction_ProjectGate_OnAttackExecuted__DelegateSignature();
+	PROJECTGATE_API UFunction* Z_Construct_UDelegateFunction_ProjectGate_OnAttackExecutedWithResult__DelegateSignature();
+	PROJECTGATE_API UFunction* Z_Construct_UDelegateFunction_ProjectGate_OnBattleEnded__DelegateSignature();
 	PROJECTGATE_API UFunction* Z_Construct_UDelegateFunction_ProjectGate_OnDamageReceived__DelegateSignature();
 	PROJECTGATE_API UFunction* Z_Construct_UDelegateFunction_ProjectGate_OnDeath__DelegateSignature();
 	PROJECTGATE_API UFunction* Z_Construct_UDelegateFunction_ProjectGate_OnEnemyDied__DelegateSignature();
@@ -36,6 +38,8 @@ void EmptyLinkFunctionForGeneratedCodeProjectGate_init() {}
 				(UObject* (*)())Z_Construct_UDelegateFunction_ProjectGate_OnALSGaitChanged__DelegateSignature,
 				(UObject* (*)())Z_Construct_UDelegateFunction_ProjectGate_OnALSStateChanged__DelegateSignature,
 				(UObject* (*)())Z_Construct_UDelegateFunction_ProjectGate_OnAttackExecuted__DelegateSignature,
+				(UObject* (*)())Z_Construct_UDelegateFunction_ProjectGate_OnAttackExecutedWithResult__DelegateSignature,
+				(UObject* (*)())Z_Construct_UDelegateFunction_ProjectGate_OnBattleEnded__DelegateSignature,
 				(UObject* (*)())Z_Construct_UDelegateFunction_ProjectGate_OnDamageReceived__DelegateSignature,
 				(UObject* (*)())Z_Construct_UDelegateFunction_ProjectGate_OnDeath__DelegateSignature,
 				(UObject* (*)())Z_Construct_UDelegateFunction_ProjectGate_OnEnemyDied__DelegateSignature,
@@ -55,13 +59,13 @@ void EmptyLinkFunctionForGeneratedCodeProjectGate_init() {}
 				SingletonFuncArray,
 				UE_ARRAY_COUNT(SingletonFuncArray),
 				PKG_CompiledIn | 0x00000000,
-				0x670A94FB,
-				0x4BE7F1F7,
+				0x28782D69,
+				0x0DF8BBC3,
 				METADATA_PARAMS(0, nullptr)
 			};
 			UECodeGen_Private::ConstructUPackage(Z_Registration_Info_UPackage__Script_ProjectGate.OuterSingleton, PackageParams);
 		}
 		return Z_Registration_Info_UPackage__Script_ProjectGate.OuterSingleton;
 	}
-	static FRegisterCompiledInInfo Z_CompiledInDeferPackage_UPackage__Script_ProjectGate(Z_Construct_UPackage__Script_ProjectGate, TEXT("/Script/ProjectGate"), Z_Registration_Info_UPackage__Script_ProjectGate, CONSTRUCT_RELOAD_VERSION_INFO(FPackageReloadVersionInfo, 0x670A94FB, 0x4BE7F1F7));
+	static FRegisterCompiledInInfo Z_CompiledInDeferPackage_UPackage__Script_ProjectGate(Z_Construct_UPackage__Script_ProjectGate, TEXT("/Script/ProjectGate"), Z_Registration_Info_UPackage__Script_ProjectGate, CONSTRUCT_RELOAD_VERSION_INFO(FPackageReloadVersionInfo, 0x28782D69, 0x0DF8BBC3));
 PRAGMA_ENABLE_DEPRECATION_WARNINGS

@@ -280,10 +280,16 @@
     <ClCompile Include="..\..\Source\ProjectGate\Private\CombatSystem\CombatComponent.cpp">
       <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
+    <ClCompile Include="..\..\Source\ProjectGate\Private\CombatSystem\CombatDisplayWidget.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
     <ClCompile Include="..\..\Source\ProjectGate\Private\CombatSystem\CombatInterface.cpp">
       <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <ClCompile Include="..\..\Source\ProjectGate\Private\CombatSystem\CombatStats.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\ProjectGate\Private\CombatSystem\HealthPointBarWidget.cpp">
       <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <ClCompile Include="..\..\Source\ProjectGate\Private\TurnBasedSystem\EnhancedMovementSystem.cpp">
@@ -320,8 +326,10 @@
     <ClInclude Include="..\..\Source\ProjectGate\Public\ProjectGateGameMode.h"/>
     <ClInclude Include="..\..\Source\ProjectGate\Public\ProjectGatePlayerController.h"/>
     <ClInclude Include="..\..\Source\ProjectGate\Public\CombatSystem\CombatComponent.h"/>
+    <ClInclude Include="..\..\Source\ProjectGate\Public\CombatSystem\CombatDisplayWidget.h"/>
     <ClInclude Include="..\..\Source\ProjectGate\Public\CombatSystem\CombatInterface.h"/>
     <ClInclude Include="..\..\Source\ProjectGate\Public\CombatSystem\CombatStats.h"/>
+    <ClInclude Include="..\..\Source\ProjectGate\Public\CombatSystem\HealthPointBarWidget.h"/>
     <ClInclude Include="..\..\Source\ProjectGate\Public\TurnBasedSystem\EnhancedMovementSystem.h"/>
     <ClInclude Include="..\..\Source\ProjectGate\Public\TurnBasedSystem\GridManager.h"/>
     <ClInclude Include="..\..\Source\ProjectGate\Public\TurnBasedSystem\GridPathfindingComponent.h"/>

@@ -152,6 +152,113 @@ void ASimpleTurnManager::PossessCurrentTurnCharacter()
 
 }
 
+void ASimpleTurnManager::RemoveCharacter(AActor* Character)
+{
+	if (!Character || !TurnOrder.Contains(Character)) return;
+
+	Debug::Print(FString::Printf(TEXT("Removing %s from turn order"),
+		*Character->GetName()), FColor::Orange);
+	// 記錄是否是當前回合角色
+	bool bWasCurrentTurn = (CurrentTurnIndex < TurnOrder.Num() &&
+		TurnOrder[CurrentTurnIndex] == Character);
+
+	// 找到角色的索引
+	int32 CharacterIndex = TurnOrder.IndexOfByKey(Character);
+
+	// 從列表中移除
+	TurnOrder.RemoveAt(CharacterIndex);
+
+	// 調整當前索引
+	if (CharacterIndex < CurrentTurnIndex)
+	{
+		CurrentTurnIndex--;
+	}
+	else if (CharacterIndex == CurrentTurnIndex)
+	{
+		// 如果移除的是當前角色，不需要增加索引
+		// NextTurn 會處理
+	}
+
+	// 確保索引有效
+	if (TurnOrder.Num() > 0)
+	{
+		CurrentTurnIndex = CurrentTurnIndex % TurnOrder.Num();
+	}
+
+	Debug::Print(FString::Printf(TEXT("Remaining characters: %d"), TurnOrder.Num()), FColor::Yellow);
+
+	// 檢查戰鬥是否結束
+	if (CheckBattleEnd())
+	{
+		return; // 戰鬥結束，不需要繼續
+	}
+
+	// 如果移除的是當前回合角色，切換到下一個
+	if (bWasCurrentTurn && TurnOrder.Num() > 0)
+	{
+		// 重置階段
+		CurrentPhase = ETurnPhase::TurnStart;
+
+		// 觸發新角色的回合
+		AActor* NewCurrentCharacter = TurnOrder[CurrentTurnIndex];
+		OnTurnChanged.Broadcast(NewCurrentCharacter);
+		OnPhaseChanged.Broadcast(NewCurrentCharacter, CurrentPhase);
+
+		Debug::Print(FString::Printf(TEXT("Turn passed to: %s"),
+			*NewCurrentCharacter->GetActorLabel()), FColor::Green);
+	}
+}
+
+bool ASimpleTurnManager::CheckBattleEnd()
+{
+	if (TurnOrder.Num() == 0)
+	{
+		Debug::Print(TEXT("=== BATTLE ENDED: No characters remaining ==="), FColor::Red, 5.0f);
+		OnBattleEnded.Broadcast(false);
+		return true;
+	}
+
+	// 檢查是否只剩一個陣營
+	bool bHasPlayer = false;
+	bool bHasEnemy = false;
+
+	for (AActor* Character : TurnOrder)
+	{
+		if (ATurnBasedCharacter* TurnChar = Cast<ATurnBasedCharacter>(Character))
+		{
+			if (TurnChar->bIsPlayerControlled)
+			{
+				bHasPlayer = true;
+			}
+			else
+			{
+				bHasEnemy = true;
+			}
+		}
+	}
+
+	// 只剩一個陣營
+	if (bHasPlayer && !bHasEnemy)
+	{
+		Debug::Print(TEXT("=== BATTLE WON! All enemies defeated! ==="), FColor::Green, 5.0f);
+		OnBattleEnded.Broadcast(true);
+		return true;
+	}
+	else if (!bHasPlayer && bHasEnemy)
+	{
+		Debug::Print(TEXT("=== BATTLE LOST! All players defeated! ==="), FColor::Red, 5.0f);
+		OnBattleEnded.Broadcast(false);
+		return true;
+	}
+
+	return false;
+}
+
+int32 ASimpleTurnManager::GetAliveCharacterCount() const
+{
+	return TurnOrder.Num();
+}
+
 void ASimpleTurnManager::NextPhase()
 {
 	// Make sure the battle has started and there are characters in the turn order
@@ -265,5 +372,9 @@ void ASimpleTurnManager::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+}
+
+void ASimpleTurnManager::HandleCharacterDeath(AActor* DeadCharacter)
+{
 }
 
