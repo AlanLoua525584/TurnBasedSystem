@@ -108,6 +108,12 @@
     <ClCompile Include="..\..\Source\ProjectGate\Private\TurnBasedSystem\UI\TurnDisplayWidget.cpp">
       <Filter>Source\ProjectGate\Private\TurnBasedSystem\UI</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Source\ProjectGate\Private\TurnBasedSystem\UI\TurnOrderEntryWidget.cpp">
+      <Filter>Source\ProjectGate\Private\TurnBasedSystem\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\ProjectGate\Private\TurnBasedSystem\UI\TurnOrderWidget.cpp">
+      <Filter>Source\ProjectGate\Private\TurnBasedSystem\UI</Filter>
+    </ClCompile>
     <Filter Include="Source\ProjectGate\Public">
       <UniqueIdentifier>{47DEB15C-0F2F-37CE-AE14-5D51D65175CB}</UniqueIdentifier>
     </Filter>
@@ -178,6 +184,12 @@
       <UniqueIdentifier>{075E4A15-7349-38CF-8618-D88C18A8D78B}</UniqueIdentifier>
     </Filter>
     <ClInclude Include="..\..\Source\ProjectGate\Public\TurnBasedSystem\UI\TurnDisplayWidget.h">
+      <Filter>Source\ProjectGate\Public\TurnBasedSystem\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\ProjectGate\Public\TurnBasedSystem\UI\TurnOrderEntryWidget.h">
+      <Filter>Source\ProjectGate\Public\TurnBasedSystem\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\ProjectGate\Public\TurnBasedSystem\UI\TurnOrderWidget.h">
       <Filter>Source\ProjectGate\Public\TurnBasedSystem\UI</Filter>
     </ClInclude>
     <Filter Include="Source\ProjectGate\Variant_Combat">

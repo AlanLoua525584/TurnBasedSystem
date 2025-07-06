@@ -334,6 +334,61 @@ DEFINE_FUNCTION(ASimpleTurnManager::execCheckBattleEnd)
 }
 // ********** End Class ASimpleTurnManager Function CheckBattleEnd *********************************
 
+// ********** Begin Class ASimpleTurnManager Function DelayCharacterTurn ***************************
+struct Z_Construct_UFunction_ASimpleTurnManager_DelayCharacterTurn_Statics
+{
+	struct SimpleTurnManager_eventDelayCharacterTurn_Parms
+	{
+		AActor* Character;
+		int32 DelayTurns;
+	};
+#if WITH_METADATA
+	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
+		{ "Category", "Turn System" },
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "// \xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbdY\xef\xbf\xbd\xd3\xa8\xef\xbf\xbd\xef\xbf\xbd\xe2\xaa\xba\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\n" },
+#endif
+		{ "CPP_Default_DelayTurns", "1" },
+		{ "ModuleRelativePath", "Public/TurnBasedSystem/SimpleTurnManager.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbdY\xef\xbf\xbd\xd3\xa8\xef\xbf\xbd\xef\xbf\xbd\xe2\xaa\xba\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd" },
+#endif
+	};
+#endif // WITH_METADATA
+	static const UECodeGen_Private::FObjectPropertyParams NewProp_Character;
+	static const UECodeGen_Private::FIntPropertyParams NewProp_DelayTurns;
+	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
+	static const UECodeGen_Private::FFunctionParams FuncParams;
+};
+const UECodeGen_Private::FObjectPropertyParams Z_Construct_UFunction_ASimpleTurnManager_DelayCharacterTurn_Statics::NewProp_Character = { "Character", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(SimpleTurnManager_eventDelayCharacterTurn_Parms, Character), Z_Construct_UClass_AActor_NoRegister, METADATA_PARAMS(0, nullptr) };
+const UECodeGen_Private::FIntPropertyParams Z_Construct_UFunction_ASimpleTurnManager_DelayCharacterTurn_Statics::NewProp_DelayTurns = { "DelayTurns", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Int, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(SimpleTurnManager_eventDelayCharacterTurn_Parms, DelayTurns), METADATA_PARAMS(0, nullptr) };
+const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_ASimpleTurnManager_DelayCharacterTurn_Statics::PropPointers[] = {
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_ASimpleTurnManager_DelayCharacterTurn_Statics::NewProp_Character,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_ASimpleTurnManager_DelayCharacterTurn_Statics::NewProp_DelayTurns,
+};
+static_assert(UE_ARRAY_COUNT(Z_Construct_UFunction_ASimpleTurnManager_DelayCharacterTurn_Statics::PropPointers) < 2048);
+const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_ASimpleTurnManager_DelayCharacterTurn_Statics::FuncParams = { { (UObject*(*)())Z_Construct_UClass_ASimpleTurnManager, nullptr, "DelayCharacterTurn", Z_Construct_UFunction_ASimpleTurnManager_DelayCharacterTurn_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_ASimpleTurnManager_DelayCharacterTurn_Statics::PropPointers), sizeof(Z_Construct_UFunction_ASimpleTurnManager_DelayCharacterTurn_Statics::SimpleTurnManager_eventDelayCharacterTurn_Parms), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x04020401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_ASimpleTurnManager_DelayCharacterTurn_Statics::Function_MetaDataParams), Z_Construct_UFunction_ASimpleTurnManager_DelayCharacterTurn_Statics::Function_MetaDataParams)},  };
+static_assert(sizeof(Z_Construct_UFunction_ASimpleTurnManager_DelayCharacterTurn_Statics::SimpleTurnManager_eventDelayCharacterTurn_Parms) < MAX_uint16);
+UFunction* Z_Construct_UFunction_ASimpleTurnManager_DelayCharacterTurn()
+{
+	static UFunction* ReturnFunction = nullptr;
+	if (!ReturnFunction)
+	{
+		UECodeGen_Private::ConstructUFunction(&ReturnFunction, Z_Construct_UFunction_ASimpleTurnManager_DelayCharacterTurn_Statics::FuncParams);
+	}
+	return ReturnFunction;
+}
+DEFINE_FUNCTION(ASimpleTurnManager::execDelayCharacterTurn)
+{
+	P_GET_OBJECT(AActor,Z_Param_Character);
+	P_GET_PROPERTY(FIntProperty,Z_Param_DelayTurns);
+	P_FINISH;
+	P_NATIVE_BEGIN;
+	P_THIS->DelayCharacterTurn(Z_Param_Character,Z_Param_DelayTurns);
+	P_NATIVE_END;
+}
+// ********** End Class ASimpleTurnManager Function DelayCharacterTurn *****************************
+
 // ********** Begin Class ASimpleTurnManager Function GetAliveCharacterCount ***********************
 struct Z_Construct_UFunction_ASimpleTurnManager_GetAliveCharacterCount_Statics
 {
@@ -517,6 +572,57 @@ DEFINE_FUNCTION(ASimpleTurnManager::execGetCurrentTurnCharacter)
 }
 // ********** End Class ASimpleTurnManager Function GetCurrentTurnCharacter ************************
 
+// ********** Begin Class ASimpleTurnManager Function GetSortedTurnOrder ***************************
+struct Z_Construct_UFunction_ASimpleTurnManager_GetSortedTurnOrder_Statics
+{
+	struct SimpleTurnManager_eventGetSortedTurnOrder_Parms
+	{
+		TArray<AActor*> ReturnValue;
+	};
+#if WITH_METADATA
+	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
+		{ "Category", "Turn System" },
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "// \xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xc6\xa7\xc7\xab\xe1\xaa\xba\xef\xbf\xbd^\xef\xbf\xbdX\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\n" },
+#endif
+		{ "ModuleRelativePath", "Public/TurnBasedSystem/SimpleTurnManager.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xc6\xa7\xc7\xab\xe1\xaa\xba\xef\xbf\xbd^\xef\xbf\xbdX\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd" },
+#endif
+	};
+#endif // WITH_METADATA
+	static const UECodeGen_Private::FObjectPropertyParams NewProp_ReturnValue_Inner;
+	static const UECodeGen_Private::FArrayPropertyParams NewProp_ReturnValue;
+	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
+	static const UECodeGen_Private::FFunctionParams FuncParams;
+};
+const UECodeGen_Private::FObjectPropertyParams Z_Construct_UFunction_ASimpleTurnManager_GetSortedTurnOrder_Statics::NewProp_ReturnValue_Inner = { "ReturnValue", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, 0, Z_Construct_UClass_AActor_NoRegister, METADATA_PARAMS(0, nullptr) };
+const UECodeGen_Private::FArrayPropertyParams Z_Construct_UFunction_ASimpleTurnManager_GetSortedTurnOrder_Statics::NewProp_ReturnValue = { "ReturnValue", nullptr, (EPropertyFlags)0x0010000000000580, UECodeGen_Private::EPropertyGenFlags::Array, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(SimpleTurnManager_eventGetSortedTurnOrder_Parms, ReturnValue), EArrayPropertyFlags::None, METADATA_PARAMS(0, nullptr) };
+const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_ASimpleTurnManager_GetSortedTurnOrder_Statics::PropPointers[] = {
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_ASimpleTurnManager_GetSortedTurnOrder_Statics::NewProp_ReturnValue_Inner,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_ASimpleTurnManager_GetSortedTurnOrder_Statics::NewProp_ReturnValue,
+};
+static_assert(UE_ARRAY_COUNT(Z_Construct_UFunction_ASimpleTurnManager_GetSortedTurnOrder_Statics::PropPointers) < 2048);
+const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_ASimpleTurnManager_GetSortedTurnOrder_Statics::FuncParams = { { (UObject*(*)())Z_Construct_UClass_ASimpleTurnManager, nullptr, "GetSortedTurnOrder", Z_Construct_UFunction_ASimpleTurnManager_GetSortedTurnOrder_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_ASimpleTurnManager_GetSortedTurnOrder_Statics::PropPointers), sizeof(Z_Construct_UFunction_ASimpleTurnManager_GetSortedTurnOrder_Statics::SimpleTurnManager_eventGetSortedTurnOrder_Parms), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x54020401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_ASimpleTurnManager_GetSortedTurnOrder_Statics::Function_MetaDataParams), Z_Construct_UFunction_ASimpleTurnManager_GetSortedTurnOrder_Statics::Function_MetaDataParams)},  };
+static_assert(sizeof(Z_Construct_UFunction_ASimpleTurnManager_GetSortedTurnOrder_Statics::SimpleTurnManager_eventGetSortedTurnOrder_Parms) < MAX_uint16);
+UFunction* Z_Construct_UFunction_ASimpleTurnManager_GetSortedTurnOrder()
+{
+	static UFunction* ReturnFunction = nullptr;
+	if (!ReturnFunction)
+	{
+		UECodeGen_Private::ConstructUFunction(&ReturnFunction, Z_Construct_UFunction_ASimpleTurnManager_GetSortedTurnOrder_Statics::FuncParams);
+	}
+	return ReturnFunction;
+}
+DEFINE_FUNCTION(ASimpleTurnManager::execGetSortedTurnOrder)
+{
+	P_FINISH;
+	P_NATIVE_BEGIN;
+	*(TArray<AActor*>*)Z_Param__Result=P_THIS->GetSortedTurnOrder();
+	P_NATIVE_END;
+}
+// ********** End Class ASimpleTurnManager Function GetSortedTurnOrder *****************************
+
 // ********** Begin Class ASimpleTurnManager Function GetTurnCount *********************************
 struct Z_Construct_UFunction_ASimpleTurnManager_GetTurnCount_Statics
 {
@@ -609,6 +715,55 @@ DEFINE_FUNCTION(ASimpleTurnManager::execGetTurnOrder)
 	P_NATIVE_END;
 }
 // ********** End Class ASimpleTurnManager Function GetTurnOrder ***********************************
+
+// ********** Begin Class ASimpleTurnManager Function InsertImmediateAction ************************
+struct Z_Construct_UFunction_ASimpleTurnManager_InsertImmediateAction_Statics
+{
+	struct SimpleTurnManager_eventInsertImmediateAction_Parms
+	{
+		AActor* Character;
+	};
+#if WITH_METADATA
+	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
+		{ "Category", "Turn System" },
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "// \xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbdJ\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\n" },
+#endif
+		{ "ModuleRelativePath", "Public/TurnBasedSystem/SimpleTurnManager.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbdJ\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd" },
+#endif
+	};
+#endif // WITH_METADATA
+	static const UECodeGen_Private::FObjectPropertyParams NewProp_Character;
+	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
+	static const UECodeGen_Private::FFunctionParams FuncParams;
+};
+const UECodeGen_Private::FObjectPropertyParams Z_Construct_UFunction_ASimpleTurnManager_InsertImmediateAction_Statics::NewProp_Character = { "Character", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(SimpleTurnManager_eventInsertImmediateAction_Parms, Character), Z_Construct_UClass_AActor_NoRegister, METADATA_PARAMS(0, nullptr) };
+const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_ASimpleTurnManager_InsertImmediateAction_Statics::PropPointers[] = {
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_ASimpleTurnManager_InsertImmediateAction_Statics::NewProp_Character,
+};
+static_assert(UE_ARRAY_COUNT(Z_Construct_UFunction_ASimpleTurnManager_InsertImmediateAction_Statics::PropPointers) < 2048);
+const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_ASimpleTurnManager_InsertImmediateAction_Statics::FuncParams = { { (UObject*(*)())Z_Construct_UClass_ASimpleTurnManager, nullptr, "InsertImmediateAction", Z_Construct_UFunction_ASimpleTurnManager_InsertImmediateAction_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_ASimpleTurnManager_InsertImmediateAction_Statics::PropPointers), sizeof(Z_Construct_UFunction_ASimpleTurnManager_InsertImmediateAction_Statics::SimpleTurnManager_eventInsertImmediateAction_Parms), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x04020401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_ASimpleTurnManager_InsertImmediateAction_Statics::Function_MetaDataParams), Z_Construct_UFunction_ASimpleTurnManager_InsertImmediateAction_Statics::Function_MetaDataParams)},  };
+static_assert(sizeof(Z_Construct_UFunction_ASimpleTurnManager_InsertImmediateAction_Statics::SimpleTurnManager_eventInsertImmediateAction_Parms) < MAX_uint16);
+UFunction* Z_Construct_UFunction_ASimpleTurnManager_InsertImmediateAction()
+{
+	static UFunction* ReturnFunction = nullptr;
+	if (!ReturnFunction)
+	{
+		UECodeGen_Private::ConstructUFunction(&ReturnFunction, Z_Construct_UFunction_ASimpleTurnManager_InsertImmediateAction_Statics::FuncParams);
+	}
+	return ReturnFunction;
+}
+DEFINE_FUNCTION(ASimpleTurnManager::execInsertImmediateAction)
+{
+	P_GET_OBJECT(AActor,Z_Param_Character);
+	P_FINISH;
+	P_NATIVE_BEGIN;
+	P_THIS->InsertImmediateAction(Z_Param_Character);
+	P_NATIVE_END;
+}
+// ********** End Class ASimpleTurnManager Function InsertImmediateAction **************************
 
 // ********** Begin Class ASimpleTurnManager Function NextPhase ************************************
 struct Z_Construct_UFunction_ASimpleTurnManager_NextPhase_Statics
@@ -712,6 +867,42 @@ DEFINE_FUNCTION(ASimpleTurnManager::execPossessCurrentTurnCharacter)
 }
 // ********** End Class ASimpleTurnManager Function PossessCurrentTurnCharacter ********************
 
+// ********** Begin Class ASimpleTurnManager Function RecalculateTurnOrder *************************
+struct Z_Construct_UFunction_ASimpleTurnManager_RecalculateTurnOrder_Statics
+{
+#if WITH_METADATA
+	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
+		{ "Category", "Turn System" },
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "// \xef\xbf\xbd^\xef\xbf\xbdX\xef\xbf\xbd\xc6\xa7\xc7\xa4\xef\xbf\xbdk\n" },
+#endif
+		{ "ModuleRelativePath", "Public/TurnBasedSystem/SimpleTurnManager.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "\xef\xbf\xbd^\xef\xbf\xbdX\xef\xbf\xbd\xc6\xa7\xc7\xa4\xef\xbf\xbdk" },
+#endif
+	};
+#endif // WITH_METADATA
+	static const UECodeGen_Private::FFunctionParams FuncParams;
+};
+const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_ASimpleTurnManager_RecalculateTurnOrder_Statics::FuncParams = { { (UObject*(*)())Z_Construct_UClass_ASimpleTurnManager, nullptr, "RecalculateTurnOrder", nullptr, 0, 0, RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x04020401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_ASimpleTurnManager_RecalculateTurnOrder_Statics::Function_MetaDataParams), Z_Construct_UFunction_ASimpleTurnManager_RecalculateTurnOrder_Statics::Function_MetaDataParams)},  };
+UFunction* Z_Construct_UFunction_ASimpleTurnManager_RecalculateTurnOrder()
+{
+	static UFunction* ReturnFunction = nullptr;
+	if (!ReturnFunction)
+	{
+		UECodeGen_Private::ConstructUFunction(&ReturnFunction, Z_Construct_UFunction_ASimpleTurnManager_RecalculateTurnOrder_Statics::FuncParams);
+	}
+	return ReturnFunction;
+}
+DEFINE_FUNCTION(ASimpleTurnManager::execRecalculateTurnOrder)
+{
+	P_FINISH;
+	P_NATIVE_BEGIN;
+	P_THIS->RecalculateTurnOrder();
+	P_NATIVE_END;
+}
+// ********** End Class ASimpleTurnManager Function RecalculateTurnOrder ***************************
+
 // ********** Begin Class ASimpleTurnManager Function RemoveCharacter ******************************
 struct Z_Construct_UFunction_ASimpleTurnManager_RemoveCharacter_Statics
 {
@@ -798,15 +989,19 @@ void ASimpleTurnManager::StaticRegisterNativesASimpleTurnManager()
 	static const FNameNativePtrPair Funcs[] = {
 		{ "AddCharacter", &ASimpleTurnManager::execAddCharacter },
 		{ "CheckBattleEnd", &ASimpleTurnManager::execCheckBattleEnd },
+		{ "DelayCharacterTurn", &ASimpleTurnManager::execDelayCharacterTurn },
 		{ "GetAliveCharacterCount", &ASimpleTurnManager::execGetAliveCharacterCount },
 		{ "GetCurrentCharacterIndex", &ASimpleTurnManager::execGetCurrentCharacterIndex },
 		{ "GetCurrentPhase", &ASimpleTurnManager::execGetCurrentPhase },
 		{ "GetCurrentTurnCharacter", &ASimpleTurnManager::execGetCurrentTurnCharacter },
+		{ "GetSortedTurnOrder", &ASimpleTurnManager::execGetSortedTurnOrder },
 		{ "GetTurnCount", &ASimpleTurnManager::execGetTurnCount },
 		{ "GetTurnOrder", &ASimpleTurnManager::execGetTurnOrder },
+		{ "InsertImmediateAction", &ASimpleTurnManager::execInsertImmediateAction },
 		{ "NextPhase", &ASimpleTurnManager::execNextPhase },
 		{ "NextTurn", &ASimpleTurnManager::execNextTurn },
 		{ "PossessCurrentTurnCharacter", &ASimpleTurnManager::execPossessCurrentTurnCharacter },
+		{ "RecalculateTurnOrder", &ASimpleTurnManager::execRecalculateTurnOrder },
 		{ "RemoveCharacter", &ASimpleTurnManager::execRemoveCharacter },
 		{ "StartBattle", &ASimpleTurnManager::execStartBattle },
 	};
@@ -880,15 +1075,19 @@ struct Z_Construct_UClass_ASimpleTurnManager_Statics
 	static constexpr FClassFunctionLinkInfo FuncInfo[] = {
 		{ &Z_Construct_UFunction_ASimpleTurnManager_AddCharacter, "AddCharacter" }, // 907563401
 		{ &Z_Construct_UFunction_ASimpleTurnManager_CheckBattleEnd, "CheckBattleEnd" }, // 1098689763
+		{ &Z_Construct_UFunction_ASimpleTurnManager_DelayCharacterTurn, "DelayCharacterTurn" }, // 1604097565
 		{ &Z_Construct_UFunction_ASimpleTurnManager_GetAliveCharacterCount, "GetAliveCharacterCount" }, // 219225659
 		{ &Z_Construct_UFunction_ASimpleTurnManager_GetCurrentCharacterIndex, "GetCurrentCharacterIndex" }, // 958147449
 		{ &Z_Construct_UFunction_ASimpleTurnManager_GetCurrentPhase, "GetCurrentPhase" }, // 830492570
 		{ &Z_Construct_UFunction_ASimpleTurnManager_GetCurrentTurnCharacter, "GetCurrentTurnCharacter" }, // 1965766587
+		{ &Z_Construct_UFunction_ASimpleTurnManager_GetSortedTurnOrder, "GetSortedTurnOrder" }, // 1047158997
 		{ &Z_Construct_UFunction_ASimpleTurnManager_GetTurnCount, "GetTurnCount" }, // 1215446228
 		{ &Z_Construct_UFunction_ASimpleTurnManager_GetTurnOrder, "GetTurnOrder" }, // 2779018252
+		{ &Z_Construct_UFunction_ASimpleTurnManager_InsertImmediateAction, "InsertImmediateAction" }, // 3031203693
 		{ &Z_Construct_UFunction_ASimpleTurnManager_NextPhase, "NextPhase" }, // 3175668522
 		{ &Z_Construct_UFunction_ASimpleTurnManager_NextTurn, "NextTurn" }, // 4041743731
 		{ &Z_Construct_UFunction_ASimpleTurnManager_PossessCurrentTurnCharacter, "PossessCurrentTurnCharacter" }, // 3713163859
+		{ &Z_Construct_UFunction_ASimpleTurnManager_RecalculateTurnOrder, "RecalculateTurnOrder" }, // 2700294628
 		{ &Z_Construct_UFunction_ASimpleTurnManager_RemoveCharacter, "RemoveCharacter" }, // 1942789136
 		{ &Z_Construct_UFunction_ASimpleTurnManager_StartBattle, "StartBattle" }, // 3802053970
 	};
@@ -950,10 +1149,10 @@ struct Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_P
 		{ ETurnPhase_StaticEnum, TEXT("ETurnPhase"), &Z_Registration_Info_UEnum_ETurnPhase, CONSTRUCT_RELOAD_VERSION_INFO(FEnumReloadVersionInfo, 1421385386U) },
 	};
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_ASimpleTurnManager, ASimpleTurnManager::StaticClass, TEXT("ASimpleTurnManager"), &Z_Registration_Info_UClass_ASimpleTurnManager, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(ASimpleTurnManager), 1768219279U) },
+		{ Z_Construct_UClass_ASimpleTurnManager, ASimpleTurnManager::StaticClass, TEXT("ASimpleTurnManager"), &Z_Registration_Info_UClass_ASimpleTurnManager, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(ASimpleTurnManager), 1867963530U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_SimpleTurnManager_h__Script_ProjectGate_4028106264(TEXT("/Script/ProjectGate"),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_SimpleTurnManager_h__Script_ProjectGate_1577248009(TEXT("/Script/ProjectGate"),
 	Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_SimpleTurnManager_h__Script_ProjectGate_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_SimpleTurnManager_h__Script_ProjectGate_Statics::ClassInfo),
 	nullptr, 0,
 	Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_SimpleTurnManager_h__Script_ProjectGate_Statics::EnumInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_SimpleTurnManager_h__Script_ProjectGate_Statics::EnumInfo));

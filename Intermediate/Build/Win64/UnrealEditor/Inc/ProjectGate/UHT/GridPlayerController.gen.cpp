@@ -730,6 +730,30 @@ struct Z_Construct_UClass_AGridPlayerController_Statics
 		{ "IncludePath", "TurnBasedSystem/GridPlayerController.h" },
 		{ "ModuleRelativePath", "Public/TurnBasedSystem/GridPlayerController.h" },
 	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_MouseSensitivityX_MetaData[] = {
+		{ "Category", "Camera|ThirdPerson" },
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "// \xef\xbf\xbd\xdb\xbe\xef\xbf\xbd\xef\xbf\xbd""F\xef\xbf\xbd\xd3\xab\xd7\xb3]\xef\xbf\xbdm\n" },
+#endif
+		{ "ModuleRelativePath", "Public/TurnBasedSystem/GridPlayerController.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "\xef\xbf\xbd\xdb\xbe\xef\xbf\xbd\xef\xbf\xbd""F\xef\xbf\xbd\xd3\xab\xd7\xb3]\xef\xbf\xbdm" },
+#endif
+	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_MouseSensitivityY_MetaData[] = {
+		{ "Category", "Camera|ThirdPerson" },
+		{ "ModuleRelativePath", "Public/TurnBasedSystem/GridPlayerController.h" },
+	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_bHideCursorInDynamicMode_MetaData[] = {
+		{ "Category", "Camera|ThirdPerson" },
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "// \xef\xbf\xbdO\xef\xbf\xbd_\xef\xbf\xbd""b\xef\xbf\xbd\xca\xba""A\xef\xbf\xbd\xd2\xa6\xef\xbf\xbd\xef\xbf\xbdU\xef\xbf\xbd\xdb\xb0\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xc3\xb4\xef\xbf\xbd\xef\xbf\xbd\n" },
+#endif
+		{ "ModuleRelativePath", "Public/TurnBasedSystem/GridPlayerController.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "\xef\xbf\xbdO\xef\xbf\xbd_\xef\xbf\xbd""b\xef\xbf\xbd\xca\xba""A\xef\xbf\xbd\xd2\xa6\xef\xbf\xbd\xef\xbf\xbdU\xef\xbf\xbd\xdb\xb0\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xc3\xb4\xef\xbf\xbd\xef\xbf\xbd" },
+#endif
+	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_bIsInDynamicMode_MetaData[] = {
 		{ "Category", "GridPlayerController" },
 		{ "ModuleRelativePath", "Public/TurnBasedSystem/GridPlayerController.h" },
@@ -945,6 +969,10 @@ struct Z_Construct_UClass_AGridPlayerController_Statics
 		{ "ModuleRelativePath", "Public/TurnBasedSystem/GridPlayerController.h" },
 	};
 #endif // WITH_METADATA
+	static const UECodeGen_Private::FFloatPropertyParams NewProp_MouseSensitivityX;
+	static const UECodeGen_Private::FFloatPropertyParams NewProp_MouseSensitivityY;
+	static void NewProp_bHideCursorInDynamicMode_SetBit(void* Obj);
+	static const UECodeGen_Private::FBoolPropertyParams NewProp_bHideCursorInDynamicMode;
 	static void NewProp_bIsInDynamicMode_SetBit(void* Obj);
 	static const UECodeGen_Private::FBoolPropertyParams NewProp_bIsInDynamicMode;
 	static void NewProp_bIsFocusMode_SetBit(void* Obj);
@@ -999,6 +1027,13 @@ struct Z_Construct_UClass_AGridPlayerController_Statics
 	};
 	static const UECodeGen_Private::FClassParams ClassParams;
 };
+const UECodeGen_Private::FFloatPropertyParams Z_Construct_UClass_AGridPlayerController_Statics::NewProp_MouseSensitivityX = { "MouseSensitivityX", nullptr, (EPropertyFlags)0x0010000000000005, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AGridPlayerController, MouseSensitivityX), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_MouseSensitivityX_MetaData), NewProp_MouseSensitivityX_MetaData) };
+const UECodeGen_Private::FFloatPropertyParams Z_Construct_UClass_AGridPlayerController_Statics::NewProp_MouseSensitivityY = { "MouseSensitivityY", nullptr, (EPropertyFlags)0x0010000000000005, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AGridPlayerController, MouseSensitivityY), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_MouseSensitivityY_MetaData), NewProp_MouseSensitivityY_MetaData) };
+void Z_Construct_UClass_AGridPlayerController_Statics::NewProp_bHideCursorInDynamicMode_SetBit(void* Obj)
+{
+	((AGridPlayerController*)Obj)->bHideCursorInDynamicMode = 1;
+}
+const UECodeGen_Private::FBoolPropertyParams Z_Construct_UClass_AGridPlayerController_Statics::NewProp_bHideCursorInDynamicMode = { "bHideCursorInDynamicMode", nullptr, (EPropertyFlags)0x0010000000000005, UECodeGen_Private::EPropertyGenFlags::Bool | UECodeGen_Private::EPropertyGenFlags::NativeBool, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, sizeof(bool), sizeof(AGridPlayerController), &Z_Construct_UClass_AGridPlayerController_Statics::NewProp_bHideCursorInDynamicMode_SetBit, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_bHideCursorInDynamicMode_MetaData), NewProp_bHideCursorInDynamicMode_MetaData) };
 void Z_Construct_UClass_AGridPlayerController_Statics::NewProp_bIsInDynamicMode_SetBit(void* Obj)
 {
 	((AGridPlayerController*)Obj)->bIsInDynamicMode = 1;
@@ -1037,6 +1072,9 @@ const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_AGridPlayerCon
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_AGridPlayerController_Statics::NewProp_CombatDisplayWidget = { "CombatDisplayWidget", nullptr, (EPropertyFlags)0x0040000000080008, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AGridPlayerController, CombatDisplayWidget), Z_Construct_UClass_UCombatDisplayWidget_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_CombatDisplayWidget_MetaData), NewProp_CombatDisplayWidget_MetaData) };
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_AGridPlayerController_Statics::NewProp_LastHighlightedTarget = { "LastHighlightedTarget", nullptr, (EPropertyFlags)0x0040000000000000, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AGridPlayerController, LastHighlightedTarget), Z_Construct_UClass_AActor_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_LastHighlightedTarget_MetaData), NewProp_LastHighlightedTarget_MetaData) };
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UClass_AGridPlayerController_Statics::PropPointers[] = {
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AGridPlayerController_Statics::NewProp_MouseSensitivityX,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AGridPlayerController_Statics::NewProp_MouseSensitivityY,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AGridPlayerController_Statics::NewProp_bHideCursorInDynamicMode,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AGridPlayerController_Statics::NewProp_bIsInDynamicMode,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AGridPlayerController_Statics::NewProp_bIsFocusMode,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AGridPlayerController_Statics::NewProp_CameraPawn,
@@ -1104,10 +1142,10 @@ AGridPlayerController::~AGridPlayerController() {}
 struct Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_GridPlayerController_h__Script_ProjectGate_Statics
 {
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_AGridPlayerController, AGridPlayerController::StaticClass, TEXT("AGridPlayerController"), &Z_Registration_Info_UClass_AGridPlayerController, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(AGridPlayerController), 3685905641U) },
+		{ Z_Construct_UClass_AGridPlayerController, AGridPlayerController::StaticClass, TEXT("AGridPlayerController"), &Z_Registration_Info_UClass_AGridPlayerController, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(AGridPlayerController), 2507261261U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_GridPlayerController_h__Script_ProjectGate_3895424036(TEXT("/Script/ProjectGate"),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_GridPlayerController_h__Script_ProjectGate_4175072395(TEXT("/Script/ProjectGate"),
 	Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_GridPlayerController_h__Script_ProjectGate_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_GridPlayerController_h__Script_ProjectGate_Statics::ClassInfo),
 	nullptr, 0,
 	nullptr, 0);

@@ -6,6 +6,7 @@
 #include "TurnBasedSystem/TurnBasedCharacter.h"
 #include "TurnBasedSystem/GridPlayerController.h"
 #include "Kismet/GameplayStatics.h" 
+#include "CombatSystem/CombatStats.h"
 #include "Engine/World.h"
 #include "TimerManager.h"
 
@@ -254,6 +255,41 @@ bool ASimpleTurnManager::CheckBattleEnd()
 	return false;
 }
 
+void ASimpleTurnManager::RecalculateTurnOrder()
+{
+
+	
+	// 為每個角色計算先攻值
+	for (AActor* Actor : TurnOrder)
+	{
+		if (ATurnBasedCharacter* Character = Cast<ATurnBasedCharacter>(Actor))
+		{
+			Character->CurrentInitiative = CalculateInitiative(Character);
+
+			// 廣播更新事件
+			Character->OnTurnOrderChanged.Broadcast(Character->CurrentInitiative);
+
+		}
+
+
+	}
+	
+
+}
+
+TArray<AActor*> ASimpleTurnManager::GetSortedTurnOrder() const
+{
+	return TArray<AActor*>();
+}
+
+void ASimpleTurnManager::DelayCharacterTurn(AActor* Character, int32 DelayTurns)
+{
+}
+
+void ASimpleTurnManager::InsertImmediateAction(AActor* Character)
+{
+}
+
 int32 ASimpleTurnManager::GetAliveCharacterCount() const
 {
 	return TurnOrder.Num();
@@ -364,6 +400,54 @@ void ASimpleTurnManager::BeginPlay()
 				StartBattle();
 				Debug::Print(TEXT("Battle Auto-Started!"), FColor::Green);
 			});
+	}
+}
+
+int32 ASimpleTurnManager::CalculateInitiative(ATurnBasedCharacter* Character)
+{
+	if (!Character || !Character->CombatComponent) return 0;
+
+	const FCombatStats& Stats = Character->CombatComponent->GetStats();
+
+	// 基礎先攻值計算
+	int32 BaseInitiative = Stats.TurnOrderData.Initiative;
+	int32 SpeedBonus = Stats.TurnOrderData.Speed / 2;  // 速度提供50%加成
+
+	// 隨機因素 (避免每回合順序完全相同)
+	int32 RandomFactor = FMath::RandRange(-10, 10);
+
+	// 狀態影響
+	int32 StatusModifier = 0;
+	if (Character->bIsSlowed) StatusModifier -= 20;
+	if (Character->bIsHasted) StatusModifier += 20;
+
+	return BaseInitiative + SpeedBonus + RandomFactor + StatusModifier;
+}
+
+void ASimpleTurnManager::SortTurnOrderByInitiative()
+{
+	TurnOrder.Sort([](const AActor& A, const AActor& B)
+		{
+			const ATurnBasedCharacter* CharA = Cast<ATurnBasedCharacter>(&A);
+			const ATurnBasedCharacter* CharB = Cast<ATurnBasedCharacter>(&B);
+
+			if (!CharA || !CharB) return false;
+
+			// 先攻值高的排前面
+			return CharA->CurrentInitiative > CharB->CurrentInitiative;
+		});
+
+	Debug::Print(TEXT("=== Turn Order Updated ==="), FColor::Cyan);
+	for (int32 i = 0; i < TurnOrder.Num(); i++)
+	{
+		if (ATurnBasedCharacter* Char = Cast<ATurnBasedCharacter>(TurnOrder[i]))
+		{
+			Debug::Print(FString::Printf(TEXT("%d. %s (Initiative: %d)"),
+				i + 1,
+				*Char->GetActorLabel(),
+				Char->CurrentInitiative),
+				FColor::White);
+		}
 	}
 }
 

@@ -9,6 +9,7 @@
 				"D:/UnrealProjects/ProjectGate/Content/TurnBasedSystem/BluePrints/Character/BP_PlayerCharacter.uasset",
 				"D:/UnrealProjects/ProjectGate/Content/TurnBasedSystem/BluePrints/Character/BP_EenemyCharacter.uasset",
 				"D:/UnrealProjects/ProjectGate/Content/TurnBasedSystem/Character/Animation/AM_Death.uasset",
+				"D:/UnrealProjects/ProjectGate/Content/Input/Actions/TurnBasedSystem/CameraInputs/IA_CameraRotate.uasset",
 				"D:/UnrealProjects/ProjectGate/Content/TurnBasedSystem/UI/WBP_HealthBar.uasset"
 			]
 		}

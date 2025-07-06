@@ -16,12 +16,15 @@ class USpringArmComponent;
 class UCameraComponent;
 class UGridVisualComponent;
 class UEnhancedMovementSystem;
-
+class ASimpleTurnManager;
 
 
 // Declare delegates
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnActionPointsChanged, int32, NewActionPoints);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnActionPerformed, FString, ActionName, int32, Cost);
+// 回合順序改動
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTurnOrderChangedSignature, int32, NewInitiative);
+
 
 UCLASS()
 class PROJECTGATE_API ATurnBasedCharacter : public ACharacter, public ICombatInterface
@@ -47,6 +50,14 @@ public:
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Turn System|Action Cost")
     int32 AttackActionCost = 1;
+
+    //回合類相關
+
+    UPROPERTY(BlueprintReadWrite, Category = "Turn System|Status")
+    bool bIsSlowed = false;
+
+    UPROPERTY(BlueprintReadWrite, Category = "Turn System|Status")
+    bool bIsHasted = false;
 
 
     // Basic Stats (will integrate with GAS later)
@@ -92,6 +103,9 @@ public:
     UFUNCTION(BlueprintPure, Category = "Turn System")
     bool CanPerformDynamicMovement() const;
 
+    //設置行動模式
+    void SetMovementMode(bool bDynamic);
+
 
     // Events
     UPROPERTY(BlueprintAssignable, Category = "Turn System|Events")
@@ -99,6 +113,11 @@ public:
 
     UPROPERTY(BlueprintAssignable, Category = "Turn System|Events")
     FOnActionPerformed OnActionPerformed;
+
+    //回合
+    UPROPERTY(BlueprintAssignable, Category = "Turn System|TurnOrder")
+    FTurnOrderChangedSignature OnTurnOrderChanged;
+
 
     // Action System
     UFUNCTION(BlueprintCallable, Category = "Turn System")
@@ -147,6 +166,10 @@ public:
     // Show Movement Range
     UFUNCTION(BlueprintCallable, Category = "Grid|Movement")
     void ShowMovementRange();
+
+    // 當前的先攻值
+    UPROPERTY(BlueprintReadWrite, Category = "Turn Order")
+    int32 CurrentInitiative = 0;
 
     //UpdateGridPosition
     UFUNCTION(BlueprintCallable, Category = "Grid|Movement")
@@ -209,6 +232,9 @@ public:
     // 實現戰鬥接口
     virtual bool CanBeAttacked_Implementation() const override;
     virtual UCombatComponent* GetCombatComponent_Implementation() const override;
+    void OnDamageReceived_Implementation(const FDamageResult& DamageResult);
+    
+
 
     // 添加陣營系統
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat")

@@ -40,6 +40,19 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Camera")
 	void FocusOnCurrentTurnCharacter();
 
+	// 相機靈敏度設置
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera|ThirdPerson")
+	float MouseSensitivityX = 1.0f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera|ThirdPerson")
+	float MouseSensitivityY = 1.0f;
+
+	// 是否在動態模式下自動隱藏游標
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera|ThirdPerson")
+	bool bHideCursorInDynamicMode = false;
+
+
+
 	// 攻擊公開函數
 	bool IsInAttackMode() const { return bIsInAttackMode; }
 

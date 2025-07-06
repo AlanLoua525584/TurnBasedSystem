@@ -319,6 +319,12 @@
     <ClCompile Include="..\..\Source\ProjectGate\Private\TurnBasedSystem\UI\TurnDisplayWidget.cpp">
       <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
+    <ClCompile Include="..\..\Source\ProjectGate\Private\TurnBasedSystem\UI\TurnOrderEntryWidget.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\ProjectGate\Private\TurnBasedSystem\UI\TurnOrderWidget.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
     <ClInclude Include="..\..\Source\ProjectGate\Public\DebugHelper.h"/>
     <ClInclude Include="..\..\Source\ProjectGate\Public\FreeCameraPawn.h"/>
     <ClInclude Include="..\..\Source\ProjectGate\Public\ProjectGate.h"/>
@@ -339,6 +345,8 @@
     <ClInclude Include="..\..\Source\ProjectGate\Public\TurnBasedSystem\SimpleTurnManager.h"/>
     <ClInclude Include="..\..\Source\ProjectGate\Public\TurnBasedSystem\TurnBasedCharacter.h"/>
     <ClInclude Include="..\..\Source\ProjectGate\Public\TurnBasedSystem\UI\TurnDisplayWidget.h"/>
+    <ClInclude Include="..\..\Source\ProjectGate\Public\TurnBasedSystem\UI\TurnOrderEntryWidget.h"/>
+    <ClInclude Include="..\..\Source\ProjectGate\Public\TurnBasedSystem\UI\TurnOrderWidget.h"/>
     <ClCompile Include="..\..\Source\ProjectGate\Variant_Combat\AnimNotify_CheckChargedAttack.cpp">
       <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>

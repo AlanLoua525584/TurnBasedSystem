@@ -65,6 +65,19 @@ ATurnBasedCharacter::ATurnBasedCharacter()
 	FollowCamera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName);
 	FollowCamera->bUsePawnControlRotation = false;
 
+	// 角色旋轉控制
+	bUseControllerRotationYaw = false;
+	bUseControllerRotationPitch = false;
+	bUseControllerRotationRoll = false;
+
+
+
+	// 禁止移動時自動旋轉
+	GetCharacterMovement()->bOrientRotationToMovement = true;
+
+	// 設置旋轉速率
+	GetCharacterMovement()->RotationRate = FRotator(0.f, 540.f, 0.f);
+
 
 
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
@@ -81,12 +94,20 @@ ATurnBasedCharacter::ATurnBasedCharacter()
 
 bool ATurnBasedCharacter::CanBeAttacked_Implementation() const
 {
-	return false;
+	return !bIsDying && IsAlive();
 }
 
 UCombatComponent* ATurnBasedCharacter::GetCombatComponent_Implementation() const
 {
-	return nullptr;
+	return CombatComponent;
+}
+
+void ATurnBasedCharacter::OnDamageReceived_Implementation(const FDamageResult& DamageResult)
+{
+	if (CombatComponent)
+	{
+		CombatComponent->ApplyDamage(DamageResult);
+	}
 }
 
 // Called when the game starts or when spawned
@@ -156,6 +177,35 @@ void ATurnBasedCharacter::BeginPlay()
 		// 初始化血條顯示
 		UpdateHealthDisplay();
 	}
+
+	// 確保相機組件正確設置
+	if (CameraBoom && FollowCamera)
+	{
+		// 設置 Spring Arm 使用 Controller 旋轉
+		CameraBoom->bUsePawnControlRotation = true;
+		CameraBoom->bInheritPitch = true;
+		CameraBoom->bInheritYaw = true;
+		CameraBoom->bInheritRoll = false;
+
+		// 確保相機不使用 Controller 旋轉（它會跟隨 Spring Arm）
+		FollowCamera->bUsePawnControlRotation = false;
+
+		Debug::Print(TEXT("Character camera components configured"), FColor::Green);
+	}
+
+	// 根據是否玩家控制設置不同行為
+	if (bIsPlayerControlled)
+	{
+		// 第三人稱標準設置
+		bUseControllerRotationPitch = false;
+		bUseControllerRotationYaw = false;
+		bUseControllerRotationRoll = false;
+
+		// 移動時自動轉向（動態模式用）
+		GetCharacterMovement()->bOrientRotationToMovement = true;
+		GetCharacterMovement()->RotationRate = FRotator(0.0f, 540.0f, 0.0f);
+	}
+
 
 }
 
@@ -507,6 +557,22 @@ bool ATurnBasedCharacter::CanPerformDynamicMovement() const
 {
 	if (!EnhancedMovementSystem) return false;
 	return bIsMyTurn && EnhancedMovementSystem->CanMove();
+}
+
+void ATurnBasedCharacter::SetMovementMode(bool bDynamic)
+{
+	if (bDynamic)
+	{
+		// 動態模式：角色面向移動方向
+		GetCharacterMovement()->bOrientRotationToMovement = true;
+		GetCharacterMovement()->bUseControllerDesiredRotation = false;
+	}
+	else
+	{
+		// 網格模式：角色不自動轉向
+		GetCharacterMovement()->bOrientRotationToMovement = false;
+		GetCharacterMovement()->bUseControllerDesiredRotation = false;
+	}
 }
 
 void ATurnBasedCharacter::ResetActionPoints()
@@ -886,6 +952,15 @@ bool ATurnBasedCharacter::IsMyTurn() const
 void ATurnBasedCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	// 平滑相機旋轉
+	if (CameraBoom && Controller)
+	{
+		FRotator ControlRotation = Controller->GetControlRotation();
+		FRotator CurrentRotation = CameraBoom->GetComponentRotation();
+		FRotator NewRotation = FMath::RInterpTo(CurrentRotation, ControlRotation, DeltaTime, 10.0f);
+		CameraBoom->SetWorldRotation(NewRotation);
+	}
 
 }
 

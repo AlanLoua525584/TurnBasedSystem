@@ -18,6 +18,7 @@ PROJECTGATE_API UEnum* Z_Construct_UEnum_ProjectGate_EDamageType();
 PROJECTGATE_API UScriptStruct* Z_Construct_UScriptStruct_FAttackConfig();
 PROJECTGATE_API UScriptStruct* Z_Construct_UScriptStruct_FCombatStats();
 PROJECTGATE_API UScriptStruct* Z_Construct_UScriptStruct_FDamageResult();
+PROJECTGATE_API UScriptStruct* Z_Construct_UScriptStruct_FTurnOrderData();
 UPackage* Z_Construct_UPackage__Script_ProjectGate();
 // ********** End Cross Module References **********************************************************
 
@@ -153,6 +154,103 @@ UEnum* Z_Construct_UEnum_ProjectGate_EDamageType()
 }
 // ********** End Enum EDamageType *****************************************************************
 
+// ********** Begin ScriptStruct FTurnOrderData ****************************************************
+static FStructRegistrationInfo Z_Registration_Info_UScriptStruct_FTurnOrderData;
+class UScriptStruct* FTurnOrderData::StaticStruct()
+{
+	if (!Z_Registration_Info_UScriptStruct_FTurnOrderData.OuterSingleton)
+	{
+		Z_Registration_Info_UScriptStruct_FTurnOrderData.OuterSingleton = GetStaticStruct(Z_Construct_UScriptStruct_FTurnOrderData, (UObject*)Z_Construct_UPackage__Script_ProjectGate(), TEXT("TurnOrderData"));
+	}
+	return Z_Registration_Info_UScriptStruct_FTurnOrderData.OuterSingleton;
+}
+struct Z_Construct_UScriptStruct_FTurnOrderData_Statics
+{
+#if WITH_METADATA
+	static constexpr UECodeGen_Private::FMetaDataPairParam Struct_MetaDataParams[] = {
+		{ "BlueprintType", "true" },
+		{ "ModuleRelativePath", "Public/CombatSystem/CombatStats.h" },
+	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_Initiative_MetaData[] = {
+		{ "Category", "TurnOrderData" },
+		{ "ModuleRelativePath", "Public/CombatSystem/CombatStats.h" },
+	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_Speed_MetaData[] = {
+		{ "Category", "TurnOrderData" },
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "// \xef\xbf\xbd\xef\xbf\xbd\xc2\xa6\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd (0-100)\n" },
+#endif
+		{ "ModuleRelativePath", "Public/CombatSystem/CombatStats.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "\xef\xbf\xbd\xef\xbf\xbd\xc2\xa6\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd (0-100)" },
+#endif
+	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_CurrentInitiative_MetaData[] = {
+		{ "Category", "TurnOrderData" },
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "// \xef\xbf\xbdt\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xdd\xa9\xef\xbf\xbd (\xef\xbf\xbdv\xef\xbf\xbdT\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd)\n" },
+#endif
+		{ "ModuleRelativePath", "Public/CombatSystem/CombatStats.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "\xef\xbf\xbdt\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xdd\xa9\xef\xbf\xbd (\xef\xbf\xbdv\xef\xbf\xbdT\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd)" },
+#endif
+	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_TurnDelay_MetaData[] = {
+		{ "Category", "TurnOrderData" },
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "// \xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd""e\xef\xbf\xbd^\xef\xbf\xbdX\xef\xbf\xbdu\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\n" },
+#endif
+		{ "ModuleRelativePath", "Public/CombatSystem/CombatStats.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd""e\xef\xbf\xbd^\xef\xbf\xbdX\xef\xbf\xbdu\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd" },
+#endif
+	};
+#endif // WITH_METADATA
+	static const UECodeGen_Private::FIntPropertyParams NewProp_Initiative;
+	static const UECodeGen_Private::FIntPropertyParams NewProp_Speed;
+	static const UECodeGen_Private::FIntPropertyParams NewProp_CurrentInitiative;
+	static const UECodeGen_Private::FFloatPropertyParams NewProp_TurnDelay;
+	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
+	static void* NewStructOps()
+	{
+		return (UScriptStruct::ICppStructOps*)new UScriptStruct::TCppStructOps<FTurnOrderData>();
+	}
+	static const UECodeGen_Private::FStructParams StructParams;
+};
+const UECodeGen_Private::FIntPropertyParams Z_Construct_UScriptStruct_FTurnOrderData_Statics::NewProp_Initiative = { "Initiative", nullptr, (EPropertyFlags)0x0010000000000005, UECodeGen_Private::EPropertyGenFlags::Int, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(FTurnOrderData, Initiative), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_Initiative_MetaData), NewProp_Initiative_MetaData) };
+const UECodeGen_Private::FIntPropertyParams Z_Construct_UScriptStruct_FTurnOrderData_Statics::NewProp_Speed = { "Speed", nullptr, (EPropertyFlags)0x0010000000000005, UECodeGen_Private::EPropertyGenFlags::Int, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(FTurnOrderData, Speed), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_Speed_MetaData), NewProp_Speed_MetaData) };
+const UECodeGen_Private::FIntPropertyParams Z_Construct_UScriptStruct_FTurnOrderData_Statics::NewProp_CurrentInitiative = { "CurrentInitiative", nullptr, (EPropertyFlags)0x0010000000000014, UECodeGen_Private::EPropertyGenFlags::Int, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(FTurnOrderData, CurrentInitiative), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_CurrentInitiative_MetaData), NewProp_CurrentInitiative_MetaData) };
+const UECodeGen_Private::FFloatPropertyParams Z_Construct_UScriptStruct_FTurnOrderData_Statics::NewProp_TurnDelay = { "TurnDelay", nullptr, (EPropertyFlags)0x0010000000000014, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(FTurnOrderData, TurnDelay), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_TurnDelay_MetaData), NewProp_TurnDelay_MetaData) };
+const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UScriptStruct_FTurnOrderData_Statics::PropPointers[] = {
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UScriptStruct_FTurnOrderData_Statics::NewProp_Initiative,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UScriptStruct_FTurnOrderData_Statics::NewProp_Speed,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UScriptStruct_FTurnOrderData_Statics::NewProp_CurrentInitiative,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UScriptStruct_FTurnOrderData_Statics::NewProp_TurnDelay,
+};
+static_assert(UE_ARRAY_COUNT(Z_Construct_UScriptStruct_FTurnOrderData_Statics::PropPointers) < 2048);
+const UECodeGen_Private::FStructParams Z_Construct_UScriptStruct_FTurnOrderData_Statics::StructParams = {
+	(UObject* (*)())Z_Construct_UPackage__Script_ProjectGate,
+	nullptr,
+	&NewStructOps,
+	"TurnOrderData",
+	Z_Construct_UScriptStruct_FTurnOrderData_Statics::PropPointers,
+	UE_ARRAY_COUNT(Z_Construct_UScriptStruct_FTurnOrderData_Statics::PropPointers),
+	sizeof(FTurnOrderData),
+	alignof(FTurnOrderData),
+	RF_Public|RF_Transient|RF_MarkAsNative,
+	EStructFlags(0x00000001),
+	METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UScriptStruct_FTurnOrderData_Statics::Struct_MetaDataParams), Z_Construct_UScriptStruct_FTurnOrderData_Statics::Struct_MetaDataParams)
+};
+UScriptStruct* Z_Construct_UScriptStruct_FTurnOrderData()
+{
+	if (!Z_Registration_Info_UScriptStruct_FTurnOrderData.InnerSingleton)
+	{
+		UECodeGen_Private::ConstructUScriptStruct(Z_Registration_Info_UScriptStruct_FTurnOrderData.InnerSingleton, Z_Construct_UScriptStruct_FTurnOrderData_Statics::StructParams);
+	}
+	return Z_Registration_Info_UScriptStruct_FTurnOrderData.InnerSingleton;
+}
+// ********** End ScriptStruct FTurnOrderData ******************************************************
+
 // ********** Begin ScriptStruct FCombatStats ******************************************************
 static FStructRegistrationInfo Z_Registration_Info_UScriptStruct_FCombatStats;
 class UScriptStruct* FCombatStats::StaticStruct()
@@ -175,6 +273,10 @@ struct Z_Construct_UScriptStruct_FCombatStats_Statics
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "\xef\xbf\xbd\xd4\xb0\xef\xbf\xbd\xef\xbf\xbd\xce\xadp\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd""c" },
 #endif
+	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_TurnOrderData_MetaData[] = {
+		{ "Category", "Turn Order" },
+		{ "ModuleRelativePath", "Public/CombatSystem/CombatStats.h" },
 	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_MaxHealth_MetaData[] = {
 		{ "Category", "Health" },
@@ -209,6 +311,7 @@ struct Z_Construct_UScriptStruct_FCombatStats_Statics
 		{ "ModuleRelativePath", "Public/CombatSystem/CombatStats.h" },
 	};
 #endif // WITH_METADATA
+	static const UECodeGen_Private::FStructPropertyParams NewProp_TurnOrderData;
 	static const UECodeGen_Private::FIntPropertyParams NewProp_MaxHealth;
 	static const UECodeGen_Private::FIntPropertyParams NewProp_CurrentHealth;
 	static const UECodeGen_Private::FIntPropertyParams NewProp_AttackPower;
@@ -224,6 +327,7 @@ struct Z_Construct_UScriptStruct_FCombatStats_Statics
 	}
 	static const UECodeGen_Private::FStructParams StructParams;
 };
+const UECodeGen_Private::FStructPropertyParams Z_Construct_UScriptStruct_FCombatStats_Statics::NewProp_TurnOrderData = { "TurnOrderData", nullptr, (EPropertyFlags)0x0010000000000005, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(FCombatStats, TurnOrderData), Z_Construct_UScriptStruct_FTurnOrderData, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_TurnOrderData_MetaData), NewProp_TurnOrderData_MetaData) }; // 140942724
 const UECodeGen_Private::FIntPropertyParams Z_Construct_UScriptStruct_FCombatStats_Statics::NewProp_MaxHealth = { "MaxHealth", nullptr, (EPropertyFlags)0x0010000000000005, UECodeGen_Private::EPropertyGenFlags::Int, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(FCombatStats, MaxHealth), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_MaxHealth_MetaData), NewProp_MaxHealth_MetaData) };
 const UECodeGen_Private::FIntPropertyParams Z_Construct_UScriptStruct_FCombatStats_Statics::NewProp_CurrentHealth = { "CurrentHealth", nullptr, (EPropertyFlags)0x0010000000000005, UECodeGen_Private::EPropertyGenFlags::Int, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(FCombatStats, CurrentHealth), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_CurrentHealth_MetaData), NewProp_CurrentHealth_MetaData) };
 const UECodeGen_Private::FIntPropertyParams Z_Construct_UScriptStruct_FCombatStats_Statics::NewProp_AttackPower = { "AttackPower", nullptr, (EPropertyFlags)0x0010000000000005, UECodeGen_Private::EPropertyGenFlags::Int, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(FCombatStats, AttackPower), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_AttackPower_MetaData), NewProp_AttackPower_MetaData) };
@@ -233,6 +337,7 @@ const UECodeGen_Private::FFloatPropertyParams Z_Construct_UScriptStruct_FCombatS
 const UECodeGen_Private::FFloatPropertyParams Z_Construct_UScriptStruct_FCombatStats_Statics::NewProp_CriticalMultiplier = { "CriticalMultiplier", nullptr, (EPropertyFlags)0x0010000000000005, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(FCombatStats, CriticalMultiplier), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_CriticalMultiplier_MetaData), NewProp_CriticalMultiplier_MetaData) };
 const UECodeGen_Private::FFloatPropertyParams Z_Construct_UScriptStruct_FCombatStats_Statics::NewProp_AttackSpeed = { "AttackSpeed", nullptr, (EPropertyFlags)0x0010000000000005, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(FCombatStats, AttackSpeed), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_AttackSpeed_MetaData), NewProp_AttackSpeed_MetaData) };
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UScriptStruct_FCombatStats_Statics::PropPointers[] = {
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UScriptStruct_FCombatStats_Statics::NewProp_TurnOrderData,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UScriptStruct_FCombatStats_Statics::NewProp_MaxHealth,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UScriptStruct_FCombatStats_Statics::NewProp_CurrentHealth,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UScriptStruct_FCombatStats_Statics::NewProp_AttackPower,
@@ -499,12 +604,13 @@ struct Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_P
 		{ EDamageType_StaticEnum, TEXT("EDamageType"), &Z_Registration_Info_UEnum_EDamageType, CONSTRUCT_RELOAD_VERSION_INFO(FEnumReloadVersionInfo, 845825549U) },
 	};
 	static constexpr FStructRegisterCompiledInInfo ScriptStructInfo[] = {
-		{ FCombatStats::StaticStruct, Z_Construct_UScriptStruct_FCombatStats_Statics::NewStructOps, TEXT("CombatStats"), &Z_Registration_Info_UScriptStruct_FCombatStats, CONSTRUCT_RELOAD_VERSION_INFO(FStructReloadVersionInfo, sizeof(FCombatStats), 3017904589U) },
+		{ FTurnOrderData::StaticStruct, Z_Construct_UScriptStruct_FTurnOrderData_Statics::NewStructOps, TEXT("TurnOrderData"), &Z_Registration_Info_UScriptStruct_FTurnOrderData, CONSTRUCT_RELOAD_VERSION_INFO(FStructReloadVersionInfo, sizeof(FTurnOrderData), 140942724U) },
+		{ FCombatStats::StaticStruct, Z_Construct_UScriptStruct_FCombatStats_Statics::NewStructOps, TEXT("CombatStats"), &Z_Registration_Info_UScriptStruct_FCombatStats, CONSTRUCT_RELOAD_VERSION_INFO(FStructReloadVersionInfo, sizeof(FCombatStats), 454819104U) },
 		{ FAttackConfig::StaticStruct, Z_Construct_UScriptStruct_FAttackConfig_Statics::NewStructOps, TEXT("AttackConfig"), &Z_Registration_Info_UScriptStruct_FAttackConfig, CONSTRUCT_RELOAD_VERSION_INFO(FStructReloadVersionInfo, sizeof(FAttackConfig), 2478238228U) },
 		{ FDamageResult::StaticStruct, Z_Construct_UScriptStruct_FDamageResult_Statics::NewStructOps, TEXT("DamageResult"), &Z_Registration_Info_UScriptStruct_FDamageResult, CONSTRUCT_RELOAD_VERSION_INFO(FStructReloadVersionInfo, sizeof(FDamageResult), 2440303719U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_CombatSystem_CombatStats_h__Script_ProjectGate_3080646804(TEXT("/Script/ProjectGate"),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_CombatSystem_CombatStats_h__Script_ProjectGate_1132433803(TEXT("/Script/ProjectGate"),
 	nullptr, 0,
 	Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_CombatSystem_CombatStats_h__Script_ProjectGate_Statics::ScriptStructInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_CombatSystem_CombatStats_h__Script_ProjectGate_Statics::ScriptStructInfo),
 	Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_CombatSystem_CombatStats_h__Script_ProjectGate_Statics::EnumInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_CombatSystem_CombatStats_h__Script_ProjectGate_Statics::EnumInfo));

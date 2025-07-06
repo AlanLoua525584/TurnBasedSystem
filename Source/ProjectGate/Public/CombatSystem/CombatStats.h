@@ -28,11 +28,39 @@ enum class EDamageType : uint8
 };
 
 
+
+USTRUCT(BlueprintType)
+struct FTurnOrderData
+{
+    GENERATED_BODY()
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    int32 Initiative = 50;  // 基礎先攻值 (0-100)
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    int32 Speed = 50;       // 速度屬性 (影響先攻)
+
+    UPROPERTY(BlueprintReadOnly)
+    int32 CurrentInitiative = 0;  // 當前回合優先級
+
+    UPROPERTY(BlueprintReadOnly)
+    float TurnDelay = 0.0f;  // 延遲行動（被暈眩等）
+
+
+
+
+};
+
+
 // 戰鬥統計結構
 USTRUCT(BlueprintType)
 struct PROJECTGATE_API FCombatStats
 {
     GENERATED_BODY()
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Turn Order")
+    FTurnOrderData TurnOrderData;
+    
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Health")
     int32 MaxHealth = 100;
@@ -58,11 +86,14 @@ struct PROJECTGATE_API FCombatStats
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Speed")
     float AttackSpeed = 1.0f;
 
+
+
     FCombatStats()
     {
         CurrentHealth = MaxHealth;
     }
 };
+
 
 
 // 攻擊配置
@@ -116,6 +147,8 @@ struct PROJECTGATE_API FDamageResult
     UPROPERTY(BlueprintReadOnly)
     AActor* Target = nullptr;
 };
+
+
 
 /**
  * 

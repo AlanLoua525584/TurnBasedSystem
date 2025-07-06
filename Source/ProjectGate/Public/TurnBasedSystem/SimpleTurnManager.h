@@ -8,6 +8,8 @@
 #include "SimpleTurnManager.generated.h"
 
 
+class ATurnBasedCharacter;
+
 /*ThreePhasesInTurn*/
 UENUM(BlueprintType)
 enum class ETurnPhase : uint8
@@ -24,6 +26,9 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnPhaseChanged, AActor*, CurrentCh
 
 // 戰鬥結束事件
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnBattleEnded, bool, bPlayerWon);
+
+
+
 
 
 UCLASS()
@@ -59,6 +64,24 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Turn System")
 	bool CheckBattleEnd();
 
+	// 回合排序方法
+	UFUNCTION(BlueprintCallable, Category = "Turn System")
+	void RecalculateTurnOrder();
+
+	// 獲取排序後的回合順序
+	UFUNCTION(BlueprintCallable, Category = "Turn System")
+	TArray<AActor*> GetSortedTurnOrder() const;
+
+	// 延遲某個角色的行動
+	UFUNCTION(BlueprintCallable, Category = "Turn System")
+	void DelayCharacterTurn(AActor* Character, int32 DelayTurns = 1);
+
+	// 插入緊急行動
+	UFUNCTION(BlueprintCallable, Category = "Turn System")
+	void InsertImmediateAction(AActor* Character);
+
+
+
 	// 獲取存活角色數量
 	UFUNCTION(BlueprintCallable, Category = "Turn System")
 	int32 GetAliveCharacterCount() const;
@@ -66,7 +89,7 @@ public:
 	UPROPERTY(BlueprintAssignable, Category = "Turn System")
 	FOnBattleEnded OnBattleEnded;
 
-
+	
 
 	/*GetCurrentPhase*/ 
 	UFUNCTION(BlueprintCallable, Category = "Turn System")
@@ -98,6 +121,13 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
+	// 計算先攻值
+	int32 CalculateInitiative(ATurnBasedCharacter* Character);
+
+	// 排序算法
+	void SortTurnOrderByInitiative();
+
 
 public:	
 	// Called every frame

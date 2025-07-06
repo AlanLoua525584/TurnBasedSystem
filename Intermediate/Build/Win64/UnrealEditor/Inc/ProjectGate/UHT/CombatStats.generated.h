@@ -16,8 +16,17 @@
 
 PRAGMA_DISABLE_DEPRECATION_WARNINGS
 
-// ********** Begin ScriptStruct FCombatStats ******************************************************
+// ********** Begin ScriptStruct FTurnOrderData ****************************************************
 #define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_CombatSystem_CombatStats_h_35_GENERATED_BODY \
+	friend struct Z_Construct_UScriptStruct_FTurnOrderData_Statics; \
+	PROJECTGATE_API static class UScriptStruct* StaticStruct();
+
+
+struct FTurnOrderData;
+// ********** End ScriptStruct FTurnOrderData ******************************************************
+
+// ********** Begin ScriptStruct FCombatStats ******************************************************
+#define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_CombatSystem_CombatStats_h_59_GENERATED_BODY \
 	friend struct Z_Construct_UScriptStruct_FCombatStats_Statics; \
 	static class UScriptStruct* StaticStruct();
 
@@ -26,7 +35,7 @@ struct FCombatStats;
 // ********** End ScriptStruct FCombatStats ********************************************************
 
 // ********** Begin ScriptStruct FAttackConfig *****************************************************
-#define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_CombatSystem_CombatStats_h_72_GENERATED_BODY \
+#define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_CombatSystem_CombatStats_h_103_GENERATED_BODY \
 	friend struct Z_Construct_UScriptStruct_FAttackConfig_Statics; \
 	static class UScriptStruct* StaticStruct();
 
@@ -35,7 +44,7 @@ struct FAttackConfig;
 // ********** End ScriptStruct FAttackConfig *******************************************************
 
 // ********** Begin ScriptStruct FDamageResult *****************************************************
-#define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_CombatSystem_CombatStats_h_99_GENERATED_BODY \
+#define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_CombatSystem_CombatStats_h_130_GENERATED_BODY \
 	friend struct Z_Construct_UScriptStruct_FDamageResult_Statics; \
 	static class UScriptStruct* StaticStruct();
 

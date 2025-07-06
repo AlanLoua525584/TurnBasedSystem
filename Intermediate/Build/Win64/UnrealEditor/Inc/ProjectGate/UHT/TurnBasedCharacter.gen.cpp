@@ -30,6 +30,7 @@ PROJECTGATE_API UClass* Z_Construct_UClass_UGridVisualComponent_NoRegister();
 PROJECTGATE_API UClass* Z_Construct_UClass_UHealthBarWidget_NoRegister();
 PROJECTGATE_API UFunction* Z_Construct_UDelegateFunction_ProjectGate_OnActionPerformed__DelegateSignature();
 PROJECTGATE_API UFunction* Z_Construct_UDelegateFunction_ProjectGate_OnActionPointsChanged__DelegateSignature();
+PROJECTGATE_API UFunction* Z_Construct_UDelegateFunction_ProjectGate_TurnOrderChangedSignature__DelegateSignature();
 UMG_API UClass* Z_Construct_UClass_UWidgetComponent_NoRegister();
 UPackage* Z_Construct_UPackage__Script_ProjectGate();
 // ********** End Cross Module References **********************************************************
@@ -133,6 +134,56 @@ void FOnActionPerformed_DelegateWrapper(const FMulticastScriptDelegate& OnAction
 	OnActionPerformed.ProcessMulticastDelegate<UObject>(&Parms);
 }
 // ********** End Delegate FOnActionPerformed ******************************************************
+
+// ********** Begin Delegate FTurnOrderChangedSignature ********************************************
+struct Z_Construct_UDelegateFunction_ProjectGate_TurnOrderChangedSignature__DelegateSignature_Statics
+{
+	struct _Script_ProjectGate_eventTurnOrderChangedSignature_Parms
+	{
+		int32 NewInitiative;
+	};
+#if WITH_METADATA
+	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "// \xef\xbf\xbd^\xef\xbf\xbdX\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xc7\xa7\xef\xbf\xbd\xef\xbf\xbd\n" },
+#endif
+		{ "ModuleRelativePath", "Public/TurnBasedSystem/TurnBasedCharacter.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "\xef\xbf\xbd^\xef\xbf\xbdX\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xc7\xa7\xef\xbf\xbd\xef\xbf\xbd" },
+#endif
+	};
+#endif // WITH_METADATA
+	static const UECodeGen_Private::FIntPropertyParams NewProp_NewInitiative;
+	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
+	static const UECodeGen_Private::FDelegateFunctionParams FuncParams;
+};
+const UECodeGen_Private::FIntPropertyParams Z_Construct_UDelegateFunction_ProjectGate_TurnOrderChangedSignature__DelegateSignature_Statics::NewProp_NewInitiative = { "NewInitiative", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Int, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(_Script_ProjectGate_eventTurnOrderChangedSignature_Parms, NewInitiative), METADATA_PARAMS(0, nullptr) };
+const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UDelegateFunction_ProjectGate_TurnOrderChangedSignature__DelegateSignature_Statics::PropPointers[] = {
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UDelegateFunction_ProjectGate_TurnOrderChangedSignature__DelegateSignature_Statics::NewProp_NewInitiative,
+};
+static_assert(UE_ARRAY_COUNT(Z_Construct_UDelegateFunction_ProjectGate_TurnOrderChangedSignature__DelegateSignature_Statics::PropPointers) < 2048);
+const UECodeGen_Private::FDelegateFunctionParams Z_Construct_UDelegateFunction_ProjectGate_TurnOrderChangedSignature__DelegateSignature_Statics::FuncParams = { { (UObject*(*)())Z_Construct_UPackage__Script_ProjectGate, nullptr, "TurnOrderChangedSignature__DelegateSignature", Z_Construct_UDelegateFunction_ProjectGate_TurnOrderChangedSignature__DelegateSignature_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UDelegateFunction_ProjectGate_TurnOrderChangedSignature__DelegateSignature_Statics::PropPointers), sizeof(Z_Construct_UDelegateFunction_ProjectGate_TurnOrderChangedSignature__DelegateSignature_Statics::_Script_ProjectGate_eventTurnOrderChangedSignature_Parms), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x00130000, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UDelegateFunction_ProjectGate_TurnOrderChangedSignature__DelegateSignature_Statics::Function_MetaDataParams), Z_Construct_UDelegateFunction_ProjectGate_TurnOrderChangedSignature__DelegateSignature_Statics::Function_MetaDataParams)},  };
+static_assert(sizeof(Z_Construct_UDelegateFunction_ProjectGate_TurnOrderChangedSignature__DelegateSignature_Statics::_Script_ProjectGate_eventTurnOrderChangedSignature_Parms) < MAX_uint16);
+UFunction* Z_Construct_UDelegateFunction_ProjectGate_TurnOrderChangedSignature__DelegateSignature()
+{
+	static UFunction* ReturnFunction = nullptr;
+	if (!ReturnFunction)
+	{
+		UECodeGen_Private::ConstructUDelegateFunction(&ReturnFunction, Z_Construct_UDelegateFunction_ProjectGate_TurnOrderChangedSignature__DelegateSignature_Statics::FuncParams);
+	}
+	return ReturnFunction;
+}
+void FTurnOrderChangedSignature_DelegateWrapper(const FMulticastScriptDelegate& TurnOrderChangedSignature, int32 NewInitiative)
+{
+	struct _Script_ProjectGate_eventTurnOrderChangedSignature_Parms
+	{
+		int32 NewInitiative;
+	};
+	_Script_ProjectGate_eventTurnOrderChangedSignature_Parms Parms;
+	Parms.NewInitiative=NewInitiative;
+	TurnOrderChangedSignature.ProcessMulticastDelegate<UObject>(&Parms);
+}
+// ********** End Delegate FTurnOrderChangedSignature **********************************************
 
 // ********** Begin Class ATurnBasedCharacter Function CanPerformAction ****************************
 struct Z_Construct_UFunction_ATurnBasedCharacter_CanPerformAction_Statics
@@ -1589,6 +1640,20 @@ struct Z_Construct_UClass_ATurnBasedCharacter_Statics
 		{ "Category", "Turn System|Action Cost" },
 		{ "ModuleRelativePath", "Public/TurnBasedSystem/TurnBasedCharacter.h" },
 	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_bIsSlowed_MetaData[] = {
+		{ "Category", "Turn System|Status" },
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "//\xef\xbf\xbd^\xef\xbf\xbdX\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\n" },
+#endif
+		{ "ModuleRelativePath", "Public/TurnBasedSystem/TurnBasedCharacter.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "\xef\xbf\xbd^\xef\xbf\xbdX\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd" },
+#endif
+	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_bIsHasted_MetaData[] = {
+		{ "Category", "Turn System|Status" },
+		{ "ModuleRelativePath", "Public/TurnBasedSystem/TurnBasedCharacter.h" },
+	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_AttackDamage_MetaData[] = {
 		{ "Category", "Turn System|Stats" },
 #if !UE_BUILD_SHIPPING
@@ -1630,6 +1695,26 @@ struct Z_Construct_UClass_ATurnBasedCharacter_Statics
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_OnActionPerformed_MetaData[] = {
 		{ "Category", "Turn System|Events" },
 		{ "ModuleRelativePath", "Public/TurnBasedSystem/TurnBasedCharacter.h" },
+	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_OnTurnOrderChanged_MetaData[] = {
+		{ "Category", "Turn System|TurnOrder" },
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "//\xef\xbf\xbd^\xef\xbf\xbdX\n" },
+#endif
+		{ "ModuleRelativePath", "Public/TurnBasedSystem/TurnBasedCharacter.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "\xef\xbf\xbd^\xef\xbf\xbdX" },
+#endif
+	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_CurrentInitiative_MetaData[] = {
+		{ "Category", "Turn Order" },
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "// \xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd""e\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\n" },
+#endif
+		{ "ModuleRelativePath", "Public/TurnBasedSystem/TurnBasedCharacter.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd""e\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd" },
+#endif
 	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_DeathMontage_MetaData[] = {
 		{ "Category", "Combat|Death" },
@@ -1817,6 +1902,10 @@ struct Z_Construct_UClass_ATurnBasedCharacter_Statics
 	static const UECodeGen_Private::FIntPropertyParams NewProp_CurrentActionPoints;
 	static const UECodeGen_Private::FIntPropertyParams NewProp_MoveActionCost;
 	static const UECodeGen_Private::FIntPropertyParams NewProp_AttackActionCost;
+	static void NewProp_bIsSlowed_SetBit(void* Obj);
+	static const UECodeGen_Private::FBoolPropertyParams NewProp_bIsSlowed;
+	static void NewProp_bIsHasted_SetBit(void* Obj);
+	static const UECodeGen_Private::FBoolPropertyParams NewProp_bIsHasted;
 	static const UECodeGen_Private::FIntPropertyParams NewProp_AttackDamage;
 	static const UECodeGen_Private::FFloatPropertyParams NewProp_AttackRange;
 	static const UECodeGen_Private::FFloatPropertyParams NewProp_MoveSpeed;
@@ -1824,6 +1913,8 @@ struct Z_Construct_UClass_ATurnBasedCharacter_Statics
 	static const UECodeGen_Private::FBoolPropertyParams NewProp_bIsPlayerControlled;
 	static const UECodeGen_Private::FMulticastDelegatePropertyParams NewProp_OnActionPointsChanged;
 	static const UECodeGen_Private::FMulticastDelegatePropertyParams NewProp_OnActionPerformed;
+	static const UECodeGen_Private::FMulticastDelegatePropertyParams NewProp_OnTurnOrderChanged;
+	static const UECodeGen_Private::FIntPropertyParams NewProp_CurrentInitiative;
 	static const UECodeGen_Private::FObjectPropertyParams NewProp_DeathMontage;
 	static const UECodeGen_Private::FClassPropertyParams NewProp_DeathEffectClass;
 	static const UECodeGen_Private::FFloatPropertyParams NewProp_DeathDestroyDelay;
@@ -1891,6 +1982,16 @@ const UECodeGen_Private::FIntPropertyParams Z_Construct_UClass_ATurnBasedCharact
 const UECodeGen_Private::FIntPropertyParams Z_Construct_UClass_ATurnBasedCharacter_Statics::NewProp_CurrentActionPoints = { "CurrentActionPoints", nullptr, (EPropertyFlags)0x0010000000020005, UECodeGen_Private::EPropertyGenFlags::Int, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(ATurnBasedCharacter, CurrentActionPoints), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_CurrentActionPoints_MetaData), NewProp_CurrentActionPoints_MetaData) };
 const UECodeGen_Private::FIntPropertyParams Z_Construct_UClass_ATurnBasedCharacter_Statics::NewProp_MoveActionCost = { "MoveActionCost", nullptr, (EPropertyFlags)0x0010000000000005, UECodeGen_Private::EPropertyGenFlags::Int, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(ATurnBasedCharacter, MoveActionCost), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_MoveActionCost_MetaData), NewProp_MoveActionCost_MetaData) };
 const UECodeGen_Private::FIntPropertyParams Z_Construct_UClass_ATurnBasedCharacter_Statics::NewProp_AttackActionCost = { "AttackActionCost", nullptr, (EPropertyFlags)0x0010000000000005, UECodeGen_Private::EPropertyGenFlags::Int, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(ATurnBasedCharacter, AttackActionCost), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_AttackActionCost_MetaData), NewProp_AttackActionCost_MetaData) };
+void Z_Construct_UClass_ATurnBasedCharacter_Statics::NewProp_bIsSlowed_SetBit(void* Obj)
+{
+	((ATurnBasedCharacter*)Obj)->bIsSlowed = 1;
+}
+const UECodeGen_Private::FBoolPropertyParams Z_Construct_UClass_ATurnBasedCharacter_Statics::NewProp_bIsSlowed = { "bIsSlowed", nullptr, (EPropertyFlags)0x0010000000000004, UECodeGen_Private::EPropertyGenFlags::Bool | UECodeGen_Private::EPropertyGenFlags::NativeBool, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, sizeof(bool), sizeof(ATurnBasedCharacter), &Z_Construct_UClass_ATurnBasedCharacter_Statics::NewProp_bIsSlowed_SetBit, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_bIsSlowed_MetaData), NewProp_bIsSlowed_MetaData) };
+void Z_Construct_UClass_ATurnBasedCharacter_Statics::NewProp_bIsHasted_SetBit(void* Obj)
+{
+	((ATurnBasedCharacter*)Obj)->bIsHasted = 1;
+}
+const UECodeGen_Private::FBoolPropertyParams Z_Construct_UClass_ATurnBasedCharacter_Statics::NewProp_bIsHasted = { "bIsHasted", nullptr, (EPropertyFlags)0x0010000000000004, UECodeGen_Private::EPropertyGenFlags::Bool | UECodeGen_Private::EPropertyGenFlags::NativeBool, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, sizeof(bool), sizeof(ATurnBasedCharacter), &Z_Construct_UClass_ATurnBasedCharacter_Statics::NewProp_bIsHasted_SetBit, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_bIsHasted_MetaData), NewProp_bIsHasted_MetaData) };
 const UECodeGen_Private::FIntPropertyParams Z_Construct_UClass_ATurnBasedCharacter_Statics::NewProp_AttackDamage = { "AttackDamage", nullptr, (EPropertyFlags)0x0010000000000005, UECodeGen_Private::EPropertyGenFlags::Int, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(ATurnBasedCharacter, AttackDamage), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_AttackDamage_MetaData), NewProp_AttackDamage_MetaData) };
 const UECodeGen_Private::FFloatPropertyParams Z_Construct_UClass_ATurnBasedCharacter_Statics::NewProp_AttackRange = { "AttackRange", nullptr, (EPropertyFlags)0x0010000000000005, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(ATurnBasedCharacter, AttackRange), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_AttackRange_MetaData), NewProp_AttackRange_MetaData) };
 const UECodeGen_Private::FFloatPropertyParams Z_Construct_UClass_ATurnBasedCharacter_Statics::NewProp_MoveSpeed = { "MoveSpeed", nullptr, (EPropertyFlags)0x0010000000000005, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(ATurnBasedCharacter, MoveSpeed), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_MoveSpeed_MetaData), NewProp_MoveSpeed_MetaData) };
@@ -1901,6 +2002,8 @@ void Z_Construct_UClass_ATurnBasedCharacter_Statics::NewProp_bIsPlayerControlled
 const UECodeGen_Private::FBoolPropertyParams Z_Construct_UClass_ATurnBasedCharacter_Statics::NewProp_bIsPlayerControlled = { "bIsPlayerControlled", nullptr, (EPropertyFlags)0x0010000000000005, UECodeGen_Private::EPropertyGenFlags::Bool | UECodeGen_Private::EPropertyGenFlags::NativeBool, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, sizeof(bool), sizeof(ATurnBasedCharacter), &Z_Construct_UClass_ATurnBasedCharacter_Statics::NewProp_bIsPlayerControlled_SetBit, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_bIsPlayerControlled_MetaData), NewProp_bIsPlayerControlled_MetaData) };
 const UECodeGen_Private::FMulticastDelegatePropertyParams Z_Construct_UClass_ATurnBasedCharacter_Statics::NewProp_OnActionPointsChanged = { "OnActionPointsChanged", nullptr, (EPropertyFlags)0x0010000010080000, UECodeGen_Private::EPropertyGenFlags::InlineMulticastDelegate, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(ATurnBasedCharacter, OnActionPointsChanged), Z_Construct_UDelegateFunction_ProjectGate_OnActionPointsChanged__DelegateSignature, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_OnActionPointsChanged_MetaData), NewProp_OnActionPointsChanged_MetaData) }; // 1536390471
 const UECodeGen_Private::FMulticastDelegatePropertyParams Z_Construct_UClass_ATurnBasedCharacter_Statics::NewProp_OnActionPerformed = { "OnActionPerformed", nullptr, (EPropertyFlags)0x0010000010080000, UECodeGen_Private::EPropertyGenFlags::InlineMulticastDelegate, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(ATurnBasedCharacter, OnActionPerformed), Z_Construct_UDelegateFunction_ProjectGate_OnActionPerformed__DelegateSignature, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_OnActionPerformed_MetaData), NewProp_OnActionPerformed_MetaData) }; // 38371339
+const UECodeGen_Private::FMulticastDelegatePropertyParams Z_Construct_UClass_ATurnBasedCharacter_Statics::NewProp_OnTurnOrderChanged = { "OnTurnOrderChanged", nullptr, (EPropertyFlags)0x0010000010080000, UECodeGen_Private::EPropertyGenFlags::InlineMulticastDelegate, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(ATurnBasedCharacter, OnTurnOrderChanged), Z_Construct_UDelegateFunction_ProjectGate_TurnOrderChangedSignature__DelegateSignature, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_OnTurnOrderChanged_MetaData), NewProp_OnTurnOrderChanged_MetaData) }; // 175113032
+const UECodeGen_Private::FIntPropertyParams Z_Construct_UClass_ATurnBasedCharacter_Statics::NewProp_CurrentInitiative = { "CurrentInitiative", nullptr, (EPropertyFlags)0x0010000000000004, UECodeGen_Private::EPropertyGenFlags::Int, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(ATurnBasedCharacter, CurrentInitiative), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_CurrentInitiative_MetaData), NewProp_CurrentInitiative_MetaData) };
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_ATurnBasedCharacter_Statics::NewProp_DeathMontage = { "DeathMontage", nullptr, (EPropertyFlags)0x0010000000010001, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(ATurnBasedCharacter, DeathMontage), Z_Construct_UClass_UAnimMontage_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_DeathMontage_MetaData), NewProp_DeathMontage_MetaData) };
 const UECodeGen_Private::FClassPropertyParams Z_Construct_UClass_ATurnBasedCharacter_Statics::NewProp_DeathEffectClass = { "DeathEffectClass", nullptr, (EPropertyFlags)0x0014000000010001, UECodeGen_Private::EPropertyGenFlags::Class, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(ATurnBasedCharacter, DeathEffectClass), Z_Construct_UClass_UClass, Z_Construct_UClass_AActor_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_DeathEffectClass_MetaData), NewProp_DeathEffectClass_MetaData) };
 const UECodeGen_Private::FFloatPropertyParams Z_Construct_UClass_ATurnBasedCharacter_Statics::NewProp_DeathDestroyDelay = { "DeathDestroyDelay", nullptr, (EPropertyFlags)0x0010000000010001, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(ATurnBasedCharacter, DeathDestroyDelay), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_DeathDestroyDelay_MetaData), NewProp_DeathDestroyDelay_MetaData) };
@@ -1938,12 +2041,16 @@ const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UClass_ATurnBase
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_ATurnBasedCharacter_Statics::NewProp_CurrentActionPoints,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_ATurnBasedCharacter_Statics::NewProp_MoveActionCost,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_ATurnBasedCharacter_Statics::NewProp_AttackActionCost,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_ATurnBasedCharacter_Statics::NewProp_bIsSlowed,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_ATurnBasedCharacter_Statics::NewProp_bIsHasted,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_ATurnBasedCharacter_Statics::NewProp_AttackDamage,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_ATurnBasedCharacter_Statics::NewProp_AttackRange,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_ATurnBasedCharacter_Statics::NewProp_MoveSpeed,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_ATurnBasedCharacter_Statics::NewProp_bIsPlayerControlled,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_ATurnBasedCharacter_Statics::NewProp_OnActionPointsChanged,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_ATurnBasedCharacter_Statics::NewProp_OnActionPerformed,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_ATurnBasedCharacter_Statics::NewProp_OnTurnOrderChanged,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_ATurnBasedCharacter_Statics::NewProp_CurrentInitiative,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_ATurnBasedCharacter_Statics::NewProp_DeathMontage,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_ATurnBasedCharacter_Statics::NewProp_DeathEffectClass,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_ATurnBasedCharacter_Statics::NewProp_DeathDestroyDelay,
@@ -2005,10 +2112,10 @@ ATurnBasedCharacter::~ATurnBasedCharacter() {}
 struct Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_TurnBasedCharacter_h__Script_ProjectGate_Statics
 {
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_ATurnBasedCharacter, ATurnBasedCharacter::StaticClass, TEXT("ATurnBasedCharacter"), &Z_Registration_Info_UClass_ATurnBasedCharacter, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(ATurnBasedCharacter), 1157763790U) },
+		{ Z_Construct_UClass_ATurnBasedCharacter, ATurnBasedCharacter::StaticClass, TEXT("ATurnBasedCharacter"), &Z_Registration_Info_UClass_ATurnBasedCharacter, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(ATurnBasedCharacter), 848908162U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_TurnBasedCharacter_h__Script_ProjectGate_1804220640(TEXT("/Script/ProjectGate"),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_TurnBasedCharacter_h__Script_ProjectGate_3453884716(TEXT("/Script/ProjectGate"),
 	Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_TurnBasedCharacter_h__Script_ProjectGate_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_TurnBasedCharacter_h__Script_ProjectGate_Statics::ClassInfo),
 	nullptr, 0,
 	nullptr, 0);

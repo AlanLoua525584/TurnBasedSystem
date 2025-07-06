@@ -256,14 +256,6 @@ void AGridPlayerController::SetupInputComponent()
 		}
 
 
-
-		// Shift 和右鍵（使用傳統綁定）
-		InputComponent->BindAction("Shift", IE_Pressed, this, &AGridPlayerController::OnShiftPressed);
-		InputComponent->BindAction("Shift", IE_Released, this, &AGridPlayerController::OnShiftReleased);
-		InputComponent->BindAction("RightMouseButton", IE_Pressed, this, &AGridPlayerController::OnRightMousePressed);
-		InputComponent->BindAction("RightMouseButton", IE_Released, this, &AGridPlayerController::OnRightMouseReleased);
-
-
 	}
 }
 
@@ -395,6 +387,14 @@ void AGridPlayerController::OnDynamicMode()
 			OnToggleFocus(FInputActionValue());
 		}
 
+
+		// 設置輸入模式 - 遊戲和UI都可用
+		FInputModeGameAndUI InputMode;
+		InputMode.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
+		InputMode.SetHideCursorDuringCapture(false);
+		SetInputMode(InputMode);
+
+
 		//啟動動態移動系統
 		MovementSystem->SwitchMovementMode(ECustomMovementMode::DynamicMove);
 
@@ -402,6 +402,7 @@ void AGridPlayerController::OnDynamicMode()
 		VisualComp->ClearAllVisuals();
 
 		Debug::Print(TEXT("===== DYNAMIC MOVEMENT MODE: ON ====="), FColor::Green, 5.0f);
+
 
 	}
 	else
@@ -419,9 +420,18 @@ void AGridPlayerController::OnDynamicMode()
 			OnToggleFocus(FInputActionValue());
 		}
 
+		// 通知角色切換移動模式
+		if (ControlledCharacter)
+		{
+			ControlledCharacter->SetMovementMode(false);
+		}
+
+
 		Debug::Print(TEXT("===== DYNAMIC MOVEMENT MODE: OFF ====="), FColor::Red, 5.0f);
 
 
+
+		UIOnMovementModeChanged.Broadcast(bIsInDynamicMode);
 	}
 
 	// 如果退出動態模式，確保也退出攻擊模式
@@ -601,7 +611,7 @@ void AGridPlayerController::OnClick()
 	Debug::Print(TEXT("Clicking"));
 
 	// 優先處理攻擊模式
-	if (bIsInAttackMode && bIsInDynamicMode)
+	if (bIsInAttackMode )
 	{
 		ProcessAttackClick();
 		return;
@@ -788,15 +798,23 @@ void AGridPlayerController::OnCameraMove(const FInputActionValue& Value)
 
 void AGridPlayerController::OnCameraRotate(const FInputActionValue& Value)
 {
-	if (!bIsRightMousePressed || !SpringArmComponent) return;
-
+	
 	FVector2D RotateVector = Value.Get<FVector2D>();
 
-	// rotate Spring Arm
-	FRotator NewRotation = SpringArmComponent->GetRelativeRotation();
-	NewRotation.Yaw += RotateVector.X;
-	NewRotation.Pitch = FMath::Clamp(NewRotation.Pitch + RotateVector.Y, -80.0f, -10.0f);
-	SpringArmComponent->SetRelativeRotation(NewRotation);
+	// 在 Focus 模式下，旋轉角色（第三人稱相機會跟隨）
+	if (bIsFocusMode && bIsInDynamicMode)
+	{
+		AddYawInput(RotateVector.X * MouseSensitivityX);
+		AddPitchInput(RotateVector.Y * MouseSensitivityY);
+	}
+	else if (SpringArmComponent)
+	{
+		// 自由相機模式的原有邏輯
+		FRotator NewRotation = SpringArmComponent->GetRelativeRotation();
+		NewRotation.Yaw += RotateVector.X;
+		NewRotation.Pitch = FMath::Clamp(NewRotation.Pitch + RotateVector.Y, -80.0f, -10.0f);
+		SpringArmComponent->SetRelativeRotation(NewRotation);
+	}
 }
 
 void AGridPlayerController::OnCameraZoom(const FInputActionValue& Value)
@@ -1400,9 +1418,6 @@ void AGridPlayerController::OnRightMouseReleased()
 
 void AGridPlayerController::OnToggleFocus(const FInputActionValue& Value)
 {
-
-	
-
 	// 檢查冷卻時間
 	float CurrentTime = GetWorld()->GetTimeSeconds();
 	if (CurrentTime - LastToggleFocusTime < ToggleFocusCooldown)
@@ -1413,8 +1428,10 @@ void AGridPlayerController::OnToggleFocus(const FInputActionValue& Value)
 
 	LastToggleFocusTime = CurrentTime;
 
+	bIsFocusMode = !bIsFocusMode;
+
 	// 確保有角色可以Focus
-	ATurnBasedCharacter* CurrentCharacter = GetCurrentTurnCharacter();
+	ATurnBasedCharacter* CurrentCharacter = GetControlledTurnCharacter();
 	if (!CurrentCharacter)
 	{
 		Debug::Print(TEXT("No character to focus on"), FColor::Red);
@@ -1423,18 +1440,44 @@ void AGridPlayerController::OnToggleFocus(const FInputActionValue& Value)
 
 	if (bIsFocusMode)
 	{
+		// === 切換到角色相機（第三人稱視角）===
 
-		// 切回自由相機
-		SetViewTarget(CameraPawn);
-		bIsFocusMode = false;
-		Debug::Print(TEXT("Switched to Free Camera"), FColor::Yellow);
+		SetViewTarget(CurrentCharacter);
+
+		// 設置輸入模式 - 允許相機旋轉
+		FInputModeGameAndUI InputMode;
+		InputMode.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
+		InputMode.SetHideCursorDuringCapture(false);
+		SetInputMode(InputMode);
+
+
+
+		Debug::Print(TEXT("=== FOCUS MODE: Character Camera ==="), FColor::Green, 3.0f);
+
+	
 	}
 	else
 	{
-		// 切到角色相機
-		FocusOnCurrentTurnCharacter();
-		bIsFocusMode = true;
-		Debug::Print(TEXT("Switched to Character Focus"), FColor::Green);
+		// === 切換回自由相機 ===
+		if (CameraPawn)
+		{
+			SetViewTarget(CameraPawn);
+
+			// 恢復到戰術視角位置
+			FVector CharacterLocation = CurrentCharacter->GetActorLocation();
+			CameraPawn->SetActorLocation(CharacterLocation + FVector(0, 0, 1000));
+			CameraPawn->SetActorRotation(FRotator(-45, 0, 0));
+		}
+
+		FInputModeGameAndUI InputMode;
+		InputMode.SetHideCursorDuringCapture(false);
+		SetInputMode(InputMode);
+		
+
+
+
+		Debug::Print(TEXT("=== FOCUS MODE: Free Camera ==="), FColor::Blue, 3.0f);
+
 	}
 
 	// 更新 UI 顯示
