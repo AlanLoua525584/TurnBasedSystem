@@ -10,13 +10,16 @@
 #include "CombatSystem/CombatComponent.h"
 #include "CombatSystem/CombatInterface.h"
 #include "CombatSystem/CombatDisplayWidget.h"
+#include "TurnBasedSystem/UI/TurnOrderWidget.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "TurnBasedSystem/UI/TurnOrderEntryWidget.h"
 #include "ProjectGateGameMode.h"
 #include "Engine/World.h"
 #include "Engine/LocalPlayer.h"
 #include "DrawDebugHelpers.h"
 #include "Kismet/GameplayStatics.h"
 #include "Components/InputComponent.h"
+#include "Components/CanvasPanelSlot.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "InputMappingContext.h"
@@ -82,50 +85,153 @@ void AGridPlayerController::SetupCamera()
 {
 	Debug::Print(TEXT("SetupCamera"));
 
-	//創建相機Pawn
-	FActorSpawnParameters SpawnParams;
-	SpawnParams.Owner = this;
+	// 如果已經有 FreeCameraPawn，使用它
+	TArray<AActor*> FoundPawns;
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), AFreeCameraPawn::StaticClass(), FoundPawns);
 
-	CameraPawn = GetWorld()->
-		SpawnActor<AActor>(
-			AActor::StaticClass(),
-		FVector(0, 0, 1000), FRotator(-45, 0, 0), SpawnParams);
+	if (FoundPawns.Num() > 0)
+	{
+		FreeCameraPawn = Cast<AFreeCameraPawn>(FoundPawns[0]);
+		CameraPawn = FreeCameraPawn;
+		Debug::Print(TEXT("Found existing FreeCameraPawn"), FColor::Green);
+	}
+	else
+	{
+		// 創建新的 FreeCameraPawn
+		FActorSpawnParameters SpawnParams;
+		SpawnParams.Owner = this;
 
+		FreeCameraPawn = GetWorld()->SpawnActor<AFreeCameraPawn>(
+			AFreeCameraPawn::StaticClass(),
+			FVector(0, 0, 1000),
+			FRotator(-45, 0, 0),
+			SpawnParams
+		);
 
-	if (!CameraPawn)
+		CameraPawn = FreeCameraPawn;
+		Debug::Print(TEXT("Created new FreeCameraPawn"), FColor::Green);
+	}
+
+	if (CameraPawn)
+	{
+		// 保存初始相機狀態
+		SavedCameraRotation = GetControlRotation();
+		SavedCameraLocation = CameraPawn->GetActorLocation();
+
+		SafeSetViewTarget(CameraPawn);
+		Debug::Print(TEXT("Camera system initialized"), FColor::Green);
+	}
+	else
 	{
 		Debug::Print(TEXT("Failed to create camera pawn!"), FColor::Red);
+	}
+}
+
+
+void AGridPlayerController::OnToggleFocus(const FInputActionValue& Value)
+{
+	// 防止過快切換
+	float CurrentTime = GetWorld()->GetTimeSeconds();
+	if (CurrentTime - LastToggleFocusTime < ToggleFocusCooldown)
+	{
 		return;
-   }
+	}
+	LastToggleFocusTime = CurrentTime;
+
+	AActor* CurrentCharacter = GetControlledTurnCharacter();
+	if (!CurrentCharacter)
+	{
+		Debug::Print(TEXT("No character to focus on"), FColor::Red);
+		return;
+	}
+
+	if (bIsFocusMode)
+	{
+		// === 切換到自由相機 ===
+		// 保存當前的角色相機狀態
+		SavedCameraRotation = GetControlRotation();
+
+		if (ATurnBasedCharacter* TurnChar = Cast<ATurnBasedCharacter>(CurrentCharacter))
+		{
+			if (TurnChar->CameraBoom)
+			{
+				SavedCameraRotation = TurnChar->CameraBoom->GetComponentRotation();
+				SavedArmLength = TurnChar->CameraBoom->TargetArmLength;
+			}
+		}
+
+		// 設置自由相機的位置和旋轉
+		if (FreeCameraPawn)
+		{
+			// 計算相機應該在的位置
+			FVector CharLocation = CurrentCharacter->GetActorLocation();
+			FVector CameraOffset = SavedCameraRotation.Vector() * -SavedArmLength;
+			CameraOffset.Z = FMath::Max(CameraOffset.Z, 200.0f);
+
+			FreeCameraPawn->SetActorLocation(CharLocation + CameraOffset);
+
+			// 設置 SpringArm 的旋轉
+			if (USpringArmComponent* FreeCameraArm = FreeCameraPawn->FindComponentByClass<USpringArmComponent>())
+			{
+				FreeCameraArm->SetWorldRotation(SavedCameraRotation);
+				FreeCameraArm->TargetArmLength = SavedArmLength;
+			}
+		}
+
+		// 切換視角目標
+		SafeSetViewTarget(CameraPawn);
+
+		// 重要：恢復控制器旋轉
+		SetControlRotation(SavedCameraRotation);
+
+		bIsFocusMode = false;
+		Debug::Print(TEXT("Switched to Free Camera"), FColor::Yellow);
+	}
+	else
+	{
+		// === 切換到角色相機 ===
+		// 保存自由相機狀態
+		SavedCameraRotation = GetControlRotation();
+		if (FreeCameraPawn)
+		{
+			SavedCameraLocation = FreeCameraPawn->GetActorLocation();
+			if (USpringArmComponent* FreeCameraArm = FreeCameraPawn->FindComponentByClass<USpringArmComponent>())
+			{
+				SavedArmLength = FreeCameraArm->TargetArmLength;
+			}
+		}
 
 
-   //創建根組件
-	USphereComponent* RootComp = NewObject<USphereComponent>(CameraPawn, TEXT("RootComponent"));
-	RootComp->InitSphereRadius(50.0f);
-	RootComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-	CameraPawn->SetRootComponent(RootComp);
-	RootComp->RegisterComponent();
+		// 切換到角色視角，並應用保存的旋轉
+		FRotator RotationToApply = SavedCameraRotation;
+		FocusOnCurrentTurnCharacter();
 
-	//創建 Spring Arm
-	SpringArmComponent = NewObject<USpringArmComponent>(CameraPawn, TEXT("SpringArm"));
-	SpringArmComponent->SetupAttachment(RootComp);
-	SpringArmComponent->TargetArmLength = 800.0f;
-	SpringArmComponent->SetRelativeRotation(FRotator(-45.0f, 0.0f, 0.0f));
-	SpringArmComponent->bDoCollisionTest = false;
-	SpringArmComponent->bUsePawnControlRotation = false;
-	SpringArmComponent->RegisterComponent();
+		// 確保旋轉被正確應用
+		SetControlRotation(RotationToApply);
+		if (ATurnBasedCharacter* TurnChar = Cast<ATurnBasedCharacter>(CurrentCharacter))
+		{
+			if (TurnChar->CameraBoom)
+			{
+				TurnChar->CameraBoom->SetWorldRotation(RotationToApply);
+			}
+		}
 
-	//創建Camera
-	CameraComponent = NewObject<UCameraComponent>(CameraPawn, TEXT("Camera"));
-	CameraComponent->SetupAttachment(SpringArmComponent, USpringArmComponent::SocketName);
-	CameraComponent->RegisterComponent();
 
-	//設置為視角目標
-	SetViewTarget(CameraPawn);
+		bIsFocusMode = true;
+		Debug::Print(TEXT("Switched to Character Focus"), FColor::Green);
+	}
 
-	Debug::Print(TEXT("Camera system initialized"), FColor::Green);
+	// 更新 UI 顯示
+	if (AProjectGateGameMode* GameMode = Cast<AProjectGateGameMode>(GetWorld()->GetAuthGameMode()))
+	{
+		if (UTurnDisplayWidget* TurnWidget = GameMode->GetTurnDisplayWidget())
+		{
+			TurnWidget->UpdateCameraMode(bIsFocusMode);
+		}
+	}
 
 }
+
 
 void AGridPlayerController::FindManagers()
 {
@@ -374,6 +480,8 @@ void AGridPlayerController::OnDynamicMode()
 		return;
 	}
 
+	
+
 
 	// 切換模式
 	bIsInDynamicMode = !bIsInDynamicMode;
@@ -381,10 +489,23 @@ void AGridPlayerController::OnDynamicMode()
 	if (bIsInDynamicMode)
 	{   //== 進入動態模式 ==
 
+		// 保存當前相機旋轉
+	FRotator LocalCameraRotation = GetControlRotation();
+
 		// 進入動態模式時自動切到Focus模式
 		if (!bIsFocusMode)
 		{
+			// 保存旋轉
+			SavedCameraRotation = LocalCameraRotation;
+
 			OnToggleFocus(FInputActionValue());
+
+			// 恢復旋轉到角色相機
+			if (ControlledCharacter->CameraBoom)
+			{
+				ControlledCharacter->CameraBoom->SetWorldRotation(LocalCameraRotation);
+			}
+			SetControlRotation(LocalCameraRotation);
 		}
 
 
@@ -401,12 +522,19 @@ void AGridPlayerController::OnDynamicMode()
 		//清除網格視覺
 		VisualComp->ClearAllVisuals();
 
+		// 設置角色移動模式
+		ControlledCharacter->SetMovementMode(true);
+
 		Debug::Print(TEXT("===== DYNAMIC MOVEMENT MODE: ON ====="), FColor::Green, 5.0f);
 
 
 	}
 	else
 	{
+		// 保存當前相機旋轉
+		FRotator ExitRotation = GetControlRotation();
+
+
 		//停止動態移動
 		MovementSystem->SwitchMovementMode(ECustomMovementMode::Idle);
 
@@ -414,10 +542,21 @@ void AGridPlayerController::OnDynamicMode()
 		//顯示網格範圍
 		ControlledCharacter->ShowMovementRange();
 
-		// 切換回自由相機
+		// 如果在 Focus 模式，保持當前旋轉切換回自由相機
 		if (bIsFocusMode)
 		{
+			SavedCameraRotation = ExitRotation;
 			OnToggleFocus(FInputActionValue());
+
+			// 確保自由相機使用正確的旋轉
+			SetControlRotation(ExitRotation);
+			if (FreeCameraPawn)
+			{
+				if (USpringArmComponent* FreeCameraArm = FreeCameraPawn->FindComponentByClass<USpringArmComponent>())
+				{
+					FreeCameraArm->SetWorldRotation(ExitRotation);
+				}
+			}
 		}
 
 		// 通知角色切換移動模式
@@ -426,12 +565,7 @@ void AGridPlayerController::OnDynamicMode()
 			ControlledCharacter->SetMovementMode(false);
 		}
 
-
 		Debug::Print(TEXT("===== DYNAMIC MOVEMENT MODE: OFF ====="), FColor::Red, 5.0f);
-
-
-
-		UIOnMovementModeChanged.Broadcast(bIsInDynamicMode);
 	}
 
 	// 如果退出動態模式，確保也退出攻擊模式
@@ -440,7 +574,6 @@ void AGridPlayerController::OnDynamicMode()
 		Debug::Print(TEXT("Exiting Attack Mode due to Dynamic Mode switch"), FColor::Yellow);
 		ExitAttackMode();
 	}
-
 
 
 	//通知UI更新
@@ -801,19 +934,66 @@ void AGridPlayerController::OnCameraRotate(const FInputActionValue& Value)
 	
 	FVector2D RotateVector = Value.Get<FVector2D>();
 
+	// 只在按住右鍵時旋轉相機
+	if (!bIsRightMousePressed)
+	{
+		// 在動態模式下，即使沒按右鍵也允許旋轉
+		if (!bIsInDynamicMode)
+		{
+			return;
+		}
+	}
+
+
+
 	// 在 Focus 模式下，旋轉角色（第三人稱相機會跟隨）
 	if (bIsFocusMode && bIsInDynamicMode)
 	{
-		AddYawInput(RotateVector.X * MouseSensitivityX);
-		AddPitchInput(RotateVector.Y * MouseSensitivityY);
+
+		// 動態模式下的角色相機旋轉
+		AddYawInput(RotateVector.X * MouseSensitivity);
+		AddPitchInput(RotateVector.Y * MouseSensitivity);
+
+		// 同步旋轉到角色的 CameraBoom
+		if (ATurnBasedCharacter* TurnCharacter = GetControlledTurnCharacter())
+		{
+			if (TurnCharacter->CameraBoom)
+			{
+				TurnCharacter->CameraBoom->SetWorldRotation(GetControlRotation());
+			}
+		}
+
+
 	}
-	else if (SpringArmComponent)
+	else if (!bIsFocusMode)
 	{
-		// 自由相機模式的原有邏輯
-		FRotator NewRotation = SpringArmComponent->GetRelativeRotation();
-		NewRotation.Yaw += RotateVector.X;
-		NewRotation.Pitch = FMath::Clamp(NewRotation.Pitch + RotateVector.Y, -80.0f, -10.0f);
-		SpringArmComponent->SetRelativeRotation(NewRotation);
+		// 自由相機模式
+		if (FreeCameraPawn)
+		{
+			// 直接控制 FreeCameraPawn 的旋轉
+			if (USpringArmComponent* SpringArm = FreeCameraPawn->FindComponentByClass<USpringArmComponent>())
+			{
+				FRotator NewRotation = SpringArm->GetRelativeRotation();
+				NewRotation.Yaw += RotateVector.X * MouseSensitivity;
+				NewRotation.Pitch = FMath::Clamp(NewRotation.Pitch - RotateVector.Y * MouseSensitivity, -80.0f, -10.0f);
+				SpringArm->SetRelativeRotation(NewRotation);
+
+				// 同步到控制器
+				SetControlRotation(SpringArm->GetComponentRotation());
+			}
+		}
+		else
+		{
+			// 備用方案：直接修改控制器旋轉
+			AddYawInput(RotateVector.X * MouseSensitivity);
+			AddPitchInput(-RotateVector.Y * MouseSensitivity);
+		}
+	}
+	else
+	{
+		// Focus 模式但非動態模式：標準旋轉
+		AddYawInput(RotateVector.X * MouseSensitivity);
+		AddPitchInput(-RotateVector.Y * MouseSensitivity);
 	}
 }
 
@@ -1230,6 +1410,26 @@ void AGridPlayerController::CreateCombatUI()
             }
         }
     }
+
+	// 創建回合順序 UI
+	if (TurnOrderWidgetClass)
+	{
+		TurnOrderWidget = CreateWidget<UTurnOrderWidget>(this, TurnOrderWidgetClass);
+		if (TurnOrderWidget)
+		{
+			TurnOrderWidget->AddToViewport(10); // 較高層級
+
+			// 設置位置 (螢幕頂部中央)
+			if (UCanvasPanelSlot* CanvasSlot = Cast<UCanvasPanelSlot>(
+				TurnOrderWidget->Slot))
+			{
+				CanvasSlot->SetAnchors(FAnchors(0.5f, 0.0f));
+				CanvasSlot->SetAlignment(FVector2D(0.5f, 0.0f));
+				CanvasSlot->SetPosition(FVector2D(0, 50));
+			}
+		}
+	}
+
 }
 
 // 修改 ShowAttackPreview
@@ -1260,17 +1460,32 @@ void AGridPlayerController::OnPossess(APawn* InPawn)
 {
 	Super::OnPossess(InPawn);
 
+	// 保存當前相機旋轉
+	FRotator CurrentRotation = GetControlRotation();
+
 	// 重置相機狀態
 	if (bIsFocusMode)
 	{
-		// 可選：保持Focus模式到新角色
-		//FocusOnCurrentTurnCharacter();
+		// 如果在 Focus 模式，確保新角色的相機正確設置
+		if (ATurnBasedCharacter* TurnCharacter = Cast<ATurnBasedCharacter>(InPawn))
+		{
+			if (TurnCharacter->CameraBoom)
+			{
+				TurnCharacter->CameraBoom->bUsePawnControlRotation = true;
+				TurnCharacter->CameraBoom->SetWorldRotation(CurrentRotation);
+			}
 
-		// 或者：自動切回自由相機
-		 SetViewTarget(CameraPawn);
-		 bIsFocusMode = false;
+			// 重新設置 ViewTarget 到新角色
+			SafeSetViewTarget(TurnCharacter);
+			SetControlRotation(CurrentRotation);
+		}
 	}
-
+	else
+	{
+		// 保持在自由相機模式
+		SafeSetViewTarget(CameraPawn);
+		SetControlRotation(CurrentRotation);
+	}
 
 
 
@@ -1399,6 +1614,8 @@ bool AGridPlayerController::GetCharacterUnderCursorWithFallback(AActor*& OutChar
 	return false;
 }
 
+
+
 void AGridPlayerController::OnRightMousePressed()
 {
 	bIsRightMousePressed = true;
@@ -1416,96 +1633,44 @@ void AGridPlayerController::OnRightMouseReleased()
 	SetInputMode(InputMode);
 }
 
-void AGridPlayerController::OnToggleFocus(const FInputActionValue& Value)
-{
-	// 檢查冷卻時間
-	float CurrentTime = GetWorld()->GetTimeSeconds();
-	if (CurrentTime - LastToggleFocusTime < ToggleFocusCooldown)
-	{
-		Debug::Print(TEXT("Focus toggle on cooldown"), FColor::Yellow);
-		return;
-	}
 
-	LastToggleFocusTime = CurrentTime;
-
-	bIsFocusMode = !bIsFocusMode;
-
-	// 確保有角色可以Focus
-	ATurnBasedCharacter* CurrentCharacter = GetControlledTurnCharacter();
-	if (!CurrentCharacter)
-	{
-		Debug::Print(TEXT("No character to focus on"), FColor::Red);
-		return;
-	}
-
-	if (bIsFocusMode)
-	{
-		// === 切換到角色相機（第三人稱視角）===
-
-		SetViewTarget(CurrentCharacter);
-
-		// 設置輸入模式 - 允許相機旋轉
-		FInputModeGameAndUI InputMode;
-		InputMode.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
-		InputMode.SetHideCursorDuringCapture(false);
-		SetInputMode(InputMode);
-
-
-
-		Debug::Print(TEXT("=== FOCUS MODE: Character Camera ==="), FColor::Green, 3.0f);
-
-	
-	}
-	else
-	{
-		// === 切換回自由相機 ===
-		if (CameraPawn)
-		{
-			SetViewTarget(CameraPawn);
-
-			// 恢復到戰術視角位置
-			FVector CharacterLocation = CurrentCharacter->GetActorLocation();
-			CameraPawn->SetActorLocation(CharacterLocation + FVector(0, 0, 1000));
-			CameraPawn->SetActorRotation(FRotator(-45, 0, 0));
-		}
-
-		FInputModeGameAndUI InputMode;
-		InputMode.SetHideCursorDuringCapture(false);
-		SetInputMode(InputMode);
-		
-
-
-
-		Debug::Print(TEXT("=== FOCUS MODE: Free Camera ==="), FColor::Blue, 3.0f);
-
-	}
-
-	// 更新 UI 顯示
-	if (AProjectGateGameMode* GameMode = Cast<AProjectGateGameMode>(GetWorld()->GetAuthGameMode()))
-	{
-		if (UTurnDisplayWidget* TurnWidget = GameMode->GetTurnDisplayWidget())
-		{
-			TurnWidget->UpdateCameraMode(bIsFocusMode);
-		}
-	}
-}
 
 
 void AGridPlayerController::FocusOnActor(AActor* TargetActor, float Distance)
 {
-	if (!TargetActor || !CameraPawn || !SpringArmComponent) return;
+	if (!TargetActor) return;
 
-	FVector TargetLocation = TargetActor->GetActorLocation();
+	// 如果有 FreeCameraPawn，使用它的 FocusOnActor
+	if (FreeCameraPawn)
+	{
+		// 保持當前的控制器旋轉
+		FRotator CurrentRotation = GetControlRotation();
 
-	// 計算相機位置
-	FRotator CurrentRotation = SpringArmComponent->GetRelativeRotation();
-	FVector CameraOffset = CurrentRotation.Vector() * -Distance;
-	FVector NewLocation = TargetLocation + CameraOffset;
+		FreeCameraPawn->FocusOnActor(TargetActor, Distance);
 
-	CameraPawn->SetActorLocation(NewLocation);
-	SpringArmComponent->TargetArmLength = Distance;
+		// 恢復旋轉
+		SetControlRotation(CurrentRotation);
 
-	Debug::Print(FString::Printf(TEXT("1Camera focused on %s"), *TargetActor->GetActorLabel()), FColor::Green);
+		Debug::Print(FString::Printf(TEXT("FreeCameraPawn focused on %s, rotation preserved"),
+			*TargetActor->GetActorLabel()), FColor::Green);
+	}
+	else if (CameraPawn && SpringArmComponent)
+	{
+		Debug::Print(TEXT("Here!!!!!"));
+
+		// 備用方案
+		FVector TargetLocation = TargetActor->GetActorLocation();
+		FRotator CurrentRotation = GetControlRotation();
+
+		FVector CameraOffset = CurrentRotation.Vector() * -Distance;
+		CameraOffset.Z = FMath::Max(CameraOffset.Z, 200.0f);
+
+		CameraPawn->SetActorLocation(TargetLocation + CameraOffset);
+		SetControlRotation(CurrentRotation);
+
+		Debug::Print(FString::Printf(TEXT("Camera focused on %s"),
+			*TargetActor->GetActorLabel()), FColor::Green);
+	}
 }
 
 void AGridPlayerController::FocusOnCurrentTurnCharacter()
@@ -1523,52 +1688,114 @@ void AGridPlayerController::FocusOnCurrentTurnCharacter()
 
 	if (!CurrentTurnCharacter)
 	{
-		SetViewTarget(CameraPawn);
+		SafeSetViewTarget(CameraPawn);
 		bIsFocusMode = false;
 		Debug::Print(TEXT("No character to focus - returning to free camera"), FColor::Yellow);
 		return;
 	}
 
-	// 強制立即切換（不使用 Blend）
-	SetViewTarget(CurrentTurnCharacter);
-
-	Debug::Print(FString::Printf(TEXT("Camera focused on %s (Possessed: %s)"),
-		*CurrentTurnCharacter->GetActorLabel(),
-		GetPawn() == CurrentTurnCharacter ? TEXT("YES") : TEXT("NO")), FColor::Green);
-
-
-
-
-
-	/*
-	if (!TurnManager)
+	// 確保角色的相機組件正確設置
+	if (CurrentTurnCharacter->CameraBoom)
 	{
-		Debug::Print(TEXT("TurnManager is null!"), FColor::Red);
-		return;
+		// 設置 CameraBoom 使用控制器旋轉
+		CurrentTurnCharacter->CameraBoom->bUsePawnControlRotation = true;
+
+		// 如果有保存的旋轉，應用它
+		if (!SavedCameraRotation.IsZero())
+		{
+			CurrentTurnCharacter->CameraBoom->SetWorldRotation(SavedCameraRotation);
+			SetControlRotation(SavedCameraRotation);
+		}
+		else
+		{
+			// 使用當前控制器旋轉
+			FRotator CurrentRotation = GetControlRotation();
+			CurrentTurnCharacter->CameraBoom->SetWorldRotation(CurrentRotation);
+		}
+
+		// 確保角色不會跟隨視角旋轉（只有相機跟隨）
+		CurrentTurnCharacter->bUseControllerRotationYaw = false;
+		CurrentTurnCharacter->bUseControllerRotationPitch = false;
+		CurrentTurnCharacter->bUseControllerRotationRoll = false;
+
+
+
+		// 強制立即切換（不使用 Blend）
+		SafeSetViewTarget(CurrentTurnCharacter);
+
+		Debug::Print(FString::Printf(TEXT("Camera focused on %s (Possessed: %s)"),
+			*CurrentTurnCharacter->GetActorLabel(),
+			GetPawn() == CurrentTurnCharacter ? TEXT("YES") : TEXT("NO")), FColor::Green);
+
+
+
+
+	}
+	
+}
+
+
+//同步相機狀態
+
+void AGridPlayerController::SyncCameraStates()
+{
+	// 確保 FreeCameraPawn 和角色相機之間的狀態同步
+	if (bIsFocusMode)
+	{
+		// Focus 模式：從角色相機同步到 FreeCameraPawn
+		if (ATurnBasedCharacter* TurnCharacter = GetControlledTurnCharacter())
+		{
+			if (TurnCharacter->CameraBoom && FreeCameraPawn)
+			{
+				FRotator CharRotation = TurnCharacter->CameraBoom->GetComponentRotation();
+				if (USpringArmComponent* FreeArm = FreeCameraPawn->FindComponentByClass<USpringArmComponent>())
+				{
+					FreeArm->SetWorldRotation(CharRotation);
+				}
+			}
+		}
+	}
+	else
+	{
+		// 自由相機模式：從 FreeCameraPawn 同步到控制器
+		if (FreeCameraPawn)
+		{
+			if (USpringArmComponent* FreeArm = FreeCameraPawn->FindComponentByClass<USpringArmComponent>())
+			{
+				SetControlRotation(FreeArm->GetComponentRotation());
+			}
+		}
+	}
+}
+
+void AGridPlayerController::SafeSetViewTarget(AActor* NewViewTarget)
+{// 保存當前旋轉
+	FRotator PreservedRotation = GetControlRotation();
+
+	// 如果旋轉接近零，使用保存的或默認的旋轉
+	if (FMath::Abs(PreservedRotation.Pitch) < 5.0f &&
+		FMath::Abs(PreservedRotation.Yaw) < 5.0f)
+	{
+		PreservedRotation = SavedCameraRotation.IsZero() ?
+			FRotator(-45.0f, 0.0f, 0.0f) : SavedCameraRotation;
+
+		Debug::Print(TEXT("WARNING: Preventing zero rotation in SafeSetViewTarget"), FColor::Red);
 	}
 
-	// 直接從 TurnManager 取得當前角色
-	AActor* CurrentActor = TurnManager->GetCurrentTurnCharacter();
-	ATurnBasedCharacter* CurrentTurnCharacter = Cast<ATurnBasedCharacter>(CurrentActor);
+	// 執行視角切換
+	Super::SetViewTarget(NewViewTarget);
 
-	if (!CurrentTurnCharacter)
+	// 立即恢復旋轉
+	SetControlRotation(PreservedRotation);
+
+	// 如果是 FreeCameraPawn，確保其 SpringArm 也有正確旋轉
+	if (NewViewTarget == FreeCameraPawn && FreeCameraPawn)
 	{
-		// 沒有角色時回到自由相機
-		SetViewTarget(CameraPawn);
-		bIsFocusMode = false;
-		Debug::Print(TEXT("No character to focus - returning to free camera"), FColor::Yellow);
-		return;
-
-
-		// 使用混合切換以獲得平滑效果
-		SetViewTargetWithBlend(CurrentTurnCharacter, 0.5f);
-
-		Debug::Print(FString::Printf(TEXT("2Camera focused on %s"),
-			*CurrentTurnCharacter->GetActorLabel()), FColor::Green);
+		if (USpringArmComponent* SpringArm = FreeCameraPawn->FindComponentByClass<USpringArmComponent>())
+		{
+			SpringArm->SetRelativeRotation(PreservedRotation);
+		}
 	}
-	*/
-	
-	
 }
 
 
@@ -1658,4 +1885,27 @@ ATurnBasedCharacter* AGridPlayerController::GetCurrentTurnCharacter()
 ATurnBasedCharacter* AGridPlayerController::GetControlledTurnCharacter() const
 {
 	return Cast<ATurnBasedCharacter>(GetPawn());
+}
+
+
+void AGridPlayerController::TestPortraitSystem()
+{
+	TArray<AActor*> AllCharacters;
+	UGameplayStatics::GetAllActorsOfClass(this->GetWorld(), ATurnBasedCharacter::StaticClass(), AllCharacters);
+
+	for (AActor* Actor : AllCharacters)
+	{
+		if (ATurnBasedCharacter* BasedCharacter = Cast<ATurnBasedCharacter>(Actor))
+		{
+			UE_LOG(LogTemp, Warning, TEXT("=== Character: %s ==="), *BasedCharacter->GetActorLabel());
+			UE_LOG(LogTemp, Warning, TEXT("  Full Portrait: %s"),
+				BasedCharacter->PortraitData.FullPortrait ? TEXT("Yes") : TEXT("No"));
+			UE_LOG(LogTemp, Warning, TEXT("  UI Portrait: %s"),
+				BasedCharacter->PortraitData.UIPortrait ? TEXT("Yes") : TEXT("No"));
+			UE_LOG(LogTemp, Warning, TEXT("  Battle Icon: %s"),
+				BasedCharacter->PortraitData.BattleIcon ? TEXT("Yes") : TEXT("No"));
+			UE_LOG(LogTemp, Warning, TEXT("  Frame Style: %d"),
+				BasedCharacter->PortraitData.FrameStyle);
+		}
+	}
 }

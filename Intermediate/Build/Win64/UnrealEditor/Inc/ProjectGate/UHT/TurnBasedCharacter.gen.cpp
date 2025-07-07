@@ -6,6 +6,7 @@
 
 #include "UObject/GeneratedCppIncludes.h"
 #include "TurnBasedSystem/TurnBasedCharacter.h"
+#include "TurnBasedSystem/DataAssets/CharacterPortraitData.h"
 
 PRAGMA_DISABLE_DEPRECATION_WARNINGS
 
@@ -14,12 +15,14 @@ void EmptyLinkFunctionForGeneratedCodeTurnBasedCharacter() {}
 // ********** Begin Cross Module References ********************************************************
 COREUOBJECT_API UClass* Z_Construct_UClass_UClass();
 COREUOBJECT_API UScriptStruct* Z_Construct_UScriptStruct_FIntPoint();
+COREUOBJECT_API UScriptStruct* Z_Construct_UScriptStruct_FLinearColor();
 COREUOBJECT_API UScriptStruct* Z_Construct_UScriptStruct_FVector();
 ENGINE_API UClass* Z_Construct_UClass_AActor_NoRegister();
 ENGINE_API UClass* Z_Construct_UClass_ACharacter();
 ENGINE_API UClass* Z_Construct_UClass_UAnimMontage_NoRegister();
 ENGINE_API UClass* Z_Construct_UClass_UCameraComponent_NoRegister();
 ENGINE_API UClass* Z_Construct_UClass_USpringArmComponent_NoRegister();
+ENGINE_API UClass* Z_Construct_UClass_UTexture2D_NoRegister();
 PROJECTGATE_API UClass* Z_Construct_UClass_AGridManager_NoRegister();
 PROJECTGATE_API UClass* Z_Construct_UClass_ATurnBasedCharacter();
 PROJECTGATE_API UClass* Z_Construct_UClass_ATurnBasedCharacter_NoRegister();
@@ -31,6 +34,7 @@ PROJECTGATE_API UClass* Z_Construct_UClass_UHealthBarWidget_NoRegister();
 PROJECTGATE_API UFunction* Z_Construct_UDelegateFunction_ProjectGate_OnActionPerformed__DelegateSignature();
 PROJECTGATE_API UFunction* Z_Construct_UDelegateFunction_ProjectGate_OnActionPointsChanged__DelegateSignature();
 PROJECTGATE_API UFunction* Z_Construct_UDelegateFunction_ProjectGate_TurnOrderChangedSignature__DelegateSignature();
+PROJECTGATE_API UScriptStruct* Z_Construct_UScriptStruct_FPortraitData();
 UMG_API UClass* Z_Construct_UClass_UWidgetComponent_NoRegister();
 UPackage* Z_Construct_UPackage__Script_ProjectGate();
 // ********** End Cross Module References **********************************************************
@@ -381,6 +385,102 @@ DEFINE_FUNCTION(ATurnBasedCharacter::execExecuteAnimatedAttack)
 	P_NATIVE_END;
 }
 // ********** End Class ATurnBasedCharacter Function ExecuteAnimatedAttack *************************
+
+// ********** Begin Class ATurnBasedCharacter Function GetAnyAvailablePortrait *********************
+struct Z_Construct_UFunction_ATurnBasedCharacter_GetAnyAvailablePortrait_Statics
+{
+	struct TurnBasedCharacter_eventGetAnyAvailablePortrait_Parms
+	{
+		UTexture2D* ReturnValue;
+	};
+#if WITH_METADATA
+	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
+		{ "Category", "UI" },
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "// \xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbdN\xef\xbf\xbdi\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbdY\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd]\xef\xbf\xbd""e\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xce\xa1^\n" },
+#endif
+		{ "ModuleRelativePath", "Public/TurnBasedSystem/TurnBasedCharacter.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbdN\xef\xbf\xbdi\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbdY\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd]\xef\xbf\xbd""e\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xce\xa1^" },
+#endif
+	};
+#endif // WITH_METADATA
+	static const UECodeGen_Private::FObjectPropertyParams NewProp_ReturnValue;
+	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
+	static const UECodeGen_Private::FFunctionParams FuncParams;
+};
+const UECodeGen_Private::FObjectPropertyParams Z_Construct_UFunction_ATurnBasedCharacter_GetAnyAvailablePortrait_Statics::NewProp_ReturnValue = { "ReturnValue", nullptr, (EPropertyFlags)0x0010000000000580, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(TurnBasedCharacter_eventGetAnyAvailablePortrait_Parms, ReturnValue), Z_Construct_UClass_UTexture2D_NoRegister, METADATA_PARAMS(0, nullptr) };
+const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_ATurnBasedCharacter_GetAnyAvailablePortrait_Statics::PropPointers[] = {
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_ATurnBasedCharacter_GetAnyAvailablePortrait_Statics::NewProp_ReturnValue,
+};
+static_assert(UE_ARRAY_COUNT(Z_Construct_UFunction_ATurnBasedCharacter_GetAnyAvailablePortrait_Statics::PropPointers) < 2048);
+const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_ATurnBasedCharacter_GetAnyAvailablePortrait_Statics::FuncParams = { { (UObject*(*)())Z_Construct_UClass_ATurnBasedCharacter, nullptr, "GetAnyAvailablePortrait", Z_Construct_UFunction_ATurnBasedCharacter_GetAnyAvailablePortrait_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_ATurnBasedCharacter_GetAnyAvailablePortrait_Statics::PropPointers), sizeof(Z_Construct_UFunction_ATurnBasedCharacter_GetAnyAvailablePortrait_Statics::TurnBasedCharacter_eventGetAnyAvailablePortrait_Parms), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x54020401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_ATurnBasedCharacter_GetAnyAvailablePortrait_Statics::Function_MetaDataParams), Z_Construct_UFunction_ATurnBasedCharacter_GetAnyAvailablePortrait_Statics::Function_MetaDataParams)},  };
+static_assert(sizeof(Z_Construct_UFunction_ATurnBasedCharacter_GetAnyAvailablePortrait_Statics::TurnBasedCharacter_eventGetAnyAvailablePortrait_Parms) < MAX_uint16);
+UFunction* Z_Construct_UFunction_ATurnBasedCharacter_GetAnyAvailablePortrait()
+{
+	static UFunction* ReturnFunction = nullptr;
+	if (!ReturnFunction)
+	{
+		UECodeGen_Private::ConstructUFunction(&ReturnFunction, Z_Construct_UFunction_ATurnBasedCharacter_GetAnyAvailablePortrait_Statics::FuncParams);
+	}
+	return ReturnFunction;
+}
+DEFINE_FUNCTION(ATurnBasedCharacter::execGetAnyAvailablePortrait)
+{
+	P_FINISH;
+	P_NATIVE_BEGIN;
+	*(UTexture2D**)Z_Param__Result=P_THIS->GetAnyAvailablePortrait();
+	P_NATIVE_END;
+}
+// ********** End Class ATurnBasedCharacter Function GetAnyAvailablePortrait ***********************
+
+// ********** Begin Class ATurnBasedCharacter Function GetBattlePortrait ***************************
+struct Z_Construct_UFunction_ATurnBasedCharacter_GetBattlePortrait_Statics
+{
+	struct TurnBasedCharacter_eventGetBattlePortrait_Parms
+	{
+		UTexture2D* ReturnValue;
+	};
+#if WITH_METADATA
+	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
+		{ "Category", "UI" },
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "// \xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xd4\xb0\xef\xbf\xbd\xef\xbf\xbdY\xef\xbf\xbd\xef\xbf\xbd\n" },
+#endif
+		{ "ModuleRelativePath", "Public/TurnBasedSystem/TurnBasedCharacter.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xd4\xb0\xef\xbf\xbd\xef\xbf\xbdY\xef\xbf\xbd\xef\xbf\xbd" },
+#endif
+	};
+#endif // WITH_METADATA
+	static const UECodeGen_Private::FObjectPropertyParams NewProp_ReturnValue;
+	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
+	static const UECodeGen_Private::FFunctionParams FuncParams;
+};
+const UECodeGen_Private::FObjectPropertyParams Z_Construct_UFunction_ATurnBasedCharacter_GetBattlePortrait_Statics::NewProp_ReturnValue = { "ReturnValue", nullptr, (EPropertyFlags)0x0010000000000580, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(TurnBasedCharacter_eventGetBattlePortrait_Parms, ReturnValue), Z_Construct_UClass_UTexture2D_NoRegister, METADATA_PARAMS(0, nullptr) };
+const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_ATurnBasedCharacter_GetBattlePortrait_Statics::PropPointers[] = {
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_ATurnBasedCharacter_GetBattlePortrait_Statics::NewProp_ReturnValue,
+};
+static_assert(UE_ARRAY_COUNT(Z_Construct_UFunction_ATurnBasedCharacter_GetBattlePortrait_Statics::PropPointers) < 2048);
+const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_ATurnBasedCharacter_GetBattlePortrait_Statics::FuncParams = { { (UObject*(*)())Z_Construct_UClass_ATurnBasedCharacter, nullptr, "GetBattlePortrait", Z_Construct_UFunction_ATurnBasedCharacter_GetBattlePortrait_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_ATurnBasedCharacter_GetBattlePortrait_Statics::PropPointers), sizeof(Z_Construct_UFunction_ATurnBasedCharacter_GetBattlePortrait_Statics::TurnBasedCharacter_eventGetBattlePortrait_Parms), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x54020401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_ATurnBasedCharacter_GetBattlePortrait_Statics::Function_MetaDataParams), Z_Construct_UFunction_ATurnBasedCharacter_GetBattlePortrait_Statics::Function_MetaDataParams)},  };
+static_assert(sizeof(Z_Construct_UFunction_ATurnBasedCharacter_GetBattlePortrait_Statics::TurnBasedCharacter_eventGetBattlePortrait_Parms) < MAX_uint16);
+UFunction* Z_Construct_UFunction_ATurnBasedCharacter_GetBattlePortrait()
+{
+	static UFunction* ReturnFunction = nullptr;
+	if (!ReturnFunction)
+	{
+		UECodeGen_Private::ConstructUFunction(&ReturnFunction, Z_Construct_UFunction_ATurnBasedCharacter_GetBattlePortrait_Statics::FuncParams);
+	}
+	return ReturnFunction;
+}
+DEFINE_FUNCTION(ATurnBasedCharacter::execGetBattlePortrait)
+{
+	P_FINISH;
+	P_NATIVE_BEGIN;
+	*(UTexture2D**)Z_Param__Result=P_THIS->GetBattlePortrait();
+	P_NATIVE_END;
+}
+// ********** End Class ATurnBasedCharacter Function GetBattlePortrait *****************************
 
 // ********** Begin Class ATurnBasedCharacter Function GetCharacterDisplayName *********************
 struct Z_Construct_UFunction_ATurnBasedCharacter_GetCharacterDisplayName_Statics
@@ -758,6 +858,102 @@ DEFINE_FUNCTION(ATurnBasedCharacter::execGetMaxActionPoints)
 	P_NATIVE_END;
 }
 // ********** End Class ATurnBasedCharacter Function GetMaxActionPoints ****************************
+
+// ********** Begin Class ATurnBasedCharacter Function GetPortraitBorderColor **********************
+struct Z_Construct_UFunction_ATurnBasedCharacter_GetPortraitBorderColor_Statics
+{
+	struct TurnBasedCharacter_eventGetPortraitBorderColor_Parms
+	{
+		FLinearColor ReturnValue;
+	};
+#if WITH_METADATA
+	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
+		{ "Category", "UI" },
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "// \xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd""C\xef\xbf\xbd\xef\xbf\xbd\n" },
+#endif
+		{ "ModuleRelativePath", "Public/TurnBasedSystem/TurnBasedCharacter.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd""C\xef\xbf\xbd\xef\xbf\xbd" },
+#endif
+	};
+#endif // WITH_METADATA
+	static const UECodeGen_Private::FStructPropertyParams NewProp_ReturnValue;
+	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
+	static const UECodeGen_Private::FFunctionParams FuncParams;
+};
+const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_ATurnBasedCharacter_GetPortraitBorderColor_Statics::NewProp_ReturnValue = { "ReturnValue", nullptr, (EPropertyFlags)0x0010000000000580, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(TurnBasedCharacter_eventGetPortraitBorderColor_Parms, ReturnValue), Z_Construct_UScriptStruct_FLinearColor, METADATA_PARAMS(0, nullptr) };
+const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_ATurnBasedCharacter_GetPortraitBorderColor_Statics::PropPointers[] = {
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_ATurnBasedCharacter_GetPortraitBorderColor_Statics::NewProp_ReturnValue,
+};
+static_assert(UE_ARRAY_COUNT(Z_Construct_UFunction_ATurnBasedCharacter_GetPortraitBorderColor_Statics::PropPointers) < 2048);
+const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_ATurnBasedCharacter_GetPortraitBorderColor_Statics::FuncParams = { { (UObject*(*)())Z_Construct_UClass_ATurnBasedCharacter, nullptr, "GetPortraitBorderColor", Z_Construct_UFunction_ATurnBasedCharacter_GetPortraitBorderColor_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_ATurnBasedCharacter_GetPortraitBorderColor_Statics::PropPointers), sizeof(Z_Construct_UFunction_ATurnBasedCharacter_GetPortraitBorderColor_Statics::TurnBasedCharacter_eventGetPortraitBorderColor_Parms), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x54820401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_ATurnBasedCharacter_GetPortraitBorderColor_Statics::Function_MetaDataParams), Z_Construct_UFunction_ATurnBasedCharacter_GetPortraitBorderColor_Statics::Function_MetaDataParams)},  };
+static_assert(sizeof(Z_Construct_UFunction_ATurnBasedCharacter_GetPortraitBorderColor_Statics::TurnBasedCharacter_eventGetPortraitBorderColor_Parms) < MAX_uint16);
+UFunction* Z_Construct_UFunction_ATurnBasedCharacter_GetPortraitBorderColor()
+{
+	static UFunction* ReturnFunction = nullptr;
+	if (!ReturnFunction)
+	{
+		UECodeGen_Private::ConstructUFunction(&ReturnFunction, Z_Construct_UFunction_ATurnBasedCharacter_GetPortraitBorderColor_Statics::FuncParams);
+	}
+	return ReturnFunction;
+}
+DEFINE_FUNCTION(ATurnBasedCharacter::execGetPortraitBorderColor)
+{
+	P_FINISH;
+	P_NATIVE_BEGIN;
+	*(FLinearColor*)Z_Param__Result=P_THIS->GetPortraitBorderColor();
+	P_NATIVE_END;
+}
+// ********** End Class ATurnBasedCharacter Function GetPortraitBorderColor ************************
+
+// ********** Begin Class ATurnBasedCharacter Function GetUIPortrait *******************************
+struct Z_Construct_UFunction_ATurnBasedCharacter_GetUIPortrait_Statics
+{
+	struct TurnBasedCharacter_eventGetUIPortrait_Parms
+	{
+		UTexture2D* ReturnValue;
+	};
+#if WITH_METADATA
+	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
+		{ "Category", "UI" },
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "// \xef\xbf\xbdK\xef\xbf\xbdQ\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd - \xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbdUI\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbdY\xef\xbf\xbd\xef\xbf\xbd\n" },
+#endif
+		{ "ModuleRelativePath", "Public/TurnBasedSystem/TurnBasedCharacter.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "\xef\xbf\xbdK\xef\xbf\xbdQ\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd - \xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbdUI\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbdY\xef\xbf\xbd\xef\xbf\xbd" },
+#endif
+	};
+#endif // WITH_METADATA
+	static const UECodeGen_Private::FObjectPropertyParams NewProp_ReturnValue;
+	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
+	static const UECodeGen_Private::FFunctionParams FuncParams;
+};
+const UECodeGen_Private::FObjectPropertyParams Z_Construct_UFunction_ATurnBasedCharacter_GetUIPortrait_Statics::NewProp_ReturnValue = { "ReturnValue", nullptr, (EPropertyFlags)0x0010000000000580, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(TurnBasedCharacter_eventGetUIPortrait_Parms, ReturnValue), Z_Construct_UClass_UTexture2D_NoRegister, METADATA_PARAMS(0, nullptr) };
+const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_ATurnBasedCharacter_GetUIPortrait_Statics::PropPointers[] = {
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_ATurnBasedCharacter_GetUIPortrait_Statics::NewProp_ReturnValue,
+};
+static_assert(UE_ARRAY_COUNT(Z_Construct_UFunction_ATurnBasedCharacter_GetUIPortrait_Statics::PropPointers) < 2048);
+const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_ATurnBasedCharacter_GetUIPortrait_Statics::FuncParams = { { (UObject*(*)())Z_Construct_UClass_ATurnBasedCharacter, nullptr, "GetUIPortrait", Z_Construct_UFunction_ATurnBasedCharacter_GetUIPortrait_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_ATurnBasedCharacter_GetUIPortrait_Statics::PropPointers), sizeof(Z_Construct_UFunction_ATurnBasedCharacter_GetUIPortrait_Statics::TurnBasedCharacter_eventGetUIPortrait_Parms), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x54020401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_ATurnBasedCharacter_GetUIPortrait_Statics::Function_MetaDataParams), Z_Construct_UFunction_ATurnBasedCharacter_GetUIPortrait_Statics::Function_MetaDataParams)},  };
+static_assert(sizeof(Z_Construct_UFunction_ATurnBasedCharacter_GetUIPortrait_Statics::TurnBasedCharacter_eventGetUIPortrait_Parms) < MAX_uint16);
+UFunction* Z_Construct_UFunction_ATurnBasedCharacter_GetUIPortrait()
+{
+	static UFunction* ReturnFunction = nullptr;
+	if (!ReturnFunction)
+	{
+		UECodeGen_Private::ConstructUFunction(&ReturnFunction, Z_Construct_UFunction_ATurnBasedCharacter_GetUIPortrait_Statics::FuncParams);
+	}
+	return ReturnFunction;
+}
+DEFINE_FUNCTION(ATurnBasedCharacter::execGetUIPortrait)
+{
+	P_FINISH;
+	P_NATIVE_BEGIN;
+	*(UTexture2D**)Z_Param__Result=P_THIS->GetUIPortrait();
+	P_NATIVE_END;
+}
+// ********** End Class ATurnBasedCharacter Function GetUIPortrait *********************************
 
 // ********** Begin Class ATurnBasedCharacter Function IsAlive *************************************
 struct Z_Construct_UFunction_ATurnBasedCharacter_IsAlive_Statics
@@ -1547,6 +1743,8 @@ void ATurnBasedCharacter::StaticRegisterNativesATurnBasedCharacter()
 		{ "CanPerformDynamicMovement", &ATurnBasedCharacter::execCanPerformDynamicMovement },
 		{ "ConsumeActionPoints", &ATurnBasedCharacter::execConsumeActionPoints },
 		{ "ExecuteAnimatedAttack", &ATurnBasedCharacter::execExecuteAnimatedAttack },
+		{ "GetAnyAvailablePortrait", &ATurnBasedCharacter::execGetAnyAvailablePortrait },
+		{ "GetBattlePortrait", &ATurnBasedCharacter::execGetBattlePortrait },
 		{ "GetCharacterDisplayName", &ATurnBasedCharacter::execGetCharacterDisplayName },
 		{ "GetCurrentActionPoints", &ATurnBasedCharacter::execGetCurrentActionPoints },
 		{ "GetCurrentGridPosition", &ATurnBasedCharacter::execGetCurrentGridPosition },
@@ -1555,6 +1753,8 @@ void ATurnBasedCharacter::StaticRegisterNativesATurnBasedCharacter()
 		{ "GetGridVisualComponent", &ATurnBasedCharacter::execGetGridVisualComponent },
 		{ "GetIsPlayerControlled", &ATurnBasedCharacter::execGetIsPlayerControlled },
 		{ "GetMaxActionPoints", &ATurnBasedCharacter::execGetMaxActionPoints },
+		{ "GetPortraitBorderColor", &ATurnBasedCharacter::execGetPortraitBorderColor },
+		{ "GetUIPortrait", &ATurnBasedCharacter::execGetUIPortrait },
 		{ "IsAlive", &ATurnBasedCharacter::execIsAlive },
 		{ "IsMyTurn", &ATurnBasedCharacter::execIsMyTurn },
 		{ "IsPlayerTurn", &ATurnBasedCharacter::execIsPlayerTurn },
@@ -1653,6 +1853,17 @@ struct Z_Construct_UClass_ATurnBasedCharacter_Statics
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_bIsHasted_MetaData[] = {
 		{ "Category", "Turn System|Status" },
 		{ "ModuleRelativePath", "Public/TurnBasedSystem/TurnBasedCharacter.h" },
+	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_PortraitData_MetaData[] = {
+		{ "Category", "UI" },
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "// === \xef\xbf\xbdY\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbdt\xef\xbf\xbd\xef\xbf\xbd ===\n" },
+#endif
+		{ "DisplayName", "Character Portraits" },
+		{ "ModuleRelativePath", "Public/TurnBasedSystem/TurnBasedCharacter.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "=== \xef\xbf\xbdY\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbdt\xef\xbf\xbd\xef\xbf\xbd ===" },
+#endif
 	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_AttackDamage_MetaData[] = {
 		{ "Category", "Turn System|Stats" },
@@ -1906,6 +2117,7 @@ struct Z_Construct_UClass_ATurnBasedCharacter_Statics
 	static const UECodeGen_Private::FBoolPropertyParams NewProp_bIsSlowed;
 	static void NewProp_bIsHasted_SetBit(void* Obj);
 	static const UECodeGen_Private::FBoolPropertyParams NewProp_bIsHasted;
+	static const UECodeGen_Private::FStructPropertyParams NewProp_PortraitData;
 	static const UECodeGen_Private::FIntPropertyParams NewProp_AttackDamage;
 	static const UECodeGen_Private::FFloatPropertyParams NewProp_AttackRange;
 	static const UECodeGen_Private::FFloatPropertyParams NewProp_MoveSpeed;
@@ -1945,6 +2157,8 @@ struct Z_Construct_UClass_ATurnBasedCharacter_Statics
 		{ &Z_Construct_UFunction_ATurnBasedCharacter_CanPerformDynamicMovement, "CanPerformDynamicMovement" }, // 1715719788
 		{ &Z_Construct_UFunction_ATurnBasedCharacter_ConsumeActionPoints, "ConsumeActionPoints" }, // 4284646026
 		{ &Z_Construct_UFunction_ATurnBasedCharacter_ExecuteAnimatedAttack, "ExecuteAnimatedAttack" }, // 2062597536
+		{ &Z_Construct_UFunction_ATurnBasedCharacter_GetAnyAvailablePortrait, "GetAnyAvailablePortrait" }, // 3506958243
+		{ &Z_Construct_UFunction_ATurnBasedCharacter_GetBattlePortrait, "GetBattlePortrait" }, // 3212857691
 		{ &Z_Construct_UFunction_ATurnBasedCharacter_GetCharacterDisplayName, "GetCharacterDisplayName" }, // 885833762
 		{ &Z_Construct_UFunction_ATurnBasedCharacter_GetCurrentActionPoints, "GetCurrentActionPoints" }, // 284205969
 		{ &Z_Construct_UFunction_ATurnBasedCharacter_GetCurrentGridPosition, "GetCurrentGridPosition" }, // 3804385965
@@ -1953,6 +2167,8 @@ struct Z_Construct_UClass_ATurnBasedCharacter_Statics
 		{ &Z_Construct_UFunction_ATurnBasedCharacter_GetGridVisualComponent, "GetGridVisualComponent" }, // 1614271511
 		{ &Z_Construct_UFunction_ATurnBasedCharacter_GetIsPlayerControlled, "GetIsPlayerControlled" }, // 3164430840
 		{ &Z_Construct_UFunction_ATurnBasedCharacter_GetMaxActionPoints, "GetMaxActionPoints" }, // 832912254
+		{ &Z_Construct_UFunction_ATurnBasedCharacter_GetPortraitBorderColor, "GetPortraitBorderColor" }, // 3933041527
+		{ &Z_Construct_UFunction_ATurnBasedCharacter_GetUIPortrait, "GetUIPortrait" }, // 2620950360
 		{ &Z_Construct_UFunction_ATurnBasedCharacter_IsAlive, "IsAlive" }, // 2754266360
 		{ &Z_Construct_UFunction_ATurnBasedCharacter_IsMyTurn, "IsMyTurn" }, // 1760035642
 		{ &Z_Construct_UFunction_ATurnBasedCharacter_IsPlayerTurn, "IsPlayerTurn" }, // 4002852299
@@ -1992,6 +2208,7 @@ void Z_Construct_UClass_ATurnBasedCharacter_Statics::NewProp_bIsHasted_SetBit(vo
 	((ATurnBasedCharacter*)Obj)->bIsHasted = 1;
 }
 const UECodeGen_Private::FBoolPropertyParams Z_Construct_UClass_ATurnBasedCharacter_Statics::NewProp_bIsHasted = { "bIsHasted", nullptr, (EPropertyFlags)0x0010000000000004, UECodeGen_Private::EPropertyGenFlags::Bool | UECodeGen_Private::EPropertyGenFlags::NativeBool, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, sizeof(bool), sizeof(ATurnBasedCharacter), &Z_Construct_UClass_ATurnBasedCharacter_Statics::NewProp_bIsHasted_SetBit, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_bIsHasted_MetaData), NewProp_bIsHasted_MetaData) };
+const UECodeGen_Private::FStructPropertyParams Z_Construct_UClass_ATurnBasedCharacter_Statics::NewProp_PortraitData = { "PortraitData", nullptr, (EPropertyFlags)0x0010000000000005, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(ATurnBasedCharacter, PortraitData), Z_Construct_UScriptStruct_FPortraitData, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_PortraitData_MetaData), NewProp_PortraitData_MetaData) }; // 1433789745
 const UECodeGen_Private::FIntPropertyParams Z_Construct_UClass_ATurnBasedCharacter_Statics::NewProp_AttackDamage = { "AttackDamage", nullptr, (EPropertyFlags)0x0010000000000005, UECodeGen_Private::EPropertyGenFlags::Int, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(ATurnBasedCharacter, AttackDamage), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_AttackDamage_MetaData), NewProp_AttackDamage_MetaData) };
 const UECodeGen_Private::FFloatPropertyParams Z_Construct_UClass_ATurnBasedCharacter_Statics::NewProp_AttackRange = { "AttackRange", nullptr, (EPropertyFlags)0x0010000000000005, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(ATurnBasedCharacter, AttackRange), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_AttackRange_MetaData), NewProp_AttackRange_MetaData) };
 const UECodeGen_Private::FFloatPropertyParams Z_Construct_UClass_ATurnBasedCharacter_Statics::NewProp_MoveSpeed = { "MoveSpeed", nullptr, (EPropertyFlags)0x0010000000000005, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(ATurnBasedCharacter, MoveSpeed), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_MoveSpeed_MetaData), NewProp_MoveSpeed_MetaData) };
@@ -2043,6 +2260,7 @@ const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UClass_ATurnBase
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_ATurnBasedCharacter_Statics::NewProp_AttackActionCost,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_ATurnBasedCharacter_Statics::NewProp_bIsSlowed,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_ATurnBasedCharacter_Statics::NewProp_bIsHasted,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_ATurnBasedCharacter_Statics::NewProp_PortraitData,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_ATurnBasedCharacter_Statics::NewProp_AttackDamage,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_ATurnBasedCharacter_Statics::NewProp_AttackRange,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_ATurnBasedCharacter_Statics::NewProp_MoveSpeed,
@@ -2112,10 +2330,10 @@ ATurnBasedCharacter::~ATurnBasedCharacter() {}
 struct Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_TurnBasedCharacter_h__Script_ProjectGate_Statics
 {
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_ATurnBasedCharacter, ATurnBasedCharacter::StaticClass, TEXT("ATurnBasedCharacter"), &Z_Registration_Info_UClass_ATurnBasedCharacter, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(ATurnBasedCharacter), 848908162U) },
+		{ Z_Construct_UClass_ATurnBasedCharacter, ATurnBasedCharacter::StaticClass, TEXT("ATurnBasedCharacter"), &Z_Registration_Info_UClass_ATurnBasedCharacter, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(ATurnBasedCharacter), 1953617823U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_TurnBasedCharacter_h__Script_ProjectGate_3453884716(TEXT("/Script/ProjectGate"),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_TurnBasedCharacter_h__Script_ProjectGate_2996631237(TEXT("/Script/ProjectGate"),
 	Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_TurnBasedCharacter_h__Script_ProjectGate_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_TurnBasedCharacter_h__Script_ProjectGate_Statics::ClassInfo),
 	nullptr, 0,
 	nullptr, 0);

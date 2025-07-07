@@ -16,7 +16,14 @@
 
 PRAGMA_DISABLE_DEPRECATION_WARNINGS
 
+class AActor;
+
 // ********** Begin Class UTurnOrderWidget *********************************************************
+#define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_UI_TurnOrderWidget_h_15_RPC_WRAPPERS_NO_PURE_DECLS \
+	DECLARE_FUNCTION(execHighlightCurrentCharacter); \
+	DECLARE_FUNCTION(execUpdateTurnOrder);
+
+
 PROJECTGATE_API UClass* Z_Construct_UClass_UTurnOrderWidget_NoRegister();
 
 #define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_UI_TurnOrderWidget_h_15_INCLASS_NO_PURE_DECLS \
@@ -46,6 +53,7 @@ public: \
 #define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_UI_TurnOrderWidget_h_15_GENERATED_BODY \
 PRAGMA_DISABLE_DEPRECATION_WARNINGS \
 public: \
+	FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_UI_TurnOrderWidget_h_15_RPC_WRAPPERS_NO_PURE_DECLS \
 	FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_UI_TurnOrderWidget_h_15_INCLASS_NO_PURE_DECLS \
 	FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_UI_TurnOrderWidget_h_15_ENHANCED_CONSTRUCTORS \
 private: \

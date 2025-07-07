@@ -48,6 +48,19 @@ AFreeCameraPawn::AFreeCameraPawn()
     bUseControllerRotationPitch = false;
     bUseControllerRotationYaw = false;
     bUseControllerRotationRoll = false;
+
+    // 如果有 SpringArmComponent
+    if (SpringArmComponent)
+    {
+        SpringArmComponent->bUsePawnControlRotation = true;
+        SpringArmComponent->bInheritPitch = false;
+        SpringArmComponent->bInheritYaw = false;
+        SpringArmComponent->bInheritRoll = false;
+
+        // 設置默認旋轉
+        SpringArmComponent->SetRelativeRotation(FRotator(-45.0f, 0.0f, 0.0f));
+    }
+
 }
 
 void AFreeCameraPawn::BeginPlay()
@@ -56,10 +69,18 @@ void AFreeCameraPawn::BeginPlay()
 
     Debug::Print(TEXT("Free Camera Pawn Activated"), FColor::Cyan);
 
-    // Set initial position
-    if (APlayerController* PC = Cast<APlayerController>(GetController()))
+    // 確保 SpringArm 有正確的初始旋轉
+    if (SpringArmComponent)
     {
-        PC->SetViewTarget(this);
+        FRotator CurrentRotation = SpringArmComponent->GetRelativeRotation();
+
+        // 如果旋轉接近零，設置默認值
+        if (FMath::Abs(CurrentRotation.Pitch) < 5.0f &&
+            FMath::Abs(CurrentRotation.Yaw) < 5.0f)
+        {
+            SpringArmComponent->SetRelativeRotation(FRotator(-45.0f, 0.0f, 0.0f));
+            Debug::Print(TEXT("Fixed FreeCameraPawn initial rotation"), FColor::Yellow);
+        }
     }
 }
 

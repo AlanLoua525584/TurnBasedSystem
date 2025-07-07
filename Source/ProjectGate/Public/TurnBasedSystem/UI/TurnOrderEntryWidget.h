@@ -14,4 +14,22 @@ class PROJECTGATE_API UTurnOrderEntryWidget : public UUserWidget
 {
 	GENERATED_BODY()
 	
+public:
+    UFUNCTION(BlueprintCallable)
+    void SetCharacterData(ATurnBasedCharacter* Character);
+
+ 
+
+protected:
+    UPROPERTY(meta = (BindWidget))
+    class UImage* CharacterPortrait;
+
+    UPROPERTY(meta = (BindWidget))
+    class UTextBlock* InitiativeText;
+
+    UPROPERTY(meta = (BindWidget))
+    class UImage* HighlightFrame;
+
+    UPROPERTY()
+    ATurnBasedCharacter* AssociatedCharacter;
 };

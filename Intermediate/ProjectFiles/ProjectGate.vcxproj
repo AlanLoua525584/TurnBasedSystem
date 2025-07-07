@@ -316,6 +316,9 @@
     <ClCompile Include="..\..\Source\ProjectGate\Private\TurnBasedSystem\TurnBasedCharacter.cpp">
       <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
+    <ClCompile Include="..\..\Source\ProjectGate\Private\TurnBasedSystem\DataAssets\CharacterPortraitData.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
     <ClCompile Include="..\..\Source\ProjectGate\Private\TurnBasedSystem\UI\TurnDisplayWidget.cpp">
       <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
@@ -344,6 +347,7 @@
     <ClInclude Include="..\..\Source\ProjectGate\Public\TurnBasedSystem\IntegratedGridController.h"/>
     <ClInclude Include="..\..\Source\ProjectGate\Public\TurnBasedSystem\SimpleTurnManager.h"/>
     <ClInclude Include="..\..\Source\ProjectGate\Public\TurnBasedSystem\TurnBasedCharacter.h"/>
+    <ClInclude Include="..\..\Source\ProjectGate\Public\TurnBasedSystem\DataAssets\CharacterPortraitData.h"/>
     <ClInclude Include="..\..\Source\ProjectGate\Public\TurnBasedSystem\UI\TurnDisplayWidget.h"/>
     <ClInclude Include="..\..\Source\ProjectGate\Public\TurnBasedSystem\UI\TurnOrderEntryWidget.h"/>
     <ClInclude Include="..\..\Source\ProjectGate\Public\TurnBasedSystem\UI\TurnOrderWidget.h"/>

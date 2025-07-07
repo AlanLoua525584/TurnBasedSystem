@@ -102,6 +102,12 @@
     <ClCompile Include="..\..\Source\ProjectGate\Private\TurnBasedSystem\TurnBasedCharacter.cpp">
       <Filter>Source\ProjectGate\Private\TurnBasedSystem</Filter>
     </ClCompile>
+    <Filter Include="Source\ProjectGate\Private\TurnBasedSystem\DataAssets">
+      <UniqueIdentifier>{C528C903-8116-3183-B967-970DD332AAB3}</UniqueIdentifier>
+    </Filter>
+    <ClCompile Include="..\..\Source\ProjectGate\Private\TurnBasedSystem\DataAssets\CharacterPortraitData.cpp">
+      <Filter>Source\ProjectGate\Private\TurnBasedSystem\DataAssets</Filter>
+    </ClCompile>
     <Filter Include="Source\ProjectGate\Private\TurnBasedSystem\UI">
       <UniqueIdentifier>{7C27C6DD-98DA-3A47-9552-54F49576E486}</UniqueIdentifier>
     </Filter>
@@ -179,6 +185,12 @@
     </ClInclude>
     <ClInclude Include="..\..\Source\ProjectGate\Public\TurnBasedSystem\TurnBasedCharacter.h">
       <Filter>Source\ProjectGate\Public\TurnBasedSystem</Filter>
+    </ClInclude>
+    <Filter Include="Source\ProjectGate\Public\TurnBasedSystem\DataAssets">
+      <UniqueIdentifier>{35817840-5101-32DE-84D1-C12AAD409F55}</UniqueIdentifier>
+    </Filter>
+    <ClInclude Include="..\..\Source\ProjectGate\Public\TurnBasedSystem\DataAssets\CharacterPortraitData.h">
+      <Filter>Source\ProjectGate\Public\TurnBasedSystem\DataAssets</Filter>
     </ClInclude>
     <Filter Include="Source\ProjectGate\Public\TurnBasedSystem\UI">
       <UniqueIdentifier>{075E4A15-7349-38CF-8618-D88C18A8D78B}</UniqueIdentifier>

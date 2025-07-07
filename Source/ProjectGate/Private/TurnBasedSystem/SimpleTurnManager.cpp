@@ -123,9 +123,17 @@ void ASimpleTurnManager::PossessCurrentTurnCharacter()
 		return;
 	}
 
+
+	// 保存當前相機狀態
+	FRotator SavedRotation = PC->GetControlRotation();
+	bool bWasInFocusMode = PC->bIsFocusMode;
+	bool bWasInDynamicMode = PC->bIsInDynamicMode;
+
+
 	// 只 Possess 玩家控制的角色
 	if (CurrentCharacter->bIsPlayerControlled)
 	{
+	
 		// 檢查是否已經在控制這個角色
 		if (PC->GetPawn() != CurrentCharacter)
 		{
@@ -133,22 +141,50 @@ void ASimpleTurnManager::PossessCurrentTurnCharacter()
 			Debug::Print(FString::Printf(TEXT("Possessed %s"), *CurrentCharacter->GetActorLabel()), FColor::Green);
 		}
 
-		// 聚焦相機到角色
-		PC->FocusOnActor(CurrentCharacter, 600.0f);
+		// 如果之前在 Focus 模式，確保新角色的相機正確設置
+		if (bWasInFocusMode)
+		{
+			// 設置角色相機
+			if (CurrentCharacter->CameraBoom)
+			{
+				CurrentCharacter->CameraBoom->bUsePawnControlRotation = true;
+				CurrentCharacter->CameraBoom->SetWorldRotation(SavedRotation);
+			}
+
+			// 設置 ViewTarget 到角色
+			PC->SetViewTarget(CurrentCharacter);
+			PC->SetControlRotation(SavedRotation);
+
+			Debug::Print(TEXT("Maintained Focus mode on new character"), FColor::Green);
+		}
+		else
+		{
+			// 保持在自由相機模式，但更新焦點位置
+			PC->FocusOnActor(CurrentCharacter, 600.0f);
+		}
 
 
-
-		// 重置動態模式狀態
-		PC->bIsInDynamicMode = false;
+		// 重置動態模式狀態（新回合開始時應該退出動態模式）
+		if (bWasInDynamicMode)
+		{
+			PC->bIsInDynamicMode = false;
+			Debug::Print(TEXT("Reset dynamic mode for new turn"), FColor::Yellow);
+		}
 	}
 	else
 	{
 		// AI 控制的角色，取消 Possess
 		if (PC->GetPawn())
 		{
+			
 			PC->UnPossess();
+
+
 			Debug::Print(TEXT("UnPossessed for AI turn"), FColor::Yellow);
 		}
+
+		// 保持相機旋轉
+		PC->SetControlRotation(SavedRotation);
 	}
 
 }

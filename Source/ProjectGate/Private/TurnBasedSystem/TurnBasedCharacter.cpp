@@ -91,6 +91,68 @@ ATurnBasedCharacter::ATurnBasedCharacter()
 
 }
 
+UTexture2D* ATurnBasedCharacter::GetUIPortrait() const
+{
+	// 優先返回UI頭像，其次是完整頭像
+	if (PortraitData.UIPortrait)
+	{
+		return PortraitData.UIPortrait;
+	}
+
+	if (PortraitData.FullPortrait)
+	{
+		return PortraitData.FullPortrait;
+	}
+
+	// 如果都沒有，嘗試其他頭像
+	return GetAnyAvailablePortrait();
+}
+
+UTexture2D* ATurnBasedCharacter::GetBattlePortrait() const
+{
+	// 優先返回戰鬥圖標
+	if (PortraitData.BattleIcon)
+	{
+		return PortraitData.BattleIcon;
+	}
+
+	// 其次嘗試UI頭像
+	return GetUIPortrait();
+}
+
+UTexture2D* ATurnBasedCharacter::GetAnyAvailablePortrait() const
+{
+	// 按優先級嘗試所有頭像
+	if (PortraitData.UIPortrait) return PortraitData.UIPortrait;
+	if (PortraitData.FullPortrait) return PortraitData.FullPortrait;
+	if (PortraitData.BattleIcon) return PortraitData.BattleIcon;
+	if (PortraitData.DialoguePortrait) return PortraitData.DialoguePortrait;
+
+	// 真的沒有頭像，返回預設
+	static UTexture2D* DefaultPortrait = LoadObject<UTexture2D>(
+		nullptr,
+		TEXT("/Game/UI/Portraits/Default/Default_Portrait.Default_Portrait")
+	);
+
+	return DefaultPortrait;
+}
+
+FLinearColor ATurnBasedCharacter::GetPortraitBorderColor() const
+{
+	// 可以根據隊伍覆蓋顏色
+	if (TeamID == 0) // 玩家隊伍
+	{
+		return FLinearColor(0.2f, 0.4f, 1.0f, 1.0f); // 藍色
+	}
+	else if (TeamID == 1) // 敵人隊伍
+	{
+		return FLinearColor(1.0f, 0.2f, 0.2f, 1.0f); // 紅色
+	}
+
+	// 否則使用自定義顏色
+	return PortraitData.BorderColor;
+}
+
 
 bool ATurnBasedCharacter::CanBeAttacked_Implementation() const
 {
@@ -960,6 +1022,29 @@ void ATurnBasedCharacter::Tick(float DeltaTime)
 		FRotator CurrentRotation = CameraBoom->GetComponentRotation();
 		FRotator NewRotation = FMath::RInterpTo(CurrentRotation, ControlRotation, DeltaTime, 10.0f);
 		CameraBoom->SetWorldRotation(NewRotation);
+	}
+
+	// 只有在被玩家控制且在動態模式時才同步相機旋轉
+	if (CameraBoom && Controller && bIsPlayerControlled)
+	{
+		// 檢查是否在動態模式
+		if (AGridPlayerController* GridPC = Cast<AGridPlayerController>(Controller))
+		{
+			if (GridPC->bIsInDynamicMode && GridPC->bIsFocusMode)
+			{
+				// 動態模式下，相機跟隨控制器旋轉
+				FRotator ControlRotation = Controller->GetControlRotation();
+				FRotator CurrentRotation = CameraBoom->GetComponentRotation();
+
+				// 只有在旋轉差異較大時才更新，避免抖動
+				if (!CurrentRotation.Equals(ControlRotation, 1.0f))
+				{
+					FRotator NewRotation = FMath::RInterpTo(CurrentRotation, ControlRotation, DeltaTime, 10.0f);
+					CameraBoom->SetWorldRotation(NewRotation);
+				}
+			}
+			// 非動態模式下，CameraBoom 應該已經被正確設置，不需要每幀更新
+		}
 	}
 
 }

@@ -10,6 +10,8 @@
 #include "CombatSystem/CombatStats.h"
 #include "Components/WidgetComponent.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "TurnBasedSystem/DataAssets/CharacterPortraitData.h"
+
 #include "TurnBasedCharacter.generated.h"
 
 class USpringArmComponent;
@@ -58,6 +60,28 @@ public:
 
     UPROPERTY(BlueprintReadWrite, Category = "Turn System|Status")
     bool bIsHasted = false;
+
+    // === 頭像系統 ===
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "UI",
+        meta = (DisplayName = "Character Portraits"))
+    FPortraitData PortraitData;
+
+    // 便利函數 - 獲取UI用頭像
+    UFUNCTION(BlueprintCallable, Category = "UI")
+    UTexture2D* GetUIPortrait() const;
+
+    // 獲取戰鬥頭像
+    UFUNCTION(BlueprintCallable, Category = "UI")
+    UTexture2D* GetBattlePortrait() const;
+
+    // 獲取任意可用頭像（容錯用）
+    UFUNCTION(BlueprintCallable, Category = "UI")
+    UTexture2D* GetAnyAvailablePortrait() const;
+
+    // 獲取邊框顏色
+    UFUNCTION(BlueprintCallable, Category = "UI")
+    FLinearColor GetPortraitBorderColor() const;
+
 
 
     // Basic Stats (will integrate with GAS later)

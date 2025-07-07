@@ -17,6 +17,7 @@ class UInputAction;
 class UEnhancedMovementSystem;
 class UCameraComponent;
 class USpringArmComponent;
+class UTurnOrderWidget;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FUIOnMovementModeChanged, bool, bIsDynamicMode);
 
@@ -40,12 +41,13 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Camera")
 	void FocusOnCurrentTurnCharacter();
 
+	void SyncCameraStates();
+
 	// 相機靈敏度設置
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera|ThirdPerson")
-	float MouseSensitivityX = 1.0f;
+	float MouseSensitivity = 1.0f;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera|ThirdPerson")
-	float MouseSensitivityY = 1.0f;
+	void SafeSetViewTarget(AActor* NewViewTarget);
 
 	// 是否在動態模式下自動隱藏游標
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera|ThirdPerson")
@@ -69,6 +71,12 @@ public:
 	UPROPERTY()
 	bool bIsFocusMode = false;
 
+	// Turn Order UI
+	UPROPERTY()
+	UTurnOrderWidget* TurnOrderWidget;
+
+	UPROPERTY(EditAnywhere, Category = "UI")
+	TSubclassOf<UTurnOrderWidget> TurnOrderWidgetClass;
 
 
 	// 當前控制的相機 Actor
@@ -235,6 +243,16 @@ private:
 	bool bIsShiftPressed = false;
 	FVector CameraVelocity = FVector::ZeroVector;
 
+	// 保存相機狀態
+	FRotator SavedCameraRotation;
+	FVector SavedCameraLocation;
+	float SavedArmLength = 800.0f;
+
+	// 追蹤 FreeCameraPawn
+	UPROPERTY()
+	class AFreeCameraPawn* FreeCameraPawn;
+
+
 	// 初始化函數
 	void SetupCamera();
 
@@ -312,4 +330,7 @@ private:
 	bool GetCharacterUnderCursorWithFallback(AActor*& OutCharacter);
 
 
+
+	//ForTest
+	void TestPortraitSystem();
 };
