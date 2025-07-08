@@ -265,17 +265,6 @@ void UEnhancedMovementSystem::ProcessMovementInput(const FVector2D& InputVector)
 
 		Debug::Print(TEXT("Moveing..."), FColor::Green);
 
-
-
-		/*
-		FRotator ControlRotation = OwnerCharacter->GetControlRotation();
-		ControlRotation.Pitch = 0.0f;
-		ControlRotation.Roll = 0.0f;
-		
-		const FVector ForwardDir = FRotationMatrix(ControlRotation).GetUnitAxis(EAxis::X);
-		const FVector RightDir = FRotationMatrix(ControlRotation).GetUnitAxis(EAxis::Y);
-		*/
-
 		// 使用 PlayerController 的相機旋轉（而不是角色的控制旋轉）
 		FRotator CameraRotation = PC->GetControlRotation();
 		CameraRotation.Pitch = 0.0f;

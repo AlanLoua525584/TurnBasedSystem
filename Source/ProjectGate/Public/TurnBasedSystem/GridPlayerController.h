@@ -19,7 +19,7 @@ class UCameraComponent;
 class USpringArmComponent;
 class UTurnOrderWidget;
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FUIOnMovementModeChanged, bool, bIsDynamicMode);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FUIOnMovementModeChanged, bool, bIsInDynamicMode);
 
 /**
  * 
@@ -42,6 +42,7 @@ public:
 	void FocusOnCurrentTurnCharacter();
 
 	void SyncCameraStates();
+
 
 	// 相機靈敏度設置
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera|ThirdPerson")
@@ -68,9 +69,6 @@ public:
 	UPROPERTY(BlueprintReadWrite)
 	bool bIsInDynamicMode = false;
 
-	UPROPERTY()
-	bool bIsFocusMode = false;
-
 	// Turn Order UI
 	UPROPERTY()
 	UTurnOrderWidget* TurnOrderWidget;
@@ -91,6 +89,20 @@ public:
 
 	UPROPERTY(BlueprintAssignable, Category = "Movement")
 	FUIOnMovementModeChanged UIOnMovementModeChanged;
+
+	// 追蹤 FreeCameraPawn
+	UPROPERTY()
+	class AFreeCameraPawn* FreeCameraPawn;
+
+	// 回合切換時的相機處理
+	UFUNCTION(BlueprintCallable, Category = "Camera")
+	void OnTurnChangedCamera(AActor* NewTurnCharacter, bool bIsPlayerControlled);
+
+	//獲取當前回合角色
+	class ATurnBasedCharacter* GetCurrentTurnCharacter();
+	class ATurnBasedCharacter* GetControlledTurnCharacter() const;
+	class ATurnBasedCharacter* GetPlayerControlledTurnCharacter();
+
 
 protected:
 	virtual void BeginPlay() override;
@@ -196,10 +208,9 @@ protected:
 		// 獲取滑鼠下的網格位置
 	bool GetGridPositionUnderCursor(FIntPoint& OutGridPos);
 
-	//獲取當前回合角色
-	class ATurnBasedCharacter* GetCurrentTurnCharacter();
-	class ATurnBasedCharacter* GetControlledTurnCharacter() const;
+	
 
+	
 
 	// ===== 相機組件 =====
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Camera")
@@ -228,7 +239,6 @@ protected:
 
 
 
-
 private:
 	//相機控制變數
 	float CurrentCameraRotation = 0.0f;
@@ -248,10 +258,6 @@ private:
 	FVector SavedCameraLocation;
 	float SavedArmLength = 800.0f;
 
-	// 追蹤 FreeCameraPawn
-	UPROPERTY()
-	class AFreeCameraPawn* FreeCameraPawn;
-
 
 	// 初始化函數
 	void SetupCamera();
@@ -266,7 +272,6 @@ private:
 	void OnShiftReleased() { bIsShiftPressed = false; }
 	void OnRightMousePressed();
 	void OnRightMouseReleased();
-	void OnToggleFocus(const FInputActionValue& Value);
 	void UpdateCameraMovement(float DeltaTime);
 
 	//監聽所有角色的血量變化

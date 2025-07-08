@@ -127,6 +127,9 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Camera")
 	void ClearFollowTarget();
 
+	//重置相機角度
+	void ResetCameraRotation();
+
 	//獲取當前相機位置和旋轉
 	UFUNCTION(BlueprintCallable, Category = "Camera")
 	FVector GetCameraLocation() const;
@@ -151,4 +154,15 @@ private:
 	
 	FVector MinBounds;
 	FVector MaxBounds;
+
+	// 平滑對焦相關
+	UPROPERTY(EditAnywhere, Category = "Camera|Focus")
+	bool bSmoothFocus = true;
+
+	UPROPERTY(EditAnywhere, Category = "Camera|Focus")
+	float FocusSpeed = 5.0f;
+
+	bool bIsFocusing = false;
+	FVector FocusTargetLocation;
+	float FocusTargetDistance;
 };

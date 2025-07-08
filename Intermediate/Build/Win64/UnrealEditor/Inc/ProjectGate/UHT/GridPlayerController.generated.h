@@ -23,7 +23,7 @@ struct FInputActionValue;
 
 // ********** Begin Delegate FUIOnMovementModeChanged **********************************************
 #define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_GridPlayerController_h_22_DELEGATE \
-PROJECTGATE_API void FUIOnMovementModeChanged_DelegateWrapper(const FMulticastScriptDelegate& UIOnMovementModeChanged, bool bIsDynamicMode);
+PROJECTGATE_API void FUIOnMovementModeChanged_DelegateWrapper(const FMulticastScriptDelegate& UIOnMovementModeChanged, bool bIsInDynamicMode);
 
 
 // ********** End Delegate FUIOnMovementModeChanged ************************************************
@@ -38,6 +38,7 @@ PROJECTGATE_API void FUIOnMovementModeChanged_DelegateWrapper(const FMulticastSc
 	DECLARE_FUNCTION(execOnMove); \
 	DECLARE_FUNCTION(execSwitchMovementMode); \
 	DECLARE_FUNCTION(execOnDynamicMode); \
+	DECLARE_FUNCTION(execOnTurnChangedCamera); \
 	DECLARE_FUNCTION(execGetCameraPawn); \
 	DECLARE_FUNCTION(execGetCameraRotation); \
 	DECLARE_FUNCTION(execGetCameraLocation); \

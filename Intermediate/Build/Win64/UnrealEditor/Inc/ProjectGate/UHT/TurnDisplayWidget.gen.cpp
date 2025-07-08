@@ -140,7 +140,7 @@ struct Z_Construct_UFunction_UTurnDisplayWidget_UpdateCameraMode_Statics
 {
 	struct TurnDisplayWidget_eventUpdateCameraMode_Parms
 	{
-		bool bIsFocusMode;
+		bool bIsInDynamicMode;
 	};
 #if WITH_METADATA
 	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
@@ -148,18 +148,18 @@ struct Z_Construct_UFunction_UTurnDisplayWidget_UpdateCameraMode_Statics
 		{ "ModuleRelativePath", "Public/TurnBasedSystem/UI/TurnDisplayWidget.h" },
 	};
 #endif // WITH_METADATA
-	static void NewProp_bIsFocusMode_SetBit(void* Obj);
-	static const UECodeGen_Private::FBoolPropertyParams NewProp_bIsFocusMode;
+	static void NewProp_bIsInDynamicMode_SetBit(void* Obj);
+	static const UECodeGen_Private::FBoolPropertyParams NewProp_bIsInDynamicMode;
 	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
 	static const UECodeGen_Private::FFunctionParams FuncParams;
 };
-void Z_Construct_UFunction_UTurnDisplayWidget_UpdateCameraMode_Statics::NewProp_bIsFocusMode_SetBit(void* Obj)
+void Z_Construct_UFunction_UTurnDisplayWidget_UpdateCameraMode_Statics::NewProp_bIsInDynamicMode_SetBit(void* Obj)
 {
-	((TurnDisplayWidget_eventUpdateCameraMode_Parms*)Obj)->bIsFocusMode = 1;
+	((TurnDisplayWidget_eventUpdateCameraMode_Parms*)Obj)->bIsInDynamicMode = 1;
 }
-const UECodeGen_Private::FBoolPropertyParams Z_Construct_UFunction_UTurnDisplayWidget_UpdateCameraMode_Statics::NewProp_bIsFocusMode = { "bIsFocusMode", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Bool | UECodeGen_Private::EPropertyGenFlags::NativeBool, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, sizeof(bool), sizeof(TurnDisplayWidget_eventUpdateCameraMode_Parms), &Z_Construct_UFunction_UTurnDisplayWidget_UpdateCameraMode_Statics::NewProp_bIsFocusMode_SetBit, METADATA_PARAMS(0, nullptr) };
+const UECodeGen_Private::FBoolPropertyParams Z_Construct_UFunction_UTurnDisplayWidget_UpdateCameraMode_Statics::NewProp_bIsInDynamicMode = { "bIsInDynamicMode", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Bool | UECodeGen_Private::EPropertyGenFlags::NativeBool, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, sizeof(bool), sizeof(TurnDisplayWidget_eventUpdateCameraMode_Parms), &Z_Construct_UFunction_UTurnDisplayWidget_UpdateCameraMode_Statics::NewProp_bIsInDynamicMode_SetBit, METADATA_PARAMS(0, nullptr) };
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_UTurnDisplayWidget_UpdateCameraMode_Statics::PropPointers[] = {
-	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UTurnDisplayWidget_UpdateCameraMode_Statics::NewProp_bIsFocusMode,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UTurnDisplayWidget_UpdateCameraMode_Statics::NewProp_bIsInDynamicMode,
 };
 static_assert(UE_ARRAY_COUNT(Z_Construct_UFunction_UTurnDisplayWidget_UpdateCameraMode_Statics::PropPointers) < 2048);
 const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_UTurnDisplayWidget_UpdateCameraMode_Statics::FuncParams = { { (UObject*(*)())Z_Construct_UClass_UTurnDisplayWidget, nullptr, "UpdateCameraMode", Z_Construct_UFunction_UTurnDisplayWidget_UpdateCameraMode_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_UTurnDisplayWidget_UpdateCameraMode_Statics::PropPointers), sizeof(Z_Construct_UFunction_UTurnDisplayWidget_UpdateCameraMode_Statics::TurnDisplayWidget_eventUpdateCameraMode_Parms), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x04020401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_UTurnDisplayWidget_UpdateCameraMode_Statics::Function_MetaDataParams), Z_Construct_UFunction_UTurnDisplayWidget_UpdateCameraMode_Statics::Function_MetaDataParams)},  };
@@ -175,10 +175,10 @@ UFunction* Z_Construct_UFunction_UTurnDisplayWidget_UpdateCameraMode()
 }
 DEFINE_FUNCTION(UTurnDisplayWidget::execUpdateCameraMode)
 {
-	P_GET_UBOOL(Z_Param_bIsFocusMode);
+	P_GET_UBOOL(Z_Param_bIsInDynamicMode);
 	P_FINISH;
 	P_NATIVE_BEGIN;
-	P_THIS->UpdateCameraMode(Z_Param_bIsFocusMode);
+	P_THIS->UpdateCameraMode(Z_Param_bIsInDynamicMode);
 	P_NATIVE_END;
 }
 // ********** End Class UTurnDisplayWidget Function UpdateCameraMode *******************************
@@ -570,7 +570,7 @@ struct Z_Construct_UClass_UTurnDisplayWidget_Statics
 		{ &Z_Construct_UFunction_UTurnDisplayWidget_HandleEndTurnClicked, "HandleEndTurnClicked" }, // 2395198862
 		{ &Z_Construct_UFunction_UTurnDisplayWidget_HandleNextPhaseClicked, "HandleNextPhaseClicked" }, // 182892488
 		{ &Z_Construct_UFunction_UTurnDisplayWidget_UpdateActionPoints, "UpdateActionPoints" }, // 481437736
-		{ &Z_Construct_UFunction_UTurnDisplayWidget_UpdateCameraMode, "UpdateCameraMode" }, // 4016839498
+		{ &Z_Construct_UFunction_UTurnDisplayWidget_UpdateCameraMode, "UpdateCameraMode" }, // 1996956815
 		{ &Z_Construct_UFunction_UTurnDisplayWidget_UpdateCurrentCharacter, "UpdateCurrentCharacter" }, // 31170205
 		{ &Z_Construct_UFunction_UTurnDisplayWidget_UpdatePhase, "UpdatePhase" }, // 3192808887
 		{ &Z_Construct_UFunction_UTurnDisplayWidget_UpdateStamina, "UpdateStamina" }, // 2375569204
@@ -645,10 +645,10 @@ UTurnDisplayWidget::~UTurnDisplayWidget() {}
 struct Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_UI_TurnDisplayWidget_h__Script_ProjectGate_Statics
 {
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_UTurnDisplayWidget, UTurnDisplayWidget::StaticClass, TEXT("UTurnDisplayWidget"), &Z_Registration_Info_UClass_UTurnDisplayWidget, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UTurnDisplayWidget), 958781610U) },
+		{ Z_Construct_UClass_UTurnDisplayWidget, UTurnDisplayWidget::StaticClass, TEXT("UTurnDisplayWidget"), &Z_Registration_Info_UClass_UTurnDisplayWidget, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UTurnDisplayWidget), 2612955699U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_UI_TurnDisplayWidget_h__Script_ProjectGate_488711217(TEXT("/Script/ProjectGate"),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_UI_TurnDisplayWidget_h__Script_ProjectGate_1744176908(TEXT("/Script/ProjectGate"),
 	Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_UI_TurnDisplayWidget_h__Script_ProjectGate_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_UI_TurnDisplayWidget_h__Script_ProjectGate_Statics::ClassInfo),
 	nullptr, 0,
 	nullptr, 0);

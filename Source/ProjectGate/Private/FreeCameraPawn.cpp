@@ -88,6 +88,25 @@ void AFreeCameraPawn::Tick(float DeltaTime)
 {
     Super::Tick(DeltaTime);
 
+    // 平滑對焦處理
+    if (bIsFocusing && bSmoothFocus)
+    {
+        FVector CurrentLocation = GetActorLocation();
+        FVector NewLocation = FMath::VInterpTo(CurrentLocation, FocusTargetLocation, DeltaTime, FocusSpeed);
+        SetActorLocation(NewLocation);
+
+        float CurrentDistance = SpringArmComponent->TargetArmLength;
+        float NewDistance = FMath::FInterpTo(CurrentDistance, FocusTargetDistance, DeltaTime, FocusSpeed);
+        SpringArmComponent->TargetArmLength = NewDistance;
+
+        // 檢查是否接近目標
+        if (FVector::Dist(NewLocation, FocusTargetLocation) < 10.0f)
+        {
+            bIsFocusing = false;
+        }
+    }
+
+
     // Process edge scrolling
     if (bEnableEdgeScrolling && !bIsRightMousePressed)
     {
@@ -337,16 +356,31 @@ void AFreeCameraPawn::FocusOnActor(AActor* TargetActor, float Distance)
 
     FVector TargetLocation = TargetActor->GetActorLocation();
 
-    // Calculate camera position
+    // 計算相機位置
     FRotator CurrentRotation = SpringArmComponent->GetRelativeRotation();
     FVector CameraOffset = CurrentRotation.Vector() * -Distance;
+
+    // 提高相機位置，避免太低
+    CameraOffset.Z = FMath::Max(CameraOffset.Z, 300.0f);
+
     FVector NewLocation = TargetLocation + CameraOffset;
 
-    // Smooth movement to new position
-    SetActorLocation(NewLocation);
-    SpringArmComponent->TargetArmLength = Distance;
+    // 使用插值實現平滑移動
+    if (bSmoothFocus)  // 需要在 FreeCameraPawn.h 中添加這個變數
+    {
+        // 設定目標位置，在 Tick 中平滑移動
+        FocusTargetLocation = NewLocation;
+        FocusTargetDistance = Distance;
+        bIsFocusing = true;
+    }
+    else
+    {
+        // 立即移動
+        SetActorLocation(NewLocation);
+        SpringArmComponent->TargetArmLength = Distance;
+    }
 
-    Debug::Print(FString::Printf(TEXT("Camera focused on %s"),
+    Debug::Print(FString::Printf(TEXT("Camera focusing on %s"),
         *TargetActor->GetActorLabel()), FColor::Green);
 }
 
@@ -364,6 +398,14 @@ void AFreeCameraPawn::ClearFollowTarget()
 {
     FollowTarget = nullptr;
     Debug::Print(TEXT("Camera follow target cleared"), FColor::Yellow);
+}
+
+void AFreeCameraPawn::ResetCameraRotation()
+{
+    if (SpringArmComponent)
+    {
+        SpringArmComponent->SetRelativeRotation(FRotator(-45.0f, 0.0f, 0.0f));
+    }
 }
 
 FVector AFreeCameraPawn::GetCameraLocation() const

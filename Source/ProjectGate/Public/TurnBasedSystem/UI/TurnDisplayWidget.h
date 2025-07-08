@@ -39,7 +39,7 @@ public:
     void UpdateTurnOrder(const TArray<FString>& CharacterNames, int32 CurrentIndex);
 
     UFUNCTION(BlueprintCallable, Category = "Turn Display")
-    void UpdateCameraMode(bool bIsFocusMode);
+    void UpdateCameraMode(bool bIsInDynamicMode);
 
     UFUNCTION(BlueprintCallable, Category = "Turn Display")
     void UpdateActionPoints(int32 CurrentAP, int32 MaxAP);

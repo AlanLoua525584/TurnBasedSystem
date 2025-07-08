@@ -186,12 +186,12 @@ void UTurnDisplayWidget::UpdateTurnOrder(const TArray<FString>& CharacterNames, 
 	}
 }
 
-void UTurnDisplayWidget::UpdateCameraMode(bool bIsFocusMode)
+void UTurnDisplayWidget::UpdateCameraMode(bool bIsInDynamicMode)
 {
 	if (CameraModeText)
 	{
-		FString ModeText = bIsFocusMode ? TEXT("FOCUS MODE") : TEXT("FREE CAMERA");
-		FSlateColor ModeColor = bIsFocusMode ?
+		FString ModeText = bIsInDynamicMode ? TEXT("FOCUS MODE") : TEXT("FREE CAMERA");
+		FSlateColor ModeColor = bIsInDynamicMode ?
 			FSlateColor(FLinearColor::Yellow) :
 			FSlateColor(FLinearColor::Red);
 

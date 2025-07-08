@@ -1030,7 +1030,7 @@ void ATurnBasedCharacter::Tick(float DeltaTime)
 		// 檢查是否在動態模式
 		if (AGridPlayerController* GridPC = Cast<AGridPlayerController>(Controller))
 		{
-			if (GridPC->bIsInDynamicMode && GridPC->bIsFocusMode)
+			if (GridPC->bIsInDynamicMode && GridPC->bIsInDynamicMode)
 			{
 				// 動態模式下，相機跟隨控制器旋轉
 				FRotator ControlRotation = Controller->GetControlRotation();

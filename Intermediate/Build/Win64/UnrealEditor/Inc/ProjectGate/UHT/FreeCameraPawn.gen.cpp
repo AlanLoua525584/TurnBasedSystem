@@ -452,6 +452,20 @@ struct Z_Construct_UClass_AFreeCameraPawn_Statics
 		{ "ToolTip", "\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbdH\xef\xbf\xbd\xd8\xbc\xef\xbf\xbd" },
 #endif
 	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_bSmoothFocus_MetaData[] = {
+		{ "Category", "Camera|Focus" },
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "// \xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xc6\xb9\xef\xbf\xbdJ\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\n" },
+#endif
+		{ "ModuleRelativePath", "Public/FreeCameraPawn.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xc6\xb9\xef\xbf\xbdJ\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd" },
+#endif
+	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_FocusSpeed_MetaData[] = {
+		{ "Category", "Camera|Focus" },
+		{ "ModuleRelativePath", "Public/FreeCameraPawn.h" },
+	};
 #endif // WITH_METADATA
 	static const UECodeGen_Private::FObjectPropertyParams NewProp_CameraComponent;
 	static const UECodeGen_Private::FObjectPropertyParams NewProp_SpringArmComponent;
@@ -468,6 +482,9 @@ struct Z_Construct_UClass_AFreeCameraPawn_Statics
 	static const UECodeGen_Private::FFloatPropertyParams NewProp_EdgeScrollSpeed;
 	static const UECodeGen_Private::FFloatPropertyParams NewProp_MovementSmoothness;
 	static const UECodeGen_Private::FObjectPropertyParams NewProp_FollowTarget;
+	static void NewProp_bSmoothFocus_SetBit(void* Obj);
+	static const UECodeGen_Private::FBoolPropertyParams NewProp_bSmoothFocus;
+	static const UECodeGen_Private::FFloatPropertyParams NewProp_FocusSpeed;
 	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
 	static UObject* (*const DependentSingletons[])();
 	static constexpr FClassFunctionLinkInfo FuncInfo[] = {
@@ -502,6 +519,12 @@ const UECodeGen_Private::FFloatPropertyParams Z_Construct_UClass_AFreeCameraPawn
 const UECodeGen_Private::FFloatPropertyParams Z_Construct_UClass_AFreeCameraPawn_Statics::NewProp_EdgeScrollSpeed = { "EdgeScrollSpeed", nullptr, (EPropertyFlags)0x0020080000000005, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AFreeCameraPawn, EdgeScrollSpeed), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_EdgeScrollSpeed_MetaData), NewProp_EdgeScrollSpeed_MetaData) };
 const UECodeGen_Private::FFloatPropertyParams Z_Construct_UClass_AFreeCameraPawn_Statics::NewProp_MovementSmoothness = { "MovementSmoothness", nullptr, (EPropertyFlags)0x0040000000000001, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AFreeCameraPawn, MovementSmoothness), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_MovementSmoothness_MetaData), NewProp_MovementSmoothness_MetaData) };
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_AFreeCameraPawn_Statics::NewProp_FollowTarget = { "FollowTarget", nullptr, (EPropertyFlags)0x0040000000000000, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AFreeCameraPawn, FollowTarget), Z_Construct_UClass_AActor_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_FollowTarget_MetaData), NewProp_FollowTarget_MetaData) };
+void Z_Construct_UClass_AFreeCameraPawn_Statics::NewProp_bSmoothFocus_SetBit(void* Obj)
+{
+	((AFreeCameraPawn*)Obj)->bSmoothFocus = 1;
+}
+const UECodeGen_Private::FBoolPropertyParams Z_Construct_UClass_AFreeCameraPawn_Statics::NewProp_bSmoothFocus = { "bSmoothFocus", nullptr, (EPropertyFlags)0x0040000000000001, UECodeGen_Private::EPropertyGenFlags::Bool | UECodeGen_Private::EPropertyGenFlags::NativeBool, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, sizeof(bool), sizeof(AFreeCameraPawn), &Z_Construct_UClass_AFreeCameraPawn_Statics::NewProp_bSmoothFocus_SetBit, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_bSmoothFocus_MetaData), NewProp_bSmoothFocus_MetaData) };
+const UECodeGen_Private::FFloatPropertyParams Z_Construct_UClass_AFreeCameraPawn_Statics::NewProp_FocusSpeed = { "FocusSpeed", nullptr, (EPropertyFlags)0x0040000000000001, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AFreeCameraPawn, FocusSpeed), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_FocusSpeed_MetaData), NewProp_FocusSpeed_MetaData) };
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UClass_AFreeCameraPawn_Statics::PropPointers[] = {
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AFreeCameraPawn_Statics::NewProp_CameraComponent,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AFreeCameraPawn_Statics::NewProp_SpringArmComponent,
@@ -517,6 +540,8 @@ const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UClass_AFreeCame
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AFreeCameraPawn_Statics::NewProp_EdgeScrollSpeed,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AFreeCameraPawn_Statics::NewProp_MovementSmoothness,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AFreeCameraPawn_Statics::NewProp_FollowTarget,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AFreeCameraPawn_Statics::NewProp_bSmoothFocus,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AFreeCameraPawn_Statics::NewProp_FocusSpeed,
 };
 static_assert(UE_ARRAY_COUNT(Z_Construct_UClass_AFreeCameraPawn_Statics::PropPointers) < 2048);
 UObject* (*const Z_Construct_UClass_AFreeCameraPawn_Statics::DependentSingletons[])() = {
@@ -555,10 +580,10 @@ AFreeCameraPawn::~AFreeCameraPawn() {}
 struct Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_FreeCameraPawn_h__Script_ProjectGate_Statics
 {
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_AFreeCameraPawn, AFreeCameraPawn::StaticClass, TEXT("AFreeCameraPawn"), &Z_Registration_Info_UClass_AFreeCameraPawn, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(AFreeCameraPawn), 714858064U) },
+		{ Z_Construct_UClass_AFreeCameraPawn, AFreeCameraPawn::StaticClass, TEXT("AFreeCameraPawn"), &Z_Registration_Info_UClass_AFreeCameraPawn, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(AFreeCameraPawn), 40530181U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_FreeCameraPawn_h__Script_ProjectGate_4217829335(TEXT("/Script/ProjectGate"),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_FreeCameraPawn_h__Script_ProjectGate_872604971(TEXT("/Script/ProjectGate"),
 	Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_FreeCameraPawn_h__Script_ProjectGate_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_FreeCameraPawn_h__Script_ProjectGate_Statics::ClassInfo),
 	nullptr, 0,
 	nullptr, 0);
