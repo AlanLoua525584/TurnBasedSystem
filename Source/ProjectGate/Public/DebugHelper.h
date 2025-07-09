@@ -1,60 +1,41 @@
-#pragma once
+Ôªø#pragma once
 
+#include "CoreMinimal.h"
 #include "Engine/Engine.h"
 
 namespace Debug
 {
-	// ¿x¶s®C≠”Key≥Ã´·§@¶∏≈„•‹™∫Æ…∂°
-	static TMap<FString, float> DebugCooldownMap;
+    // ÂÜ∑ÂçªË®òÈåÑ
+    static TMap<FString, float> DebugCooldownMap;
 
-	/**
-	 * ¥∂≥qPrint
-	 */
-	static void Print(const FString& Msg, const FColor& Color = FColor::MakeRandomColor(), int32 InKey = -1)
-	{
-		if (GEngine)
-		{
-			GEngine->AddOnScreenDebugMessage(InKey, 5.f, Color, Msg);
-			UE_LOG(LogTemp, Warning, TEXT("%s"), *Msg);
-		}
-	}
+    /**
+     * ÊôÆÈÄöPrint
+     */
+    FORCEINLINE static void Print(const FString& Msg, const FColor& Color = FColor::MakeRandomColor(), int32 Key = -1, float Duration = 5.f)
+    {
+        if (GEngine)
+        {
+            GEngine->AddOnScreenDebugMessage(Key, Duration, Color, Msg);
+            UE_LOG(LogTemp, Log, TEXT("%s"), *Msg);
+        }
+    }
 
-	/**
-	 * ¶≥ßN´oÆ…∂°™∫Print
-	 *
-	 * @param Key             ®C≠”∞TÆß™∫∞ﬂ§@¶W∫Ÿ°]•Œ®”∞l¬‹ßN´o°^
-	 * @param Msg             ≈„•‹™∫§Â¶r
-	 * @param Color           √C¶‚
-	 * @param CooldownSeconds ∂°πj¶h§÷¨Ì§~≈„•‹§@¶∏
-	 * @param InKey           ´Ãπı§W™∫Debug Key°]-1™Ì•‹¶€∞ §¿∞t°^
-	 */
-	static void PrintCooldown(const FString& Key, const FString& Msg, const FColor& Color = FColor::MakeRandomColor(), float CooldownSeconds = 1.0f, int32 InKey = -1)
-	{
-		if (!GEngine) return;
+    /**
+     * ÂÜ∑ÂçªPrint
+     */
+    FORCEINLINE static void PrintCooldown(UWorld* World, const FString& Key, const FString& Msg, const FColor& Color = FColor::MakeRandomColor(), float CooldownSeconds = 1.0f, int32 KeyOnScreen = -1, float Duration = 5.f)
+    {
+        if (!World || !GEngine) return;
 
-		UWorld* World = GEngine->GetWorldContexts().Num() > 0 ? GEngine->GetWorldContexts()[0].World() : nullptr;
-		if (!World) return;
+        float CurrentTime = World->GetTimeSeconds();
 
-		float CurrentTime = World->GetTimeSeconds();
+        float* LastPrintTime = DebugCooldownMap.Find(Key);
+        if (!LastPrintTime || (CurrentTime - *LastPrintTime >= CooldownSeconds))
+        {
+            GEngine->AddOnScreenDebugMessage(KeyOnScreen, Duration, Color, Msg);
+            UE_LOG(LogTemp, Log, TEXT("%s"), *Msg);
 
-		// ß‰Key
-		float* LastPrintTime = DebugCooldownMap.Find(Key);
-		if (!LastPrintTime || CurrentTime - *LastPrintTime >= CooldownSeconds)
-		{
-			GEngine->AddOnScreenDebugMessage(InKey, 5.f, Color, Msg);
-			UE_LOG(LogTemp, Warning, TEXT("%s"), *Msg);
-
-			DebugCooldownMap.Add(Key, CurrentTime);
-		}
-	}
-
-	//¥∂≥q•Œ™kDebug::Print(TEXT("¥∂≥q∞TÆß"), FColor::Green);
-	/*
-	¶≥Cooldown•Œ™k
-	Debug::PrintCooldown(TEXT("GridPosition"),
-	FString::Printf(TEXT("%s grid position (%d, %d)"), *GetActorLabel(), CurrentGridPosition.X, CurrentGridPosition.Y),
-		FColor::Yellow,
-		1.0f); // 1¨ÌßÛ∑s§@¶∏
-
-	*/
+            DebugCooldownMap.Add(Key, CurrentTime);
+        }
+    }
 }

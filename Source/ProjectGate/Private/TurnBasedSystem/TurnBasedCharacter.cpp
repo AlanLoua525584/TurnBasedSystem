@@ -444,7 +444,7 @@ void ATurnBasedCharacter::UpdateGridPositionFromWorld()
 	/*Debug::Print(FString::Printf(TEXT("%s updated grid position to (%d, %d)"),
 		*GetActorLabel(), CurrentGridPosition.X, CurrentGridPosition.Y), FColor::Yellow);
 	*/
-	Debug::PrintCooldown(TEXT("GridPosition"),
+	Debug::PrintCooldown(GetWorld(), TEXT("GridPosition"),
 		FString::Printf(TEXT("%s grid position (%d, %d)"), *GetActorLabel(), CurrentGridPosition.X, CurrentGridPosition.Y),
 		FColor::Yellow,
 		1.0f); // 1秒更新一次

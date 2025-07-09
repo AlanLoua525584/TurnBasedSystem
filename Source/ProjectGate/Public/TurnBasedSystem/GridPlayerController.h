@@ -8,7 +8,7 @@
 #include "Math/Intpoint.h"
 #include "GridPlayerController.generated.h"
 
-//前向宣告
+// Forward declarations
 class AGridManager;
 class ASimpleTurnManager;
 class ATurnBasedCharacter;
@@ -19,10 +19,17 @@ class UCameraComponent;
 class USpringArmComponent;
 class UTurnOrderWidget;
 
+// Component forward declarations
+class UCameraControlComponent;
+class UCombatModeComponent;
+class UInputHandlerComponent;
+class UModeManagerComponent;
+class UUIManagerComponent;
+
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FUIOnMovementModeChanged, bool, bIsInDynamicMode);
 
 /**
- * 
+ * Grid-based PlayerController with modular component system
  */
 UCLASS()
 class PROJECTGATE_API AGridPlayerController : public APlayerController
@@ -31,33 +38,118 @@ class PROJECTGATE_API AGridPlayerController : public APlayerController
 
 public:
 	AGridPlayerController();
-	// 確保 Tick 啟用
-	virtual void PlayerTick(float DeltaTime) override;
 
-	// 相機公開函數
+	// Public interfaces - delegates to components
 	UFUNCTION(BlueprintCallable, Category = "Camera")
 	void FocusOnActor(AActor* TargetActor, float Distance = 800.0f);
 
+	UFUNCTION(BlueprintPure, Category = "Camera")
+	bool IsInDynamicMode() const;
+
+	// Attack mode functions
+	UFUNCTION(BlueprintPure, Category = "Combat")
+	bool IsInAttackMode() const;
+
+	// Turn system interfaces
+	// Camera handling for turn changes
+	UFUNCTION(BlueprintCallable, Category = "Camera")
+	void OnTurnChangedCamera(AActor* NewTurnCharacter, bool bIsPlayerControlled);
+
+	// Get current turn character
+	class ATurnBasedCharacter* GetCurrentTurnCharacter();
+	class ATurnBasedCharacter* GetControlledTurnCharacter() const;
+
+	// Handle mode change UI effects
+	UPROPERTY(BlueprintAssignable, Category = "Movement")
+	FUIOnMovementModeChanged UIOnMovementModeChanged;
+
+	// Legacy functions
 	UFUNCTION(BlueprintCallable, Category = "Camera")
 	void FocusOnCurrentTurnCharacter();
 
 	void SyncCameraStates();
 
-
-	// 相機靈敏度設置
+	// Camera mouse sensitivity settings
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera|ThirdPerson")
 	float MouseSensitivity = 1.0f;
 
 	void SafeSetViewTarget(AActor* NewViewTarget);
 
-	// 是否在動態模式下自動隱藏游標
+	// Auto-hide cursor in dynamic mode
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera|ThirdPerson")
 	bool bHideCursorInDynamicMode = false;
 
+	// ===== Enhanced Input System =====
+	// Input mapping contexts
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
+	UInputMappingContext* GridInputMappingContext;
 
+	// Input Action - Click
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
+	UInputAction* ClickAction;
 
-	// 攻擊公開函數
-	bool IsInAttackMode() const { return bIsInAttackMode; }
+	// Input Action - Show Range
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
+	UInputAction* ShowRangeAction;
+
+	// Input Action - Camera Rotation
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
+	UInputAction* RotateCameraAction;
+
+	// Input Action - Camera Zoom
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
+	UInputAction* ZoomCameraAction;
+
+	// Input Action - Cancel
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
+	UInputAction* CancelAction;
+
+	// Dynamic movement toggle
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
+	class UInputAction* DynamicModeAction;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
+	class UInputAction* MoveAction;
+
+	// Camera control Input Actions (if no existing ones)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
+	UInputAction* CameraMoveAction;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
+	UInputAction* CameraRotateAction;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
+	UInputAction* CameraZoomAction;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
+	class UInputAction* ToggleFocus;
+
+	// Enter attack state
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input|Actions")
+	class UInputAction* AttackModeAction;
+
+	// Input response functions
+	void OnClick();
+	void OnShowRange();
+	void OnCancel();
+	UFUNCTION()
+	void OnMove(const FInputActionValue& Value);
+
+	// Camera control functions
+	void OnCameraMove(const FInputActionValue& Value);
+	void OnCameraRotate(const FInputActionValue& Value);
+	void OnCameraZoom(const FInputActionValue& Value);
+	void OnShiftPressed() { bIsShiftPressed = true; }
+	void OnShiftReleased() { bIsShiftPressed = false; }
+	void OnRightMousePressed();
+	void OnRightMouseReleased();
+	void UpdateCameraMovement(float DeltaTime);
+
+	void OnToggleFocus(const FInputActionValue& Value);
+
+	void OnAttackMode(const FInputActionValue& Value);
+	UFUNCTION()
+	void OnDynamicMode();
 
 
 	UFUNCTION(BlueprintCallable, Category = "Camera")
@@ -76,150 +168,79 @@ public:
 	UPROPERTY(EditAnywhere, Category = "UI")
 	TSubclassOf<UTurnOrderWidget> TurnOrderWidgetClass;
 
-
-	// 當前控制的相機 Actor
+	// Currently controlled camera Actor
 	UPROPERTY()
 	class AActor* CameraPawn;
 
 	UFUNCTION(BlueprintCallable, Category = "Camera")
 	AActor* GetCameraPawn() const { return CameraPawn; }
 
-
-	//處理切換時的視覺效果
-
-	UPROPERTY(BlueprintAssignable, Category = "Movement")
-	FUIOnMovementModeChanged UIOnMovementModeChanged;
-
-	// 追蹤 FreeCameraPawn
+	// Track FreeCameraPawn
 	UPROPERTY()
 	class AFreeCameraPawn* FreeCameraPawn;
 
-	// 回合切換時的相機處理
-	UFUNCTION(BlueprintCallable, Category = "Camera")
-	void OnTurnChangedCamera(AActor* NewTurnCharacter, bool bIsPlayerControlled);
-
-	//獲取當前回合角色
-	class ATurnBasedCharacter* GetCurrentTurnCharacter();
-	class ATurnBasedCharacter* GetControlledTurnCharacter() const;
 	class ATurnBasedCharacter* GetPlayerControlledTurnCharacter();
 
+	// Getter for the GridManager
+	UFUNCTION(BlueprintCallable, Category = "Managers")
+	class AGridManager* GetGridManager() const { return GridManager; }
+
+	// Getter for the ModeManager
+	UFUNCTION(BlueprintCallable, Category = "Managers")
+	class UModeManagerComponent* GetModeManager() const { return ModeManager; }
+
+	// Add getter for InputHandler 
+	UFUNCTION(BlueprintPure, Category = "Components")
+	UInputHandlerComponent* GetInputHandler() const { return InputHandler; }
+
+	// Component accessors
+	UFUNCTION(BlueprintPure, Category = "Components")
+	UCameraControlComponent* GetCameraController() const { return CameraController; }
+
+	UFUNCTION(BlueprintPure, Category = "Components")
+	UCombatModeComponent* GetCombatModeManager() const { return CombatModeManager; }
+
+	// Add getter for UIManager
+	UFUNCTION(BlueprintPure, Category = "Components")
+	UUIManagerComponent* GetUIManager() const { return UIManager; }
 
 protected:
 	virtual void BeginPlay() override;
 	virtual void SetupInputComponent() override;
+	virtual void PlayerTick(float DeltaTime) override;
 
-	// ===== Enhanced Input System =====
-	/*輸入映射上下文*/
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
-	UInputMappingContext* GridInputMappingContext;
-
-	/** 輸入動作 - 點擊 */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
-	UInputAction* ClickAction;
-
-	/** 輸入動作 - 顯示範圍 */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
-	UInputAction* ShowRangeAction;
-
-	/** 輸入動作 - 相機旋轉 */
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
-	UInputAction* RotateCameraAction;
-
-	/** 輸入動作 - 相機縮放 */
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
-	UInputAction* ZoomCameraAction;
-
-	/** 輸入動作 - 取消 */
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
-	UInputAction* CancelAction;
-
-	//動態移動切換
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
-	class UInputAction* DynamicModeAction;
-
-
-	//進入攻擊狀態
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input|Actions")
-	class UInputAction* AttackModeAction;
-
-
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
-	class UInputAction* MoveAction;
-
-	// 相機控制 Input Actions（如果還沒有的話）
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
-	UInputAction* CameraMoveAction;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
-	UInputAction* CameraRotateAction;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
-	UInputAction* CameraZoomAction;
-
-	//Camera Focus
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
-	class UInputAction* ToggleFocus;
-
-
-
-
-	UFUNCTION()
-	void OnDynamicMode();
+	// Possess and UnPossess functions
+	virtual void OnPossess(APawn* InPawn) override;
+	virtual void OnUnPossess() override;
 
 	UFUNCTION()
 	void SwitchMovementMode();
 
-	UFUNCTION()
-	void OnMove(const FInputActionValue& Value);
-
-	// 獲取當前控制的 EnhancedMovementSystem
-
+	// Get currently controlled EnhancedMovementSystem
 	UFUNCTION(BlueprintCallable, Category = "Movement")
 	UEnhancedMovementSystem* GetControlledMovementSystem() const;
 
 	void ShowModeNotification(const FString& ModeName);
 
-	//==攻擊系統==
-
-	//動態攻擊Handle
-
+	// Attack system
+	// Dynamic attack handling
 	void HandleDynamicAttackInput();
 
-	//攻擊效果展示
+	// Attack effect display
 	void ShowAttackPreview(AActor* Target);
 
-	// ===核心組件===
-	UPROPERTY()
-	AGridManager* GridManager;
-
-	UPROPERTY()
-	ASimpleTurnManager* TurnManager;
-
-	//===輸入回調函數===
-
-	void OnClick();
-	void OnShowRange();
-	void OnCancel();
-
-	//===輔助函數===
-
-		// 獲取滑鼠下的網格位置
+	// Helper functions
+	// Get grid position under cursor
 	bool GetGridPositionUnderCursor(FIntPoint& OutGridPos);
 
-	
-
-	
-
-	// ===== 相機組件 =====
+	// ===== Camera Components =====
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Camera")
 	UCameraComponent* CameraComponent;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Camera")
 	USpringArmComponent* SpringArmComponent;
 
-	// 相機設置
+	// Camera settings
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera|Movement")
 	float CameraBaseMoveSpeed = 500.0f;
 
@@ -238,104 +259,119 @@ protected:
 
 
 
-
 private:
-	//相機控制變數
+	// Component System
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components", meta = (AllowPrivateAccess = "true"))
+	UCameraControlComponent* CameraController;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components", meta = (AllowPrivateAccess = "true"))
+	UCombatModeComponent* CombatModeManager;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components", meta = (AllowPrivateAccess = "true"))
+	UInputHandlerComponent* InputHandler;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components", meta = (AllowPrivateAccess = "true"))
+	UModeManagerComponent* ModeManager;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components", meta = (AllowPrivateAccess = "true"))
+	UUIManagerComponent* UIManager;
+
+	// System references
+	// Core components
+	UPROPERTY()
+	AGridManager* GridManager = nullptr;
+
+	UPROPERTY()
+	ASimpleTurnManager* TurnManager = nullptr;
+
+	// Initialization functions
+	void SetupCamera();
+	void InitializeComponents();
+	void FindManagers();
+
+	
+	// Component event responses
+	UFUNCTION()
+	void OnCameraModeChanged(bool bIsDynamicMode);
+
+	UFUNCTION()
+	void OnAttackModeChanged(bool bIsNewInAttackMode);
+
+	// Camera control variables
 	float CurrentCameraRotation = 0.0f;
 	float CurrentCameraZoom = 1000.0f;
 
-	// 相機切換冷卻
+	// Camera toggle cooldown
 	float LastToggleFocusTime = 0.0f;
-	const float ToggleFocusCooldown = 0.5f; // 0.5秒冷卻
+	const float ToggleFocusCooldown = 0.5f; // 0.5 second cooldown
 
-	// 相機狀態
+	// Camera state
 	bool bIsRightMousePressed = false;
 	bool bIsShiftPressed = false;
 	FVector CameraVelocity = FVector::ZeroVector;
 
-	// 保存相機狀態
+	// Save camera state
 	FRotator SavedCameraRotation;
 	FVector SavedCameraLocation;
 	float SavedArmLength = 800.0f;
 
-
-	// 初始化函數
-	void SetupCamera();
-
-	void FindManagers();
-
-	// 相機控制函數
-	void OnCameraMove(const FInputActionValue& Value);
-	void OnCameraRotate(const FInputActionValue& Value);
-	void OnCameraZoom(const FInputActionValue& Value);
-	void OnShiftPressed() { bIsShiftPressed = true; }
-	void OnShiftReleased() { bIsShiftPressed = false; }
-	void OnRightMousePressed();
-	void OnRightMouseReleased();
-	void UpdateCameraMovement(float DeltaTime);
-
-	//監聽所有角色的血量變化
+	// Subscribe to all character health changes
 	void SubscribeToHealthEvents();
 
-	// 攻擊模式相關
-	bool bAutoExitAttackMode = true;  // 攻擊後是否自動退出攻擊模式
+	// Attack mode related
+	bool bAutoExitAttackMode = true;  // Auto-exit attack mode after attack
 
-	// 攻擊模式狀態
+	// Attack mode state
 	bool bIsInAttackMode = false;
 
 	UFUNCTION()
 	void OnCombatExecuted(AActor* Attacker, AActor* Target, const FDamageResult& DamageResult);
 
-	// 血量變化處理
+	// Health change handling
 	UFUNCTION()
 	void OnAnyCharacterHealthChanged(AActor* AffectedCharacter, int32 CurrentHealth, int32 MaxHealth);
-
 
 	UFUNCTION()
 	void OnCharacterHealthChanged(int32 CurrentHealth, int32 MaxHealth);
 
-	// 當前高亮的目標
+	// Currently highlighted target
 	UPROPERTY()
 	AActor* CurrentHighlightedTarget;
 
-
-	// 戰鬥 UI
+	// Combat UI
 	UPROPERTY()
 	class UCombatDisplayWidget* CombatDisplayWidget;
 
-	// 攻擊模式滑鼠懸停檢測
+	// Attack mode cursor detection
 	void UpdateAttackTargetHighlight();
 
-	// 戰鬥結果回調
+	// Combat result response
 	UFUNCTION()
 	void OnCombatResultReceived(AActor* Attacker, AActor* Target, const FDamageResult& Result);
 
 	UPROPERTY()
-	AActor* LastHighlightedTarget = nullptr;  // 上次高亮的目標
+	AActor* LastHighlightedTarget = nullptr;  // Last highlighted target
 
-	// 攻擊相關函數
-	void OnAttackMode(const FInputActionValue& Value);
+	// Attack related functions
 	void ProcessAttackClick();
 	void ExitAttackMode();
 
-
-	// 添加切換攻擊模式函數
+	// Add toggle attack mode function
 	void ToggleAttackMode();
 
-	// 創建戰鬥 UI
+	// Create combat UI
 	void CreateCombatUI();
 
-
-	//==Possess用函數==
-	void OnPossess(APawn* InPawn);
-	void OnUnPossess();
-
-	//Getter
+	// Getters
 	bool GetCharacterUnderCursor(AActor*& OutCharacter);
 	bool GetCharacterUnderCursorWithFallback(AActor*& OutCharacter);
 
-
-
-	//ForTest
+	// For testing
 	void TestPortraitSystem();
+
+	void OnMovementModeChanged(bool bIsDynamicMode);
+
+
+public:
+	
 };

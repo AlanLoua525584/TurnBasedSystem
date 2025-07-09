@@ -14,7 +14,7 @@ void EmptyLinkFunctionForGeneratedCodeCombatStats() {}
 // ********** Begin Cross Module References ********************************************************
 ENGINE_API UClass* Z_Construct_UClass_AActor_NoRegister();
 PROJECTGATE_API UEnum* Z_Construct_UEnum_ProjectGate_ECombatAttackType();
-PROJECTGATE_API UEnum* Z_Construct_UEnum_ProjectGate_EDamageType();
+PROJECTGATE_API UEnum* Z_Construct_UEnum_ProjectGate_ECustomDamageType();
 PROJECTGATE_API UScriptStruct* Z_Construct_UScriptStruct_FAttackConfig();
 PROJECTGATE_API UScriptStruct* Z_Construct_UScriptStruct_FCombatStats();
 PROJECTGATE_API UScriptStruct* Z_Construct_UScriptStruct_FDamageResult();
@@ -88,21 +88,21 @@ UEnum* Z_Construct_UEnum_ProjectGate_ECombatAttackType()
 }
 // ********** End Enum ECombatAttackType ***********************************************************
 
-// ********** Begin Enum EDamageType ***************************************************************
-static FEnumRegistrationInfo Z_Registration_Info_UEnum_EDamageType;
-static UEnum* EDamageType_StaticEnum()
+// ********** Begin Enum ECustomDamageType *********************************************************
+static FEnumRegistrationInfo Z_Registration_Info_UEnum_ECustomDamageType;
+static UEnum* ECustomDamageType_StaticEnum()
 {
-	if (!Z_Registration_Info_UEnum_EDamageType.OuterSingleton)
+	if (!Z_Registration_Info_UEnum_ECustomDamageType.OuterSingleton)
 	{
-		Z_Registration_Info_UEnum_EDamageType.OuterSingleton = GetStaticEnum(Z_Construct_UEnum_ProjectGate_EDamageType, (UObject*)Z_Construct_UPackage__Script_ProjectGate(), TEXT("EDamageType"));
+		Z_Registration_Info_UEnum_ECustomDamageType.OuterSingleton = GetStaticEnum(Z_Construct_UEnum_ProjectGate_ECustomDamageType, (UObject*)Z_Construct_UPackage__Script_ProjectGate(), TEXT("ECustomDamageType"));
 	}
-	return Z_Registration_Info_UEnum_EDamageType.OuterSingleton;
+	return Z_Registration_Info_UEnum_ECustomDamageType.OuterSingleton;
 }
-template<> PROJECTGATE_API UEnum* StaticEnum<EDamageType>()
+template<> PROJECTGATE_API UEnum* StaticEnum<ECustomDamageType>()
 {
-	return EDamageType_StaticEnum();
+	return ECustomDamageType_StaticEnum();
 }
-struct Z_Construct_UEnum_ProjectGate_EDamageType_Statics
+struct Z_Construct_UEnum_ProjectGate_ECustomDamageType_Statics
 {
 #if WITH_METADATA
 	static constexpr UECodeGen_Private::FMetaDataPairParam Enum_MetaDataParams[] = {
@@ -111,48 +111,48 @@ struct Z_Construct_UEnum_ProjectGate_EDamageType_Statics
 		{ "Comment", "// \xef\xbf\xbd\xcb\xae`\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\n" },
 #endif
 		{ "Elemental.DisplayName", "Elemental" },
-		{ "Elemental.Name", "EDamageType::Elemental" },
+		{ "Elemental.Name", "ECustomDamageType::Elemental" },
 		{ "Magical.DisplayName", "Magical" },
-		{ "Magical.Name", "EDamageType::Magical" },
+		{ "Magical.Name", "ECustomDamageType::Magical" },
 		{ "ModuleRelativePath", "Public/CombatSystem/CombatStats.h" },
 		{ "Physical.DisplayName", "Physical" },
-		{ "Physical.Name", "EDamageType::Physical" },
+		{ "Physical.Name", "ECustomDamageType::Physical" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "\xef\xbf\xbd\xcb\xae`\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd" },
 #endif
 		{ "TrueDamage.DisplayName", "True Damage" },
-		{ "TrueDamage.Name", "EDamageType::TrueDamage" },
+		{ "TrueDamage.Name", "ECustomDamageType::TrueDamage" },
 	};
 #endif // WITH_METADATA
 	static constexpr UECodeGen_Private::FEnumeratorParam Enumerators[] = {
-		{ "EDamageType::Physical", (int64)EDamageType::Physical },
-		{ "EDamageType::Magical", (int64)EDamageType::Magical },
-		{ "EDamageType::TrueDamage", (int64)EDamageType::TrueDamage },
-		{ "EDamageType::Elemental", (int64)EDamageType::Elemental },
+		{ "ECustomDamageType::Physical", (int64)ECustomDamageType::Physical },
+		{ "ECustomDamageType::Magical", (int64)ECustomDamageType::Magical },
+		{ "ECustomDamageType::TrueDamage", (int64)ECustomDamageType::TrueDamage },
+		{ "ECustomDamageType::Elemental", (int64)ECustomDamageType::Elemental },
 	};
 	static const UECodeGen_Private::FEnumParams EnumParams;
 };
-const UECodeGen_Private::FEnumParams Z_Construct_UEnum_ProjectGate_EDamageType_Statics::EnumParams = {
+const UECodeGen_Private::FEnumParams Z_Construct_UEnum_ProjectGate_ECustomDamageType_Statics::EnumParams = {
 	(UObject*(*)())Z_Construct_UPackage__Script_ProjectGate,
 	nullptr,
-	"EDamageType",
-	"EDamageType",
-	Z_Construct_UEnum_ProjectGate_EDamageType_Statics::Enumerators,
+	"ECustomDamageType",
+	"ECustomDamageType",
+	Z_Construct_UEnum_ProjectGate_ECustomDamageType_Statics::Enumerators,
 	RF_Public|RF_Transient|RF_MarkAsNative,
-	UE_ARRAY_COUNT(Z_Construct_UEnum_ProjectGate_EDamageType_Statics::Enumerators),
+	UE_ARRAY_COUNT(Z_Construct_UEnum_ProjectGate_ECustomDamageType_Statics::Enumerators),
 	EEnumFlags::None,
 	(uint8)UEnum::ECppForm::EnumClass,
-	METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UEnum_ProjectGate_EDamageType_Statics::Enum_MetaDataParams), Z_Construct_UEnum_ProjectGate_EDamageType_Statics::Enum_MetaDataParams)
+	METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UEnum_ProjectGate_ECustomDamageType_Statics::Enum_MetaDataParams), Z_Construct_UEnum_ProjectGate_ECustomDamageType_Statics::Enum_MetaDataParams)
 };
-UEnum* Z_Construct_UEnum_ProjectGate_EDamageType()
+UEnum* Z_Construct_UEnum_ProjectGate_ECustomDamageType()
 {
-	if (!Z_Registration_Info_UEnum_EDamageType.InnerSingleton)
+	if (!Z_Registration_Info_UEnum_ECustomDamageType.InnerSingleton)
 	{
-		UECodeGen_Private::ConstructUEnum(Z_Registration_Info_UEnum_EDamageType.InnerSingleton, Z_Construct_UEnum_ProjectGate_EDamageType_Statics::EnumParams);
+		UECodeGen_Private::ConstructUEnum(Z_Registration_Info_UEnum_ECustomDamageType.InnerSingleton, Z_Construct_UEnum_ProjectGate_ECustomDamageType_Statics::EnumParams);
 	}
-	return Z_Registration_Info_UEnum_EDamageType.InnerSingleton;
+	return Z_Registration_Info_UEnum_ECustomDamageType.InnerSingleton;
 }
-// ********** End Enum EDamageType *****************************************************************
+// ********** End Enum ECustomDamageType ***********************************************************
 
 // ********** Begin ScriptStruct FTurnOrderData ****************************************************
 static FStructRegistrationInfo Z_Registration_Info_UScriptStruct_FTurnOrderData;
@@ -398,7 +398,7 @@ struct Z_Construct_UScriptStruct_FAttackConfig_Statics
 		{ "Category", "AttackConfig" },
 		{ "ModuleRelativePath", "Public/CombatSystem/CombatStats.h" },
 	};
-	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_DamageType_MetaData[] = {
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_CustomDamageType_MetaData[] = {
 		{ "Category", "AttackConfig" },
 		{ "ModuleRelativePath", "Public/CombatSystem/CombatStats.h" },
 	};
@@ -424,8 +424,8 @@ struct Z_Construct_UScriptStruct_FAttackConfig_Statics
 #endif // WITH_METADATA
 	static const UECodeGen_Private::FBytePropertyParams NewProp_AttackType_Underlying;
 	static const UECodeGen_Private::FEnumPropertyParams NewProp_AttackType;
-	static const UECodeGen_Private::FBytePropertyParams NewProp_DamageType_Underlying;
-	static const UECodeGen_Private::FEnumPropertyParams NewProp_DamageType;
+	static const UECodeGen_Private::FBytePropertyParams NewProp_CustomDamageType_Underlying;
+	static const UECodeGen_Private::FEnumPropertyParams NewProp_CustomDamageType;
 	static const UECodeGen_Private::FFloatPropertyParams NewProp_AttackRange;
 	static const UECodeGen_Private::FIntPropertyParams NewProp_ActionPointCost;
 	static void NewProp_bCanAttackMultipleTargets_SetBit(void* Obj);
@@ -440,8 +440,8 @@ struct Z_Construct_UScriptStruct_FAttackConfig_Statics
 };
 const UECodeGen_Private::FBytePropertyParams Z_Construct_UScriptStruct_FAttackConfig_Statics::NewProp_AttackType_Underlying = { "UnderlyingType", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Byte, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, 0, nullptr, METADATA_PARAMS(0, nullptr) };
 const UECodeGen_Private::FEnumPropertyParams Z_Construct_UScriptStruct_FAttackConfig_Statics::NewProp_AttackType = { "AttackType", nullptr, (EPropertyFlags)0x0010000000000005, UECodeGen_Private::EPropertyGenFlags::Enum, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(FAttackConfig, AttackType), Z_Construct_UEnum_ProjectGate_ECombatAttackType, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_AttackType_MetaData), NewProp_AttackType_MetaData) }; // 1601793885
-const UECodeGen_Private::FBytePropertyParams Z_Construct_UScriptStruct_FAttackConfig_Statics::NewProp_DamageType_Underlying = { "UnderlyingType", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Byte, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, 0, nullptr, METADATA_PARAMS(0, nullptr) };
-const UECodeGen_Private::FEnumPropertyParams Z_Construct_UScriptStruct_FAttackConfig_Statics::NewProp_DamageType = { "DamageType", nullptr, (EPropertyFlags)0x0010000000000005, UECodeGen_Private::EPropertyGenFlags::Enum, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(FAttackConfig, DamageType), Z_Construct_UEnum_ProjectGate_EDamageType, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_DamageType_MetaData), NewProp_DamageType_MetaData) }; // 845825549
+const UECodeGen_Private::FBytePropertyParams Z_Construct_UScriptStruct_FAttackConfig_Statics::NewProp_CustomDamageType_Underlying = { "UnderlyingType", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Byte, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, 0, nullptr, METADATA_PARAMS(0, nullptr) };
+const UECodeGen_Private::FEnumPropertyParams Z_Construct_UScriptStruct_FAttackConfig_Statics::NewProp_CustomDamageType = { "CustomDamageType", nullptr, (EPropertyFlags)0x0010000000000005, UECodeGen_Private::EPropertyGenFlags::Enum, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(FAttackConfig, CustomDamageType), Z_Construct_UEnum_ProjectGate_ECustomDamageType, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_CustomDamageType_MetaData), NewProp_CustomDamageType_MetaData) }; // 101092300
 const UECodeGen_Private::FFloatPropertyParams Z_Construct_UScriptStruct_FAttackConfig_Statics::NewProp_AttackRange = { "AttackRange", nullptr, (EPropertyFlags)0x0010000000000005, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(FAttackConfig, AttackRange), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_AttackRange_MetaData), NewProp_AttackRange_MetaData) };
 const UECodeGen_Private::FIntPropertyParams Z_Construct_UScriptStruct_FAttackConfig_Statics::NewProp_ActionPointCost = { "ActionPointCost", nullptr, (EPropertyFlags)0x0010000000000005, UECodeGen_Private::EPropertyGenFlags::Int, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(FAttackConfig, ActionPointCost), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_ActionPointCost_MetaData), NewProp_ActionPointCost_MetaData) };
 void Z_Construct_UScriptStruct_FAttackConfig_Statics::NewProp_bCanAttackMultipleTargets_SetBit(void* Obj)
@@ -453,8 +453,8 @@ const UECodeGen_Private::FFloatPropertyParams Z_Construct_UScriptStruct_FAttackC
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UScriptStruct_FAttackConfig_Statics::PropPointers[] = {
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UScriptStruct_FAttackConfig_Statics::NewProp_AttackType_Underlying,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UScriptStruct_FAttackConfig_Statics::NewProp_AttackType,
-	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UScriptStruct_FAttackConfig_Statics::NewProp_DamageType_Underlying,
-	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UScriptStruct_FAttackConfig_Statics::NewProp_DamageType,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UScriptStruct_FAttackConfig_Statics::NewProp_CustomDamageType_Underlying,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UScriptStruct_FAttackConfig_Statics::NewProp_CustomDamageType,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UScriptStruct_FAttackConfig_Statics::NewProp_AttackRange,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UScriptStruct_FAttackConfig_Statics::NewProp_ActionPointCost,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UScriptStruct_FAttackConfig_Statics::NewProp_bCanAttackMultipleTargets,
@@ -519,7 +519,7 @@ struct Z_Construct_UScriptStruct_FDamageResult_Statics
 		{ "Category", "DamageResult" },
 		{ "ModuleRelativePath", "Public/CombatSystem/CombatStats.h" },
 	};
-	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_DamageType_MetaData[] = {
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_CustomDamageType_MetaData[] = {
 		{ "Category", "DamageResult" },
 		{ "ModuleRelativePath", "Public/CombatSystem/CombatStats.h" },
 	};
@@ -537,8 +537,8 @@ struct Z_Construct_UScriptStruct_FDamageResult_Statics
 	static const UECodeGen_Private::FBoolPropertyParams NewProp_bIsCritical;
 	static void NewProp_bIsBlocked_SetBit(void* Obj);
 	static const UECodeGen_Private::FBoolPropertyParams NewProp_bIsBlocked;
-	static const UECodeGen_Private::FBytePropertyParams NewProp_DamageType_Underlying;
-	static const UECodeGen_Private::FEnumPropertyParams NewProp_DamageType;
+	static const UECodeGen_Private::FBytePropertyParams NewProp_CustomDamageType_Underlying;
+	static const UECodeGen_Private::FEnumPropertyParams NewProp_CustomDamageType;
 	static const UECodeGen_Private::FObjectPropertyParams NewProp_Attacker;
 	static const UECodeGen_Private::FObjectPropertyParams NewProp_Target;
 	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
@@ -559,16 +559,16 @@ void Z_Construct_UScriptStruct_FDamageResult_Statics::NewProp_bIsBlocked_SetBit(
 	((FDamageResult*)Obj)->bIsBlocked = 1;
 }
 const UECodeGen_Private::FBoolPropertyParams Z_Construct_UScriptStruct_FDamageResult_Statics::NewProp_bIsBlocked = { "bIsBlocked", nullptr, (EPropertyFlags)0x0010000000000014, UECodeGen_Private::EPropertyGenFlags::Bool | UECodeGen_Private::EPropertyGenFlags::NativeBool, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, sizeof(bool), sizeof(FDamageResult), &Z_Construct_UScriptStruct_FDamageResult_Statics::NewProp_bIsBlocked_SetBit, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_bIsBlocked_MetaData), NewProp_bIsBlocked_MetaData) };
-const UECodeGen_Private::FBytePropertyParams Z_Construct_UScriptStruct_FDamageResult_Statics::NewProp_DamageType_Underlying = { "UnderlyingType", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Byte, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, 0, nullptr, METADATA_PARAMS(0, nullptr) };
-const UECodeGen_Private::FEnumPropertyParams Z_Construct_UScriptStruct_FDamageResult_Statics::NewProp_DamageType = { "DamageType", nullptr, (EPropertyFlags)0x0010000000000014, UECodeGen_Private::EPropertyGenFlags::Enum, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(FDamageResult, DamageType), Z_Construct_UEnum_ProjectGate_EDamageType, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_DamageType_MetaData), NewProp_DamageType_MetaData) }; // 845825549
+const UECodeGen_Private::FBytePropertyParams Z_Construct_UScriptStruct_FDamageResult_Statics::NewProp_CustomDamageType_Underlying = { "UnderlyingType", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Byte, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, 0, nullptr, METADATA_PARAMS(0, nullptr) };
+const UECodeGen_Private::FEnumPropertyParams Z_Construct_UScriptStruct_FDamageResult_Statics::NewProp_CustomDamageType = { "CustomDamageType", nullptr, (EPropertyFlags)0x0010000000000014, UECodeGen_Private::EPropertyGenFlags::Enum, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(FDamageResult, CustomDamageType), Z_Construct_UEnum_ProjectGate_ECustomDamageType, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_CustomDamageType_MetaData), NewProp_CustomDamageType_MetaData) }; // 101092300
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UScriptStruct_FDamageResult_Statics::NewProp_Attacker = { "Attacker", nullptr, (EPropertyFlags)0x0010000000000014, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(FDamageResult, Attacker), Z_Construct_UClass_AActor_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_Attacker_MetaData), NewProp_Attacker_MetaData) };
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UScriptStruct_FDamageResult_Statics::NewProp_Target = { "Target", nullptr, (EPropertyFlags)0x0010000000000014, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(FDamageResult, Target), Z_Construct_UClass_AActor_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_Target_MetaData), NewProp_Target_MetaData) };
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UScriptStruct_FDamageResult_Statics::PropPointers[] = {
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UScriptStruct_FDamageResult_Statics::NewProp_FinalDamage,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UScriptStruct_FDamageResult_Statics::NewProp_bIsCritical,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UScriptStruct_FDamageResult_Statics::NewProp_bIsBlocked,
-	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UScriptStruct_FDamageResult_Statics::NewProp_DamageType_Underlying,
-	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UScriptStruct_FDamageResult_Statics::NewProp_DamageType,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UScriptStruct_FDamageResult_Statics::NewProp_CustomDamageType_Underlying,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UScriptStruct_FDamageResult_Statics::NewProp_CustomDamageType,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UScriptStruct_FDamageResult_Statics::NewProp_Attacker,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UScriptStruct_FDamageResult_Statics::NewProp_Target,
 };
@@ -601,16 +601,16 @@ struct Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_P
 {
 	static constexpr FEnumRegisterCompiledInInfo EnumInfo[] = {
 		{ ECombatAttackType_StaticEnum, TEXT("ECombatAttackType"), &Z_Registration_Info_UEnum_ECombatAttackType, CONSTRUCT_RELOAD_VERSION_INFO(FEnumReloadVersionInfo, 1601793885U) },
-		{ EDamageType_StaticEnum, TEXT("EDamageType"), &Z_Registration_Info_UEnum_EDamageType, CONSTRUCT_RELOAD_VERSION_INFO(FEnumReloadVersionInfo, 845825549U) },
+		{ ECustomDamageType_StaticEnum, TEXT("ECustomDamageType"), &Z_Registration_Info_UEnum_ECustomDamageType, CONSTRUCT_RELOAD_VERSION_INFO(FEnumReloadVersionInfo, 101092300U) },
 	};
 	static constexpr FStructRegisterCompiledInInfo ScriptStructInfo[] = {
 		{ FTurnOrderData::StaticStruct, Z_Construct_UScriptStruct_FTurnOrderData_Statics::NewStructOps, TEXT("TurnOrderData"), &Z_Registration_Info_UScriptStruct_FTurnOrderData, CONSTRUCT_RELOAD_VERSION_INFO(FStructReloadVersionInfo, sizeof(FTurnOrderData), 140942724U) },
 		{ FCombatStats::StaticStruct, Z_Construct_UScriptStruct_FCombatStats_Statics::NewStructOps, TEXT("CombatStats"), &Z_Registration_Info_UScriptStruct_FCombatStats, CONSTRUCT_RELOAD_VERSION_INFO(FStructReloadVersionInfo, sizeof(FCombatStats), 454819104U) },
-		{ FAttackConfig::StaticStruct, Z_Construct_UScriptStruct_FAttackConfig_Statics::NewStructOps, TEXT("AttackConfig"), &Z_Registration_Info_UScriptStruct_FAttackConfig, CONSTRUCT_RELOAD_VERSION_INFO(FStructReloadVersionInfo, sizeof(FAttackConfig), 2478238228U) },
-		{ FDamageResult::StaticStruct, Z_Construct_UScriptStruct_FDamageResult_Statics::NewStructOps, TEXT("DamageResult"), &Z_Registration_Info_UScriptStruct_FDamageResult, CONSTRUCT_RELOAD_VERSION_INFO(FStructReloadVersionInfo, sizeof(FDamageResult), 2440303719U) },
+		{ FAttackConfig::StaticStruct, Z_Construct_UScriptStruct_FAttackConfig_Statics::NewStructOps, TEXT("AttackConfig"), &Z_Registration_Info_UScriptStruct_FAttackConfig, CONSTRUCT_RELOAD_VERSION_INFO(FStructReloadVersionInfo, sizeof(FAttackConfig), 346436840U) },
+		{ FDamageResult::StaticStruct, Z_Construct_UScriptStruct_FDamageResult_Statics::NewStructOps, TEXT("DamageResult"), &Z_Registration_Info_UScriptStruct_FDamageResult, CONSTRUCT_RELOAD_VERSION_INFO(FStructReloadVersionInfo, sizeof(FDamageResult), 1306040926U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_CombatSystem_CombatStats_h__Script_ProjectGate_1132433803(TEXT("/Script/ProjectGate"),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_CombatSystem_CombatStats_h__Script_ProjectGate_1673973209(TEXT("/Script/ProjectGate"),
 	nullptr, 0,
 	Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_CombatSystem_CombatStats_h__Script_ProjectGate_Statics::ScriptStructInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_CombatSystem_CombatStats_h__Script_ProjectGate_Statics::ScriptStructInfo),
 	Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_CombatSystem_CombatStats_h__Script_ProjectGate_Statics::EnumInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_CombatSystem_CombatStats_h__Script_ProjectGate_Statics::EnumInfo));

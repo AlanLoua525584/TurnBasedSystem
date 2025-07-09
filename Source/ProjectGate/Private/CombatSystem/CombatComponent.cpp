@@ -46,7 +46,7 @@ void UCombatComponent::InitializeCombat(AGridManager* InGridManager)
 
 bool UCombatComponent::CanAttack(AActor* Target) const
 {
-    Debug::PrintCooldown(TEXT("Attack"),(TEXT("=== CanAttack Check ===")),
+    Debug::PrintCooldown(GetWorld(), TEXT("Attack"),(TEXT("=== CanAttack Check ===")),
         FColor::Yellow,
         1.0f); // 1秒更新一次
 
@@ -183,7 +183,7 @@ FDamageResult UCombatComponent::CalculateDamage(AActor* Target)
     FDamageResult Result;
     Result.Attacker = GetOwner();
     Result.Target = Target;
-    Result.DamageType = AttackConfig.DamageType;
+    Result.CustomDamageType = AttackConfig.CustomDamageType;
 
     // 基礎傷害
     int32 BaseDamage = Stats.AttackPower;
@@ -192,11 +192,11 @@ FDamageResult UCombatComponent::CalculateDamage(AActor* Target)
     int32 TargetDefense = 0;
     if (UCombatComponent* TargetCombat = Target->FindComponentByClass<UCombatComponent>())
     {
-        if (AttackConfig.DamageType == EDamageType::Physical)
+        if (AttackConfig.CustomDamageType == ECustomDamageType::Physical)
         {
             TargetDefense = TargetCombat->Stats.Defense;
         }
-        else if (AttackConfig.DamageType == EDamageType::Magical)
+        else if (AttackConfig.CustomDamageType == ECustomDamageType::Magical)
         {
             TargetDefense = TargetCombat->Stats.MagicResist;
         }

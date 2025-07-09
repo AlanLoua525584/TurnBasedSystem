@@ -67,16 +67,16 @@ template<> struct TIsUEnumClass<ECombatAttackType> { enum { Value = true }; };
 template<> PROJECTGATE_API UEnum* StaticEnum<ECombatAttackType>();
 // ********** End Enum ECombatAttackType ***********************************************************
 
-// ********** Begin Enum EDamageType ***************************************************************
-#define FOREACH_ENUM_EDAMAGETYPE(op) \
-	op(EDamageType::Physical) \
-	op(EDamageType::Magical) \
-	op(EDamageType::TrueDamage) \
-	op(EDamageType::Elemental) 
+// ********** Begin Enum ECustomDamageType *********************************************************
+#define FOREACH_ENUM_ECUSTOMDAMAGETYPE(op) \
+	op(ECustomDamageType::Physical) \
+	op(ECustomDamageType::Magical) \
+	op(ECustomDamageType::TrueDamage) \
+	op(ECustomDamageType::Elemental) 
 
-enum class EDamageType : uint8;
-template<> struct TIsUEnumClass<EDamageType> { enum { Value = true }; };
-template<> PROJECTGATE_API UEnum* StaticEnum<EDamageType>();
-// ********** End Enum EDamageType *****************************************************************
+enum class ECustomDamageType : uint8;
+template<> struct TIsUEnumClass<ECustomDamageType> { enum { Value = true }; };
+template<> PROJECTGATE_API UEnum* StaticEnum<ECustomDamageType>();
+// ********** End Enum ECustomDamageType ***********************************************************
 
 PRAGMA_ENABLE_DEPRECATION_WARNINGS

@@ -17,19 +17,15 @@ public class ProjectGate : ModuleRules
 			"AIModule",
 			"StateTreeModule",
 			"GameplayStateTreeModule",
-			"UMG"
+			"UMG",
+			"Slate",
+            "SlateCore"
 		});
 
 		PrivateDependencyModuleNames.AddRange(new string[] { });
 
 		PublicIncludePaths.AddRange(new string[] {
-			"ProjectGate",
-			"ProjectGate/Variant_Platforming",
-			"ProjectGate/Variant_Combat",
-			"ProjectGate/Variant_Combat/AI",
-			"ProjectGate/Variant_SideScrolling",
-			"ProjectGate/Variant_SideScrolling/Gameplay",
-			"ProjectGate/Variant_SideScrolling/AI"
+			"ProjectGate"
 		});
 
 		// Uncomment if you are using Slate UI

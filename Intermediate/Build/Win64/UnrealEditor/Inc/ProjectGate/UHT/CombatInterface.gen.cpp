@@ -379,7 +379,7 @@ struct Z_Construct_UFunction_UCombatInterface_OnDamageReceived_Statics
 	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
 	static const UECodeGen_Private::FFunctionParams FuncParams;
 };
-const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_UCombatInterface_OnDamageReceived_Statics::NewProp_DamageResult = { "DamageResult", nullptr, (EPropertyFlags)0x0010000008000182, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(CombatInterface_eventOnDamageReceived_Parms, DamageResult), Z_Construct_UScriptStruct_FDamageResult, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_DamageResult_MetaData), NewProp_DamageResult_MetaData) }; // 2440303719
+const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_UCombatInterface_OnDamageReceived_Statics::NewProp_DamageResult = { "DamageResult", nullptr, (EPropertyFlags)0x0010000008000182, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(CombatInterface_eventOnDamageReceived_Parms, DamageResult), Z_Construct_UScriptStruct_FDamageResult, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_DamageResult_MetaData), NewProp_DamageResult_MetaData) }; // 1306040926
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_UCombatInterface_OnDamageReceived_Statics::PropPointers[] = {
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UCombatInterface_OnDamageReceived_Statics::NewProp_DamageResult,
 };
@@ -527,7 +527,7 @@ struct Z_Construct_UClass_UCombatInterface_Statics
 		{ &Z_Construct_UFunction_UCombatInterface_CanBeAttacked, "CanBeAttacked" }, // 2545476030
 		{ &Z_Construct_UFunction_UCombatInterface_GetAttackSourceLocation, "GetAttackSourceLocation" }, // 3520281109
 		{ &Z_Construct_UFunction_UCombatInterface_GetCombatComponent, "GetCombatComponent" }, // 2204952735
-		{ &Z_Construct_UFunction_UCombatInterface_OnDamageReceived, "OnDamageReceived" }, // 2912318794
+		{ &Z_Construct_UFunction_UCombatInterface_OnDamageReceived, "OnDamageReceived" }, // 1052201925
 		{ &Z_Construct_UFunction_UCombatInterface_OnDeath, "OnDeath" }, // 989517516
 	};
 	static_assert(UE_ARRAY_COUNT(FuncInfo) < 2048);
@@ -572,10 +572,10 @@ DEFINE_VTABLE_PTR_HELPER_CTOR(UCombatInterface);
 struct Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_CombatSystem_CombatInterface_h__Script_ProjectGate_Statics
 {
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_UCombatInterface, UCombatInterface::StaticClass, TEXT("UCombatInterface"), &Z_Registration_Info_UClass_UCombatInterface, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UCombatInterface), 743786838U) },
+		{ Z_Construct_UClass_UCombatInterface, UCombatInterface::StaticClass, TEXT("UCombatInterface"), &Z_Registration_Info_UClass_UCombatInterface, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UCombatInterface), 2990235492U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_CombatSystem_CombatInterface_h__Script_ProjectGate_4286454765(TEXT("/Script/ProjectGate"),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_CombatSystem_CombatInterface_h__Script_ProjectGate_4117535522(TEXT("/Script/ProjectGate"),
 	Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_CombatSystem_CombatInterface_h__Script_ProjectGate_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_CombatSystem_CombatInterface_h__Script_ProjectGate_Statics::ClassInfo),
 	nullptr, 0,
 	nullptr, 0);

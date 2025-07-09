@@ -166,7 +166,7 @@ struct Z_Construct_UFunction_UCombatDisplayWidget_ShowCombatResult_Statics
 	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
 	static const UECodeGen_Private::FFunctionParams FuncParams;
 };
-const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_UCombatDisplayWidget_ShowCombatResult_Statics::NewProp_DamageResult = { "DamageResult", nullptr, (EPropertyFlags)0x0010000008000182, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(CombatDisplayWidget_eventShowCombatResult_Parms, DamageResult), Z_Construct_UScriptStruct_FDamageResult, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_DamageResult_MetaData), NewProp_DamageResult_MetaData) }; // 2440303719
+const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_UCombatDisplayWidget_ShowCombatResult_Statics::NewProp_DamageResult = { "DamageResult", nullptr, (EPropertyFlags)0x0010000008000182, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(CombatDisplayWidget_eventShowCombatResult_Parms, DamageResult), Z_Construct_UScriptStruct_FDamageResult, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_DamageResult_MetaData), NewProp_DamageResult_MetaData) }; // 1306040926
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_UCombatDisplayWidget_ShowCombatResult_Statics::PropPointers[] = {
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UCombatDisplayWidget_ShowCombatResult_Statics::NewProp_DamageResult,
 };
@@ -460,7 +460,7 @@ struct Z_Construct_UClass_UCombatDisplayWidget_Statics
 		{ &Z_Construct_UFunction_UCombatDisplayWidget_HideDamagePreview, "HideDamagePreview" }, // 2834788979
 		{ &Z_Construct_UFunction_UCombatDisplayWidget_HideTargetInfo, "HideTargetInfo" }, // 3572474567
 		{ &Z_Construct_UFunction_UCombatDisplayWidget_SetAttackModeActive, "SetAttackModeActive" }, // 3485078772
-		{ &Z_Construct_UFunction_UCombatDisplayWidget_ShowCombatResult, "ShowCombatResult" }, // 442128051
+		{ &Z_Construct_UFunction_UCombatDisplayWidget_ShowCombatResult, "ShowCombatResult" }, // 3822314299
 		{ &Z_Construct_UFunction_UCombatDisplayWidget_ShowDamagePreview, "ShowDamagePreview" }, // 3901810016
 		{ &Z_Construct_UFunction_UCombatDisplayWidget_ShowTargetInfo, "ShowTargetInfo" }, // 303535326
 	};
@@ -532,10 +532,10 @@ UCombatDisplayWidget::~UCombatDisplayWidget() {}
 struct Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_CombatSystem_CombatDisplayWidget_h__Script_ProjectGate_Statics
 {
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_UCombatDisplayWidget, UCombatDisplayWidget::StaticClass, TEXT("UCombatDisplayWidget"), &Z_Registration_Info_UClass_UCombatDisplayWidget, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UCombatDisplayWidget), 4054897577U) },
+		{ Z_Construct_UClass_UCombatDisplayWidget, UCombatDisplayWidget::StaticClass, TEXT("UCombatDisplayWidget"), &Z_Registration_Info_UClass_UCombatDisplayWidget, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UCombatDisplayWidget), 2107940819U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_CombatSystem_CombatDisplayWidget_h__Script_ProjectGate_935295580(TEXT("/Script/ProjectGate"),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_CombatSystem_CombatDisplayWidget_h__Script_ProjectGate_3729021912(TEXT("/Script/ProjectGate"),
 	Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_CombatSystem_CombatDisplayWidget_h__Script_ProjectGate_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_CombatSystem_CombatDisplayWidget_h__Script_ProjectGate_Statics::ClassInfo),
 	nullptr, 0,
 	nullptr, 0);

@@ -1,7 +1,6 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "ProjectGateGameMode.h"
-#include "ProjectGateCharacter.h"
 #include "TurnBasedSystem/SimpleTurnManager.h"
 #include "TurnBasedSystem/GridPlayerController.h"
 #include "TurnBasedSystem/EnhancedMovementSystem.h"
@@ -30,6 +29,7 @@ void AProjectGateGameMode::BeginPlay()
     Super::BeginPlay();
 
     Debug::Print(TEXT("=== GameMode BeginPlay ==="), FColor::Cyan);
+
 
 
     // Spawn Turn Manager

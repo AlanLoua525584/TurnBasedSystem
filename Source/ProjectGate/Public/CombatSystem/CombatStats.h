@@ -18,8 +18,8 @@ enum class ECombatAttackType : uint8
 };
 
 // ¶Ë®`Ãþ«¬
-UENUM(BlueprintType)
-enum class EDamageType : uint8
+UENUM(BlueprintType )
+enum class ECustomDamageType : uint8
 {
     Physical    UMETA(DisplayName = "Physical"),
     Magical     UMETA(DisplayName = "Magical"),
@@ -106,7 +106,7 @@ struct PROJECTGATE_API FAttackConfig
     ECombatAttackType AttackType = ECombatAttackType::Ranged;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    EDamageType DamageType = EDamageType::Physical;
+    ECustomDamageType CustomDamageType = ECustomDamageType::Physical;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (ClampMin = "0"))
     float AttackRange = 500.0f;
@@ -139,7 +139,7 @@ struct PROJECTGATE_API FDamageResult
     bool bIsBlocked = false;
 
     UPROPERTY(BlueprintReadOnly)
-    EDamageType DamageType = EDamageType::Physical;
+    ECustomDamageType CustomDamageType = ECustomDamageType::Physical;
 
     UPROPERTY(BlueprintReadOnly)
     AActor* Attacker = nullptr;

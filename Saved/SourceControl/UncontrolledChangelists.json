@@ -5,22 +5,7 @@
 			"guid": "00000000000000000000000000000000",
 			"description": "Default Uncontrolled Changelist",
 			"files": [
-				"D:/UnrealProjects/ProjectGate/Content/TurnBasedSystem/UI/WBP_CharacterHealthBar.uasset",
-				"D:/UnrealProjects/ProjectGate/Content/TurnBasedSystem/BluePrints/Character/BP_PlayerCharacter.uasset",
-				"D:/UnrealProjects/ProjectGate/Content/TurnBasedSystem/BluePrints/Character/BP_EenemyCharacter.uasset",
-				"D:/UnrealProjects/ProjectGate/Content/TurnBasedSystem/Character/Animation/AM_Death.uasset",
-				"D:/UnrealProjects/ProjectGate/Content/Input/Actions/TurnBasedSystem/CameraInputs/IA_CameraRotate.uasset",
-				"D:/UnrealProjects/ProjectGate/Content/StarterContent/Architecture/Floor_400x400.uasset",
-				"D:/UnrealProjects/ProjectGate/Content/UI/Portraits/Default/T_Default_Portrait.uasset",
-				"D:/UnrealProjects/ProjectGate/Content/UI/Portraits/Characters/GridTester/T_GridTester_Full.uasset",
-				"D:/UnrealProjects/ProjectGate/Content/UI/Portraits/Characters/GridTester/T_GridTester_UI.uasset",
-				"D:/UnrealProjects/ProjectGate/Content/UI/Portraits/Characters/GridTester/T_GridTester_Battle.uasset",
-				"D:/UnrealProjects/ProjectGate/Content/UI/Portraits/Characters/GridTester/T_GridTester_Dialogue.uasset",
-				"D:/UnrealProjects/ProjectGate/Content/Map/TurnBasedTest.umap",
-				"D:/UnrealProjects/ProjectGate/Content/TurnBasedSystem/UI/WBP_TurnOrderEntry.uasset",
-				"D:/UnrealProjects/ProjectGate/Content/TurnBasedSystem/UI/WBP_TurnOrder.uasset",
-				"D:/UnrealProjects/ProjectGate/Content/UI/Portraits/Characters/GridTester/T_Default_Portrait.uasset",
-				"D:/UnrealProjects/ProjectGate/Content/TurnBasedSystem/UI/WBP_HealthBar.uasset"
+				"D:/UnrealProjects/ProjectGate/Content/TurnBasedSystem/BluePrints/BP_GridPlayerController.uasset"
 			]
 		}
 	]

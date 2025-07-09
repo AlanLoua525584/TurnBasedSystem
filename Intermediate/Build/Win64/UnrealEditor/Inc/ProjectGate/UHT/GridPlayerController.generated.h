@@ -17,38 +17,54 @@
 PRAGMA_DISABLE_DEPRECATION_WARNINGS
 
 class AActor;
+class AGridManager;
+class UCameraControlComponent;
+class UCombatModeComponent;
 class UEnhancedMovementSystem;
+class UInputHandlerComponent;
+class UModeManagerComponent;
+class UUIManagerComponent;
 struct FDamageResult;
 struct FInputActionValue;
 
 // ********** Begin Delegate FUIOnMovementModeChanged **********************************************
-#define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_GridPlayerController_h_22_DELEGATE \
+#define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_GridPlayerController_h_29_DELEGATE \
 PROJECTGATE_API void FUIOnMovementModeChanged_DelegateWrapper(const FMulticastScriptDelegate& UIOnMovementModeChanged, bool bIsInDynamicMode);
 
 
 // ********** End Delegate FUIOnMovementModeChanged ************************************************
 
 // ********** Begin Class AGridPlayerController ****************************************************
-#define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_GridPlayerController_h_30_RPC_WRAPPERS_NO_PURE_DECLS \
+#define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_GridPlayerController_h_37_RPC_WRAPPERS_NO_PURE_DECLS \
 	DECLARE_FUNCTION(execOnCombatResultReceived); \
 	DECLARE_FUNCTION(execOnCharacterHealthChanged); \
 	DECLARE_FUNCTION(execOnAnyCharacterHealthChanged); \
 	DECLARE_FUNCTION(execOnCombatExecuted); \
+	DECLARE_FUNCTION(execOnAttackModeChanged); \
+	DECLARE_FUNCTION(execOnCameraModeChanged); \
 	DECLARE_FUNCTION(execGetControlledMovementSystem); \
-	DECLARE_FUNCTION(execOnMove); \
 	DECLARE_FUNCTION(execSwitchMovementMode); \
-	DECLARE_FUNCTION(execOnDynamicMode); \
-	DECLARE_FUNCTION(execOnTurnChangedCamera); \
+	DECLARE_FUNCTION(execGetUIManager); \
+	DECLARE_FUNCTION(execGetCombatModeManager); \
+	DECLARE_FUNCTION(execGetCameraController); \
+	DECLARE_FUNCTION(execGetInputHandler); \
+	DECLARE_FUNCTION(execGetModeManager); \
+	DECLARE_FUNCTION(execGetGridManager); \
 	DECLARE_FUNCTION(execGetCameraPawn); \
 	DECLARE_FUNCTION(execGetCameraRotation); \
 	DECLARE_FUNCTION(execGetCameraLocation); \
+	DECLARE_FUNCTION(execOnDynamicMode); \
+	DECLARE_FUNCTION(execOnMove); \
 	DECLARE_FUNCTION(execFocusOnCurrentTurnCharacter); \
+	DECLARE_FUNCTION(execOnTurnChangedCamera); \
+	DECLARE_FUNCTION(execIsInAttackMode); \
+	DECLARE_FUNCTION(execIsInDynamicMode); \
 	DECLARE_FUNCTION(execFocusOnActor);
 
 
 PROJECTGATE_API UClass* Z_Construct_UClass_AGridPlayerController_NoRegister();
 
-#define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_GridPlayerController_h_30_INCLASS_NO_PURE_DECLS \
+#define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_GridPlayerController_h_37_INCLASS_NO_PURE_DECLS \
 private: \
 	static void StaticRegisterNativesAGridPlayerController(); \
 	friend struct Z_Construct_UClass_AGridPlayerController_Statics; \
@@ -59,7 +75,7 @@ public: \
 	DECLARE_SERIALIZER(AGridPlayerController)
 
 
-#define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_GridPlayerController_h_30_ENHANCED_CONSTRUCTORS \
+#define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_GridPlayerController_h_37_ENHANCED_CONSTRUCTORS \
 	/** Deleted move- and copy-constructors, should never be used */ \
 	AGridPlayerController(AGridPlayerController&&) = delete; \
 	AGridPlayerController(const AGridPlayerController&) = delete; \
@@ -69,13 +85,13 @@ public: \
 	NO_API virtual ~AGridPlayerController();
 
 
-#define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_GridPlayerController_h_27_PROLOG
-#define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_GridPlayerController_h_30_GENERATED_BODY \
+#define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_GridPlayerController_h_34_PROLOG
+#define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_GridPlayerController_h_37_GENERATED_BODY \
 PRAGMA_DISABLE_DEPRECATION_WARNINGS \
 public: \
-	FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_GridPlayerController_h_30_RPC_WRAPPERS_NO_PURE_DECLS \
-	FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_GridPlayerController_h_30_INCLASS_NO_PURE_DECLS \
-	FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_GridPlayerController_h_30_ENHANCED_CONSTRUCTORS \
+	FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_GridPlayerController_h_37_RPC_WRAPPERS_NO_PURE_DECLS \
+	FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_GridPlayerController_h_37_INCLASS_NO_PURE_DECLS \
+	FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_GridPlayerController_h_37_ENHANCED_CONSTRUCTORS \
 private: \
 PRAGMA_ENABLE_DEPRECATION_WARNINGS
 
