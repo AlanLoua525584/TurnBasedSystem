@@ -4,6 +4,7 @@
 #include "TurnbasedSystem/Components/Camera/CameraControlComponent.h"
 #include "FreeCameraPawn.h"
 #include "TurnBasedSystem/TurnBasedCharacter.h"
+#include "TurnBasedSystem/GridPlayerController.h"
 #include "GameFramework/PlayerController.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
@@ -147,9 +148,13 @@ void UCameraControlComponent::SwitchToDynamicMode()
         }
     }
 
+    //==KeyPart==
     // 切換到角色第三人稱相機
     if (ATurnBasedCharacter* TurnChar = Cast<ATurnBasedCharacter>(OwnerController->GetPawn()))
     {
+        Debug::Print(FString::Printf(TEXT("切換到角色相機：%s"),
+            *TurnChar->GetActorLabel()), FColor::Cyan);
+
         if (TurnChar->CameraBoom)
         {
             TurnChar->CameraBoom->bUsePawnControlRotation = true;
@@ -273,7 +278,19 @@ void UCameraControlComponent::FocusOnCurrentTurnCharacter()
     APawn* ControlledPawn = OwnerController->GetPawn();
     if (!ControlledPawn) return;
 
-    FocusOnActor(ControlledPawn, 800.0f);
+    // 檢查是否在動態模式
+    if (bIsInDynamicMode)
+    {
+        // 在動態模式下，切換視角目標到角色
+        SafeSetViewTarget(ControlledPawn);
+        Debug::Print(TEXT("聚焦到角色（動態模式）"), FColor::Green);
+    }
+    else
+    {
+        // 在網格模式下，讓自由相機聚焦到角色
+        FocusOnActor(ControlledPawn, 800.0f);
+        Debug::Print(TEXT("聚焦到角色（網格模式）"), FColor::Green);
+    }
 }
 
 void UCameraControlComponent::SetDynamicMode(bool bDynamic)
@@ -314,21 +331,42 @@ void UCameraControlComponent::OnTurnChangedCamera(AActor* NewTurnCharacter, bool
     // 保存當前旋轉
     FRotator SavedRotation = OwnerController->GetControlRotation();
 
-    // 退出動態模式（強制回到網格模式）
-    if (bIsInDynamicMode)
+
+    // 檢查是否應該保持動態模式
+
+    AGridPlayerController* GridPC = Cast<AGridPlayerController>(OwnerController);
+    bool bShouldStayInDynamicMode = GridPC && GridPC->bIsInDynamicMode && bIsPlayerControlled;
+
+    if (bShouldStayInDynamicMode)
     {
-        bIsInDynamicMode = false;
-        Debug::Print(TEXT("Exiting Dynamic Mode due to turn change"), FColor::Yellow);
+        // 保持在動態模式中（第三人稱視角）
+        Debug::Print(TEXT("維持動態模式"), FColor::Green);
+
+        // 只更新視角目標到新角色
+        if (ATurnBasedCharacter* TurnChar = Cast<ATurnBasedCharacter>(NewTurnCharacter))
+        {
+            SafeSetViewTarget(TurnChar);  // 切換相機到新角色
+            OwnerController->SetControlRotation(SavedRotation);  // 保持旋轉
+        }
     }
+    else
+    {
+        // 原本的邏輯：切換到自由相機
+        if (bIsInDynamicMode)
+        {
+            bIsInDynamicMode = false;
+            Debug::Print(TEXT("因回合切換退出動態模式"), FColor::Yellow);
+        }
 
-    // 強制使用自由相機模式
-    SwitchToFreeCamera();
+        // 切換到自由相機模式
+        SwitchToFreeCamera();
 
-    // 聚焦到新角色
-    FreeCameraPawn->FocusOnActor(NewTurnCharacter, 800.0f);
+        // 聚焦到新角色
+        FreeCameraPawn->FocusOnActor(NewTurnCharacter, 800.0f);
 
-    // 保持旋轉
-    OwnerController->SetControlRotation(SavedRotation);
+        // 保持旋轉
+        OwnerController->SetControlRotation(SavedRotation);
+    }
 
     Debug::Print(FString::Printf(TEXT("Camera switched to %s"),
         *NewTurnCharacter->GetActorLabel()), FColor::Green);

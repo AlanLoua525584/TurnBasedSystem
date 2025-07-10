@@ -79,7 +79,7 @@ void UModeManagerComponent::OnDynamicMode()
 // Enter grid mode (free camera + click movement)
 void UModeManagerComponent::EnterGridMode()
 {
-    if (!bIsInDynamicMode) return; // Already in grid mode 竒呼家Α
+    if (!bIsInDynamicMode) return; // Already in grid mode
 
     ATurnBasedCharacter* ControlledCharacter = GetControlledTurnCharacter();
     if (!ControlledCharacter) return;
@@ -109,6 +109,14 @@ void UModeManagerComponent::EnterGridMode()
 
     // Update state 穝篈
     bIsInDynamicMode = false;
+
+    // ˙ GridPlayerController 篈
+    if (AGridPlayerController* GridPC = Cast<AGridPlayerController>(OwnerController))
+    {
+        GridPC->bIsInDynamicMode = false;  
+        Debug::Print(TEXT("˙ bIsInDynamicMode = false  GridPlayerController"), FColor::Magenta);
+    }
+
 
     // Notify UI 硄UI
     OnMovementModeChanged.Broadcast(false);
@@ -183,6 +191,13 @@ void UModeManagerComponent::EnterDynamicMode()
         }
     }
 
+    // ˙ GridPlayerController 篈
+    if (GridPC)
+    {
+        GridPC->bIsInDynamicMode = true; 
+        Debug::Print(TEXT("Connect bIsInDynamicMode = true to GridPlayerController"), FColor::Magenta);
+    }
+
     // Notify UI 硄UI
     OnMovementModeChanged.Broadcast(true);
 
@@ -247,10 +262,9 @@ void UModeManagerComponent::HandleCameraTransition(bool bToDynamicMode)
         // ち传à︹诀ぇ玡玂讽玡诀篈
         SaveCameraState();
 
-        // Switch to character focus mode
-        // ち传à︹籈礘家Α
-        CachedCameraController->FocusOnCurrentTurnCharacter();
-        CachedCameraController->SetDynamicMode(true);
+     
+        // ち传à︹材嘿诀
+        CachedCameraController->SwitchToDynamicMode();  // ㄏノタ絋ち传ㄧ计
     }
     else
     {

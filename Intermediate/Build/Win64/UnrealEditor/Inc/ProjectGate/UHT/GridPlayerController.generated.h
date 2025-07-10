@@ -24,7 +24,6 @@ class UEnhancedMovementSystem;
 class UInputHandlerComponent;
 class UModeManagerComponent;
 class UUIManagerComponent;
-struct FDamageResult;
 struct FInputActionValue;
 
 // ********** Begin Delegate FUIOnMovementModeChanged **********************************************
@@ -36,10 +35,6 @@ PROJECTGATE_API void FUIOnMovementModeChanged_DelegateWrapper(const FMulticastSc
 
 // ********** Begin Class AGridPlayerController ****************************************************
 #define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_GridPlayerController_h_37_RPC_WRAPPERS_NO_PURE_DECLS \
-	DECLARE_FUNCTION(execOnCombatResultReceived); \
-	DECLARE_FUNCTION(execOnCharacterHealthChanged); \
-	DECLARE_FUNCTION(execOnAnyCharacterHealthChanged); \
-	DECLARE_FUNCTION(execOnCombatExecuted); \
 	DECLARE_FUNCTION(execOnAttackModeChanged); \
 	DECLARE_FUNCTION(execOnCameraModeChanged); \
 	DECLARE_FUNCTION(execGetControlledMovementSystem); \
@@ -51,11 +46,8 @@ PROJECTGATE_API void FUIOnMovementModeChanged_DelegateWrapper(const FMulticastSc
 	DECLARE_FUNCTION(execGetModeManager); \
 	DECLARE_FUNCTION(execGetGridManager); \
 	DECLARE_FUNCTION(execGetCameraPawn); \
-	DECLARE_FUNCTION(execGetCameraRotation); \
-	DECLARE_FUNCTION(execGetCameraLocation); \
 	DECLARE_FUNCTION(execOnDynamicMode); \
 	DECLARE_FUNCTION(execOnMove); \
-	DECLARE_FUNCTION(execFocusOnCurrentTurnCharacter); \
 	DECLARE_FUNCTION(execOnTurnChangedCamera); \
 	DECLARE_FUNCTION(execIsInAttackMode); \
 	DECLARE_FUNCTION(execIsInDynamicMode); \

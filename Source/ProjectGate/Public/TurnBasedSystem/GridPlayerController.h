@@ -46,6 +46,8 @@ public:
 	UFUNCTION(BlueprintPure, Category = "Camera")
 	bool IsInDynamicMode() const;
 
+	bool bIsInDynamicMode = false;
+
 	// Attack mode functions
 	UFUNCTION(BlueprintPure, Category = "Combat")
 	bool IsInAttackMode() const;
@@ -63,27 +65,22 @@ public:
 	UPROPERTY(BlueprintAssignable, Category = "Movement")
 	FUIOnMovementModeChanged UIOnMovementModeChanged;
 
-	// Legacy functions
-	UFUNCTION(BlueprintCallable, Category = "Camera")
-	void FocusOnCurrentTurnCharacter();
-
-	void SyncCameraStates();
-
 	// Camera mouse sensitivity settings
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera|ThirdPerson")
 	float MouseSensitivity = 1.0f;
-
-	void SafeSetViewTarget(AActor* NewViewTarget);
 
 	// Auto-hide cursor in dynamic mode
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera|ThirdPerson")
 	bool bHideCursorInDynamicMode = false;
 
+
+	
 	// ===== Enhanced Input System =====
 	// Input mapping contexts
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
 	UInputMappingContext* GridInputMappingContext;
 
+	/*
 	// Input Action - Click
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
 	UInputAction* ClickAction;
@@ -127,6 +124,7 @@ public:
 	// Enter attack state
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input|Actions")
 	class UInputAction* AttackModeAction;
+	*/
 
 	// Input response functions
 	void OnClick();
@@ -136,37 +134,18 @@ public:
 	void OnMove(const FInputActionValue& Value);
 
 	// Camera control functions
-	void OnCameraMove(const FInputActionValue& Value);
-	void OnCameraRotate(const FInputActionValue& Value);
-	void OnCameraZoom(const FInputActionValue& Value);
+
 	void OnShiftPressed() { bIsShiftPressed = true; }
 	void OnShiftReleased() { bIsShiftPressed = false; }
 	void OnRightMousePressed();
 	void OnRightMouseReleased();
-	void UpdateCameraMovement(float DeltaTime);
 
-	void OnToggleFocus(const FInputActionValue& Value);
+
+	
 
 	void OnAttackMode(const FInputActionValue& Value);
 	UFUNCTION()
 	void OnDynamicMode();
-
-
-	UFUNCTION(BlueprintCallable, Category = "Camera")
-	FVector GetCameraLocation() const;
-
-	UFUNCTION(BlueprintCallable, Category = "Camera")
-	FRotator GetCameraRotation() const;
-
-	UPROPERTY(BlueprintReadWrite)
-	bool bIsInDynamicMode = false;
-
-	// Turn Order UI
-	UPROPERTY()
-	UTurnOrderWidget* TurnOrderWidget;
-
-	UPROPERTY(EditAnywhere, Category = "UI")
-	TSubclassOf<UTurnOrderWidget> TurnOrderWidgetClass;
 
 	// Currently controlled camera Actor
 	UPROPERTY()
@@ -216,6 +195,8 @@ protected:
 	UFUNCTION()
 	void SwitchMovementMode();
 
+	void ProcessGridClick();
+
 	// Get currently controlled EnhancedMovementSystem
 	UFUNCTION(BlueprintCallable, Category = "Movement")
 	UEnhancedMovementSystem* GetControlledMovementSystem() const;
@@ -226,38 +207,10 @@ protected:
 	// Dynamic attack handling
 	void HandleDynamicAttackInput();
 
-	// Attack effect display
-	void ShowAttackPreview(AActor* Target);
 
 	// Helper functions
 	// Get grid position under cursor
 	bool GetGridPositionUnderCursor(FIntPoint& OutGridPos);
-
-	// ===== Camera Components =====
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Camera")
-	UCameraComponent* CameraComponent;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Camera")
-	USpringArmComponent* SpringArmComponent;
-
-	// Camera settings
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera|Movement")
-	float CameraBaseMoveSpeed = 500.0f;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera|Movement")
-	float CameraFastMoveSpeed = 1000.0f;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera|Zoom")
-	float ZoomSpeed = 50.0f;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera|Zoom")
-	float MinZoomLength = 300.0f;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera|Zoom")
-	float MaxZoomLength = 2000.0f;
-
-
-
 
 private:
 	// Component System
@@ -284,8 +237,12 @@ private:
 	UPROPERTY()
 	ASimpleTurnManager* TurnManager = nullptr;
 
+
+	// Input states (temporary until fully migrated to components)
+	bool bIsShiftPressed = false;
+	bool bIsRightMousePressed = false;
+
 	// Initialization functions
-	void SetupCamera();
 	void InitializeComponents();
 	void FindManagers();
 
@@ -297,81 +254,9 @@ private:
 	UFUNCTION()
 	void OnAttackModeChanged(bool bIsNewInAttackMode);
 
-	// Camera control variables
-	float CurrentCameraRotation = 0.0f;
-	float CurrentCameraZoom = 1000.0f;
-
-	// Camera toggle cooldown
-	float LastToggleFocusTime = 0.0f;
-	const float ToggleFocusCooldown = 0.5f; // 0.5 second cooldown
-
-	// Camera state
-	bool bIsRightMousePressed = false;
-	bool bIsShiftPressed = false;
-	FVector CameraVelocity = FVector::ZeroVector;
-
-	// Save camera state
-	FRotator SavedCameraRotation;
-	FVector SavedCameraLocation;
-	float SavedArmLength = 800.0f;
-
-	// Subscribe to all character health changes
-	void SubscribeToHealthEvents();
-
-	// Attack mode related
-	bool bAutoExitAttackMode = true;  // Auto-exit attack mode after attack
-
-	// Attack mode state
-	bool bIsInAttackMode = false;
-
-	UFUNCTION()
-	void OnCombatExecuted(AActor* Attacker, AActor* Target, const FDamageResult& DamageResult);
-
-	// Health change handling
-	UFUNCTION()
-	void OnAnyCharacterHealthChanged(AActor* AffectedCharacter, int32 CurrentHealth, int32 MaxHealth);
-
-	UFUNCTION()
-	void OnCharacterHealthChanged(int32 CurrentHealth, int32 MaxHealth);
-
-	// Currently highlighted target
-	UPROPERTY()
-	AActor* CurrentHighlightedTarget;
-
-	// Combat UI
-	UPROPERTY()
-	class UCombatDisplayWidget* CombatDisplayWidget;
-
-	// Attack mode cursor detection
-	void UpdateAttackTargetHighlight();
-
-	// Combat result response
-	UFUNCTION()
-	void OnCombatResultReceived(AActor* Attacker, AActor* Target, const FDamageResult& Result);
-
-	UPROPERTY()
-	AActor* LastHighlightedTarget = nullptr;  // Last highlighted target
-
-	// Attack related functions
-	void ProcessAttackClick();
-	void ExitAttackMode();
-
-	// Add toggle attack mode function
-	void ToggleAttackMode();
-
-	// Create combat UI
-	void CreateCombatUI();
-
-	// Getters
-	bool GetCharacterUnderCursor(AActor*& OutCharacter);
-	bool GetCharacterUnderCursorWithFallback(AActor*& OutCharacter);
-
 	// For testing
 	void TestPortraitSystem();
 
 	void OnMovementModeChanged(bool bIsDynamicMode);
 
-
-public:
-	
 };
