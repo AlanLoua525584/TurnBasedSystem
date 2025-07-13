@@ -29,6 +29,8 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
+    void CreateGameUI();
+
     //當前鏡頭實例
     UPROPERTY()
     AFreeCameraPawn* FreeCameraPawn;
@@ -48,7 +50,7 @@ protected:
     UPROPERTY()
     class UCombatDisplayWidget* CombatDisplayWidget;
    
-
+    void InitializeBattle();
 
 private:
     // 回合管理器

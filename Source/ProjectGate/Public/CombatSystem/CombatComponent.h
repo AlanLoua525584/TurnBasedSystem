@@ -119,6 +119,13 @@ public:
     FOnAttackExecutedWithResult OnAttackExecutedWithResult;
 
 
+    //Getter
+     // 獲取攻擊類型
+    UFUNCTION(BlueprintPure, Category = "Combat")
+    ECombatAttackType GetAttackType() const { return AttackConfig.AttackType; }
+
+
+
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;

@@ -1,1138 +1,983 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+Ôªø// Fill out your copyright notice in the Description page of Project Settings.
 
 
 #include "TurnBasedSystem/TurnBasedCharacter.h"
+#include "TurnBasedSystem/Components/Movement/GridMovementComponent.h"
+#include "AnimationComponents/AnimationManagerComponent.h"
+#include "AnimationComponents/CombatAnimationComponent.h"
+#include "TurnBasedSystem/Components/TurnSystemComponent.h"
+#include "Animation/AnimNotifies/AnimNotify.h"
 #include "TurnBasedSystem/GridVisualComponent.h"
 #include "TurnBasedSystem/EnhancedMovementSystem.h"
-#include "TurnBasedSystem//GridPlayerController.h"
+#include "TurnBasedSystem/GridManager.h"
 #include "TurnBasedSystem/SimpleTurnManager.h"
-#include "CombatSystem/CombatInterface.h"
-#include "CombatSystem/CombatStats.h"
+#include "CombatSystem/CombatComponent.h"
 #include "CombatSystem/HealthPointBarWidget.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "GameFramework/SpringArmComponent.h"
+#include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/WidgetComponent.h"
-#include "Engine/Engine.h"
-#include "Engine/World.h"
 #include "Components/SkeletalMeshComponent.h"
-#include "DrawDebugHelpers.h"
-#include "TurnBasedSystem/GridManager.h"
-#include "Animation/AnimInstance.h"
-#include "GameFramework/CharacterMovementComponent.h"
-#include "AIController.h"
+#include "Engine/World.h"
 #include "TimerManager.h"
-#include "Navigation/PathFollowingComponent.h"
-#include "Camera/CameraComponent.h"
-#include "GameFramework/SpringArmComponent.h"
-#include "Kismet/GameplayStatics.h" 
-
-
+#include "Kismet/GameplayStatics.h"
 #include "Public/DebugHelper.h"
 
 
 // Sets default values
 ATurnBasedCharacter::ATurnBasedCharacter()
 {
-	//create Visual Component
+	PrimaryActorTick.bCanEverTick = true;
+
+	// === Create Components ===
+
+	// Grid movement component
+	GridMovementComponent = CreateDefaultSubobject<UGridMovementComponent>(TEXT("GridMovementComponent"));
+
+	// Turn system component
+	TurnSystemComponent = CreateDefaultSubobject<UTurnSystemComponent>(TEXT("TurnSystemComponent"));
+
+	// Grid visual component
 	GridVisualComponent = CreateDefaultSubobject<UGridVisualComponent>(TEXT("GridVisualComponent"));
 
-	//≤æ∞ 
+	// Enhanced movement system
 	EnhancedMovementSystem = CreateDefaultSubobject<UEnhancedMovementSystem>(TEXT("EnhancedMovementSystem"));
 
-
-	//æ‘∞´
+	// Combat component
 	CombatComponent = CreateDefaultSubobject<UCombatComponent>(TEXT("CombatComponent"));
-	
-	// ≥–´ÿ¿Y≥ª¶Â±¯≤’•Û
+
+	// Health bar widget component
 	HealthBarComponent = CreateDefaultSubobject<UWidgetComponent>(TEXT("HealthBarComponent"));
 	HealthBarComponent->SetupAttachment(RootComponent);
-	HealthBarComponent->SetRelativeLocation(FVector(0, 0, 120.0f)); // ¿Y≥ª§W§Ë
-	HealthBarComponent->SetWidgetSpace(EWidgetSpace::Screen); // ©l≤◊≠±¶V´Ãπı
+	HealthBarComponent->SetRelativeLocation(FVector(0, 0, 120.0f));
+	HealthBarComponent->SetWidgetSpace(EWidgetSpace::Screen);
 	HealthBarComponent->SetDrawSize(FVector2D(200, 30));
-	
 
-	/* === ¨€æ˜®t≤Œ === */
-	// ´ÿ•ﬂ Spring Arm
-	CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
-	CameraBoom->SetupAttachment(RootComponent);
-	CameraBoom->TargetArmLength = 300.0f;                     // ∂Z¬˜®§¶‚
-	CameraBoom->bUsePawnControlRotation = true;               // ∏Ú¿H±±®Óæπ±€¬‡
-	CameraBoom->SocketOffset = FVector(0.0f, 60.0f, 70.0f);   // ¶V•k∞æ≤æ§@¬I°]∂V™”°^
-	CameraBoom->SetRelativeRotation(FRotator(-10.0f, 0.0f, 0.0f)); // ª¥∑L©π§U¨›
+	// === Camera System ===
+	SetupCameraComponents();
 
-	// ´ÿ•ﬂ¨€æ˜
-	FollowCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("FollowCamera"));
-	FollowCamera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName);
-	FollowCamera->bUsePawnControlRotation = false;
+	// === Character Movement Settings ===
+	GetCharacterMovement()->bOrientRotationToMovement = true;
+	GetCharacterMovement()->RotationRate = FRotator(0.f, 540.f, 0.f);
+	GetCharacterMovement()->MaxWalkSpeed = 300.0f;
 
-	// ®§¶‚±€¬‡±±®Ó
+	// Character rotation settings
 	bUseControllerRotationYaw = false;
 	bUseControllerRotationPitch = false;
 	bUseControllerRotationRoll = false;
 
 
+    AnimationManager = CreateDefaultSubobject<UAnimationManagerComponent>(TEXT("AnimationManager"));
 
-	// ∏T§Ó≤æ∞ Æ…¶€∞ ±€¬‡
-	GetCharacterMovement()->bOrientRotationToMovement = true;
+    CombatAnimationComponent = CreateDefaultSubobject<UCombatAnimationComponent>(TEXT("CombatAnimationComponent"));
 
-	// ≥]∏m±€¬‡≥t≤v
-	GetCharacterMovement()->RotationRate = FRotator(0.f, 540.f, 0.f);
-
-
-
- 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
-
-	//≥]©wπw≥]≤æ∞ ≥t´◊
-	GetCharacterMovement()->MaxWalkSpeed = MoveSpeed;
-
-
-
-
-}
-
-UTexture2D* ATurnBasedCharacter::GetUIPortrait() const
-{
-	// ¿u•˝™¶^UI¿Yπ≥°A®‰¶∏¨Oßπæ„¿Yπ≥
-	if (PortraitData.UIPortrait)
-	{
-		return PortraitData.UIPortrait;
-	}
-
-	if (PortraitData.FullPortrait)
-	{
-		return PortraitData.FullPortrait;
-	}
-
-	// ¶p™G≥£®S¶≥°Aπ¡∏’®‰•L¿Yπ≥
-	return GetAnyAvailablePortrait();
-}
-
-UTexture2D* ATurnBasedCharacter::GetBattlePortrait() const
-{
-	// ¿u•˝™¶^æ‘∞´πœº–
-	if (PortraitData.BattleIcon)
-	{
-		return PortraitData.BattleIcon;
-	}
-
-	// ®‰¶∏π¡∏’UI¿Yπ≥
-	return GetUIPortrait();
-}
-
-UTexture2D* ATurnBasedCharacter::GetAnyAvailablePortrait() const
-{
-	// ´ˆ¿u•˝Ø≈π¡∏’©“¶≥¿Yπ≥
-	if (PortraitData.UIPortrait) return PortraitData.UIPortrait;
-	if (PortraitData.FullPortrait) return PortraitData.FullPortrait;
-	if (PortraitData.BattleIcon) return PortraitData.BattleIcon;
-	if (PortraitData.DialoguePortrait) return PortraitData.DialoguePortrait;
-
-	// Øu™∫®S¶≥¿Yπ≥°A™¶^πw≥]
-	static UTexture2D* DefaultPortrait = LoadObject<UTexture2D>(
-		nullptr,
-		TEXT("/Game/UI/Portraits/Default/Default_Portrait.Default_Portrait")
-	);
-
-	return DefaultPortrait;
-}
-
-FLinearColor ATurnBasedCharacter::GetPortraitBorderColor() const
-{
-	// •i•HÆ⁄æ⁄∂§•Ó¬–ª\√C¶‚
-	if (TeamID == 0) // ™±Æa∂§•Ó
-	{
-		return FLinearColor(0.2f, 0.4f, 1.0f, 1.0f); // ¬≈¶‚
-	}
-	else if (TeamID == 1) // ºƒ§H∂§•Ó
-	{
-		return FLinearColor(1.0f, 0.2f, 0.2f, 1.0f); // ¨ı¶‚
-	}
-
-	// ß_´h®œ•Œ¶€©w∏q√C¶‚
-	return PortraitData.BorderColor;
-}
-
-
-bool ATurnBasedCharacter::CanBeAttacked_Implementation() const
-{
-	return !bIsDying && IsAlive();
-}
-
-UCombatComponent* ATurnBasedCharacter::GetCombatComponent_Implementation() const
-{
-	return CombatComponent;
-}
-
-void ATurnBasedCharacter::OnDamageReceived_Implementation(const FDamageResult& DamageResult)
-{
-	if (CombatComponent)
-	{
-		CombatComponent->ApplyDamage(DamageResult);
-	}
-}
-
-// Called when the game starts or when spawned
-void ATurnBasedCharacter::BeginPlay()
-{
-	Super::BeginPlay();
-
-	//™Ï©l§∆¶Ê∞ ¬Iº∆
-	CurrentActionPoints = MaxActionPoints;
-
-	// ΩT´O®§¶‚¶≥ AIController°]•Œ©Û∫ÙÆÊ≤æ∞ °^
-	if (!GetController())
-	{
-		SpawnDefaultController();
-		Debug::Print(FString::Printf(TEXT("%s: Spawned default controller"), *GetActorLabel()), FColor::Yellow);
-	}
-
-
-	// ™Ï©l§∆ EnhancedMovementSystem
-	if (EnhancedMovementSystem)
-	{
-		// ≥]∏m™Ï©l≠»
-		EnhancedMovementSystem->MaxMovementResource = 100.0f;
-		EnhancedMovementSystem->CurrentMovementResource = 100.0f;
-		EnhancedMovementSystem->DynamicMoveSpeed = 400.0f;
-
-		// ΩT´O®t≤Œ•øΩT™Ï©l§∆
-		Debug::Print(TEXT("EnhancedMovementSystem initialized in TurnBasedCharacter"), FColor::Green);
-	}
-	else
-	{
-		Debug::Print(TEXT("ERROR: EnhancedMovementSystem is null in BeginPlay!"), FColor::Red);
-	}
-
-
-
-	// π¡∏’ß‰®Ï≥ı¥∫§§™∫ GridManager
-	TArray<AActor*>FoundActors;
-	UGameplayStatics::GetAllActorsOfClass(GetWorld(), AGridManager::StaticClass(), FoundActors);
-
-	if (FoundActors.Num() > 0)
-	{
-		SetGridManager(Cast<AGridManager>(FoundActors[0]));
-		Debug::Print(TEXT("GridManager found and set!"), FColor::Green);
-	}
-	else
-	{
-		Debug::Print(TEXT("ERROR: No GridManager found in scene!"), FColor::Red);
-	}
-
-	// ≥]∏m¶Â±¯ Widget
-	if (HealthBarComponent && HealthBarWidgetClass)
-	{
-		HealthBarComponent->SetWidgetClass(HealthBarWidgetClass);
-
-		if (UUserWidget* Widget = HealthBarComponent->GetUserWidgetObject())
-		{
-			HealthBarWidget = Cast<UHealthBarWidget>(Widget);
-		}
-	}
-
-	// ∏j©w¶Â∂q≈‹§∆®∆•Û
-	if (CombatComponent)
-	{
-		CombatComponent->OnHealthChanged.AddDynamic(this, &ATurnBasedCharacter::OnHealthChanged);
-
-		// ™Ï©l§∆¶Â±¯≈„•‹
-		UpdateHealthDisplay();
-	}
-
-	// ΩT´O¨€æ˜≤’•Û•øΩT≥]∏m
-	if (CameraBoom && FollowCamera)
-	{
-		// ≥]∏m Spring Arm ®œ•Œ Controller ±€¬‡
-		CameraBoom->bUsePawnControlRotation = true;
-		CameraBoom->bInheritPitch = true;
-		CameraBoom->bInheritYaw = true;
-		CameraBoom->bInheritRoll = false;
-
-		// ΩT´O¨€æ˜§£®œ•Œ Controller ±€¬‡°]•¶∑|∏Ú¿H Spring Arm°^
-		FollowCamera->bUsePawnControlRotation = false;
-
-		Debug::Print(TEXT("Character camera components configured"), FColor::Green);
-	}
-
-	// Æ⁄æ⁄¨Oß_™±Æa±±®Ó≥]∏m§£¶P¶Ê¨∞
-	if (bIsPlayerControlled)
-	{
-		// ≤ƒ§T§H∫Ÿº–∑«≥]∏m
-		bUseControllerRotationPitch = false;
-		bUseControllerRotationYaw = false;
-		bUseControllerRotationRoll = false;
-
-		// ≤æ∞ Æ…¶€∞ ¬‡¶V°]∞ ∫Aº“¶°•Œ°^
-		GetCharacterMovement()->bOrientRotationToMovement = true;
-		GetCharacterMovement()->RotationRate = FRotator(0.0f, 540.0f, 0.0f);
-	}
-
-
-}
-
-void ATurnBasedCharacter::SetGridManager(AGridManager* Manager)
-{
-	GridManager = Manager;
-
-	if (GridManager)
-	{
-		//ßÛ∑s∑Ì´e∫ÙÆÊ¶Ï∏m
-		CurrentGridPosition = GridManager->WorldToGrid(GetActorLocation());
-
-		//±N®§¶‚πÔªÙ®Ï∫ÙÆÊ
-		FVector GridWorldPos = GridManager->GridToWorld(CurrentGridPosition);
-		SetActorLocation(GridWorldPos);
-
-		//º–∞O∫ÙÆÊ¨∞§w¶˚•Œ
-		GridManager->SetCellOccupied(CurrentGridPosition, this);
-
-		// ™Ï©l§∆ GridVisualComponent
-		if (GridVisualComponent)
-		{
-			GridVisualComponent->Initialize(GridManager);
-		}
-
-		Debug::Print(FString::Printf(TEXT("%s placed at grid position (%d, %d)"),
-			*GetActorLabel(), CurrentGridPosition.X, CurrentGridPosition.Y), FColor::Green);
-	}
-}
-
-bool ATurnBasedCharacter::MoveToGridPosition(FIntPoint TargetGridPos)
-{
-	if (!GridManager)
-	{
-		Debug::Print(TEXT("GridManager not set! Cannot move."), FColor::Red);
-		return false;
-	}
-
-	//¿À¨d¨Oß_Ω¸®Ï¶€§v
-	if (!bIsMyTurn)
-	{
-		Debug::Print(TEXT("Not your turn!"), FColor::Red);
-		return false;
-	}
-
-	//¿À¨d¨Oß_¨O¶b≤æ∞ 
-
-    if (bIsMoving)
-	{
-		Debug::Print(TEXT("Already moving!"), FColor::Red);
-		return false;
-	}
-
-
-	//¿Ú®˙•i≤æ∞ Ωd≥Ú
-	TArray<FIntPoint> MovementRange = GridManager->GetMovementRange(
-		CurrentGridPosition,
-		CurrentActionPoints / MoveActionCost // Æ⁄æ⁄AP≠p∫‚•i≤æ∞ ÆÊº∆
-	);
-
-	//¿À¨d•ÿº–¶Ï∏m¨Oß_¶b•i≤æ∞ Ωd≥Ú§∫
-	if (!MovementRange.Contains(TargetGridPos))
-	{
-		Debug::Print(TEXT("Target position out of movement range!"), FColor::Red);
-		return false;
-	}
-
-	
-	//≠p∫‚≤æ∞ ¶®•ª
-	int32 Distance = FMath::Abs(TargetGridPos.X - CurrentGridPosition.X)+
-		             FMath::Abs(TargetGridPos.Y - CurrentGridPosition.Y);
-
-	int32 APCost = Distance * MoveActionCost;
-
-
-	if (!CanPerformAction(APCost))
-	{
-		Debug::Print(TEXT("Not enough Action Points!"), FColor::Red);
-		return false;
-	}
-
-	//≤M∞£¬¬™∫µ¯ƒ±§∆
-
-	if (GridVisualComponent)
-	{
-		GridVisualComponent->ClearAllVisuals();
-	}
-	else
-	{
-		GridManager->ClearHighlights();
-	}
-
-	//≤M∞£∑Ì´eÆÊ§l¶˚•Œ
-	GridManager->ClearCellOccupation(CurrentGridPosition);
-
-	//∞ı¶Ê≤æ∞ 
-	bIsMoving = true;
-
-	//≠p∫‚∏ÙÆ|(¬≤≥Ê™©•ª™Ω±µ≤æ∞ )
-	FVector TargetWorldPos = GridManager->GridToWorld(TargetGridPos);
-
-
-	//®œ•ŒAI≤æ∞ (¶p¶≥AIController)
-	if (AAIController* AIController = Cast<AAIController>(GetController()))
-	{
-		AIController->MoveToLocation(TargetWorldPos, 5.0f);
-	}
-	else
-	{
-		//¬≤≥Ê≤æ∞ 
-		SetActorLocation(TargetWorldPos);
-	}
-
-	//ßÛ∑s¶Ï∏m
-	CurrentGridPosition = TargetGridPos;
-	GridManager->SetCellOccupied(CurrentGridPosition, this);
-
-	//Æ¯Ø”AP
-	ConsumeActionPoints(APCost);
-
-
-	//≤M∞£∞™´G
-	GridManager->ClearHighlights();
-
-	bIsMoving = false;
-
-	Debug::Print(FString::Printf(TEXT("%s moved to (%d, %d), Cost: %d AP"),
-		*GetActorLabel(), TargetGridPos.X, TargetGridPos.Y, APCost), FColor::Green);
-
-
-	// ¶p™G¡Ÿ¶≥¶Ê∞ ¬I°A¶€∞ ≈„•‹∑s™∫≤æ∞ Ωd≥Ú
-	if (CurrentActionPoints >= MoveActionCost)
-	{
-		ShowMovementRange();
-	}
-
-
-
-	return true;
-	
-}
-
-void ATurnBasedCharacter::ShowMovementRange()
-{
-	if (!GridManager || !bIsMyTurn || !GridVisualComponent)
-		return;
-
-	Debug::Print(FString::Printf(TEXT("=== %s: Showing Movement Range ==="), *GetActorLabel()), FColor::Magenta);
-
-	GridVisualComponent->ClearAllVisuals();
-
-	int32 MoveRange = CurrentActionPoints / MoveActionCost;
-
-	//Ω’•ŒShowMovementRange
-	GridVisualComponent->ShowMovementRange(CurrentGridPosition, MoveRange);
-
-	Debug::Print(FString::Printf(TEXT("Showing movement range: %d cells"), MoveRange), FColor::Cyan);
-
-}
-
-void ATurnBasedCharacter::UpdateGridPositionFromWorld()
-{
-	if (!GridManager) return;
-
-	// ≤M∞£¬¬¶Ï∏m
-	GridManager->ClearCellOccupation(CurrentGridPosition);
-
-	// ßÛ∑s®Ï∑s¶Ï∏m
-	CurrentGridPosition = GridManager->WorldToGrid(GetActorLocation());
-
-	// º–∞O∑s¶Ï∏m¨∞§w¶˚•Œ
-	GridManager->SetCellOccupied(CurrentGridPosition, this);
-
-	/*Debug::Print(FString::Printf(TEXT("%s updated grid position to (%d, %d)"),
-		*GetActorLabel(), CurrentGridPosition.X, CurrentGridPosition.Y), FColor::Yellow);
-	*/
-	Debug::PrintCooldown(GetWorld(), TEXT("GridPosition"),
-		FString::Printf(TEXT("%s grid position (%d, %d)"), *GetActorLabel(), CurrentGridPosition.X, CurrentGridPosition.Y),
-		FColor::Yellow,
-		1.0f); // 1¨ÌßÛ∑s§@¶∏
-
-
-}
-
-void ATurnBasedCharacter::OnDeath_Implementation(AActor* Killer)
-{
-	if (bIsDying) return; // ®æ§Ó≠´Ω∆¶∫§`
-
-	bIsDying = true;
-
-	Debug::Print(FString::Printf(TEXT("=== %s DIED ==="), *GetActorLabel()), FColor::Red, 5.0f);
-	Debug::Print(FString::Printf(TEXT("Killed by: %s"),
-		Killer ? *Killer->GetActorLabel() : TEXT("Unknown")), FColor::Orange);
-
-	// 1. ≤M≤z®§¶‚™¨∫A
-	CleanupCharacter();
-
-	// 2. ºΩ©Ò¶∫§`Æƒ™G
-	PlayDeathEffects();
-
-	// 3. ≥q™æ¶^¶X®t≤Œ
-	NotifyTurnSystemOfDeath();
-
-	// 4. ºΩ©Ò¶∫§`∞ µe®√≥]∏mæP∑¥≠pÆ…æπ
-	if (DeathMontage && GetMesh() && GetMesh()->GetAnimInstance())
-	{
-		float MontageLength = GetMesh()->GetAnimInstance()->Montage_Play(DeathMontage);
-
-		// ®œ•Œ∞ µe™¯´◊©Œπw≥]©µøÆ…∂°
-		float DestroyDelay = FMath::Max(MontageLength, DeathDestroyDelay);
-
-		Debug::Print(FString::Printf(TEXT("Playing death animation, destroy in %.1f seconds"),
-			DestroyDelay), FColor::Yellow);
-
-		GetWorld()->GetTimerManager().SetTimer(
-			DeathTimerHandle,
-			this,
-			&ATurnBasedCharacter::OnDeathAnimationEnd,
-			DestroyDelay,
-			false
-		);
-	}
-	else
-	{
-		Debug::Print(TEXT("No death animation, using default delay"), FColor::Yellow);
-
-		// ®S¶≥∞ µeÆ…®œ•Œπw≥]©µø
-		GetWorld()->GetTimerManager().SetTimer(
-			DeathTimerHandle,
-			this,
-			&ATurnBasedCharacter::OnDeathAnimationEnd,
-			DeathDestroyDelay,
-			false
-		);
-	}
-
-}
-
-void ATurnBasedCharacter::OnDeathAnimationEnd()
-{
-	Debug::Print(FString::Printf(TEXT("%s - Death animation completed, destroying actor"),
-		*GetActorLabel()), FColor::Red);
-
-	// ≥Ã´·™∫≤M≤z
-	if (Controller)
-	{
-		Controller->UnPossess();
-	}
-
-	// æP∑¥®§¶‚
-	Destroy();
-}
-
-void ATurnBasedCharacter::NotifyTurnSystemOfDeath()
-{
-	
-	// ¨dß‰¶^¶X∫ﬁ≤zæπ
-	TArray<AActor*> FoundActors;
-	UGameplayStatics::GetAllActorsOfClass(GetWorld(), ASimpleTurnManager::StaticClass(), FoundActors);
-
-	if (FoundActors.Num() > 0)
-	{
-		if (ASimpleTurnManager* TurnManager = Cast<ASimpleTurnManager>(FoundActors[0]))
-		{
-			TurnManager->RemoveCharacter(this);
-			Debug::Print(TEXT("Notified turn system of death"), FColor::Green);
-		}
-	}
-	
-}
-
-void ATurnBasedCharacter::PlayDeathEffects()
-{
-	// 1. •Õ¶®¶∫§`ØSÆƒ
-	if (DeathEffectClass)
-	{
-		FActorSpawnParameters SpawnParams;
-		SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-
-		AActor* DeathEffect = GetWorld()->SpawnActor<AActor>(
-			DeathEffectClass,
-			GetActorLocation(),
-			GetActorRotation(),
-			SpawnParams
-		);
-
-		Debug::Print(TEXT("Spawned death effect"), FColor::Cyan);
-	}
-
-	
-}
-
-void ATurnBasedCharacter::CleanupCharacter()
-{
-	Debug::Print(TEXT("Cleaning up character..."), FColor::White);
-
-	// 1. ±q∫ÙÆÊ§§≤æ∞£
-	if (GridManager)
-	{
-		GridManager->ClearCellOccupation(CurrentGridPosition);
-		Debug::Print(TEXT("- Cleared grid occupation"), FColor::White);
-	}
-
-	// 2. ∏T•Œ∏Iº≤
-	SetActorEnableCollision(false);
-	if (UCapsuleComponent* Capsule = GetCapsuleComponent())
-	{
-		Capsule->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-	}
-	Debug::Print(TEXT("- Disabled collision"), FColor::White);
-
-	// 3. ∏T•ŒøÈ§J
-	if (APlayerController* PC = Cast<APlayerController>(GetController()))
-	{
-		DisableInput(PC);
-		Debug::Print(TEXT("- Disabled input"), FColor::White);
-	}
-
-	// 4. ∞±§Ó©“¶≥∞™´GÆƒ™G
-	if (USkeletalMeshComponent* MeshComp = GetMesh())
-	{
-		MeshComp->SetRenderCustomDepth(false);
-	}
-
-	// 5. ¡Ù¬√¶Â±¯
-	if (HealthBarComponent)
-	{
-		HealthBarComponent->SetVisibility(false);
-	}
-
-	// 6. ≤M∞£µ¯ƒ±≤’•Û
-	if (GridVisualComponent)
-	{
-		GridVisualComponent->ClearAllVisuals();
-	}
-
-	// 7. ∞±§Ó≤æ∞ 
-	if (UCharacterMovementComponent* Movement = GetCharacterMovement())
-	{
-		Movement->StopMovementImmediately();
-		Movement->DisableMovement();
-	}
-}
-
-
-
-
-bool ATurnBasedCharacter::CanPerformDynamicMovement() const
-{
-	if (!EnhancedMovementSystem) return false;
-	return bIsMyTurn && EnhancedMovementSystem->CanMove();
-}
-
-void ATurnBasedCharacter::SetMovementMode(bool bDynamic)
-{
-	if (bDynamic)
-	{
-		// ∞ ∫Aº“¶°°G®§¶‚≠±¶V≤æ∞ §Ë¶V
-		GetCharacterMovement()->bOrientRotationToMovement = true;
-		GetCharacterMovement()->bUseControllerDesiredRotation = false;
-	}
-	else
-	{
-		// ∫ÙÆÊº“¶°°G®§¶‚§£¶€∞ ¬‡¶V
-		GetCharacterMovement()->bOrientRotationToMovement = false;
-		GetCharacterMovement()->bUseControllerDesiredRotation = false;
-	}
-}
-
-void ATurnBasedCharacter::ResetActionPoints()
-{
-	CurrentActionPoints = MaxActionPoints;
-	OnActionPointsChanged.Broadcast(CurrentActionPoints);
-
-	FString Msg = FString::Printf(TEXT("%s: Action Points Reset to %d"),
-		*GetActorLabel(), CurrentActionPoints);
-
-	Debug::Print(Msg, FColor::Green);
-
-}
-
-bool ATurnBasedCharacter::CanPerformAction(int32 ActionCost) const
-{
-	return CurrentActionPoints >= ActionCost&& bIsMyTurn;
-}
-
-void ATurnBasedCharacter::ConsumeActionPoints(int32 Amount)
-{
-	CurrentActionPoints = FMath::Max(0, CurrentActionPoints - Amount);
-	OnActionPointsChanged.Broadcast(CurrentActionPoints);
-
-	FString Msg = FString::Printf(TEXT("%s: Used %d AP, Remaining: %d"),
-		*GetActorLabel(), Amount, CurrentActionPoints);
-	Debug::Print(Msg, FColor::Yellow);
-}
-
-bool ATurnBasedCharacter::TryMove(FVector TargetLocation)
-{
-	//¿À¨d¨Oß_Ω¸®Ï¶€§v
-	if (!bIsMyTurn)
-	{
-		Debug::Print(TEXT("Not your turn!"), FColor::Red);
-		return false;
-	}
-
-	//¿À¨d¨Oß_¶≥®¨∞˜™∫¶Ê∞ ¬I
-	if (!CanPerformAction(MoveActionCost))
-	{
-		Debug::Print(TEXT("Not enough Action Points to move!"), FColor::Red);
-		return false;
-	}
-
-	//¿À¨d¨Oß_•ø¶b≤æ∞ 
-	if (bIsMoving)
-	{
-		Debug::Print(TEXT("Already moving!"), FColor::Red);
-		return false;
-	}
-
-	//¿x¶s•ÿº–¶Ï∏m
-	MoveTargetLocation = TargetLocation;
-
-	//∞ı¶Ê≤æ∞ 
-	PerformMove();
-
-	//Æ¯Ø”¶Ê∞ ¬I
-	ConsumeActionPoints(MoveActionCost);
-
-	//ºsºΩ¶Ê∞ ®∆•Û
-	OnActionPerformed.Broadcast(TEXT("Move"), MoveActionCost);
-
-	return true;
-}
-
-bool ATurnBasedCharacter::TryAttack(AActor* TargetActor)
-{
-	//¿À¨d¨Oß_Ω¸®Ï¶€§v
-	if (!bIsMyTurn)
-	{
-		Debug::Print(TEXT("Not your turn!"), FColor::Red);
-		return false;
-	}
-
-	//¿À¨d•ÿº–
-	if (!TargetActor)
-	{
-		Debug::Print(TEXT("No target selected!"), FColor::Red);
-		return false;
-	}
-
-	//¿À¨d¨Oß_¶≥®¨∞˜™∫¶Ê∞ ¬I
-	if (!CanPerformAction(AttackActionCost))
-	{
-		Debug::Print(TEXT("Not enough Action Points to attack!"), FColor::Red);
-		return false;
-	}
-
-	//¿À¨d∂Z¬˜
-	float Distance = FVector::Dist(GetActorLocation(), TargetActor->GetActorLocation());
-	if (Distance > AttackRange)
-	{
-		Debug::Print(FString::Printf(TEXT("Target out of range! Distance: %.2f, Range: %.2f"),
-			Distance, AttackRange), FColor::Red);
-		return false;
-	}
-
-	//∞ı¶Êß¿ª
-	PerformAttack(TargetActor);
-
-	//Æ¯Ø”¶Ê∞ ¬I
-	ConsumeActionPoints(AttackActionCost);
-
-	//ºsºΩ¶Ê∞ ®∆•Û
-	OnActionPerformed.Broadcast(TEXT("Attack"), AttackActionCost);
-
-
-	return true;
 }
 
 void ATurnBasedCharacter::ExecuteAnimatedAttack(AActor* Target)
 {
-	UCombatComponent* Combat = FindComponentByClass<UCombatComponent>();
-	if (!Combat || !Target) return;
+    Debug::Print(FString::Printf(TEXT("Executing animated attack on %s"),
+        Target ? *Target->GetActorLabel() : TEXT("NULL")), FColor::Green);
 
-	// ®œ•Œ≤{¶≥™∫ CanAttack ¿À¨d
-	if (!Combat->CanAttack(Target))
-	{
-		Debug::Print(TEXT("Cannot attack target"), FColor::Red);
-		return;
-	}
+    if (!Target)
+    {
+        Debug::Print(TEXT("ERROR: Target is null"), FColor::Red);
+        return;
+    }
 
-	// ¿x¶s•ÿº–
-	PendingAttackTarget = Target;
+    if (!CombatComponent)
+    {
+        Debug::Print(TEXT("ERROR: CombatComponent is null"), FColor::Red);
+        return;
+    }
 
-	// ≠±¶V•ÿº–
-	FVector Direction = Target->GetActorLocation() - GetActorLocation();
-	Direction.Z = 0;
-	SetActorRotation(Direction.Rotation());
+    if (!CombatAnimationComponent)
+    {
+        Debug::Print(TEXT("WARNING: Missing CombatAnimationComponent - using direct attack"), FColor::Red);
+        ExecuteDirectAttack(Target);
+        return;
+    }
 
-	// ºΩ©Ò∞ µe
-	if (AttackMontage && GetMesh() && GetMesh()->GetAnimInstance())
-	{
-		Debug::Print(TEXT("Playing attack animation..."), FColor::Cyan);
+    // ÂÑ≤Â≠òÊîªÊìäÁõÆÊ®ô
+    PendingAttackTarget = Target;
 
-		float MontageLength = GetMesh()->GetAnimInstance()->Montage_Play(AttackMontage);
+    // Áç≤ÂèñÊîªÊìäÈ°ûÂûã
+    ECombatAttackType AttackType = CombatComponent->GetAttackType();
+    Debug::Print(FString::Printf(TEXT("Attack type: %s"),
+        *UEnum::GetValueAsString(AttackType)), FColor::Cyan);
 
-		if (MontageLength > 0.0f)
-		{
-			Debug::Print(FString::Printf(TEXT("Attack montage playing, length: %.2f"), MontageLength), FColor::Green);
+    // Ê™¢Êü•ÊòØÂê¶ÊúâÂ∞çÊáâÁöÑÊîªÊìäÂ∫èÂàóÈÖçÁΩÆ
+    if (!CombatAnimationComponent->AttackSequences.Contains(AttackType))
+    {
+        Debug::Print(FString::Printf(TEXT("WARNING: No animation sequence for attack type %s - using direct attack"),
+            *UEnum::GetValueAsString(AttackType)), FColor::Yellow);
+        ExecuteDirectAttack(Target);
+        return;
+    }
 
-			// ¶b∞ µeæA∑ÌÆ…æ˜ƒ≤µoπÍª⁄ß¿ª
-			GetWorld()->GetTimerManager().SetTimer(
-				AttackTimerHandle,
-				this,
-				&ATurnBasedCharacter::OnAttackAnimationHit,
-				AttackAnimationDelay,  // ΩT´O≥o≠”≠»¶b TurnBasedCharacter.h §§≥]∏m°]πw≥] 0.5f°^
-				false
-			);
-		}
-		else
-		{
-			Debug::Print(TEXT("ERROR: Montage play failed!"), FColor::Red);
-			OnAttackAnimationHit();  // ™Ω±µ∞ı¶Êß¿ª
-		}
-	}
-	else
-	{
-		// µL∞ µe™Ω±µ∞ı¶Ê
-		OnAttackAnimationHit();
-	}
+    Debug::Print(TEXT("Starting combat animation sequence..."), FColor::Green);
+    CombatAnimationComponent->ExecuteCombatSequence(Target, AttackType);
 }
 
-void ATurnBasedCharacter::OnTurnStart()
+void ATurnBasedCharacter::ExecuteDirectAttack(AActor* Target)
 {
-	bIsMyTurn = true;
+    Debug::Print(FString::Printf(TEXT("Executing direct attack on %s"),
+        Target ? *Target->GetActorLabel() : TEXT("NULL")), FColor::Yellow);
 
+    if (!Target)
+    {
+        Debug::Print(TEXT("ERROR: Direct attack failed - Target is null"), FColor::Red);
+        return;
+    }
 
-	//≠´∏m¶Ê∞ ¬Iº∆
-	ResetActionPoints();
+    if (!CombatComponent)
+    {
+        Debug::Print(TEXT("ERROR: CombatComponent is null"), FColor::Red);
+        return;
+    }
 
-	//µ¯ƒ±¥£•‹-ßÔ≈‹®§¶‚•~∆[©Œ√C¶‚
+    Debug::Print(TEXT("Checking CanAttack..."), FColor::White);
+    if (CombatComponent->CanAttack(Target))
+    {
+        Debug::Print(TEXT("CanAttack passed - executing attack"), FColor::Green);
 
-	if (USkeletalMeshComponent* MeshComp = GetMesh())
-	{
-		MeshComp->SetRenderCustomDepth(true);
-		MeshComp->SetCustomDepthStencilValue(252); // ∫Ò¶‚Ω¸π¯
+        if (CombatComponent->ExecuteAttack(Target))
+        {
+            Debug::Print(TEXT("Direct attack completed successfully"), FColor::Green);
+        }
+        else
+        {
+            Debug::Print(TEXT("ERROR: ExecuteAttack returned false"), FColor::Red);
+        }
+    }
+    else
+    {
+        Debug::Print(TEXT("ERROR: Direct attack failed - CanAttack returned false"), FColor::Red);
 
-		Debug::Print(FString::Printf(TEXT("%s: Highlight enabled"), *GetActorLabel()), FColor::Green);
-	}
-	else
-	{
-		Debug::Print(TEXT("Failed to get Mesh Component for highlight!"), FColor::Red);
-	}
+        // Êèê‰æõË©≥Á¥∞ÁöÑÂ§±ÊïóÂéüÂõ†
+        if (!CombatComponent->IsAlive())
+        {
+            Debug::Print(TEXT("  - Reason: Attacker is dead"), FColor::Orange);
+        }
 
-	// •u¶b´D∞ ∫Aº“¶°Æ…≈„•‹≤æ∞ Ωd≥Ú
-	if (AGridPlayerController* PC = Cast<AGridPlayerController>(GetController()))
-	{
-		if (!PC->bIsInDynamicMode)
-		{
-			ShowMovementRange();
-		}
-	}
-	else
-	{
-		// AI ®§¶‚¡`¨O≈„•‹Ωd≥Ú
-		ShowMovementRange();
-	}
+        float Distance = FVector::Dist(GetActorLocation(), Target->GetActorLocation());
+        float AttackRange = CombatComponent->GetAttackRange();
 
-	FString Msg = FString::Printf(TEXT("=== %s's Turn Started ==="), *GetActorLabel());
-	Debug::Print(Msg, FColor::Cyan, 3);
+        Debug::Print(FString::Printf(TEXT("  - Distance: %.1f, Range: %.1f"), Distance, AttackRange), FColor::Orange);
 
+        if (Distance > AttackRange)
+        {
+            Debug::Print(TEXT("  - Reason: Target out of range"), FColor::Orange);
+        }
+    }
 }
 
-void ATurnBasedCharacter::OnTurnEnd()
+// Á¢∫‰øùÂãïÁï´‰∫ã‰ª∂ËôïÁêÜÂáΩÊï∏ÂØ¶Áèæ
+void ATurnBasedCharacter::OnCombatAnimationHit(AActor* Attacker, AActor* Target)
 {
-	bIsMyTurn = false;
+    Debug::Print(TEXT("=== Combat Animation Hit Event ==="), FColor::Red);
+    Debug::Print(FString::Printf(TEXT("Attacker: %s"),
+        Attacker ? *Attacker->GetActorLabel() : TEXT("NULL")), FColor::White);
+    Debug::Print(FString::Printf(TEXT("Target: %s"),
+        Target ? *Target->GetActorLabel() : TEXT("NULL")), FColor::White);
+    Debug::Print(FString::Printf(TEXT("Is this character the attacker: %s"),
+        (Attacker == this) ? TEXT("YES") : TEXT("NO")), FColor::White);
 
-	//µ¯ƒ±¥£•‹-´Ï¥_®§¶‚•~∆[©Œ√C¶‚
-	if (USkeletalMeshComponent* MeshComp = GetMesh())
-	{
-		MeshComp->SetRenderCustomDepth(false);
-	}
+    // Á¢∫‰øùÊòØËá™Â∑±ÁôºËµ∑ÁöÑÊîªÊìä
+    if (Attacker != this)
+    {
+        Debug::Print(TEXT("Ignoring hit event - not my attack"), FColor::Yellow);
+        return;
+    }
+    // ‰ΩøÁî®‰øùÂ≠òÁöÑÊîªÊìäÁõÆÊ®ôÔºàÂ¶ÇÊûúÊúâÁöÑË©±Ôºâ
+    AActor* ActualTarget = Target ? Target : PendingAttackTarget;
 
-	FString Msg = FString::Printf(TEXT("=== %s's Turn Ended ==="), *GetActorLabel());
-	Debug::Print(Msg, FColor::Orange, 2);
+    if (!ActualTarget)
+    {
+        Debug::Print(TEXT("ERROR: No valid target for attack"), FColor::Red);
+        return;
+    }
 
-	//Æ¯∞£≤æ∞ Ωd≥Ú≈„•‹
-	if (GridManager)
-	{
-		GridManager->ClearHighlights();
-	}
+    Debug::Print(FString::Printf(TEXT("Processing attack on: %s"),
+        *ActualTarget->GetActorLabel()), FColor::Green);
 
+    // Âü∑Ë°åÂØ¶ÈöõÁöÑÊîªÊìäË®àÁÆó
+    if (!CombatComponent)
+    {
+        Debug::Print(TEXT("ERROR: CombatComponent is null"), FColor::Red);
+        return;
+    }
+
+    Debug::Print(TEXT("Executing attack calculation..."), FColor::Orange);
+
+    if (CombatComponent->ExecuteAttack(ActualTarget))
+    {
+        Debug::Print(TEXT("Attack calculation completed successfully"), FColor::Green);
+        PendingAttackTarget = nullptr; // Ê∏ÖÁ©∫ÂæÖËôïÁêÜÁõÆÊ®ô
+    }
+    else
+    {
+        Debug::Print(TEXT("Attack calculation failed"), FColor::Red);
+    }
 }
 
-void ATurnBasedCharacter::PerformMove()
+void ATurnBasedCharacter::BeginPlay()
 {
-	//¬≤≥Ê≤æ∞ ≈ﬁøË
-	bIsMoving = true;
+    Super::BeginPlay();
 
-	//√∏ªs≤æ∞ •ÿº–(∞£ø˘•Œ)
-	DrawDebugSphere(
-		GetWorld(),
-		MoveTargetLocation,
-		50.0f,
-		12,
-		FColor::Green,
-		false,
-		3.0f
-	);
+    Debug::Print(FString::Printf(TEXT("=== %s BeginPlay Start ==="), *GetActorLabel()), FColor::Cyan);
 
-	//√∏ªs≤æ∞ ∏ÙÆ|
-	DrawDebugLine(
-		GetWorld(),
-		GetActorForwardVector(),
-		MoveTargetLocation,
-		FColor::Green,
-		false,
-		3.0f
-		);
+    // === Âü∫Á§éÈ©óË≠â ===
+    if (!IsValid(this))
+    {
+        Debug::Print(TEXT("ERROR: Character is not valid!"), FColor::Red);
+        return;
+    }
 
-	//§ß´·πÍß@πÍß@πÍª⁄™∫≤æ∞ ≈ﬁøË
-	//®“¶p°G®œ•Œ AIController ™∫ MoveToLocation
+    // Ensure AI controller for grid movement
+    if (!GetController())
+    {
+        SpawnDefaultController();
+        Debug::Print(FString::Printf(TEXT("%s: Spawned default controller"), *GetActorLabel()), FColor::Yellow);
+    }
 
-	bIsMoving = false;
+    // Initialize components
+    InitializeComponents();
 
-	FString Msg = FString::Printf(TEXT("%s moved to new position"), *GetActorLabel());
-	Debug::Print(Msg, FColor::Green);
+    // Find and set grid manager
+    TArray<AActor*> FoundActors;
+    UGameplayStatics::GetAllActorsOfClass(GetWorld(), AGridManager::StaticClass(), FoundActors);
 
-}
+    if (FoundActors.Num() > 0)
+    {
+        SetGridManager(Cast<AGridManager>(FoundActors[0]));
+        Debug::Print(TEXT("GridManager found and set!"), FColor::Green);
+    }
+    else
+    {
+        Debug::Print(TEXT("ERROR: No GridManager found in scene!"), FColor::Red);
+    }
 
-void ATurnBasedCharacter::PerformAttack(AActor* TargetActor)
-{
-	//¬≤≥Ê™∫ß¿ª≈ﬁøË
+    // === Á¢∫‰øùÁµÑ‰ª∂ÂàùÂßãÂåñÈ†ÜÂ∫è ===
+    // 1. È¶ñÂÖàË®≠ÁΩÆÂü∫Á§éÁµÑ‰ª∂
+    SetupHealthBar();
 
-	FString Msg = FString::Printf(TEXT("%s attacks %s for %d damage!"),
-		*GetActorLabel(), *TargetActor->GetActorLabel(), AttackDamage);
-	Debug::Print(Msg, FColor::Red, 3);
+    // 2. ÁÑ∂ÂæåË®≠ÁΩÆÂãïÁï´ÁÆ°ÁêÜÂô®
+    SetupAnimationManager();
 
-	//√∏ªsß¿ªΩu±¯(∞£ø˘•Œ)
-	DrawDebugLine(
-		GetWorld(),
-		GetActorLocation() + FVector(0, 0, 50),  // ±q®§¶‚§§§ﬂµoÆg
-		TargetActor->GetActorLocation() + FVector(0, 0, 50),
-		FColor::Red,
-		false,
-		2.0f,
-		0,
-		5.0f
-	);
+    // 3. Êé•ËëóË®≠ÁΩÆÊà∞È¨•ÂãïÁï´ÁµÑ‰ª∂Ôºà‰æùË≥¥ÂãïÁï´ÁÆ°ÁêÜÂô®Ôºâ
+    SetupCombatAnimationComponent();
 
-	//√∏ªs∂ÀÆ`º∆¶r¶Ï∏m
-	DrawDebugString(
-		GetWorld(),
-		TargetActor->GetActorLocation() + FVector(0, 0, 100),
-		FString::Printf(TEXT("-%d"), AttackDamage),
-		nullptr,
-		FColor::Red,
-		2.0f,
-		true,
-		1.5f
-	);
+    // 4. ÊúÄÂæåÁ∂ÅÂÆöÊà∞È¨•‰∫ã‰ª∂Ôºà‰æùË≥¥ÊâÄÊúâÁµÑ‰ª∂ÈÉΩË®≠ÁΩÆÂÆåÊàêÔºâ
+    BindCombatEvents();
 
-	// ≥o∏Ã•i•HπÍß@πÍª⁄™∫∂ÀÆ`≥B≤z
-	// ®“¶p°G©I•s Target ™∫ TakeDamage ®Áº∆
+    // Setup movement mode based on player control
+    if (bIsPlayerControlled)
+    {
+        GetCharacterMovement()->bOrientRotationToMovement = true;
+        GetCharacterMovement()->RotationRate = FRotator(0.0f, 540.0f, 0.0f);
+    }
 
-
-}
-
-void ATurnBasedCharacter::OnAttackAnimationHit()
-{
-	if (!PendingAttackTarget.IsValid()) 
-	{
-		Debug::Print(TEXT("ERROR: PendingAttackTarget is invalid!"), FColor::Red);
-		return;
-	}
-
-	Debug::Print(TEXT("Attack animation hit - executing damage"), FColor::Orange);
-
-	UCombatComponent* Combat = FindComponentByClass<UCombatComponent>();
-	if (Combat)
-	{
-		// ®œ•Œ≤{¶≥™∫ ExecuteAttack
-		if (Combat->ExecuteAttack(PendingAttackTarget.Get()))
-		{
-			Debug::Print(TEXT("Attack executed successfully!"), FColor::Green);
-		}
-		else
-		{
-			Debug::Print(TEXT("Attack execution failed!"), FColor::Red);
-		}
-	}
-
-	PendingAttackTarget = nullptr;
-}
-
-void ATurnBasedCharacter::OnHealthChanged(AActor* Character,int32 CurrentHealth, int32 MaxHealth)
-{
-
-
-	Debug::Print(FString::Printf(TEXT("%s Health: %d/%d"),
-		*GetActorLabel(), CurrentHealth, MaxHealth), FColor::Yellow);
-
-	if (Character != this) return;  // ΩT´O¨O¶€§v
-	UpdateHealthDisplay();
-
-	// ¶Â∂qßCÆ…™∫µ¯ƒ±§œıX
-	if (CurrentHealth > 0 && CurrentHealth <= MaxHealth * 0.3f)
-	{
-		// •i•H≤K•[®¸∂ÀØSÆƒ©Œß˜ΩË∞{√{
-		if (USkeletalMeshComponent* MeshComp = GetMesh())
-		{
-			// º»Æ…≈‹¨ı
-			MeshComp->SetVectorParameterValueOnMaterials(FName("DamageFlash"), FVector(1, 0, 0));
-
-			// 0.2¨Ì´·´Ï¥_
-			FTimerHandle FlashTimer;
-			GetWorld()->GetTimerManager().SetTimer(FlashTimer, [this]()
-				{
-					if (USkeletalMeshComponent* MeshComp = GetMesh())
-					{
-						MeshComp->SetVectorParameterValueOnMaterials(FName("DamageFlash"), FVector(0, 0, 0));
-					}
-				}, 0.2f, false);
-		}
-	}
-}
-
-bool ATurnBasedCharacter::IsMyTurn() const
-{
-	return bIsMyTurn;  // ™Ω±µ™¶^ bIsMyTurn°A¶”§£¨O™¶^ false
+    // === Âª∂ÈÅ≤Âü∑Ë°åÊúÄÁµÇÈ©óË≠â ===
+    FTimerHandle DebugTimer;
+    GetWorld()->GetTimerManager().SetTimer(
+        DebugTimer,
+        [this]()
+        {
+            // Âü∑Ë°åÊúÄÁµÇÁöÑÁµÑ‰ª∂Âíå‰∫ã‰ª∂Á∂ÅÂÆöÊ™¢Êü•
+            DebugCombatBindings();
+            Debug::Print(FString::Printf(TEXT("=== %s BeginPlay Complete ==="), *GetActorLabel()), FColor::Green);
+        },
+        0.5f,  // Âª∂ÈÅ≤ 0.5 ÁßíÂü∑Ë°å
+        false
+    );
 }
 
 
-
-
-
-
-
-
-
-
-
-// Called every frame
 void ATurnBasedCharacter::Tick(float DeltaTime)
 {
-	Super::Tick(DeltaTime);
+    Super::Tick(DeltaTime);
 
-	// •≠∑∆¨€æ˜±€¬‡
-	if (CameraBoom && Controller)
-	{
-		FRotator ControlRotation = Controller->GetControlRotation();
-		FRotator CurrentRotation = CameraBoom->GetComponentRotation();
-		FRotator NewRotation = FMath::RInterpTo(CurrentRotation, ControlRotation, DeltaTime, 10.0f);
-		CameraBoom->SetWorldRotation(NewRotation);
-	}
+    // Smooth camera rotation for player-controlled characters
+    if (CameraBoom && Controller && bIsPlayerControlled)
+    {
+        FRotator ControlRotation = Controller->GetControlRotation();
+        FRotator CurrentRotation = CameraBoom->GetComponentRotation();
 
-	// •u¶≥¶b≥Q™±Æa±±®Ó•B¶b∞ ∫Aº“¶°Æ…§~¶P®B¨€æ˜±€¬‡
-	if (CameraBoom && Controller && bIsPlayerControlled)
-	{
-		// ¿À¨d¨Oß_¶b∞ ∫Aº“¶°
-		if (AGridPlayerController* GridPC = Cast<AGridPlayerController>(Controller))
-		{
-			if (GridPC->bIsInDynamicMode && GridPC->bIsInDynamicMode)
-			{
-				// ∞ ∫Aº“¶°§U°A¨€æ˜∏Ú¿H±±®Óæπ±€¬‡
-				FRotator ControlRotation = Controller->GetControlRotation();
-				FRotator CurrentRotation = CameraBoom->GetComponentRotation();
-
-				// •u¶≥¶b±€¬‡Æt≤ß∏˚§jÆ…§~ßÛ∑s°A¡◊ßKß›∞ 
-				if (!CurrentRotation.Equals(ControlRotation, 1.0f))
-				{
-					FRotator NewRotation = FMath::RInterpTo(CurrentRotation, ControlRotation, DeltaTime, 10.0f);
-					CameraBoom->SetWorldRotation(NewRotation);
-				}
-			}
-			// ´D∞ ∫Aº“¶°§U°ACameraBoom ¿≥∏”§w∏g≥Q•øΩT≥]∏m°A§£ª›≠n®C¥VßÛ∑s
-		}
-	}
-
+        if (!CurrentRotation.Equals(ControlRotation, 1.0f))
+        {
+            FRotator NewRotation = FMath::RInterpTo(CurrentRotation, ControlRotation, DeltaTime, 10.0f);
+            CameraBoom->SetWorldRotation(NewRotation);
+        }
+    }
 }
 
-// Called to bind functionality to input
-void ATurnBasedCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
+void ATurnBasedCharacter::SetupCameraComponents()
 {
-	Super::SetupPlayerInputComponent(PlayerInputComponent);
+    // Create spring arm
+    CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
+    CameraBoom->SetupAttachment(RootComponent);
+    CameraBoom->TargetArmLength = 300.0f;
+    CameraBoom->bUsePawnControlRotation = true;
+    CameraBoom->SocketOffset = FVector(0.0f, 60.0f, 70.0f);
+    CameraBoom->SetRelativeRotation(FRotator(-10.0f, 0.0f, 0.0f));
 
+    // Create camera
+    FollowCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("FollowCamera"));
+    FollowCamera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName);
+    FollowCamera->bUsePawnControlRotation = false;
+
+    // Setup spring arm for controller rotation
+    CameraBoom->bUsePawnControlRotation = true;
+    CameraBoom->bInheritPitch = true;
+    CameraBoom->bInheritYaw = true;
+    CameraBoom->bInheritRoll = false;
 }
 
-void ATurnBasedCharacter::TestVisualization()
+void ATurnBasedCharacter::OnInitiativeChanged(int32 NewInitiative)
 {
-	Debug::Print(TEXT("=== Testing Visualization System ==="), FColor::Magenta);
-
-	if (GridManager)
-	{
-		// ™Ω±µΩ’•Œ GridManager ™∫µ¯ƒ±§∆
-		GridManager->ShowMovementRange(CurrentGridPosition, 3);
-	}
-
-	if (GridVisualComponent)
-	{
-		// ™Ω±µΩ’•Œ≤’•Û™∫µ¯ƒ±§∆
-		GridVisualComponent->ShowMovementRange(CurrentGridPosition, 3);
-	}
+    CurrentInitiative = NewInitiative;
+    OnTurnOrderChanged.Broadcast(NewInitiative);
 }
 
-void ATurnBasedCharacter::TestDifferentVisuals()
+void ATurnBasedCharacter::BindComponentEvents()
 {
-	if (!GridManager) return;
-
-	// ¥˙∏’≤æ∞ Ωd≥Ú°]∫Ò¶‚°^
-	GridManager->ShowMovementRange(CurrentGridPosition, 3);
-
-	// ©µø≈„•‹ß¿ªΩd≥Ú°]¨ı¶‚°^
-	GetWorld()->GetTimerManager().SetTimerForNextTick([this]()
-		{
-			if (GridVisualComponent)
-			{
-				GridVisualComponent->ShowAttackRange(CurrentGridPosition, 200.0f);
-			}
-		});
-
-	// ¥˙∏’∏ÙÆ|°]¬≈¶‚°^
-	TArray<FIntPoint> TestPath = {
-		CurrentGridPosition,
-		CurrentGridPosition + FIntPoint(1, 0),
-		CurrentGridPosition + FIntPoint(2, 0),
-		CurrentGridPosition + FIntPoint(2, 1)
-	};
-
-	if (GridVisualComponent)
-	{
-		GridVisualComponent->ShowPath(TestPath);
-	}
-
+    // Bind TurnSystemComponent events
+    if (TurnSystemComponent)
+    {
+        TurnSystemComponent->OnInitiativeChanged.AddDynamic(this, &ATurnBasedCharacter::OnInitiativeChanged);
+    }
 }
 
-void ATurnBasedCharacter::UpdateHealthDisplay()
+void ATurnBasedCharacter::DebugCombatBindings()
 {
+    Debug::Print(FString::Printf(TEXT("=== Debug Combat Bindings for %s ==="), *GetActorLabel()), FColor::Magenta);
 
-	if (!CombatComponent || !HealthBarWidget) return;
+    if (CombatComponent)
+    {
+        Debug::Print(TEXT("CombatComponent: Valid"), FColor::Green);
+    }
+    else
+    {
+        Debug::Print(TEXT("CombatComponent: NULL"), FColor::Red);
+        return;
+    }
 
-	int32 CurrentHealth = CombatComponent->GetCurrentHealth();
-	int32 MaxHealth = CombatComponent->GetMaxHealth();
+    if (CombatAnimationComponent)
+    {
+        Debug::Print(TEXT("CombatAnimationComponent: Valid"), FColor::Green);
 
-	// ßÛ∑s¶Â±¯Widget
-	HealthBarWidget->UpdateHealth(CurrentHealth, MaxHealth);
+        // Ê™¢Êü•‰∫ã‰ª∂Á∂ÅÂÆö
+        if (CombatAnimationComponent->OnCombatAnimationHit.IsAlreadyBound(this, &ATurnBasedCharacter::OnCombatAnimationHit))
+        {
+            Debug::Print(TEXT("OnCombatAnimationHit: Bound"), FColor::Green);
+        }
+        else
+        {
+            Debug::Print(TEXT("OnCombatAnimationHit: NOT Bound"), FColor::Red);
+        }
 
-	// ¶∫§`Æ…¡Ù¬√¶Â±¯
-	if (CurrentHealth <= 0)
-	{
-		HealthBarComponent->SetVisibility(false);
-	}
+        if (CombatAnimationComponent->OnCombatAnimationCompleted.IsAlreadyBound(this, &ATurnBasedCharacter::OnCombatAnimationCompleted))
+        {
+            Debug::Print(TEXT("OnCombatAnimationCompleted: Bound"), FColor::Green);
+        }
+        else
+        {
+            Debug::Print(TEXT("OnCombatAnimationCompleted: NOT Bound"), FColor::Red);
+        }
+    }
+    else
+    {
+        Debug::Print(TEXT("CombatAnimationComponent: NULL"), FColor::Red);
+    }
 
-	Debug::Print(FString::Printf(TEXT("%s Health Display Updated: %d/%d"),
-		*GetActorLabel(), CurrentHealth, MaxHealth), FColor::Green);
+    if (AnimationManager)
+    {
+        Debug::Print(TEXT("AnimationManager: Valid"), FColor::Green);
+    }
+    else
+    {
+        Debug::Print(TEXT("AnimationManager: NULL"), FColor::Red);
+    }
+}
+
+void ATurnBasedCharacter::HandleAnimNotify(FName NotifyName)
+{
+    // Á¢∫‰øùÂãïÁï´ÁÆ°ÁêÜÂô®ÁµÑ‰ª∂ÊúâÊïà
+    if (UAnimationManagerComponent* NewAnimationManager = FindComponentByClass<UAnimationManagerComponent>())
+    {
+        // ËΩâÁôºÈÄöÁü•Áµ¶ÂãïÁï´ÁÆ°ÁêÜÂô®
+        NewAnimationManager->HandleAnimationNotify(NotifyName);
+
+        // Ê∑ªÂä†Ë™øË©¶Ëº∏Âá∫
+        UE_LOG(LogTemp, Warning, TEXT("ËßíËâ≤Êé•Êî∂Âà∞ÂãïÁï´ÈÄöÁü•: %s"), *NotifyName.ToString());
+    }
+    else
+    {
+        UE_LOG(LogTemp, Error, TEXT("Êâæ‰∏çÂà∞ÂãïÁï´ÁÆ°ÁêÜÂô®ÁµÑ‰ª∂!"));
+    }
+}
+
+void ATurnBasedCharacter::SetupHealthBar()
+{
+    if (HealthBarComponent && HealthBarWidgetClass)
+    {
+        HealthBarComponent->SetWidgetClass(HealthBarWidgetClass);
+
+        if (UUserWidget* Widget = HealthBarComponent->GetUserWidgetObject())
+        {
+            HealthBarWidget = Cast<UHealthBarWidget>(Widget);
+            Debug::Print(FString::Printf(TEXT("%s: Health bar widget set up"), *GetActorLabel()), FColor::Green);
+        }
+    }
+}
+
+void ATurnBasedCharacter::BindCombatEvents()
+{
+    if (IsValid(CombatComponent))
+    {
+        // Ê™¢Êü•ÊòØÂê¶Â∑≤Á∂ÅÂÆö OnHealthChanged
+        if (!CombatComponent->OnHealthChanged.IsAlreadyBound(this, &ATurnBasedCharacter::OnHealthChanged))
+        {
+            CombatComponent->OnHealthChanged.AddDynamic(this, &ATurnBasedCharacter::OnHealthChanged);
+            Debug::Print(FString::Printf(TEXT("%s: Combat events bound"), *GetActorLabel()), FColor::Green);
+        }
+
+        // ÂàùÊ¨°Êõ¥Êñ∞Ë°ÄÊ¢ùÈ°ØÁ§∫
+        UpdateHealthDisplay();
+    }
+    else
+    {
+        Debug::Print(FString::Printf(TEXT("%s: CombatComponent is invalid!"), *GetActorLabel()), FColor::Red);
+    }
+}
+
+void ATurnBasedCharacter::SetupAnimationManager()
+{
+    if (IsValid(AnimationManager))
+    {
+        // ÂÆâÂÖ®Á∂ÅÂÆöÂãïÁï´‰∫ã‰ª∂ÔºàÈÅøÂÖçÈáçË§áÁ∂ÅÂÆöÔºâ
+        if (!AnimationManager->OnAnimationEvent.IsAlreadyBound(this, &ATurnBasedCharacter::OnAnimationHitEvent))
+        {
+            AnimationManager->OnAnimationEvent.AddDynamic(
+                this, &ATurnBasedCharacter::OnAnimationHitEvent);
+
+            Debug::Print(FString::Printf(TEXT("%s: Animation events bound successfully"),
+                *GetActorLabel()), FColor::Green);
+        }
+
+        // ÂàùÂßãÂåñÂãïÁï´Á≥ªÁµ±
+        AnimationManager->InitializeAnimationSystem();
+    }
+    else
+    {
+        Debug::Print(FString::Printf(TEXT("%s: AnimationManager is null or invalid"),
+            *GetActorLabel()), FColor::Orange);
+    }
+}
+
+void ATurnBasedCharacter::SetupCombatAnimationComponent()
+{
+    if (IsValid(AnimationManager) && IsValid(CombatAnimationComponent) && IsValid(CombatComponent))
+    {
+        CombatAnimationComponent->InitializeCombatAnimation(AnimationManager, CombatComponent);
+
+        // ÂÆâÂÖ®Á∂ÅÂÆöÊà∞È¨•ÂãïÁï´‰∫ã‰ª∂
+        if (!CombatAnimationComponent->OnCombatAnimationHit.IsAlreadyBound(this, &ATurnBasedCharacter::OnCombatAnimationHit))
+        {
+            CombatAnimationComponent->OnCombatAnimationHit.AddDynamic(
+                this, &ATurnBasedCharacter::OnCombatAnimationHit);
+        }
+
+        if (!CombatAnimationComponent->OnCombatAnimationCompleted.IsAlreadyBound(this, &ATurnBasedCharacter::OnCombatAnimationCompleted))
+        {
+            CombatAnimationComponent->OnCombatAnimationCompleted.AddDynamic(
+                this, &ATurnBasedCharacter::OnCombatAnimationCompleted);
+        }
+
+        Debug::Print(FString::Printf(TEXT("%s: Combat animation events bound successfully"),
+            *GetActorLabel()), FColor::Green);
+    }
+    else
+    {
+        Debug::Print(FString::Printf(TEXT("%s: Missing or invalid animation/combat components"),
+            *GetActorLabel()), FColor::Orange);
+    }
+}
+
+void ATurnBasedCharacter::InitializeComponents()
+{
+    // Initialize enhanced movement system
+    if (EnhancedMovementSystem)
+    {
+        EnhancedMovementSystem->MaxMovementResource = 100.0f;
+        EnhancedMovementSystem->CurrentMovementResource = 100.0f;
+        EnhancedMovementSystem->DynamicMoveSpeed = 400.0f;
+        Debug::Print(TEXT("EnhancedMovementSystem initialized"), FColor::Green);
+    }
+
+    // Bind component events
+    BindComponentEvents();
+
+    // Components will be further initialized when GridManager is set
+}
+
+void ATurnBasedCharacter::SetGridManager(AGridManager* Manager)
+{
+    GridManager = Manager;
+
+    if (!GridManager)
+        return;
+
+    // Initialize grid movement component
+    if (GridMovementComponent)
+    {
+        GridMovementComponent->InitializeGridMovement(GridManager);
+    }
+
+    // Initialize grid visual component
+    if (GridVisualComponent)
+    {
+        GridVisualComponent->Initialize(GridManager);
+    }
+}
+
+bool ATurnBasedCharacter::IsPlayerTurn() const
+{
+    if (!TurnSystemComponent)
+        return false;
+
+    return bIsPlayerControlled && TurnSystemComponent->IsMyTurn();
 }
 
 bool ATurnBasedCharacter::IsAlive() const
 {
-	if (bIsDying) return false;
+    if (bIsDying)
+        return false;
 
-	if (CombatComponent)
-	{
-		return CombatComponent->IsAlive();
-	}
+    if (CombatComponent)
+        return CombatComponent->IsAlive();
 
-	return true;
+    return true;
 }
+
+
+// === Delegate Method Implementations ===
+
+bool ATurnBasedCharacter::ConsumeActionPoints(int32 Amount)
+{
+    if (TurnSystemComponent)
+    {
+        return TurnSystemComponent->ConsumeActionPoints(Amount);
+    }
+    return false;
+}
+
+int32 ATurnBasedCharacter::GetCurrentActionPoints() const
+{
+    if (TurnSystemComponent)
+    {
+        return TurnSystemComponent->GetCurrentActionPoints();
+    }
+    return 0;
+}
+
+int32 ATurnBasedCharacter::GetMaxActionPoints() const
+{
+    if (TurnSystemComponent)
+    {
+        return TurnSystemComponent->GetMaxActionPoints();
+    }
+    return 0;
+}
+
+bool ATurnBasedCharacter::IsMyTurn() const
+{
+    if (TurnSystemComponent)
+    {
+        return TurnSystemComponent->IsMyTurn();
+    }
+    return false;
+}
+
+bool ATurnBasedCharacter::CanPerformAction(int32 ActionCost) const
+{
+    if (TurnSystemComponent)
+    {
+        return TurnSystemComponent->CanPerformAction(ActionCost);
+    }
+    return false;
+}
+
+void ATurnBasedCharacter::UpdateGridPositionFromWorld()
+{
+    if (GridMovementComponent)
+    {
+        GridMovementComponent->UpdateGridPositionFromWorld();
+    }
+}
+
+void ATurnBasedCharacter::ShowMovementRange()
+{
+    if (GridMovementComponent)
+    {
+        GridMovementComponent->ShowMovementRange();
+    }
+}
+
+FIntPoint ATurnBasedCharacter::GetCurrentGridPosition() const
+{
+    if (GridMovementComponent)
+    {
+        return GridMovementComponent->GetCurrentGridPosition();
+    }
+    return FIntPoint(0, 0);
+}
+
+void ATurnBasedCharacter::SetMovementMode(bool bDynamic)
+{
+    // Update character movement settings based on mode
+    if (bDynamic)
+    {
+        // Dynamic mode settings
+        GetCharacterMovement()->bOrientRotationToMovement = true;
+        GetCharacterMovement()->RotationRate = FRotator(0.0f, 540.0f, 0.0f);
+        bUseControllerRotationYaw = false;
+    }
+    else
+    {
+        // Grid mode settings
+        GetCharacterMovement()->bOrientRotationToMovement = false;
+        GetCharacterMovement()->RotationRate = FRotator(0.0f, 0.0f, 0.0f);
+        bUseControllerRotationYaw = true;
+    }
+}
+
+
+void ATurnBasedCharacter::OnTurnStart()
+{
+    if (TurnSystemComponent)
+    {
+        TurnSystemComponent->OnTurnStart();
+    }
+}
+
+void ATurnBasedCharacter::OnTurnEnd()
+{
+    if (TurnSystemComponent)
+    {
+        TurnSystemComponent->OnTurnEnd();
+    }
+}
+
+bool ATurnBasedCharacter::MoveToGridPosition(FIntPoint TargetGridPos)
+{
+    if (GridMovementComponent)
+    {
+        return GridMovementComponent->MoveToGridPosition(TargetGridPos);
+    }
+    return false;
+}
+
+
+
+void ATurnBasedCharacter::OnAnimationHitEvent(EAnimationType AnimationType, FName EventName)
+{
+
+    Debug::Print(TEXT("ProcessOnAnimationHitEvent"));
+
+    if (EventName == "AttackHit" && IsValid(PendingAttackTarget) && CombatComponent)
+    {
+        
+
+        CombatComponent->ExecuteAttack(PendingAttackTarget);
+        PendingAttackTarget = nullptr;
+    }
+}
+
+
+// === Portrait System ===
+
+
+UTexture2D* ATurnBasedCharacter::GetUIPortrait() const
+{
+    if (PortraitData.UIPortrait)
+        return PortraitData.UIPortrait;
+
+    if (PortraitData.FullPortrait)
+        return PortraitData.FullPortrait;
+
+    return GetAnyAvailablePortrait();
+}
+
+UTexture2D* ATurnBasedCharacter::GetBattlePortrait() const
+{
+    if (PortraitData.BattleIcon)
+        return PortraitData.BattleIcon;
+
+    return GetUIPortrait();
+}
+
+UTexture2D* ATurnBasedCharacter::GetAnyAvailablePortrait() const
+{
+    if (PortraitData.UIPortrait) return PortraitData.UIPortrait;
+    if (PortraitData.FullPortrait) return PortraitData.FullPortrait;
+    if (PortraitData.BattleIcon) return PortraitData.BattleIcon;
+    if (PortraitData.DialoguePortrait) return PortraitData.DialoguePortrait;
+
+    // Return default portrait
+    static UTexture2D* DefaultPortrait = LoadObject<UTexture2D>(
+        nullptr,
+        TEXT("/Game/UI/Portraits/Default/Default_Portrait.Default_Portrait")
+    );
+
+    return DefaultPortrait;
+}
+
+FLinearColor ATurnBasedCharacter::GetPortraitBorderColor() const
+{
+    if (TeamID == 0) // Player team
+        return FLinearColor(0.2f, 0.4f, 1.0f, 1.0f); // Blue
+    else if (TeamID == 1) // Enemy team
+        return FLinearColor(1.0f, 0.2f, 0.2f, 1.0f); // Red
+
+    return PortraitData.BorderColor;
+}
+
+// === Combat Interface ===
+
+bool ATurnBasedCharacter::CanBeAttacked_Implementation() const
+{
+    return !bIsDying && IsAlive();
+}
+
+UCombatComponent* ATurnBasedCharacter::GetCombatComponent_Implementation() const
+{
+    return CombatComponent;
+}
+
+void ATurnBasedCharacter::OnDamageReceived_Implementation(const FDamageResult& DamageResult)
+{
+    if (CombatComponent)
+    {
+        CombatComponent->ApplyDamage(DamageResult);
+    }
+}
+
+void ATurnBasedCharacter::OnDeath_Implementation(AActor* Killer)
+{
+    if (bIsDying)
+        return;
+
+    bIsDying = true;
+
+    Debug::Print(FString::Printf(TEXT("=== %s DIED ==="), *GetActorLabel()), FColor::Red, 5.0f);
+    Debug::Print(FString::Printf(TEXT("Killed by: %s"),
+        Killer ? *Killer->GetActorLabel() : TEXT("Unknown")), FColor::Orange);
+
+    // 1. Cleanup character state
+    CleanupCharacter();
+
+    // 2. Play death effects
+    PlayDeathEffects();
+
+    // 3. Notify turn system
+    NotifyTurnSystemOfDeath();
+
+    // 4. Play death animation and set destruction timer
+    if (DeathMontage && GetMesh() && GetMesh()->GetAnimInstance())
+    {
+        float MontageLength = GetMesh()->GetAnimInstance()->Montage_Play(DeathMontage);
+        float DestroyDelay = FMath::Max(MontageLength, DeathDestroyDelay);
+
+        Debug::Print(FString::Printf(TEXT("Playing death animation, destroy in %.1f seconds"),
+            DestroyDelay), FColor::Yellow);
+
+        GetWorld()->GetTimerManager().SetTimer(
+            DeathTimerHandle,
+            this,
+            &ATurnBasedCharacter::OnDeathAnimationEnd,
+            DestroyDelay,
+            false
+        );
+    }
+    else
+    {
+        Debug::Print(TEXT("No death animation, using default delay"), FColor::Yellow);
+
+        GetWorld()->GetTimerManager().SetTimer(
+            DeathTimerHandle,
+            this,
+            &ATurnBasedCharacter::OnDeathAnimationEnd,
+            DeathDestroyDelay,
+            false
+        );
+    }
+}
+
+
+void ATurnBasedCharacter::OnCombatAnimationCompleted(AActor* Attacker, AActor* Target, bool bSuccess)
+{
+    if (Attacker == this)
+    {
+        Debug::Print(FString::Printf(TEXT("Combat animation completed - Success: %s"),
+            bSuccess ? TEXT("Yes") : TEXT("No")), FColor::Cyan);
+
+        // Â¶ÇÊûúÂãïÁï´Â§±Êïó‰ΩÜÊàëÂÄëÊúâÁõÆÊ®ôÔºåÂü∑Ë°åÁõ¥Êé•ÊîªÊìä‰ΩúÁÇ∫ÂõûÈÄÄ
+        if (!bSuccess && Target && CombatComponent)
+        {
+            Debug::Print(TEXT("Animation failed - executing fallback attack"), FColor::Yellow);
+            ExecuteDirectAttack(Target);
+        }
+    }
+}
+
+void ATurnBasedCharacter::OnDeathAnimationEnd()
+{
+    Debug::Print(FString::Printf(TEXT("%s - Death animation completed, destroying actor"),
+        *GetActorLabel()), FColor::Red);
+
+    if (Controller)
+    {
+        Controller->UnPossess();
+    }
+
+    Destroy();
+}
+
+void ATurnBasedCharacter::NotifyTurnSystemOfDeath()
+{
+    TArray<AActor*> FoundActors;
+    UGameplayStatics::GetAllActorsOfClass(GetWorld(), ASimpleTurnManager::StaticClass(), FoundActors);
+
+    if (FoundActors.Num() > 0)
+    {
+        if (ASimpleTurnManager* TurnManager = Cast<ASimpleTurnManager>(FoundActors[0]))
+        {
+            TurnManager->RemoveCharacter(this);
+            Debug::Print(TEXT("Notified turn system of death"), FColor::Green);
+        }
+    }
+}
+
+void ATurnBasedCharacter::PlayDeathEffects()
+{
+    if (DeathEffectClass)
+    {
+        FActorSpawnParameters SpawnParams;
+        SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+
+        GetWorld()->SpawnActor<AActor>(
+            DeathEffectClass,
+            GetActorLocation(),
+            GetActorRotation(),
+            SpawnParams
+        );
+
+        Debug::Print(TEXT("Spawned death effect"), FColor::Cyan);
+    }
+}
+
+void ATurnBasedCharacter::CleanupCharacter()
+{
+    Debug::Print(TEXT("Cleaning up character..."), FColor::White);
+
+    // Clear grid occupation
+    if (GridMovementComponent)
+    {
+        FIntPoint CurrentPos = GridMovementComponent->GetCurrentGridPosition();
+        if (GridManager)
+        {
+            GridManager->ClearCellOccupation(CurrentPos);
+        }
+    }
+
+    // Disable collision
+    SetActorEnableCollision(false);
+    if (UCapsuleComponent* Capsule = GetCapsuleComponent())
+    {
+        Capsule->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+    }
+
+    // Disable input
+    if (APlayerController* PC = Cast<APlayerController>(GetController()))
+    {
+        DisableInput(PC);
+    }
+
+    // Remove highlights
+    if (USkeletalMeshComponent* MeshComp = GetMesh())
+    {
+        MeshComp->SetRenderCustomDepth(false);
+    }
+
+    // Hide health bar
+    if (HealthBarComponent)
+    {
+        HealthBarComponent->SetVisibility(false);
+    }
+
+    // Clear visuals
+    if (GridVisualComponent)
+    {
+        GridVisualComponent->ClearAllVisuals();
+    }
+
+    // Stop movement
+    if (UCharacterMovementComponent* Movement = GetCharacterMovement())
+    {
+        Movement->StopMovementImmediately();
+        Movement->DisableMovement();
+    }
+}
+
+void ATurnBasedCharacter::OnHealthChanged(AActor* Character, int32 CurrentHealth, int32 MaxHealth)
+{
+    if (Character != this)
+        return;
+
+    Debug::Print(FString::Printf(TEXT("%s Health: %d/%d"),
+        *GetActorLabel(), CurrentHealth, MaxHealth), FColor::Yellow);
+
+    UpdateHealthDisplay();
+
+    // Low health visual effect
+    if (CurrentHealth > 0 && CurrentHealth <= MaxHealth * 0.3f)
+    {
+        if (USkeletalMeshComponent* MeshComp = GetMesh())
+        {
+            // Flash red
+            MeshComp->SetVectorParameterValueOnMaterials(FName("DamageFlash"), FVector(1, 0, 0));
+
+            // Reset after 0.2 seconds
+            FTimerHandle FlashTimer;
+            GetWorld()->GetTimerManager().SetTimer(FlashTimer, [this]()
+                {
+                    if (USkeletalMeshComponent* MeshComp = GetMesh())
+                    {
+                        MeshComp->SetVectorParameterValueOnMaterials(FName("DamageFlash"), FVector(0, 0, 0));
+                    }
+                }, 0.2f, false);
+        }
+    }
+}
+
+void ATurnBasedCharacter::UpdateHealthDisplay()
+{
+    if (!CombatComponent || !HealthBarWidget)
+        return;
+
+    int32 CurrentHealth = CombatComponent->GetCurrentHealth();
+    int32 MaxHealth = CombatComponent->GetMaxHealth();
+
+    HealthBarWidget->UpdateHealth(CurrentHealth, MaxHealth);
+
+    if (CurrentHealth <= 0)
+    {
+        HealthBarComponent->SetVisibility(false);
+    }
+
+    Debug::Print(FString::Printf(TEXT("%s Health Display Updated: %d/%d"),
+        *GetActorLabel(), CurrentHealth, MaxHealth), FColor::Green);
+}
+

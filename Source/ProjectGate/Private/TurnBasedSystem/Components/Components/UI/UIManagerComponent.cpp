@@ -26,6 +26,12 @@ void UUIManagerComponent::Initialize(APlayerController* InOwnerController)
 {
 	OwnerController = InOwnerController;
 
+    if (!OwnerController)
+    {
+        Debug::Print(TEXT("ERROR: Initialize called with null OwnerController"), FColor::Red);
+        return;
+    }
+
 	// Try to get widget classes from GameMode if not set
 	TryGetWidgetClassesFromGameMode();
 
@@ -37,8 +43,20 @@ void UUIManagerComponent::Initialize(APlayerController* InOwnerController)
 void UUIManagerComponent::BeginPlay()
 {
 	Super::BeginPlay();
-	// Create all UI widgets at begin play
-	CreateAllUI();
+	
+    // 延遲創建 UI，確保 OwnerController 已設置
+    GetWorld()->GetTimerManager().SetTimerForNextTick([this]()
+        {
+            if (OwnerController)
+            {
+                CreateAllUI();
+            }
+            else
+            {
+                Debug::Print(TEXT("ERROR: OwnerController still null after delay"), FColor::Red);
+            }
+        });
+
 }
 
 void UUIManagerComponent::EndPlay(const EEndPlayReason::Type EndPlayReason)

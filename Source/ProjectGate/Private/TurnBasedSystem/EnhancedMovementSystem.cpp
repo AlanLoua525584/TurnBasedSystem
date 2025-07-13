@@ -2,6 +2,7 @@
 
 
 #include "TurnBasedSystem/EnhancedMovementSystem.h"
+#include "TurnBasedSystem/Components/Movement/GridMovementComponent.h"
 #include "GameFramework/Character.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/PlayerController.h"

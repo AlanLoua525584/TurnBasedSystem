@@ -2,6 +2,7 @@
 
 
 #include "TurnbasedSystem/Components/Combat/ModeManagerComponent.h"
+#include "TurnBasedSystem/Components/Movement/GridMovementComponent.h"
 #include "TurnBasedSystem/GridPlayerController.h"
 #include "TurnBasedSystem/TurnBasedCharacter.h"
 #include "TurnBasedSystem/GridVisualComponent.h"
@@ -95,6 +96,12 @@ void UModeManagerComponent::EnterGridMode()
     // Update character movement settings 更新角色移動設置
     UpdateCharacterMovementSettings(ControlledCharacter, false);
 
+    //更新角色網格位置
+    if (UGridMovementComponent* GridMovement = ControlledCharacter->GetComponentByClass<UGridMovementComponent>())
+    {
+        GridMovement->UpdateGridPositionFromWorld();
+    }
+
     // Show grid movement range 顯示網格移動範圍
     ControlledCharacter->ShowMovementRange();
 
@@ -129,6 +136,7 @@ void UModeManagerComponent::EnterGridMode()
             TurnWidget->UpdateCameraMode(false);
         }
     }
+
 
     ShowModeNotification(TEXT("GRID MODE - Click to move"));
 }

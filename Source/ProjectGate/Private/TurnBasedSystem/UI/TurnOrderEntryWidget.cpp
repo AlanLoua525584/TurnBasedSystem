@@ -21,7 +21,7 @@ void UTurnOrderEntryWidget::SetCharacterData(ATurnBasedCharacter* Character)
     }
 
     // ³]¸m¥ý§ð­È¤å¦r
-    if (Character->CombatComponent)
+    if (Character->AccessCombatComponent())
     {
         int32 Initiative = Character->CurrentInitiative;
         InitiativeText->SetText(FText::AsNumber(Initiative));

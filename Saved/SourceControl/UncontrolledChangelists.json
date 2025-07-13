@@ -5,7 +5,16 @@
 			"guid": "00000000000000000000000000000000",
 			"description": "Default Uncontrolled Changelist",
 			"files": [
-				"D:/UnrealProjects/ProjectGate/Content/TurnBasedSystem/BluePrints/BP_GridPlayerController.uasset"
+				"D:/UnrealProjects/ProjectGate/Content/TurnBasedSystem/BluePrints/BP_GridPlayerController.uasset",
+				"D:/UnrealProjects/ProjectGate/Content/TurnBasedSystem/BluePrints/BP_TurnBasedCharacter.uasset",
+				"D:/UnrealProjects/ProjectGate/Content/DataTable/DT_AnimationConfigs.uasset",
+				"D:/UnrealProjects/ProjectGate/Content/TurnBasedSystem/BluePrints/Character/BP_PlayerCharacter.uasset",
+				"D:/UnrealProjects/ProjectGate/Content/Map/TurnBasedTest.umap",
+				"D:/UnrealProjects/ProjectGate/Content/TurnBasedSystem/BluePrints/Character/BP_EenemyCharacter.uasset",
+				"D:/UnrealProjects/ProjectGate/Content/ThirdPerson/Variant_Combat/Anims/AM_ComboAttack.uasset",
+				"D:/UnrealProjects/ProjectGate/Content/TurnBasedSystem/BluePrints/AnimNotifys/AN_AttackHit.uasset",
+				"D:/UnrealProjects/ProjectGate/Content/TurnBasedSystem/BluePrints/AnimNotifys/AN_AttackHitNotify.uasset",
+				"D:/UnrealProjects/ProjectGate/Content/TurnBasedSystem/BluePrints/AnimNotifys/AttackHit.uasset"
 			]
 		}
 	]

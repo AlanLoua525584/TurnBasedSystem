@@ -800,6 +800,53 @@ DEFINE_FUNCTION(AGridPlayerController::execOnMove)
 }
 // ********** End Class AGridPlayerController Function OnMove **************************************
 
+// ********** Begin Class AGridPlayerController Function OnMovementModeChanged *********************
+struct Z_Construct_UFunction_AGridPlayerController_OnMovementModeChanged_Statics
+{
+	struct GridPlayerController_eventOnMovementModeChanged_Parms
+	{
+		bool bIsDynamicMode;
+	};
+#if WITH_METADATA
+	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
+		{ "ModuleRelativePath", "Public/TurnBasedSystem/GridPlayerController.h" },
+	};
+#endif // WITH_METADATA
+	static void NewProp_bIsDynamicMode_SetBit(void* Obj);
+	static const UECodeGen_Private::FBoolPropertyParams NewProp_bIsDynamicMode;
+	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
+	static const UECodeGen_Private::FFunctionParams FuncParams;
+};
+void Z_Construct_UFunction_AGridPlayerController_OnMovementModeChanged_Statics::NewProp_bIsDynamicMode_SetBit(void* Obj)
+{
+	((GridPlayerController_eventOnMovementModeChanged_Parms*)Obj)->bIsDynamicMode = 1;
+}
+const UECodeGen_Private::FBoolPropertyParams Z_Construct_UFunction_AGridPlayerController_OnMovementModeChanged_Statics::NewProp_bIsDynamicMode = { "bIsDynamicMode", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Bool | UECodeGen_Private::EPropertyGenFlags::NativeBool, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, sizeof(bool), sizeof(GridPlayerController_eventOnMovementModeChanged_Parms), &Z_Construct_UFunction_AGridPlayerController_OnMovementModeChanged_Statics::NewProp_bIsDynamicMode_SetBit, METADATA_PARAMS(0, nullptr) };
+const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_AGridPlayerController_OnMovementModeChanged_Statics::PropPointers[] = {
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_AGridPlayerController_OnMovementModeChanged_Statics::NewProp_bIsDynamicMode,
+};
+static_assert(UE_ARRAY_COUNT(Z_Construct_UFunction_AGridPlayerController_OnMovementModeChanged_Statics::PropPointers) < 2048);
+const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_AGridPlayerController_OnMovementModeChanged_Statics::FuncParams = { { (UObject*(*)())Z_Construct_UClass_AGridPlayerController, nullptr, "OnMovementModeChanged", Z_Construct_UFunction_AGridPlayerController_OnMovementModeChanged_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_AGridPlayerController_OnMovementModeChanged_Statics::PropPointers), sizeof(Z_Construct_UFunction_AGridPlayerController_OnMovementModeChanged_Statics::GridPlayerController_eventOnMovementModeChanged_Parms), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x00040401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_AGridPlayerController_OnMovementModeChanged_Statics::Function_MetaDataParams), Z_Construct_UFunction_AGridPlayerController_OnMovementModeChanged_Statics::Function_MetaDataParams)},  };
+static_assert(sizeof(Z_Construct_UFunction_AGridPlayerController_OnMovementModeChanged_Statics::GridPlayerController_eventOnMovementModeChanged_Parms) < MAX_uint16);
+UFunction* Z_Construct_UFunction_AGridPlayerController_OnMovementModeChanged()
+{
+	static UFunction* ReturnFunction = nullptr;
+	if (!ReturnFunction)
+	{
+		UECodeGen_Private::ConstructUFunction(&ReturnFunction, Z_Construct_UFunction_AGridPlayerController_OnMovementModeChanged_Statics::FuncParams);
+	}
+	return ReturnFunction;
+}
+DEFINE_FUNCTION(AGridPlayerController::execOnMovementModeChanged)
+{
+	P_GET_UBOOL(Z_Param_bIsDynamicMode);
+	P_FINISH;
+	P_NATIVE_BEGIN;
+	P_THIS->OnMovementModeChanged(Z_Param_bIsDynamicMode);
+	P_NATIVE_END;
+}
+// ********** End Class AGridPlayerController Function OnMovementModeChanged ***********************
+
 // ********** Begin Class AGridPlayerController Function OnTurnChangedCamera ***********************
 struct Z_Construct_UFunction_AGridPlayerController_OnTurnChangedCamera_Statics
 {
@@ -908,6 +955,7 @@ void AGridPlayerController::StaticRegisterNativesAGridPlayerController()
 		{ "OnCameraModeChanged", &AGridPlayerController::execOnCameraModeChanged },
 		{ "OnDynamicMode", &AGridPlayerController::execOnDynamicMode },
 		{ "OnMove", &AGridPlayerController::execOnMove },
+		{ "OnMovementModeChanged", &AGridPlayerController::execOnMovementModeChanged },
 		{ "OnTurnChangedCamera", &AGridPlayerController::execOnTurnChangedCamera },
 		{ "SwitchMovementMode", &AGridPlayerController::execSwitchMovementMode },
 	};
@@ -1095,6 +1143,7 @@ struct Z_Construct_UClass_AGridPlayerController_Statics
 		{ &Z_Construct_UFunction_AGridPlayerController_OnCameraModeChanged, "OnCameraModeChanged" }, // 1583813326
 		{ &Z_Construct_UFunction_AGridPlayerController_OnDynamicMode, "OnDynamicMode" }, // 775977963
 		{ &Z_Construct_UFunction_AGridPlayerController_OnMove, "OnMove" }, // 2667192795
+		{ &Z_Construct_UFunction_AGridPlayerController_OnMovementModeChanged, "OnMovementModeChanged" }, // 678560676
 		{ &Z_Construct_UFunction_AGridPlayerController_OnTurnChangedCamera, "OnTurnChangedCamera" }, // 3028409276
 		{ &Z_Construct_UFunction_AGridPlayerController_SwitchMovementMode, "SwitchMovementMode" }, // 1806344397
 	};
@@ -1173,10 +1222,10 @@ AGridPlayerController::~AGridPlayerController() {}
 struct Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_GridPlayerController_h__Script_ProjectGate_Statics
 {
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_AGridPlayerController, AGridPlayerController::StaticClass, TEXT("AGridPlayerController"), &Z_Registration_Info_UClass_AGridPlayerController, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(AGridPlayerController), 848154580U) },
+		{ Z_Construct_UClass_AGridPlayerController, AGridPlayerController::StaticClass, TEXT("AGridPlayerController"), &Z_Registration_Info_UClass_AGridPlayerController, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(AGridPlayerController), 4048200494U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_GridPlayerController_h__Script_ProjectGate_3096268099(TEXT("/Script/ProjectGate"),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_GridPlayerController_h__Script_ProjectGate_3087016194(TEXT("/Script/ProjectGate"),
 	Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_GridPlayerController_h__Script_ProjectGate_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_GridPlayerController_h__Script_ProjectGate_Statics::ClassInfo),
 	nullptr, 0,
 	nullptr, 0);

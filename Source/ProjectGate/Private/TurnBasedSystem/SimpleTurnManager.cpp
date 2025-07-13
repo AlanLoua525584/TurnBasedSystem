@@ -1,7 +1,8 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+ï»¿// Fill out your copyright notice in the Description page of Project Settings.
 
 
 #include "TurnBasedSystem/SimpleTurnManager.h"
+#include "TurnBasedSystem/Components/TurnSystemComponent.h"
 #include "Public/DebugHelper.h"
 #include "FreeCameraPawn.h"
 #include "TurnBasedSystem/EnhancedMovementSystem.h"
@@ -9,6 +10,8 @@
 #include "TurnBasedSystem/GridPlayerController.h"
 #include "Kismet/GameplayStatics.h" 
 #include "CombatSystem/CombatStats.h"
+#include "CombatSystem/CombatComponent.h"
+#include "CombatSystem/CombatInterface.h"
 #include "Engine/World.h"
 #include "TimerManager.h"
 
@@ -29,6 +32,16 @@ void ASimpleTurnManager::AddCharacter(AActor* Character)
 {
 	if (!Character)return;
 
+	// é˜²æ­¢é‡è¤‡æ·»åŠ 
+	if (TurnOrder.Contains(Character))
+	{
+		Debug::Print(FString::Printf(TEXT("Character %s already in turn order, skipping"),
+			*Character->GetName()), FColor::Yellow);
+		return;
+	}
+
+
+
 	if (!TurnOrder.Contains(Character))
 	{
 		TurnOrder.Add(Character);
@@ -44,170 +57,266 @@ void ASimpleTurnManager::StartBattle()
 		return;
 	}
 
+	if (bBattleStarted)
+	{
+		Debug::Print(TEXT("Battle already started, ignoring duplicate call"), FColor::Yellow);
+		return;
+	}
+
 	bBattleStarted = true;
-	CurrentTurnIndex = 0; // Reset to the first character
+	CurrentTurnIndex = 0;
 	CurrentPhase = ETurnPhase::TurnStart;
-	TurnCount = 1; // Initialize turn count
+	TurnCount = 1;
 
 	Debug::Print(FString::Printf(TEXT("Battle started with %d characters."), TurnOrder.Num()), FColor::Green);
 
-
-	// Start The First character turn
-
-	if (ATurnBasedCharacter* FirstCharacter = Cast<ATurnBasedCharacter>(TurnOrder[CurrentTurnIndex]))
+	// ç¢ºä¿ç¬¬ä¸€å€‹è§’è‰²æ˜¯ç©å®¶è§’è‰²
+	if (ATurnBasedCharacter* FirstCharacter = Cast<ATurnBasedCharacter>(TurnOrder[0]))
 	{
-		FirstCharacter->OnTurnStart();
+		if (!FirstCharacter->bIsPlayerControlled)
+		{
+			Debug::Print(TEXT("WARNING: First character is not player controlled!"), FColor::Red);
+
+			// å˜—è©¦æ‰¾åˆ°ç©å®¶è§’è‰²ä¸¦äº¤æ›åˆ°ç¬¬ä¸€ä½
+			for (int32 i = 1; i < TurnOrder.Num(); i++)
+			{
+				if (ATurnBasedCharacter* Character = Cast<ATurnBasedCharacter>(TurnOrder[i]))
+				{
+					if (Character->bIsPlayerControlled)
+					{
+						TurnOrder.Swap(0, i);
+						Debug::Print(TEXT("Swapped player character to first position"), FColor::Green);
+						break;
+					}
+				}
+			}
+		}
 	}
 
-	// Possess The First Character
-	PossessCurrentTurnCharacter();
+	// ç¢ºä¿æ‰€æœ‰è§’è‰²çš„å›åˆç‹€æ…‹éƒ½æ˜¯çµæŸçš„
+	for (AActor* Actor : TurnOrder)
+	{
+		if (ATurnBasedCharacter* Character = Cast<ATurnBasedCharacter>(Actor))
+		{
+			// æ¸…é™¤ä»»ä½•ç¾æœ‰çš„ Controller ç¶å®šï¼ˆç©å®¶è§’è‰²ï¼‰
+			if (Character->bIsPlayerControlled && Character->Controller)
+			{
+				Debug::Print(FString::Printf(TEXT("Clearing controller from %s before battle start"),
+					*Character->GetActorLabel()), FColor::Orange);
+				if (AController* OldController = Character->Controller)
+				{
+					OldController->UnPossess();
+				}
+			}
 
+			if (UTurnSystemComponent* TurnSystem = Character->GetTurnSystemComponent())
+			{
+				if (TurnSystem->IsMyTurn())
+				{
+					TurnSystem->OnTurnEnd();
+				}
+			}
+		}
+	}
 
-	OnTurnChanged.Broadcast(GetCurrentTurnCharacter());
-	OnPhaseChanged.Broadcast(GetCurrentTurnCharacter(), CurrentPhase);
+	// å»¶é²ä¸€å¹€å† Possessï¼Œç¢ºä¿æ¸…ç†å®Œæˆ
+	FTimerHandle PossessTimer;
+	GetWorld()->GetTimerManager().SetTimer(PossessTimer, [this]()
+		{
+			// Possess ç¬¬ä¸€å€‹è§’è‰²
+			PossessCurrentTurnCharacter();
 
+			// é–‹å§‹ç¬¬ä¸€å€‹è§’è‰²çš„å›åˆ
+			if (ATurnBasedCharacter* FirstCharacter = Cast<ATurnBasedCharacter>(TurnOrder[CurrentTurnIndex]))
+			{
+				if (UTurnSystemComponent* TurnSystem = FirstCharacter->GetTurnSystemComponent())
+				{
+					TurnSystem->OnTurnStart();
+				}
+			}
+
+			// å»£æ’­äº‹ä»¶
+			OnTurnChanged.Broadcast(GetCurrentTurnCharacter());
+			OnPhaseChanged.Broadcast(GetCurrentTurnCharacter(), CurrentPhase);
+
+		}, 0.1f, false);
 
 }
 
 void ASimpleTurnManager::NextTurn()
 {
-	if (!bBattleStarted || TurnOrder.Num() == 0)return;
+	if (!bBattleStarted || TurnOrder.Num() == 0) return;
 
-	//µ²§ô·í«e¨¤¦âªº¦^¦X
-	if (ATurnBasedCharacter* CurrentCharacter = Cast<ATurnBasedCharacter>(TurnOrder[CurrentTurnIndex]))
+	Debug::Print(TEXT("=== NextTurn é–‹å§‹ ==="), FColor::Cyan);
+
+	// === æ–°å¢ï¼šä¿å­˜èˆŠç´¢å¼•å’Œè§’è‰² ===
+	int32 OldIndex = CurrentTurnIndex;
+	AActor* OldCharacter = TurnOrder[OldIndex];
+
+	// === æ–°å¢ï¼šæ›´æ–°ç´¢å¼• ===
+	CurrentTurnIndex = (CurrentTurnIndex + 1) % TurnOrder.Num();
+	Debug::Print(FString::Printf(TEXT("æ›´æ–°ç´¢å¼•: %d -> %d"),
+		OldIndex, CurrentTurnIndex), FColor::Green);
+
+	// === æ–°å¢ï¼šç²å–æ–°è§’è‰² ===
+	AActor* NewCharacter = TurnOrder[CurrentTurnIndex];
+	Debug::Print(FString::Printf(TEXT("æ–°è§’è‰²: %s (ç´¢å¼•: %d)"),
+		*NewCharacter->GetActorLabel(), CurrentTurnIndex), FColor::Blue);
+
+	// === ä¿®æ”¹ï¼šçµæŸèˆŠè§’è‰²çš„å›åˆ ===
+	if (ATurnBasedCharacter* OldTurnChar = Cast<ATurnBasedCharacter>(OldCharacter))
 	{
-		CurrentCharacter->OnTurnEnd();
+		Debug::Print(FString::Printf(TEXT("çµæŸå›åˆ: %s"),
+			*OldTurnChar->GetActorLabel()), FColor::Orange);
+
+		if (UTurnSystemComponent* TurnSystem = OldTurnChar->GetTurnSystemComponent())
+		{
+			TurnSystem->OnTurnEnd();
+		}
 	}
 
-	// Move to the next character in the turn order
+	// === ä¿®æ”¹ï¼šé–‹å§‹æ–°è§’è‰²çš„å›åˆ ===
+	if (ATurnBasedCharacter* NewTurnChar = Cast<ATurnBasedCharacter>(NewCharacter))
+	{
+		Debug::Print(FString::Printf(TEXT("é–‹å§‹æ–°å›åˆ: %s"),
+			*NewTurnChar->GetActorLabel()), FColor::Cyan);
 
-	CurrentTurnIndex = (CurrentTurnIndex + 1) % TurnOrder.Num();
-	CurrentPhase = ETurnPhase::TurnStart; // Reset phase to TurnStart for the new character
+		if (UTurnSystemComponent* TurnSystem = NewTurnChar->GetTurnSystemComponent())
+		{
+			TurnSystem->OnTurnStart();
+		}
+	}
 
-	//¦pªG¦^¨ì²Ä¤@­Ó¨¤¦â¡Aªí¥Ü·sªº¤@½ü¶}©l
+	// === ä¿®æ”¹ï¼šè™•ç†æ§åˆ¶æ¬Šåˆ‡æ› ===
+	PossessCharacter(NewCharacter);  // ä½¿ç”¨æ–°è§’è‰²è€Œéç´¢å¼•
 
+	// === ä¿®æ”¹ï¼šå»£æ’­äº‹ä»¶ ===
+	OnTurnChanged.Broadcast(NewCharacter);
+	OnPhaseChanged.Broadcast(NewCharacter, CurrentPhase);
+
+	// === ä¿®æ”¹ï¼šå›åˆè¨ˆæ•¸ ===
 	if (CurrentTurnIndex == 0)
 	{
 		TurnCount++;
-	Debug::Print(FString::Printf(TEXT("Turn %d started."), TurnCount), FColor::Green);
+		Debug::Print(FString::Printf(TEXT("å›åˆ %d é–‹å§‹"), TurnCount), FColor::Green);
 	}
 
-	//¶}©l·s¨¤¦âªº¦^¦X
-	if (ATurnBasedCharacter* NewCharacter = Cast<ATurnBasedCharacter>(TurnOrder[CurrentTurnIndex]))
-	{
-		NewCharacter->OnTurnStart();
-		Debug::Print(FString::Printf(TEXT("Turn changed to: %s"), *NewCharacter->GetActorLabel()), FColor::Cyan);
-	}
-
-	//Possess ·s¨¤¦â
-	PossessCurrentTurnCharacter();
-
-	//¼s¼½¨Æ¥ó
-	OnTurnChanged.Broadcast(GetCurrentTurnCharacter());
-	OnPhaseChanged.Broadcast(GetCurrentTurnCharacter(), CurrentPhase);
+	Debug::Print(TEXT("===  NextTurn() çµæŸ ==="), FColor::Cyan);
+	
 }
 
 void ASimpleTurnManager::PossessCurrentTurnCharacter()
 {
-	Debug::Print(TEXT("==Start PossessCurrentTurnCharacter"), FColor::Red);
+	Debug::Print(TEXT("===  PossessCurrentTurnCharacter é–‹å§‹ ==="), FColor::Cyan);
 
-	// Àò¨ú PlayerController
 	AGridPlayerController* PC = Cast<AGridPlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
 	if (!PC)
 	{
-		Debug::Print(TEXT("ERROR: No GridPlayerController found!"), FColor::Red);
+		Debug::Print(TEXT("éŒ¯èª¤: æ‰¾ä¸åˆ° GridPlayerController!"), FColor::Red);
 		return;
 	}
 
-	// Àò¨ú·í«e¦^¦X¨¤¦â
 	ATurnBasedCharacter* CurrentCharacter = Cast<ATurnBasedCharacter>(GetCurrentTurnCharacter());
 	if (!CurrentCharacter)
 	{
-		Debug::Print(TEXT("ERROR: No current character to possess!"), FColor::Red);
+		Debug::Print(TEXT("éŒ¯èª¤: æ²’æœ‰ç•¶å‰å›åˆè§’è‰²!"), FColor::Red);
 		return;
 	}
 
-	// ­«¸m°ÊºA¼Ò¦¡ª¬ºA
-	if (PC->bIsInDynamicMode)
+	Debug::Print(FString::Printf(TEXT("ç•¶å‰å›åˆè§’è‰²: %s (ç´¢å¼•: %d)"),
+		*CurrentCharacter->GetActorLabel(), CurrentTurnIndex), FColor::Green);
+
+	// å…ˆUnPossessä»»ä½•ç¾æœ‰çš„Pawn
+	if (PC->GetPawn())
 	{
-		Debug::Print(TEXT("Exiting Dynamic Mode before turn change"), FColor::Yellow);
-
-		// Àò¨ú·í«e±±¨îªº¨¤¦â
-		if (ATurnBasedCharacter* OldCharacter = PC->GetControlledTurnCharacter())
-		{
-			if (UEnhancedMovementSystem* MovementSystem = OldCharacter->GetComponentByClass<UEnhancedMovementSystem>())
-			{
-				// °±¤î°ÊºA²¾°Ê
-				MovementSystem->SwitchMovementMode(ECustomMovementMode::Idle);
-			}
-
-			// ²M²z²¾°Ê¼Ò¦¡
-			OldCharacter->SetMovementMode(false);
-		}
-		// ­«¸m°ÊºA¼Ò¦¡ª¬ºA
-		PC->bIsInDynamicMode = false;
-
-
-		// ³qª¾ UI §ó·s
-		PC->UIOnMovementModeChanged.Broadcast(false);
+		Debug::Print(FString::Printf(TEXT("UnPossess ç•¶å‰Pawn: %s"),
+			*PC->GetPawn()->GetName()), FColor::Yellow);
+		PC->UnPossess();
 	}
 
-
-		// ¥u Possess ª±®a±±¨îªº¨¤¦â
-		if (CurrentCharacter->bIsPlayerControlled)
+	// åªæœ‰ç©å®¶æ§åˆ¶çš„è§’è‰²æ‰éœ€è¦Possess
+	if (CurrentCharacter->bIsPlayerControlled)
+	{
+		// ç¢ºä¿è§’è‰²æ²’æœ‰å…¶ä»–Controller
+		if (CurrentCharacter->Controller && CurrentCharacter->Controller != PC)
 		{
-			Debug::Print(TEXT("PossessCurrentTurnCharacterWorking"), FColor::Red);
+			Debug::Print(TEXT("æ¸…ç†èˆŠçš„Controller"), FColor::Yellow);
+			CurrentCharacter->Controller->UnPossess();
+		}
 
-			if (PC->GetPawn() != CurrentCharacter)
+		// Possessæ–°è§’è‰²
+		PC->PossessAndSyncCharacter(CurrentCharacter);
+
+		// é©—è­‰PossessæˆåŠŸ
+		if (PC->GetPawn() == CurrentCharacter)
+		{
+			Debug::Print(TEXT("PossessæˆåŠŸ"), FColor::Green);
+
+			// ç¢ºä¿Controllerç¶å®šæ­£ç¢º
+			if (CurrentCharacter->Controller != PC)
 			{
-				PC->Possess(CurrentCharacter);
-				Debug::Print(FString::Printf(TEXT("Possessed %s"), *CurrentCharacter->GetActorLabel()), FColor::Green);
+				Debug::Print(TEXT("Controllerç¶å®šç•°å¸¸ï¼Œå˜—è©¦ä¿®å¾©"), FColor::Orange);
+				CurrentCharacter->SetOwner(PC);
 			}
-
 		}
 		else
 		{
-			// AI ±±¨îªº¨¤¦â¡A¨ú®ø Possess
-			if (PC->GetPawn())
-			{
-				PC->UnPossess();
-				Debug::Print(TEXT("UnPossessed for AI turn"), FColor::Yellow);
-			}
+			Debug::Print(TEXT("Possesså¤±æ•—!"), FColor::Red);
 		}
+	}
+	else
+	{
+		Debug::Print(TEXT("AIè§’è‰²å›åˆ - ä¸éœ€è¦Possess"), FColor::Blue);
+	}
 
-		// ¨Ï¥Î GridPlayerController ªº¤½¶}¤èªk³B²z¬Û¾÷
-		PC->OnTurnChangedCamera(CurrentCharacter, CurrentCharacter->bIsPlayerControlled);
-	
+	// è™•ç†ç›¸æ©Ÿ
+	PC->OnTurnChangedCamera(CurrentCharacter, CurrentCharacter->bIsPlayerControlled);
+
+	Debug::Print(FString::Printf(TEXT("å°‡ Possess: %s"), *CurrentCharacter->GetActorLabel()), FColor::Green);
+
+	Debug::Print(TEXT("=== PossessCurrentTurnCharacter çµæŸ ==="), FColor::Cyan);
 }
+
 
 void ASimpleTurnManager::RemoveCharacter(AActor* Character)
 {
+	if (!bBattleStarted || TurnOrder.Num() == 0) return;
+
+	APlayerController* PC = UGameplayStatics::GetPlayerController(GetWorld(), 0);
+	AGridPlayerController* GridPC = Cast<AGridPlayerController>(PC);
+	ATurnBasedCharacter* CurrentCharacter = Cast<ATurnBasedCharacter>(GetCurrentTurnCharacter());
+
+	if (!GridPC || !CurrentCharacter) return;
+
+	GridPC->PossessAndSyncCharacter(CurrentCharacter);
+
+	/*
 	if (!Character || !TurnOrder.Contains(Character)) return;
 
 	Debug::Print(FString::Printf(TEXT("Removing %s from turn order"),
 		*Character->GetName()), FColor::Orange);
-	// °O¿ı¬O§_¬O·í«e¦^¦X¨¤¦â
+	// è¨˜éŒ„æ˜¯å¦æ˜¯ç•¶å‰å›åˆè§’è‰²
 	bool bWasCurrentTurn = (CurrentTurnIndex < TurnOrder.Num() &&
 		TurnOrder[CurrentTurnIndex] == Character);
 
-	// §ä¨ì¨¤¦âªº¯Á¤Ş
+	// æ‰¾åˆ°è§’è‰²çš„ç´¢å¼•
 	int32 CharacterIndex = TurnOrder.IndexOfByKey(Character);
 
-	// ±q¦Cªí¤¤²¾°£
+	// å¾åˆ—è¡¨ä¸­ç§»é™¤
 	TurnOrder.RemoveAt(CharacterIndex);
 
-	// ½Õ¾ã·í«e¯Á¤Ş
+	// èª¿æ•´ç•¶å‰ç´¢å¼•
 	if (CharacterIndex < CurrentTurnIndex)
 	{
 		CurrentTurnIndex--;
 	}
 	else if (CharacterIndex == CurrentTurnIndex)
 	{
-		// ¦pªG²¾°£ªº¬O·í«e¨¤¦â¡A¤£»İ­n¼W¥[¯Á¤Ş
-		// NextTurn ·|³B²z
+		// å¦‚æœç§»é™¤çš„æ˜¯ç•¶å‰è§’è‰²ï¼Œä¸éœ€è¦å¢åŠ ç´¢å¼•
+		// NextTurn æœƒè™•ç†
 	}
 
-	// ½T«O¯Á¤Ş¦³®Ä
+	// ç¢ºä¿ç´¢å¼•æœ‰æ•ˆ
 	if (TurnOrder.Num() > 0)
 	{
 		CurrentTurnIndex = CurrentTurnIndex % TurnOrder.Num();
@@ -215,19 +324,19 @@ void ASimpleTurnManager::RemoveCharacter(AActor* Character)
 
 	Debug::Print(FString::Printf(TEXT("Remaining characters: %d"), TurnOrder.Num()), FColor::Yellow);
 
-	// ÀË¬d¾Ô°«¬O§_µ²§ô
+	// æª¢æŸ¥æˆ°é¬¥æ˜¯å¦çµæŸ
 	if (CheckBattleEnd())
 	{
-		return; // ¾Ô°«µ²§ô¡A¤£»İ­nÄ~Äò
+		return; // æˆ°é¬¥çµæŸï¼Œä¸éœ€è¦ç¹¼çºŒ
 	}
 
-	// ¦pªG²¾°£ªº¬O·í«e¦^¦X¨¤¦â¡A¤Á´«¨ì¤U¤@­Ó
+	// å¦‚æœç§»é™¤çš„æ˜¯ç•¶å‰å›åˆè§’è‰²ï¼Œåˆ‡æ›åˆ°ä¸‹ä¸€å€‹
 	if (bWasCurrentTurn && TurnOrder.Num() > 0)
 	{
-		// ­«¸m¶¥¬q
+		// é‡ç½®éšæ®µ
 		CurrentPhase = ETurnPhase::TurnStart;
 
-		// Ä²µo·s¨¤¦âªº¦^¦X
+		// è§¸ç™¼æ–°è§’è‰²çš„å›åˆ
 		AActor* NewCurrentCharacter = TurnOrder[CurrentTurnIndex];
 		OnTurnChanged.Broadcast(NewCurrentCharacter);
 		OnPhaseChanged.Broadcast(NewCurrentCharacter, CurrentPhase);
@@ -235,6 +344,7 @@ void ASimpleTurnManager::RemoveCharacter(AActor* Character)
 		Debug::Print(FString::Printf(TEXT("Turn passed to: %s"),
 			*NewCurrentCharacter->GetActorLabel()), FColor::Green);
 	}
+	*/
 }
 
 bool ASimpleTurnManager::CheckBattleEnd()
@@ -246,7 +356,7 @@ bool ASimpleTurnManager::CheckBattleEnd()
 		return true;
 	}
 
-	// ÀË¬d¬O§_¥u³Ñ¤@­Ó°}Àç
+	// æª¢æŸ¥æ˜¯å¦åªå‰©ä¸€å€‹é™£ç‡Ÿ
 	bool bHasPlayer = false;
 	bool bHasEnemy = false;
 
@@ -265,7 +375,7 @@ bool ASimpleTurnManager::CheckBattleEnd()
 		}
 	}
 
-	// ¥u³Ñ¤@­Ó°}Àç
+	// åªå‰©ä¸€å€‹é™£ç‡Ÿ
 	if (bHasPlayer && !bHasEnemy)
 	{
 		Debug::Print(TEXT("=== BATTLE WON! All enemies defeated! ==="), FColor::Green, 5.0f);
@@ -286,14 +396,14 @@ void ASimpleTurnManager::RecalculateTurnOrder()
 {
 
 	
-	// ¬°¨C­Ó¨¤¦â­pºâ¥ı§ğ­È
+	// ç‚ºæ¯å€‹è§’è‰²è¨ˆç®—å…ˆæ”»å€¼
 	for (AActor* Actor : TurnOrder)
 	{
 		if (ATurnBasedCharacter* Character = Cast<ATurnBasedCharacter>(Actor))
 		{
 			Character->CurrentInitiative = CalculateInitiative(Character);
 
-			// ¼s¼½§ó·s¨Æ¥ó
+			// å»£æ’­æ›´æ–°äº‹ä»¶
 			Character->OnTurnOrderChanged.Broadcast(Character->CurrentInitiative);
 
 		}
@@ -343,19 +453,19 @@ void ASimpleTurnManager::NextPhase()
 	switch (CurrentPhase)
 	{
 	case ETurnPhase::TurnStart:
-		// Preparation phase ¡÷ Main phase
+		// Preparation phase â†’ Main phase
 		CurrentPhase = ETurnPhase::MainPhase;
 		Debug::Print(FString::Printf(TEXT("[%s] Enter MainPhase"), *CharacterName), FColor::Green);
 		break;
 
 	case ETurnPhase::MainPhase:
-		// Main phase ¡÷ Action phase
+		// Main phase â†’ Action phase
 		CurrentPhase = ETurnPhase::TurnEnd;
 		Debug::Print(FString::Printf(TEXT("[%s] Enter TurnEnd"), *CharacterName), FColor::Yellow);
 		break;
 
 	case ETurnPhase::TurnEnd:
-		// Action phase ¡÷ Turn start of the next character
+		// Action phase â†’ Turn start of the next character
 		Debug::Print(FString::Printf(TEXT("[%s] Turn Finished"), *CharacterName), FColor::Orange);
 		NextTurn();
 		CurrentPhase = ETurnPhase::TurnStart;
@@ -400,12 +510,134 @@ int32 ASimpleTurnManager::GetCurrentCharacterIndex() const
 }
 
 
+void ASimpleTurnManager::SetCurrentCharacterIndex(int32 NewIndex)
+{
+	if (!bBattleStarted || TurnOrder.Num() == 0)
+	{
+		Debug::Print(TEXT("Cannot set index - battle not started or no characters"), FColor::Red);
+		return;
+	}
+
+	// ç¢ºä¿ç´¢å¼•æœ‰æ•ˆ
+	if (NewIndex >= 0 && NewIndex < TurnOrder.Num())
+	{
+		int32 OldIndex = CurrentTurnIndex;
+		CurrentTurnIndex = NewIndex;
+
+		Debug::Print(FString::Printf(TEXT("Turn index changed: %d -> %d"),
+			OldIndex, CurrentTurnIndex), FColor::Green);
+
+		// æ›´æ–°æ‰€æœ‰è§’è‰²çš„å›åˆç‹€æ…‹
+		for (int32 i = 0; i < TurnOrder.Num(); i++)
+		{
+			if (ATurnBasedCharacter* Character = Cast<ATurnBasedCharacter>(TurnOrder[i]))
+			{
+				if (UTurnSystemComponent* TurnSystem = Character->GetTurnSystemComponent())
+				{
+					if (i == CurrentTurnIndex)
+					{
+						TurnSystem->OnTurnStart();
+					}
+					else
+					{
+						TurnSystem->OnTurnEnd();
+					}
+				}
+			}
+		}
+
+		// å»£æ’­äº‹ä»¶
+		OnTurnChanged.Broadcast(GetCurrentTurnCharacter());
+	}
+	else
+	{
+		Debug::Print(FString::Printf(TEXT("Invalid index: %d (valid range: 0-%d)"),
+			NewIndex, TurnOrder.Num() - 1), FColor::Red);
+	}
+}
+
+void ASimpleTurnManager::PossessCharacter(AActor* CharacterToPossess)
+{
+	Debug::Print(TEXT("=== PossessCharacter é–‹å§‹ ==="), FColor::Cyan);
+
+	AGridPlayerController* PC = Cast<AGridPlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
+	if (!PC)
+	{
+		Debug::Print(TEXT("éŒ¯èª¤: æ‰¾ä¸åˆ° GridPlayerController!"), FColor::Red);
+		return;
+	}
+
+	ATurnBasedCharacter* Character = Cast<ATurnBasedCharacter>(CharacterToPossess);
+	if (!Character)
+	{
+		Debug::Print(TEXT("éŒ¯èª¤: å‚³å…¥çš„è§’è‰²ç„¡æ•ˆ!"), FColor::Red);
+		return;
+	}
+
+	Debug::Print(FString::Printf(TEXT("è¦Possessçš„è§’è‰²: %s"),
+		*Character->GetActorLabel()), FColor::Green);
+
+	// å…ˆUnPossessä»»ä½•ç¾æœ‰çš„Pawn
+	if (PC->GetPawn())
+	{
+		Debug::Print(FString::Printf(TEXT("UnPossess ç•¶å‰Pawn: %s"),
+			*PC->GetPawn()->GetName()), FColor::Yellow);
+		PC->UnPossess();
+	}
+
+	// åªæœ‰ç©å®¶æ§åˆ¶çš„è§’è‰²æ‰éœ€è¦Possess
+	if (Character->bIsPlayerControlled)
+	{
+		// ç¢ºä¿è§’è‰²æ²’æœ‰å…¶ä»–Controller
+		if (Character->Controller && Character->Controller != PC)
+		{
+			Debug::Print(TEXT("æ¸…ç†èˆŠçš„Controller"), FColor::Yellow);
+			Character->Controller->UnPossess();
+		}
+
+		// Possessæ–°è§’è‰²
+		PC->PossessAndSyncCharacter(Character);
+
+		// é©—è­‰PossessæˆåŠŸ
+		if (PC->GetPawn() == Character)
+		{
+			Debug::Print(TEXT("PossessæˆåŠŸ"), FColor::Green);
+
+			// ç¢ºä¿Controllerç¶å®šæ­£ç¢º
+			if (Character->Controller != PC)
+			{
+				Debug::Print(TEXT("Controllerç¶å®šç•°å¸¸ï¼Œå˜—è©¦ä¿®å¾©"), FColor::Orange);
+				Character->SetOwner(PC);
+			}
+		}
+		else
+		{
+			Debug::Print(TEXT("Possesså¤±æ•—!"), FColor::Red);
+		}
+	}
+	else
+	{
+		Debug::Print(TEXT("AIè§’è‰²å›åˆ - ä¸éœ€è¦Possess"), FColor::Blue);
+	}
+
+	// è™•ç†ç›¸æ©Ÿ
+	PC->OnTurnChangedCamera(Character, Character->bIsPlayerControlled);
+
+	Debug::Print(FString::Printf(TEXT("å°‡ Possess: %s"), *Character->GetActorLabel()), FColor::Green);
+	Debug::Print(TEXT("=== PossessCharacter çµæŸ ==="), FColor::Cyan);
+}
+
+
 // Called when the game starts or when spawned
 void ASimpleTurnManager::BeginPlay()
 {
 	Super::BeginPlay();
 
-	//¦Û°Ê´M§ä¨Ã¥[¤J©Ò¦³TurnBasedCharacter
+	Debug::Print(TEXT("SimpleTurnManager initialized"), FColor::Green);
+
+	
+	/*
+	//è‡ªå‹•å°‹æ‰¾ä¸¦åŠ å…¥æ‰€æœ‰TurnBasedCharacter
 	
 	TArray<AActor*> FoundCharacters;
 	UGameplayStatics::GetAllActorsOfClass(GetWorld(), ATurnBasedCharacter::StaticClass(), FoundCharacters);
@@ -418,35 +650,60 @@ void ASimpleTurnManager::BeginPlay()
 		Debug::Print(FString::Printf(TEXT("Added: %s"), *Actor->GetName()), FColor::Green);
 	}
 
-	// ¦pªG¦³¨¤¦â¡A¦Û°Ê¶}©l¾Ô°«
+	
+	
+	// å¦‚æœæœ‰è§’è‰²ï¼Œè‡ªå‹•é–‹å§‹æˆ°é¬¥
 	if (TurnOrder.Num() > 0)
 	{
-		// ©µ¿ğ¤@´V¶}©l¡A½T«O©Ò¦³ªF¦è³£ªì©l¤Æ§¹¦¨
+		// å»¶é²ä¸€å¹€é–‹å§‹ï¼Œç¢ºä¿æ‰€æœ‰æ±è¥¿éƒ½åˆå§‹åŒ–å®Œæˆ
 		GetWorld()->GetTimerManager().SetTimerForNextTick([this]()
 			{
 				StartBattle();
 				Debug::Print(TEXT("Battle Auto-Started!"), FColor::Green);
 			});
 	}
+	
+	*/
 }
 
 int32 ASimpleTurnManager::CalculateInitiative(ATurnBasedCharacter* Character)
 {
-	if (!Character || !Character->CombatComponent) return 0;
+	// *** ä¿®æ­£ï¼šä½¿ç”¨æ­£ç¢ºçš„æ¥å£èª¿ç”¨æ–¹å¼ç²å– CombatComponent ***
+	UCombatComponent* CombatComp = nullptr;
 
-	const FCombatStats& Stats = Character->CombatComponent->GetStats();
+	// æ­£ç¢ºé€é interface ç²å–
+	if (Character->Implements<UCombatInterface>())
+	{
+		CombatComp = ICombatInterface::Execute_GetCombatComponent(Character);
+	}
+	else
+	{
+		CombatComp = Character->FindComponentByClass<UCombatComponent>();
+	}
 
-	// °òÂ¦¥ı§ğ­È­pºâ
+	if (!CombatComp)
+	{
+		Debug::Print(FString::Printf(TEXT("CalculateInitiative: %s has no CombatComponent"),
+			*Character->GetActorLabel()), FColor::Red);
+		return 0;
+	}
+
+	const FCombatStats& Stats = CombatComp->GetStats();
+
 	int32 BaseInitiative = Stats.TurnOrderData.Initiative;
-	int32 SpeedBonus = Stats.TurnOrderData.Speed / 2;  // ³t«×´£¨Ñ50%¥[¦¨
+	int32 SpeedBonus = Stats.TurnOrderData.Speed / 2;
 
-	// ÀH¾÷¦]¯À (Á×§K¨C¦^¦X¶¶§Ç§¹¥ş¬Û¦P)
 	int32 RandomFactor = FMath::RandRange(-10, 10);
 
-	// ª¬ºA¼vÅT
 	int32 StatusModifier = 0;
-	if (Character->bIsSlowed) StatusModifier -= 20;
-	if (Character->bIsHasted) StatusModifier += 20;
+	if (Character->GetTurnSystemComponent() && Character->GetTurnSystemComponent()->IsSlowed())
+	{
+		StatusModifier -= 20;
+	}
+	if (Character->GetTurnSystemComponent() && Character->GetTurnSystemComponent()->IsHasted())
+	{
+		StatusModifier += 20;
+	}
 
 	return BaseInitiative + SpeedBonus + RandomFactor + StatusModifier;
 }
@@ -460,7 +717,7 @@ void ASimpleTurnManager::SortTurnOrderByInitiative()
 
 			if (!CharA || !CharB) return false;
 
-			// ¥ı§ğ­È°ªªº±Æ«e­±
+			// å…ˆæ”»å€¼é«˜çš„æ’å‰é¢
 			return CharA->CurrentInitiative > CharB->CurrentInitiative;
 		});
 

@@ -64,6 +64,9 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Turn System")
 	bool CheckBattleEnd();
 
+	//檢查戰鬥是否開始
+	bool IsBattleStarted() const { return bBattleStarted; }
+
 	// 回合排序方法
 	UFUNCTION(BlueprintCallable, Category = "Turn System")
 	void RecalculateTurnOrder();
@@ -117,6 +120,22 @@ public:
 	FOnPhaseChanged OnPhaseChanged;
 
 
+	//原Private
+	UPROPERTY()
+	TArray<AActor*> TurnOrder;
+
+
+	int32 CurrentTurnIndex;
+	bool bBattleStarted;
+	ETurnPhase CurrentPhase;
+	int32 TurnCount;
+
+	// 設置當前索引
+	UFUNCTION(BlueprintCallable, Category = "Turn System")
+	void SetCurrentCharacterIndex(int32 NewIndex);
+
+
+	void PossessCharacter(AActor* CharacterToPossess);
 
 protected:
 	// Called when the game starts or when spawned
@@ -136,14 +155,7 @@ public:
 
 private:
 	/*StoreAllCharacter*/
-	UPROPERTY()
-	TArray<AActor*> TurnOrder;
-
-
-	int32 CurrentTurnIndex;
-	bool bBattleStarted;
-	ETurnPhase CurrentPhase;
-	int32 TurnCount;
+	
 
 	// 處理角色死亡後的回合切換
 	void HandleCharacterDeath(AActor* DeadCharacter);

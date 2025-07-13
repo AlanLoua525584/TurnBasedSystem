@@ -13,10 +13,14 @@
     </None>
     <None Include="..\..\.gitattributes" />
     <None Include="..\..\.gitignore" />
+    <None Include="..\..\.vsconfig" />
     <None Include="..\..\README.md" />
     <Filter Include="Config">
       <UniqueIdentifier>{FA535FFB-25E1-3D20-B416-52F9BE21E06E}</UniqueIdentifier>
     </Filter>
+    <None Include="..\..\Config\DefaultEditor.ini">
+      <Filter>Config</Filter>
+    </None>
     <None Include="..\..\Config\DefaultEngine.ini">
       <Filter>Config</Filter>
     </None>
@@ -41,6 +45,27 @@
     <ClCompile Include="..\..\Source\ProjectGate\Private\ProjectGateGameMode.cpp">
       <Filter>Source\ProjectGate\Private</Filter>
     </ClCompile>
+    <Filter Include="Source\ProjectGate\Private\AbilitySystem">
+      <UniqueIdentifier>{7CE3F02D-855F-389C-829A-786A5450B52D}</UniqueIdentifier>
+    </Filter>
+    <ClCompile Include="..\..\Source\ProjectGate\Private\AbilitySystem\GateAbilitySystemComponent.cpp">
+      <Filter>Source\ProjectGate\Private\AbilitySystem</Filter>
+    </ClCompile>
+    <Filter Include="Source\ProjectGate\Private\AnimationComponents">
+      <UniqueIdentifier>{BE9428E4-BA93-3382-AB9B-DA0857D3B4DB}</UniqueIdentifier>
+    </Filter>
+    <ClCompile Include="..\..\Source\ProjectGate\Private\AnimationComponents\AnimationManagerComponent.cpp">
+      <Filter>Source\ProjectGate\Private\AnimationComponents</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\ProjectGate\Private\AnimationComponents\CombatAnimationComponent.cpp">
+      <Filter>Source\ProjectGate\Private\AnimationComponents</Filter>
+    </ClCompile>
+    <Filter Include="Source\ProjectGate\Private\AnimNotify">
+      <UniqueIdentifier>{8E9CC470-9B0B-3BC6-93A4-27BC8B8B3182}</UniqueIdentifier>
+    </Filter>
+    <ClCompile Include="..\..\Source\ProjectGate\Private\AnimNotify\AttackHitNotify.cpp">
+      <Filter>Source\ProjectGate\Private\AnimNotify</Filter>
+    </ClCompile>
     <Filter Include="Source\ProjectGate\Private\CombatSystem">
       <UniqueIdentifier>{F772BF1C-BB40-38D6-A5BB-10EAE9DE2DFF}</UniqueIdentifier>
     </Filter>
@@ -58,6 +83,12 @@
     </ClCompile>
     <ClCompile Include="..\..\Source\ProjectGate\Private\CombatSystem\HealthPointBarWidget.cpp">
       <Filter>Source\ProjectGate\Private\CombatSystem</Filter>
+    </ClCompile>
+    <Filter Include="Source\ProjectGate\Private\GAS">
+      <UniqueIdentifier>{F78C35DE-8628-3D49-9502-9FEC275F4DBE}</UniqueIdentifier>
+    </Filter>
+    <ClCompile Include="..\..\Source\ProjectGate\Private\GAS\GASAnimationAbility.cpp">
+      <Filter>Source\ProjectGate\Private\GAS</Filter>
     </ClCompile>
     <Filter Include="Source\ProjectGate\Private\TurnBasedSystem">
       <UniqueIdentifier>{589773EB-8A58-3F36-AEAD-ACBE7E97E255}</UniqueIdentifier>
@@ -89,6 +120,9 @@
     <Filter Include="Source\ProjectGate\Private\TurnBasedSystem\Components">
       <UniqueIdentifier>{81E4BF55-632D-3E61-8124-0C0AB85628F4}</UniqueIdentifier>
     </Filter>
+    <ClCompile Include="..\..\Source\ProjectGate\Private\TurnBasedSystem\Components\TurnSystemComponent.cpp">
+      <Filter>Source\ProjectGate\Private\TurnBasedSystem\Components</Filter>
+    </ClCompile>
     <Filter Include="Source\ProjectGate\Private\TurnBasedSystem\Components\Components">
       <UniqueIdentifier>{80A9BD0B-DA36-3F9D-BC70-2ECC38B99043}</UniqueIdentifier>
     </Filter>
@@ -118,6 +152,12 @@
     </Filter>
     <ClCompile Include="..\..\Source\ProjectGate\Private\TurnBasedSystem\Components\Components\UI\UIManagerComponent.cpp">
       <Filter>Source\ProjectGate\Private\TurnBasedSystem\Components\Components\UI</Filter>
+    </ClCompile>
+    <Filter Include="Source\ProjectGate\Private\TurnBasedSystem\Components\Movement">
+      <UniqueIdentifier>{C166D9F6-8205-348B-AA93-EED8783D0C12}</UniqueIdentifier>
+    </Filter>
+    <ClCompile Include="..\..\Source\ProjectGate\Private\TurnBasedSystem\Components\Movement\GridMovementComponent.cpp">
+      <Filter>Source\ProjectGate\Private\TurnBasedSystem\Components\Movement</Filter>
     </ClCompile>
     <Filter Include="Source\ProjectGate\Private\TurnBasedSystem\DataAssets">
       <UniqueIdentifier>{C528C903-8116-3183-B967-970DD332AAB3}</UniqueIdentifier>
@@ -152,6 +192,27 @@
     <ClInclude Include="..\..\Source\ProjectGate\Public\ProjectGateGameMode.h">
       <Filter>Source\ProjectGate\Public</Filter>
     </ClInclude>
+    <Filter Include="Source\ProjectGate\Public\AbilitySystem">
+      <UniqueIdentifier>{6DD4A5B5-D6A2-3D55-AAD1-2605D73E4EFC}</UniqueIdentifier>
+    </Filter>
+    <ClInclude Include="..\..\Source\ProjectGate\Public\AbilitySystem\GateAbilitySystemComponent.h">
+      <Filter>Source\ProjectGate\Public\AbilitySystem</Filter>
+    </ClInclude>
+    <Filter Include="Source\ProjectGate\Public\AnimationComponents">
+      <UniqueIdentifier>{D62CC3C1-706E-38FF-85A8-1D90B99D4D05}</UniqueIdentifier>
+    </Filter>
+    <ClInclude Include="..\..\Source\ProjectGate\Public\AnimationComponents\AnimationManagerComponent.h">
+      <Filter>Source\ProjectGate\Public\AnimationComponents</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\ProjectGate\Public\AnimationComponents\CombatAnimationComponent.h">
+      <Filter>Source\ProjectGate\Public\AnimationComponents</Filter>
+    </ClInclude>
+    <Filter Include="Source\ProjectGate\Public\AnimNotify">
+      <UniqueIdentifier>{31D7F419-E1B1-3A69-A16F-460B4152D8A5}</UniqueIdentifier>
+    </Filter>
+    <ClInclude Include="..\..\Source\ProjectGate\Public\AnimNotify\AttackHitNotify.h">
+      <Filter>Source\ProjectGate\Public\AnimNotify</Filter>
+    </ClInclude>
     <Filter Include="Source\ProjectGate\Public\CombatSystem">
       <UniqueIdentifier>{FE42D0C2-F17E-3F23-ABAE-6F6453E41633}</UniqueIdentifier>
     </Filter>
@@ -169,6 +230,12 @@
     </ClInclude>
     <ClInclude Include="..\..\Source\ProjectGate\Public\CombatSystem\HealthPointBarWidget.h">
       <Filter>Source\ProjectGate\Public\CombatSystem</Filter>
+    </ClInclude>
+    <Filter Include="Source\ProjectGate\Public\GAS">
+      <UniqueIdentifier>{C8756738-C2A9-3DEF-8893-0117506588ED}</UniqueIdentifier>
+    </Filter>
+    <ClInclude Include="..\..\Source\ProjectGate\Public\GAS\GASAnimationAbility.h">
+      <Filter>Source\ProjectGate\Public\GAS</Filter>
     </ClInclude>
     <Filter Include="Source\ProjectGate\Public\TurnBasedSystem">
       <UniqueIdentifier>{B24F2539-56DC-3150-829E-86689005E029}</UniqueIdentifier>
@@ -200,6 +267,9 @@
     <Filter Include="Source\ProjectGate\Public\TurnBasedSystem\Components">
       <UniqueIdentifier>{FB92A6AA-D66A-3C72-A547-0EE580494064}</UniqueIdentifier>
     </Filter>
+    <ClInclude Include="..\..\Source\ProjectGate\Public\TurnBasedSystem\Components\TurnSystemComponent.h">
+      <Filter>Source\ProjectGate\Public\TurnBasedSystem\Components</Filter>
+    </ClInclude>
     <Filter Include="Source\ProjectGate\Public\TurnBasedSystem\Components\Camera">
       <UniqueIdentifier>{6C06627C-A935-3292-902B-329E7723D88E}</UniqueIdentifier>
     </Filter>
@@ -220,6 +290,12 @@
     </Filter>
     <ClInclude Include="..\..\Source\ProjectGate\Public\TurnBasedSystem\Components\Input\InputHandlerComponent.h">
       <Filter>Source\ProjectGate\Public\TurnBasedSystem\Components\Input</Filter>
+    </ClInclude>
+    <Filter Include="Source\ProjectGate\Public\TurnBasedSystem\Components\Movement">
+      <UniqueIdentifier>{0E08FB6C-E82E-3894-8F23-543B0E287FD4}</UniqueIdentifier>
+    </Filter>
+    <ClInclude Include="..\..\Source\ProjectGate\Public\TurnBasedSystem\Components\Movement\GridMovementComponent.h">
+      <Filter>Source\ProjectGate\Public\TurnBasedSystem\Components\Movement</Filter>
     </ClInclude>
     <Filter Include="Source\ProjectGate\Public\TurnBasedSystem\Components\UI">
       <UniqueIdentifier>{851C9A3B-7399-3427-A1DB-ED6072539A21}</UniqueIdentifier>

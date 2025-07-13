@@ -19,8 +19,11 @@ public class ProjectGate : ModuleRules
 			"GameplayStateTreeModule",
 			"UMG",
 			"Slate",
-            "SlateCore"
-		});
+            "SlateCore",
+            "GameplayTags",  
+            "GameplayAbilities", 
+            "GameplayTasks" 
+        });
 
 		PrivateDependencyModuleNames.AddRange(new string[] { });
 

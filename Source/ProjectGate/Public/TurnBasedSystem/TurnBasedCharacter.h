@@ -4,30 +4,36 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
-#include "Camera/CameraComponent.h"
-#include "CombatSystem/CombatComponent.h"
-#include "CombatSystem/CombatInterface.h"
-#include "CombatSystem/CombatStats.h"
-#include "Components/WidgetComponent.h"
-#include "GameFramework/SpringArmComponent.h"
 #include "TurnBasedSystem/DataAssets/CharacterPortraitData.h"
-
+#include "CombatSystem/CombatInterface.h"
 #include "TurnBasedCharacter.generated.h"
 
+// Forward declarations
 class USpringArmComponent;
 class UCameraComponent;
 class UGridVisualComponent;
+class UGridMovementComponent;
+class UTurnSystemComponent;
 class UEnhancedMovementSystem;
-class ASimpleTurnManager;
+class UCombatComponent;
+class UWidgetComponent;
+class UHealthBarWidget;
+class AGridManager;
+
+enum class EAnimationType : uint8;
+class UAnimationManagerComponent;
+class UCombatAnimationComponent;
 
 
-// Declare delegates
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnActionPointsChanged, int32, NewActionPoints);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnActionPerformed, FString, ActionName, int32, Cost);
-// 回合順序改動
+// Delegates for backward compatibility
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTurnOrderChangedSignature, int32, NewInitiative);
 
 
+
+/**
+ * Base class for all turn-based characters
+ * Acts as a container for various gameplay components
+ */
 UCLASS()
 class PROJECTGATE_API ATurnBasedCharacter : public ACharacter, public ICombatInterface
 {
@@ -39,341 +45,290 @@ public:
     // Sets default values for this character's properties
     ATurnBasedCharacter();
 
-    // Action Points System
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Turn System")
-    int32 MaxActionPoints = 3;
+    // === Core Properties ===
 
-    UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Turn System")
-    int32 CurrentActionPoints;
+     // Team identification
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Character|Team")
+    int32 TeamID = 0;  // 0 = Player, 1 = Enemy
 
-    // Action Costs
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Turn System|Action Cost")
-    int32 MoveActionCost = 1;
-
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Turn System|Action Cost")
-    int32 AttackActionCost = 1;
-
-    //回合類相關
-
-    UPROPERTY(BlueprintReadWrite, Category = "Turn System|Status")
-    bool bIsSlowed = false;
-
-    UPROPERTY(BlueprintReadWrite, Category = "Turn System|Status")
-    bool bIsHasted = false;
-
-    // === 頭像系統 ===
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "UI",
-        meta = (DisplayName = "Character Portraits"))
-    FPortraitData PortraitData;
-
-    // 便利函數 - 獲取UI用頭像
-    UFUNCTION(BlueprintCallable, Category = "UI")
-    UTexture2D* GetUIPortrait() const;
-
-    // 獲取戰鬥頭像
-    UFUNCTION(BlueprintCallable, Category = "UI")
-    UTexture2D* GetBattlePortrait() const;
-
-    // 獲取任意可用頭像（容錯用）
-    UFUNCTION(BlueprintCallable, Category = "UI")
-    UTexture2D* GetAnyAvailablePortrait() const;
-
-    // 獲取邊框顏色
-    UFUNCTION(BlueprintCallable, Category = "UI")
-    FLinearColor GetPortraitBorderColor() const;
-
-
-
-    // Basic Stats (will integrate with GAS later)
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Turn System|Stats")
-    int32 AttackDamage = 10;
-
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Turn System|Stats")
-    float AttackRange = 200.0f;
-
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Turn System|Stats")
-    float MoveSpeed = 300.0f;
-
-    // Player Control
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Turn System|Stats")
+    // Player control flag
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Character|Control")
     bool bIsPlayerControlled = false;
 
-    // Utility function to check in Blueprint
-    UFUNCTION(BlueprintPure, Category = "Turn System")
-    bool IsPlayerTurn() const { return bIsPlayerControlled && bIsMyTurn; }
+    // Portrait system
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Character|UI")
+    FPortraitData PortraitData;
 
-    // Getter for player controlled status
-    UFUNCTION(BlueprintPure, Category = "Turn System")
-    bool GetIsPlayerControlled() const { return bIsPlayerControlled; }
+    // === Backward Compatibility Properties ===
+  // Current initiative (forwarded from TurnSystemComponent)
+    UPROPERTY(BlueprintReadWrite, Category = "Turn Order")
+    int32 CurrentInitiative = 0;
 
-    // 獲取角色顯示名稱
-    UFUNCTION(BlueprintPure, Category = "Turn System")
-    FString GetCharacterDisplayName() const
-    {
-        return GetActorLabel().IsEmpty() ? GetName() : GetActorLabel();
-    }
-
-    UFUNCTION(BlueprintCallable, Category = "Turn System")
-    int32 GetCurrentActionPoints() const { return CurrentActionPoints; }
-
-    UFUNCTION(BlueprintCallable, Category = "Turn System")
-    int32 GetMaxActionPoints() const { return MaxActionPoints; }
-
-    //GetGridManager
-    UFUNCTION(BlueprintPure, Category = "Grid")
-    AGridManager* GetGridManager() const { return GridManager; }
-
-    // 檢查是否可以執行動態移動
-    UFUNCTION(BlueprintPure, Category = "Turn System")
-    bool CanPerformDynamicMovement() const;
-
-    //設置行動模式
-    void SetMovementMode(bool bDynamic);
-
-
-    // Events
-    UPROPERTY(BlueprintAssignable, Category = "Turn System|Events")
-    FOnActionPointsChanged OnActionPointsChanged;
-
-    UPROPERTY(BlueprintAssignable, Category = "Turn System|Events")
-    FOnActionPerformed OnActionPerformed;
-
-    //回合
     UPROPERTY(BlueprintAssignable, Category = "Turn System|TurnOrder")
     FTurnOrderChangedSignature OnTurnOrderChanged;
 
+    UFUNCTION()
+    void OnAnimationHitEvent(EAnimationType AnimationType, FName EventName);
 
-    // Action System
+    UFUNCTION()
+    void OnCombatAnimationHit(AActor* Attacker, AActor* Target);
+
+    UFUNCTION()
+    void OnCombatAnimationCompleted(AActor* Attacker, AActor* Target, bool bSuccess);
+
+
+
+    // === Portrait Helpers ===
+
+    UFUNCTION(BlueprintCallable, Category = "UI")
+    UTexture2D* GetUIPortrait() const;
+
+    UFUNCTION(BlueprintCallable, Category = "UI")
+    UTexture2D* GetBattlePortrait() const;
+
+    UFUNCTION(BlueprintCallable, Category = "UI")
+    UTexture2D* GetAnyAvailablePortrait() const;
+
+    UFUNCTION(BlueprintCallable, Category = "UI")
+    FLinearColor GetPortraitBorderColor() const;
+
+    // === Component Getters ===
+
+    UFUNCTION(BlueprintPure, Category = "Components")
+    UGridMovementComponent* GetGridMovementComponent() const { return GridMovementComponent; }
+
+    UFUNCTION(BlueprintPure, Category = "Components")
+    UTurnSystemComponent* GetTurnSystemComponent() const { return TurnSystemComponent; }
+
+
+    UFUNCTION(BlueprintPure, Category = "Components")
+    UCombatComponent* AccessCombatComponent() const { return CombatComponent; }
+
+    UFUNCTION(BlueprintPure, Category = "Components")
+    UEnhancedMovementSystem* GetEnhancedMovementSystem() const { return EnhancedMovementSystem; }
+
+    UFUNCTION(BlueprintPure, Category = "Components")
+    UGridVisualComponent* GetGridVisualComponent() const { return GridVisualComponent; }
+
+    // Turn System delegates
     UFUNCTION(BlueprintCallable, Category = "Turn System")
-    void ResetActionPoints();
-
-    UFUNCTION(BlueprintCallable, Category = "Turn System")
-    bool CanPerformAction(int32 ActionCost) const;
-
-    UFUNCTION(BlueprintCallable, Category = "Turn System")
-    void ConsumeActionPoints(int32 Amount);
-
-    // Basic Actions
-    UFUNCTION(BlueprintCallable, Category = "Turn System|Actions")
-    bool TryMove(FVector TargetLocation);
-
-    UFUNCTION(BlueprintCallable, Category = "Turn System|Actions")
-    bool TryAttack(AActor* TargetActor);
+    bool ConsumeActionPoints(int32 Amount);
 
     UFUNCTION(BlueprintPure, Category = "Turn System")
-    bool IsTurnBasedPlayerControlled() const { return bIsPlayerControlled; }
+    int32 GetCurrentActionPoints() const;
 
-    // 動畫攻擊包裝函數
-    UFUNCTION(BlueprintCallable, Category = "Combat")
-    void ExecuteAnimatedAttack(AActor* Target);
+    UFUNCTION(BlueprintPure, Category = "Turn System")
+    int32 GetMaxActionPoints() const;
 
+    UFUNCTION(BlueprintPure, Category = "Turn System")
+    bool IsMyTurn() const;
 
-    // Turn Management
+    UFUNCTION(BlueprintPure, Category = "Turn System")
+    bool CanPerformAction(int32 ActionCost) const;
+
+    // Grid System delegates
+    UFUNCTION(BlueprintCallable, Category = "Grid System")
+    void UpdateGridPositionFromWorld();
+
+    UFUNCTION(BlueprintCallable, Category = "Grid System")
+    void ShowMovementRange();
+
+    UFUNCTION(BlueprintPure, Category = "Grid System")
+    FIntPoint GetCurrentGridPosition() const;
+
+    UFUNCTION(BlueprintPure, Category = "Grid System")
+    AGridManager* GetGridManager() const { return GridManager; }
+
+    // Movement mode control
+    UFUNCTION(BlueprintCallable, Category = "Movement")
+    void SetMovementMode(bool bDynamic);
+
+   
+    // Turn System integration methods
     UFUNCTION(BlueprintCallable, Category = "Turn System")
     void OnTurnStart();
 
     UFUNCTION(BlueprintCallable, Category = "Turn System")
     void OnTurnEnd();
 
-    // State Query
-    UFUNCTION(BlueprintCallable, Category = "Turn System")
-    bool IsMyTurn() const;
-
-    // Set Grid Manager
-    UFUNCTION(BlueprintCallable, Category = "Grid|Movement")
-    void SetGridManager(AGridManager* Manager);
-
-    // Grid Movement
-    UFUNCTION(BlueprintCallable, Category = "Grid|Movement")
+    // Grid movement integration methods
+    UFUNCTION(BlueprintCallable, Category = "Grid Movement")
     bool MoveToGridPosition(FIntPoint TargetGridPos);
 
-    // Show Movement Range
-    UFUNCTION(BlueprintCallable, Category = "Grid|Movement")
-    void ShowMovementRange();
-
-    // 當前的先攻值
-    UPROPERTY(BlueprintReadWrite, Category = "Turn Order")
-    int32 CurrentInitiative = 0;
-
-    //UpdateGridPosition
-    UFUNCTION(BlueprintCallable, Category = "Grid|Movement")
-    void UpdateGridPositionFromWorld();
-
-    // Getter for GridVisualComponent
-    UFUNCTION(BlueprintCallable, Category = "Grid")
-    UGridVisualComponent* GetGridVisualComponent() const { return GridVisualComponent; }
-
-    // Getter for CurrentGridPosition
-    UFUNCTION(BlueprintCallable, Category = "Grid")
-    FIntPoint GetCurrentGridPosition() const { return CurrentGridPosition; }
-
-    // === 死亡相關 ===
-    // 死亡動畫
-    UPROPERTY(EditDefaultsOnly, Category = "Combat|Death")
-    class UAnimMontage* DeathMontage;
-
-    // 死亡特效
-    UPROPERTY(EditDefaultsOnly, Category = "Combat|Death")
-    TSubclassOf<class AActor> DeathEffectClass;
-
-    // 死亡後延遲銷毀時間
-    UPROPERTY(EditDefaultsOnly, Category = "Combat|Death")
-    float DeathDestroyDelay = 3.0f;
-
-    // 是否正在死亡過程中
-    UPROPERTY(BlueprintReadOnly, Category = "Combat|Death")
-    bool bIsDying = false;
 
 
-    // 死亡處理
-    virtual void OnDeath_Implementation(AActor* Killer) override;
+    // === Utility Functions ===
 
 
+    UFUNCTION(BlueprintPure, Category = "Character")
+    FString GetCharacterDisplayName() const
+    {
+        return GetActorLabel().IsEmpty() ? GetName() : GetActorLabel();
+    }
 
-    //===組件===
+    UFUNCTION(BlueprintPure, Category = "Character")
+    bool IsPlayerTurn() const;
 
-    /* = 相機組件 = */
-    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera)
-    USpringArmComponent* CameraBoom;
+    UFUNCTION(BlueprintPure, Category = "Character")
+    bool IsAlive() const;
 
-    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera)
-    UCameraComponent* FollowCamera;
+    UFUNCTION(BlueprintCallable, Category = "Character")
+    void SetGridManager(AGridManager* Manager);
 
-    //=視覺組件=
-    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
-    class UGridVisualComponent* GridVisualComponent;
+    // === Combat Interface Implementation ===
 
-
-    //=移動組件=
-    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
-    class UEnhancedMovementSystem* EnhancedMovementSystem;
-
-    //=戰鬥組件=
-    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat")
-    UCombatComponent* CombatComponent;
-
-
-    // 實現戰鬥接口
     virtual bool CanBeAttacked_Implementation() const override;
     virtual UCombatComponent* GetCombatComponent_Implementation() const override;
-    void OnDamageReceived_Implementation(const FDamageResult& DamageResult);
-    
+    virtual void OnDamageReceived_Implementation(const FDamageResult& DamageResult) override;
+    virtual void OnDeath_Implementation(AActor* Killer) override;
+
+    // === Camera Components ===
+
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Camera")
+    USpringArmComponent* CameraBoom;
+
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Camera")
+    UCameraComponent* FollowCamera;
+
+    //==Getter
+
+    UFUNCTION(BlueprintCallable, Category = "Combat")
+    bool IsDying() const { return bIsDying; }
 
 
-    // 添加陣營系統
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat")
-    int32 TeamID = 0;  // 0 = 玩家, 1 = 敵人
+    UFUNCTION(BlueprintCallable, Category = "Combat")
+    void ExecuteAnimatedAttack(AActor* Target);
 
+    // 執行直接攻擊（無動畫回退方案）
+    UFUNCTION(BlueprintCallable, Category = "Combat")
+    void ExecuteDirectAttack(AActor* Target);
 
 protected:
     // Called when the game starts or when spawned
     virtual void BeginPlay() override;
 
-
-    UFUNCTION(BlueprintCallable, Category = "Movement")
-    UEnhancedMovementSystem* GetEnhancedMovementSystem() const { return EnhancedMovementSystem; }
-
-    // Turn State
-    UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Turn System")
-    bool bIsMyTurn = false;
-
-    UPROPERTY()
-    class AGridManager* GridManager;
-
-    UPROPERTY(EditAnywhere, Category = "Combat|Animation")
-    class UAnimMontage* AttackMontage;
-
-    // === 死亡相關 ===
-  // 死亡計時器
-    FTimerHandle DeathTimerHandle;
-
-    // 死亡動畫結束回調
-    UFUNCTION()
-    void OnDeathAnimationEnd();
-
-    // 通知回合系統
-    void NotifyTurnSystemOfDeath();
-
-    // 死亡時的視覺效果
-    void PlayDeathEffects();
-
-    // 清理角色（移除高亮、碰撞等）
-    void CleanupCharacter();
-
-   
-
-    // 頭頂血條組件
-    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "UI")
-    class UWidgetComponent* HealthBarComponent;
-
-    // 血條 Widget 類
-    UPROPERTY(EditDefaultsOnly, Category = "UI")
-    TSubclassOf<class UHealthBarWidget> HealthBarWidgetClass;
-
-    // 血條 Widget 實例
-    UPROPERTY()
-    class UHealthBarWidget* HealthBarWidget;
-
-
-
-
-    // Current grid position
-    UPROPERTY(BlueprintReadOnly, Category = "Grid|Movement")
-    FIntPoint CurrentGridPosition;
-
-    // Movement state
-    UPROPERTY(BlueprintReadOnly, Category = "Movement")
-    bool bIsMoving = false;
-
-    // Movement speed (units/second)
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
-    float GridMoveSpeed = 300.0f;
-
-    UPROPERTY(EditAnywhere, Category = "Combat|Animation")
-    float AttackAnimationDelay = 0.5f; // 動畫到傷害的延遲
-
-private:
-    // Movement target
-    FVector MoveTargetLocation;
-
-    // 攻擊計時器
-    FTimerHandle AttackTimerHandle;
-
-    // 攻擊目標暫存
-    TWeakObjectPtr<AActor> PendingAttackTarget;
-
-    // Helper functions
-    void PerformMove();
-    void PerformAttack(AActor* TargetActor);
-    void OnAttackAnimationHit();
-
-    // 血量變化回調
-    UFUNCTION()
-    void OnHealthChanged(AActor* Character,int32 CurrentHealth, int32 MaxHealth);
-
-
-public:
     // Called every frame
     virtual void Tick(float DeltaTime) override;
 
-    // Called to bind functionality to input
-    virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-    virtual void TestVisualization();
+    // === Core Components ===
 
-    virtual void TestDifferentVisuals();
+    // Grid movement handling
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+    UGridMovementComponent* GridMovementComponent;
 
-    // 更新血條顯示
-    UFUNCTION(BlueprintCallable, Category = "Combat")
+    // Turn system management
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+    UTurnSystemComponent* TurnSystemComponent;
+
+    // Combat handling
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+    UCombatComponent* CombatComponent;
+
+    // Enhanced movement for dynamic mode
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+    UEnhancedMovementSystem* EnhancedMovementSystem;
+
+    // Grid visualization
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+    UGridVisualComponent* GridVisualComponent;
+
+    // === UI Components ===
+
+    // Health bar widget component
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "UI")
+    UWidgetComponent* HealthBarComponent;
+
+    // ===Animation Components==
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+    class UAnimationManagerComponent* AnimationManager;
+
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+    class UCombatAnimationComponent* CombatAnimationComponent;
+
+
+
+    // Health bar widget class
+    UPROPERTY(EditDefaultsOnly, Category = "UI")
+    TSubclassOf<UHealthBarWidget> HealthBarWidgetClass;
+
+    // Health bar widget instance
+    UPROPERTY()
+    UHealthBarWidget* HealthBarWidget;
+
+    // === Death System ===
+
+    UPROPERTY(EditDefaultsOnly, Category = "Combat|Death")
+    class UAnimMontage* DeathMontage;
+
+    UPROPERTY(EditDefaultsOnly, Category = "Combat|Death")
+    TSubclassOf<class AActor> DeathEffectClass;
+
+    UPROPERTY(EditDefaultsOnly, Category = "Combat|Death")
+    float DeathDestroyDelay = 3.0f;
+
+    UPROPERTY(BlueprintReadOnly, Category = "Combat|Death")
+    bool bIsDying = false;
+
+    
+
+private:
+    // Grid manager reference
+    UPROPERTY()
+    AGridManager* GridManager;
+
+    // Death handling
+    FTimerHandle DeathTimerHandle;
+
+    UFUNCTION()
+    void OnDeathAnimationEnd();
+
+    void NotifyTurnSystemOfDeath();
+    void PlayDeathEffects();
+    void CleanupCharacter();
+
+    // Health change callback
+    UFUNCTION()
+    void OnHealthChanged(AActor* Character, int32 CurrentHealth, int32 MaxHealth);
+
+    // Update health display
     void UpdateHealthDisplay();
 
-    // 檢查是否可以被選為目標
-    UFUNCTION(BlueprintCallable, Category = "Combat")
-    bool IsValidCombatTarget() const { return !bIsDying && IsAlive(); }
+    // Setup components
+    void InitializeComponents();
+    void SetupCameraComponents();
 
-    // 檢查是否存活
-    UFUNCTION(BlueprintCallable, Category = "Combat")
-    bool IsAlive() const;
+    // 處理 Initiative 變化
+    UFUNCTION()
+    void OnInitiativeChanged(int32 NewInitiative);
 
+    // Event binding methods
+    void BindComponentEvents();
+
+    UPROPERTY()
+    AActor* PendingAttackTarget;
+
+    //Debug
+    void DebugCombatBindings();
+
+
+public:
+    UFUNCTION(BlueprintPure, Category = "Animation")
+    UAnimationManagerComponent* GetAnimationManager() const { return AnimationManager; }
+
+    UFUNCTION(BlueprintPure, Category = "Animation")
+    UCombatAnimationComponent* GetCombatAnimationComponent() const { return CombatAnimationComponent; }
+
+    UFUNCTION(BlueprintCallable, Category = "Animation")
+    virtual void HandleAnimNotify(FName NotifyName);
+
+    //安全設置函數
+    void SetupHealthBar();
+
+    void BindCombatEvents();
+
+    void SetupAnimationManager();
+
+    void SetupCombatAnimationComponent();
 
 };

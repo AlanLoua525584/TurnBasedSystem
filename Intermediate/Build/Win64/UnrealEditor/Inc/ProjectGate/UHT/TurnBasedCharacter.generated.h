@@ -18,72 +18,69 @@ PRAGMA_DISABLE_DEPRECATION_WARNINGS
 
 class AActor;
 class AGridManager;
+class UAnimationManagerComponent;
+class UCombatAnimationComponent;
+class UCombatComponent;
 class UEnhancedMovementSystem;
+class UGridMovementComponent;
 class UGridVisualComponent;
 class UTexture2D;
+class UTurnSystemComponent;
+enum class EAnimationType : uint8;
 struct FLinearColor;
 
-// ********** Begin Delegate FOnActionPointsChanged ************************************************
-#define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_TurnBasedCharacter_h_25_DELEGATE \
-PROJECTGATE_API void FOnActionPointsChanged_DelegateWrapper(const FMulticastScriptDelegate& OnActionPointsChanged, int32 NewActionPoints);
-
-
-// ********** End Delegate FOnActionPointsChanged **************************************************
-
-// ********** Begin Delegate FOnActionPerformed ****************************************************
-#define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_TurnBasedCharacter_h_26_DELEGATE \
-PROJECTGATE_API void FOnActionPerformed_DelegateWrapper(const FMulticastScriptDelegate& OnActionPerformed, const FString& ActionName, int32 Cost);
-
-
-// ********** End Delegate FOnActionPerformed ******************************************************
-
 // ********** Begin Delegate FTurnOrderChangedSignature ********************************************
-#define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_TurnBasedCharacter_h_28_DELEGATE \
+#define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_TurnBasedCharacter_h_29_DELEGATE \
 PROJECTGATE_API void FTurnOrderChangedSignature_DelegateWrapper(const FMulticastScriptDelegate& TurnOrderChangedSignature, int32 NewInitiative);
 
 
 // ********** End Delegate FTurnOrderChangedSignature **********************************************
 
 // ********** Begin Class ATurnBasedCharacter ******************************************************
-#define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_TurnBasedCharacter_h_34_RPC_WRAPPERS_NO_PURE_DECLS \
-	DECLARE_FUNCTION(execIsAlive); \
-	DECLARE_FUNCTION(execIsValidCombatTarget); \
-	DECLARE_FUNCTION(execUpdateHealthDisplay); \
+#define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_TurnBasedCharacter_h_40_RPC_WRAPPERS_NO_PURE_DECLS \
+	DECLARE_FUNCTION(execHandleAnimNotify); \
+	DECLARE_FUNCTION(execGetCombatAnimationComponent); \
+	DECLARE_FUNCTION(execGetAnimationManager); \
+	DECLARE_FUNCTION(execOnInitiativeChanged); \
 	DECLARE_FUNCTION(execOnHealthChanged); \
 	DECLARE_FUNCTION(execOnDeathAnimationEnd); \
-	DECLARE_FUNCTION(execGetEnhancedMovementSystem); \
-	DECLARE_FUNCTION(execGetCurrentGridPosition); \
-	DECLARE_FUNCTION(execGetGridVisualComponent); \
-	DECLARE_FUNCTION(execUpdateGridPositionFromWorld); \
-	DECLARE_FUNCTION(execShowMovementRange); \
-	DECLARE_FUNCTION(execMoveToGridPosition); \
+	DECLARE_FUNCTION(execExecuteDirectAttack); \
+	DECLARE_FUNCTION(execExecuteAnimatedAttack); \
+	DECLARE_FUNCTION(execIsDying); \
 	DECLARE_FUNCTION(execSetGridManager); \
-	DECLARE_FUNCTION(execIsMyTurn); \
+	DECLARE_FUNCTION(execIsAlive); \
+	DECLARE_FUNCTION(execIsPlayerTurn); \
+	DECLARE_FUNCTION(execGetCharacterDisplayName); \
+	DECLARE_FUNCTION(execMoveToGridPosition); \
 	DECLARE_FUNCTION(execOnTurnEnd); \
 	DECLARE_FUNCTION(execOnTurnStart); \
-	DECLARE_FUNCTION(execExecuteAnimatedAttack); \
-	DECLARE_FUNCTION(execIsTurnBasedPlayerControlled); \
-	DECLARE_FUNCTION(execTryAttack); \
-	DECLARE_FUNCTION(execTryMove); \
-	DECLARE_FUNCTION(execConsumeActionPoints); \
-	DECLARE_FUNCTION(execCanPerformAction); \
-	DECLARE_FUNCTION(execResetActionPoints); \
-	DECLARE_FUNCTION(execCanPerformDynamicMovement); \
+	DECLARE_FUNCTION(execSetMovementMode); \
 	DECLARE_FUNCTION(execGetGridManager); \
+	DECLARE_FUNCTION(execGetCurrentGridPosition); \
+	DECLARE_FUNCTION(execShowMovementRange); \
+	DECLARE_FUNCTION(execUpdateGridPositionFromWorld); \
+	DECLARE_FUNCTION(execCanPerformAction); \
+	DECLARE_FUNCTION(execIsMyTurn); \
 	DECLARE_FUNCTION(execGetMaxActionPoints); \
 	DECLARE_FUNCTION(execGetCurrentActionPoints); \
-	DECLARE_FUNCTION(execGetCharacterDisplayName); \
-	DECLARE_FUNCTION(execGetIsPlayerControlled); \
-	DECLARE_FUNCTION(execIsPlayerTurn); \
+	DECLARE_FUNCTION(execConsumeActionPoints); \
+	DECLARE_FUNCTION(execGetGridVisualComponent); \
+	DECLARE_FUNCTION(execGetEnhancedMovementSystem); \
+	DECLARE_FUNCTION(execAccessCombatComponent); \
+	DECLARE_FUNCTION(execGetTurnSystemComponent); \
+	DECLARE_FUNCTION(execGetGridMovementComponent); \
 	DECLARE_FUNCTION(execGetPortraitBorderColor); \
 	DECLARE_FUNCTION(execGetAnyAvailablePortrait); \
 	DECLARE_FUNCTION(execGetBattlePortrait); \
-	DECLARE_FUNCTION(execGetUIPortrait);
+	DECLARE_FUNCTION(execGetUIPortrait); \
+	DECLARE_FUNCTION(execOnCombatAnimationCompleted); \
+	DECLARE_FUNCTION(execOnCombatAnimationHit); \
+	DECLARE_FUNCTION(execOnAnimationHitEvent);
 
 
 PROJECTGATE_API UClass* Z_Construct_UClass_ATurnBasedCharacter_NoRegister();
 
-#define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_TurnBasedCharacter_h_34_INCLASS_NO_PURE_DECLS \
+#define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_TurnBasedCharacter_h_40_INCLASS_NO_PURE_DECLS \
 private: \
 	static void StaticRegisterNativesATurnBasedCharacter(); \
 	friend struct Z_Construct_UClass_ATurnBasedCharacter_Statics; \
@@ -95,7 +92,7 @@ public: \
 	virtual UObject* _getUObject() const override { return const_cast<ATurnBasedCharacter*>(this); }
 
 
-#define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_TurnBasedCharacter_h_34_ENHANCED_CONSTRUCTORS \
+#define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_TurnBasedCharacter_h_40_ENHANCED_CONSTRUCTORS \
 	/** Deleted move- and copy-constructors, should never be used */ \
 	ATurnBasedCharacter(ATurnBasedCharacter&&) = delete; \
 	ATurnBasedCharacter(const ATurnBasedCharacter&) = delete; \
@@ -105,13 +102,13 @@ public: \
 	NO_API virtual ~ATurnBasedCharacter();
 
 
-#define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_TurnBasedCharacter_h_31_PROLOG
-#define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_TurnBasedCharacter_h_34_GENERATED_BODY \
+#define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_TurnBasedCharacter_h_37_PROLOG
+#define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_TurnBasedCharacter_h_40_GENERATED_BODY \
 PRAGMA_DISABLE_DEPRECATION_WARNINGS \
 public: \
-	FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_TurnBasedCharacter_h_34_RPC_WRAPPERS_NO_PURE_DECLS \
-	FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_TurnBasedCharacter_h_34_INCLASS_NO_PURE_DECLS \
-	FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_TurnBasedCharacter_h_34_ENHANCED_CONSTRUCTORS \
+	FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_TurnBasedCharacter_h_40_RPC_WRAPPERS_NO_PURE_DECLS \
+	FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_TurnBasedCharacter_h_40_INCLASS_NO_PURE_DECLS \
+	FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_TurnBasedCharacter_h_40_ENHANCED_CONSTRUCTORS \
 private: \
 PRAGMA_ENABLE_DEPRECATION_WARNINGS
 

@@ -129,7 +129,8 @@ void UGridVisualComponent::UpdateVisualsForType(EGridVisualType Type)
         InstanceTransform.SetScale3D(FVector(Scale));
 
         MeshComp->AddInstance(InstanceTransform);
-        Debug::Print(TEXT("AddInstance called for Visual Type"), FColor::Green);
+       
+        //Debug::Print(TEXT("AddInstance called for Visual Type"), FColor::Green);
     }
 }
 

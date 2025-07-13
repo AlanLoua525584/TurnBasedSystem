@@ -4,6 +4,7 @@
 #include "TurnBasedSystem/SimpleTurnManager.h"
 #include "TurnBasedSystem/GridPlayerController.h"
 #include "TurnBasedSystem/EnhancedMovementSystem.h"
+#include "TurnBasedSystem/Components/TurnSystemComponent.h"
 #include "CombatSystem/CombatDisplayWidget.h"
 #include "Public/DebugHelper.h"
 #include "Engine/World.h"
@@ -30,8 +31,55 @@ void AProjectGateGameMode::BeginPlay()
 
     Debug::Print(TEXT("=== GameMode BeginPlay ==="), FColor::Cyan);
 
+    // 1. 先確保 PlayerController 完全初始化
+    APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();
+    if (!PlayerController)
+    {
+        Debug::Print(TEXT("ERROR: No PlayerController found!"), FColor::Red);
+        return;
+    }
 
+    // 2. 給 PlayerController 一些時間完成初始化
+    FTimerHandle InitTimer;
+    GetWorld()->GetTimerManager().SetTimer(InitTimer, [this]()
+        {
+            // 3. 創建 TurnManager
+            if (GetWorld())
+            {
+                FActorSpawnParameters SpawnParams;
+                SpawnParams.Owner = this;
 
+                TurnManager = GetWorld()->SpawnActor<ASimpleTurnManager>(
+                    ASimpleTurnManager::StaticClass(),
+                    FVector::ZeroVector,
+                    FRotator::ZeroRotator,
+                    SpawnParams
+                );
+
+                if (TurnManager)
+                {
+                    Debug::Print(TEXT("TurnManager spawned successfully!"), FColor::Green);
+
+                    // Bind events
+                    TurnManager->OnTurnChanged.AddDynamic(this, &AProjectGateGameMode::OnTurnChanged);
+                    TurnManager->OnPhaseChanged.AddDynamic(this, &AProjectGateGameMode::OnPhaseChanged);
+                }
+            }
+            
+            // 4. 創建 UI
+            CreateGameUI();
+            
+
+            // 5. 最後初始化戰鬥
+            FTimerHandle BattleTimer;
+            GetWorld()->GetTimerManager().SetTimer(BattleTimer, [this]()
+                {
+                    InitializeBattle();
+                }, 0.2f, false);  // 再延遲 0.2 秒
+
+        }, 0.1f, false);  // 延遲 0.1 秒
+
+    /*
     // Spawn Turn Manager
     if (GetWorld())
     {
@@ -53,33 +101,9 @@ void AProjectGateGameMode::BeginPlay()
             TurnManager->OnTurnChanged.AddDynamic(this, &AProjectGateGameMode::OnTurnChanged);
             TurnManager->OnPhaseChanged.AddDynamic(this, &AProjectGateGameMode::OnPhaseChanged);
 
-           
-
-            // Find existing characters in the scene and add them to turn manager
-            TArray<AActor*> FoundCharacters;
-            UGameplayStatics::GetAllActorsOfClass(
-                GetWorld(),
-                ATurnBasedCharacter::StaticClass(),
-                FoundCharacters
-            );
-
-            Debug::Print(FString::Printf(TEXT("Found %d characters in scene"), FoundCharacters.Num()), FColor::Yellow);
-
-            for (AActor* Character : FoundCharacters)
-            {
-                if (Character)
-                {
-                    TurnManager->AddCharacter(Character);
-                    Debug::Print(FString::Printf(TEXT("Added %s to turn order"),
-                        *Character->GetActorLabel()), FColor::Yellow);
-                }
-            }
-
-            // Start battle
-            TurnManager->StartBattle();
-
         }
     }
+    
     if (TurnDisplayWidgetClass)
     {
         APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();
@@ -103,17 +127,27 @@ void AProjectGateGameMode::BeginPlay()
                     {
                         if (TurnManager)
                         {
-                            // If not in TurnEnd phase, move to TurnEnd
-                            if (TurnManager->GetCurrentPhase() != ETurnPhase::TurnEnd)
+                            Debug::Print(TEXT("End Turn button clicked - processing..."), FColor::Orange);
+
+                            // === 修復1：確保當前角色結束回合 ===
+                            if (AActor* CurrentCharacter = TurnManager->GetCurrentTurnCharacter())
                             {
-                                // Directly set to TurnEnd phase
-                                while (TurnManager->GetCurrentPhase() != ETurnPhase::TurnEnd)
+                                if (ATurnBasedCharacter* Character = Cast<ATurnBasedCharacter>(CurrentCharacter))
                                 {
-                                    TurnManager->NextPhase();
+                                    // 確保角色結束回合
+                                    Character->OnTurnEnd();
+                                    Debug::Print(FString::Printf(TEXT("Forced turn end for: %s"),
+                                        *Character->GetActorLabel()), FColor::Yellow);
                                 }
                             }
-                            // Then switch to next turn
-                            TurnManager->NextPhase();
+
+
+
+                            // === 修復2：正確推進到下一個回合 ===
+                            // 直接調用NextTurn，無需手動推進階段
+                            TurnManager->NextTurn();
+
+                            Debug::Print(TEXT("TurnManager->NextTurn() called"), FColor::Green);
                         }
                     });
                 Debug::Print(TEXT("Turn Display UI created with controls"), FColor::Green);
@@ -144,23 +178,147 @@ void AProjectGateGameMode::BeginPlay()
 
         }
 
-        if (CombatDisplayWidgetClass)
-        {
-            if (PlayerController)
-            {
-       
-                CombatDisplayWidget = CreateWidget<UCombatDisplayWidget>(PlayerController, CombatDisplayWidgetClass);
-                if (CombatDisplayWidget)
-                {
-                    CombatDisplayWidget->AddToViewport();
-                }
-            }
-        }
-
 
     }
 
+    */
+
     Debug::Print(TEXT("Manual control mode enabled - use buttons to control turns"), FColor::Yellow);
+}
+
+void AProjectGateGameMode::CreateGameUI()
+{
+    APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();
+    if (!PlayerController)
+    {
+        Debug::Print(TEXT("ERROR: No PlayerController for UI creation"), FColor::Red);
+        return;
+    }
+
+    // 創建回合顯示 UI
+    if (TurnDisplayWidgetClass)
+    {
+        TurnDisplayWidget = CreateWidget<UTurnDisplayWidget>(PlayerController, TurnDisplayWidgetClass);
+        if (TurnDisplayWidget)
+        {
+            TurnDisplayWidget->AddToViewport();
+
+            // 綁定按鈕事件
+            TurnDisplayWidget->OnNextPhaseClicked.BindLambda([this]()
+                {
+                    if (TurnManager)
+                    {
+                        TurnManager->NextPhase();
+                    }
+                });
+
+            TurnDisplayWidget->OnEndTurnClicked.BindLambda([this]()
+                {
+                    if (TurnManager)
+                    {
+                        Debug::Print(TEXT("End Turn button clicked - processing..."), FColor::Orange);
+                        TurnManager->NextTurn();
+                    }
+                });
+
+            Debug::Print(TEXT("Turn Display UI created with controls"), FColor::Green);
+        }
+    }
+
+    // 創建戰鬥顯示 UI
+    if (CombatDisplayWidgetClass)
+    {
+        CombatDisplayWidget = CreateWidget<UCombatDisplayWidget>(PlayerController, CombatDisplayWidgetClass);
+        if (CombatDisplayWidget)
+        {
+            CombatDisplayWidget->AddToViewport();
+            Debug::Print(TEXT("Combat Display UI created"), FColor::Green);
+        }
+    }
+}
+
+void AProjectGateGameMode::InitializeBattle()
+{
+    Debug::Print(TEXT("=== InitializeBattle 開始 ==="), FColor::Magenta);
+
+    // 1. 確保 PlayerController 沒有 Possess 任何角色
+    if (AGridPlayerController* PC = Cast<AGridPlayerController>(GetWorld()->GetFirstPlayerController()))
+    {
+        if (PC->GetPawn())
+        {
+            Debug::Print(FString::Printf(TEXT("解除 PlayerController 的 Possess: %s"),
+                *PC->GetPawn()->GetName()), FColor::Orange);
+            PC->UnPossess();
+        }
+    }
+
+    // 2. 這裡定義 FoundCharacters！！！
+    TArray<AActor*> FoundCharacters;  // <--- 這是定義
+    UGameplayStatics::GetAllActorsOfClass(
+        GetWorld(),
+        ATurnBasedCharacter::StaticClass(),
+        FoundCharacters  // <--- 這會填充數組
+    );
+
+    Debug::Print(FString::Printf(TEXT("Found %d characters in scene"), FoundCharacters.Num()), FColor::Yellow);
+
+
+    // 3.在添加角色到 TurnManager 之前，先排序
+    TArray<AActor*> PlayerCharacters;
+    TArray<AActor*> EnemyCharacters;
+
+    for (AActor* Character : FoundCharacters)
+    {
+        if (ATurnBasedCharacter* TurnChar = Cast<ATurnBasedCharacter>(Character))
+        {
+            // 重置角色的回合狀態
+            if (UTurnSystemComponent* TurnSystem = TurnChar->GetTurnSystemComponent())
+            {
+                if (TurnSystem->IsMyTurn())
+                {
+                    Debug::Print(FString::Printf(TEXT("重置 %s 的回合狀態"),
+                        *TurnChar->GetActorLabel()), FColor::Orange);
+                    TurnSystem->OnTurnEnd();
+                }
+            }
+
+            // 根據是否為玩家控制進行分類
+            if (TurnChar->bIsPlayerControlled)
+            {
+                PlayerCharacters.Add(Character);
+            }
+            else
+            {
+                EnemyCharacters.Add(Character);
+            }
+        }
+    }
+
+
+
+    // 4. 先添加玩家角色，再添加敵人角色
+    for (AActor* PlayerChar : PlayerCharacters)
+    {
+        TurnManager->AddCharacter(PlayerChar);
+        Debug::Print(FString::Printf(TEXT("Added player character %s to turn order"),
+            *PlayerChar->GetActorLabel()), FColor::Green);
+    }
+
+    for (AActor* EnemyChar : EnemyCharacters)
+    {
+        TurnManager->AddCharacter(EnemyChar);
+        Debug::Print(FString::Printf(TEXT("Added enemy character %s to turn order"),
+            *EnemyChar->GetActorLabel()), FColor::Yellow);
+    }
+
+    // 5. 開始戰鬥
+    if (TurnManager)
+    {
+        Debug::Print(TEXT("GameMode 啟動戰鬥"), FColor::Green);
+        TurnManager->StartBattle();
+    }
+
+    Debug::Print(TEXT("=== InitializeBattle 結束 ==="), FColor::Magenta);
 }
 
 
@@ -187,7 +345,10 @@ void AProjectGateGameMode::OnTurnChanged(AActor* CurrentCharacter)
         if (ATurnBasedCharacter* PrevChar = Cast<ATurnBasedCharacter>(PreviousCharacter))
         {
             // 解綁 AP 事件
-            PrevChar->OnActionPointsChanged.RemoveAll(this);
+            if (UTurnSystemComponent* PrevTurnSys = PrevChar->GetTurnSystemComponent())
+            {
+                PrevTurnSys->OnActionPointsChanged.RemoveAll(this);
+            }
 
             // 解綁耐力事件
             if (UEnhancedMovementSystem* PrevMoveSys =
@@ -214,34 +375,18 @@ void AProjectGateGameMode::OnTurnChanged(AActor* CurrentCharacter)
 
 
             //綁定新的AP事件
-            TurnChar->OnActionPointsChanged.AddDynamic(this, &AProjectGateGameMode::OnAPChanged);
-
-
-            //初始化UI
+            if (UTurnSystemComponent* TurnSys = TurnChar->GetTurnSystemComponent())
             {
+                TurnSys->OnActionPointsChanged.AddDynamic(this, &AProjectGateGameMode::OnAPChanged);
+
+                // 初始化UI
                 TurnDisplayWidget->UpdateActionPoints(
-                    TurnChar->GetCurrentActionPoints(),
-                    TurnChar->GetMaxActionPoints()
+                    TurnSys->GetCurrentActionPoints(),
+                    TurnSys->GetMaxActionPoints()
                 );
             }
 
 
-            //找到 PlayerController
-            if (APlayerController* PC = UGameplayStatics::GetPlayerController(GetWorld(), 0))
-            {
-                // 如果角色已經有控制器，先取消
-                if (TurnChar->GetController() && TurnChar->GetController() != PC)
-                {
-                    TurnChar->GetController()->UnPossess();
-                }
-
-                // PlayerController 接管角色
-                PC->Possess(TurnChar);
-
-                Debug::Print(FString::Printf(TEXT("PlayerController is now controlling %s"), *TurnChar->GetActorLabel()), FColor::Green);
-
-            }
-            ;
         }
         // Update UI display
         if (TurnDisplayWidget)

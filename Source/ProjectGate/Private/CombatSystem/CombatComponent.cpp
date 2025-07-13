@@ -6,6 +6,8 @@
 #include "TurnBasedSystem/TurnBasedCharacter.h"
 #include "TurnBasedSystem/GridManager.h"
 #include "TurnBasedSystem/GridVisualComponent.h"
+#include "TurnBasedSystem/Components/Movement/GridMovementComponent.h" 
+#include "TurnBasedSystem/Components/TurnSystemComponent.h" 
 #include "Components/SkeletalMeshComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Engine/World.h"
@@ -109,31 +111,50 @@ bool UCombatComponent::CanAttack(AActor* Target) const
     // 近戰攻擊額外檢查
     if (AttackConfig.AttackType == ECombatAttackType::Melee && OwnerCharacter && GridManager)
     {
-        FIntPoint MyGrid = OwnerCharacter->GetCurrentGridPosition();
-        FIntPoint TargetGrid = GridManager->WorldToGrid(Target->GetActorLocation());
-
-        int32 GridDistance = FMath::Abs(TargetGrid.X - MyGrid.X) +
-            FMath::Abs(TargetGrid.Y - MyGrid.Y);
-
-        if (GridDistance > 1)
+        // 確保 OwnerCharacter 有 GridMovementComponent
+        if (UGridMovementComponent* GridMovement = OwnerCharacter->GetGridMovementComponent())
         {
-            Debug::Print(TEXT("CanAttack: Melee target not adjacent"), FColor::Red);
+            FIntPoint MyGrid = GridMovement->GetCurrentGridPosition();
+            FIntPoint TargetGrid = GridManager->WorldToGrid(Target->GetActorLocation());
+
+            int32 GridDistance = FMath::Abs(TargetGrid.X - MyGrid.X) +
+                FMath::Abs(TargetGrid.Y - MyGrid.Y);
+
+            if (GridDistance > 1)
+            {
+                Debug::Print(TEXT("CanAttack: Melee target not adjacent"), FColor::Red);
+                return false;
+            }
+        }
+        else
+        {
+            Debug::Print(TEXT("CanAttack: No GridMovementComponent found"), FColor::Red);
             return false;
         }
     }
 
     // 檢查行動點
-    if (OwnerCharacter && !OwnerCharacter->CanPerformAction(AttackConfig.ActionPointCost))
+    if (OwnerCharacter)
     {
-        Debug::Print(FString::Printf(TEXT("CanAttack: Not enough AP (%d required)"),
-            AttackConfig.ActionPointCost), FColor::Red);
-
-        return false;
+        // 確保有 TurnSystemComponent
+        if (UTurnSystemComponent* TurnSystem = OwnerCharacter->GetTurnSystemComponent())
+        {
+            if (!TurnSystem->CanPerformAction(AttackConfig.ActionPointCost))
+            {
+                Debug::Print(FString::Printf(TEXT("CanAttack: Not enough AP (%d required)"),
+                    AttackConfig.ActionPointCost), FColor::Red);
+                return false;
+            }
+        }
+        else
+        {
+            Debug::Print(TEXT("CanAttack: No TurnSystemComponent found"), FColor::Red);
+            return false;
+        }
     }
-
-
-    Debug::Print(TEXT("CanAttack: All checks passed!"), FColor::Green);
+    // 所有檢查都通過
     return true;
+
 }
 
 bool UCombatComponent::ExecuteAttack(AActor* Target)
@@ -159,7 +180,15 @@ bool UCombatComponent::ExecuteAttack(AActor* Target)
     // 消耗行動點
     if (OwnerCharacter)
     {
-        OwnerCharacter->ConsumeActionPoints(AttackConfig.ActionPointCost);
+        // 確保有 TurnSystemComponent
+        if (UTurnSystemComponent* TurnSystem = OwnerCharacter->GetTurnSystemComponent())
+        {
+            TurnSystem->ConsumeActionPoints(AttackConfig.ActionPointCost);
+        }
+        else
+        {
+            Debug::Print(TEXT("ExecuteAttack: No TurnSystemComponent found"), FColor::Red);
+        }
     }
 
     // 廣播攻擊事件
@@ -292,8 +321,16 @@ void UCombatComponent::ShowAttackRange()
     // 使用 GridVisualComponent 顯示範圍
     if (UGridVisualComponent* VisualComp = OwnerCharacter->GetGridVisualComponent())
     {
-        VisualComp->ClearVisualType(EGridVisualType::MovementRange);
-        VisualComp->ShowAttackRange(OwnerCharacter->GetCurrentGridPosition(), AttackConfig.AttackRange);
+        // 確保有 GridMovementComponent 來獲取位置
+        if (UGridMovementComponent* GridMovement = OwnerCharacter->GetGridMovementComponent())
+        {
+            VisualComp->ClearVisualType(EGridVisualType::MovementRange);
+            VisualComp->ShowAttackRange(GridMovement->GetCurrentGridPosition(), AttackConfig.AttackRange);
+        }
+        else
+        {
+            Debug::Print(TEXT("ShowAttackRange: No GridMovementComponent found"), FColor::Red);
+        }
     }
 
     // 高亮可攻擊目標
@@ -339,13 +376,16 @@ void UCombatComponent::HideAttackRange()
         {
             if (USkeletalMeshComponent* Mesh = Target->FindComponentByClass<USkeletalMeshComponent>())
             {
-                // 檢查是否是當前回合角色
+                // Check if it's the current turn character
                 bool bIsCurrentTurn = false;
                 if (ATurnBasedCharacter* TurnChar = Cast<ATurnBasedCharacter>(Target))
                 {
-                    bIsCurrentTurn = TurnChar->IsMyTurn();
+                    // Check through TurnSystemComponent
+                    if (UTurnSystemComponent* TurnSystem = TurnChar->GetTurnSystemComponent())
+                    {
+                        bIsCurrentTurn = TurnSystem->IsMyTurn();
+                    }
                 }
-
                 if (!bIsCurrentTurn)
                 {
                     Mesh->SetRenderCustomDepth(false);
@@ -377,7 +417,7 @@ bool UCombatComponent::IsValidTarget(AActor* Target) const
     // 檢查是否正在死亡
     if (ATurnBasedCharacter* TurnChar = Cast<ATurnBasedCharacter>(Target))
     {
-        if (TurnChar->bIsDying)
+        if (TurnChar->IsDying())
         {
             Debug::Print(TEXT("Target is dying, not valid"), FColor::Red);
             return false;

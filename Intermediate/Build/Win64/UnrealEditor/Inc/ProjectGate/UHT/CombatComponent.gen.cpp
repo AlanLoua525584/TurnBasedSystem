@@ -19,6 +19,7 @@ PROJECTGATE_API UClass* Z_Construct_UClass_AGridManager_NoRegister();
 PROJECTGATE_API UClass* Z_Construct_UClass_ATurnBasedCharacter_NoRegister();
 PROJECTGATE_API UClass* Z_Construct_UClass_UCombatComponent();
 PROJECTGATE_API UClass* Z_Construct_UClass_UCombatComponent_NoRegister();
+PROJECTGATE_API UEnum* Z_Construct_UEnum_ProjectGate_ECombatAttackType();
 PROJECTGATE_API UFunction* Z_Construct_UDelegateFunction_ProjectGate_OnAttackExecuted__DelegateSignature();
 PROJECTGATE_API UFunction* Z_Construct_UDelegateFunction_ProjectGate_OnAttackExecutedWithResult__DelegateSignature();
 PROJECTGATE_API UFunction* Z_Construct_UDelegateFunction_ProjectGate_OnDamageReceived__DelegateSignature();
@@ -636,6 +637,57 @@ DEFINE_FUNCTION(UCombatComponent::execGetAttackRange)
 }
 // ********** End Class UCombatComponent Function GetAttackRange ***********************************
 
+// ********** Begin Class UCombatComponent Function GetAttackType **********************************
+struct Z_Construct_UFunction_UCombatComponent_GetAttackType_Statics
+{
+	struct CombatComponent_eventGetAttackType_Parms
+	{
+		ECombatAttackType ReturnValue;
+	};
+#if WITH_METADATA
+	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
+		{ "Category", "Combat" },
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "//Getter\n// \xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\n" },
+#endif
+		{ "ModuleRelativePath", "Public/CombatSystem/CombatComponent.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "Getter\n \xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd" },
+#endif
+	};
+#endif // WITH_METADATA
+	static const UECodeGen_Private::FBytePropertyParams NewProp_ReturnValue_Underlying;
+	static const UECodeGen_Private::FEnumPropertyParams NewProp_ReturnValue;
+	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
+	static const UECodeGen_Private::FFunctionParams FuncParams;
+};
+const UECodeGen_Private::FBytePropertyParams Z_Construct_UFunction_UCombatComponent_GetAttackType_Statics::NewProp_ReturnValue_Underlying = { "UnderlyingType", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Byte, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, 0, nullptr, METADATA_PARAMS(0, nullptr) };
+const UECodeGen_Private::FEnumPropertyParams Z_Construct_UFunction_UCombatComponent_GetAttackType_Statics::NewProp_ReturnValue = { "ReturnValue", nullptr, (EPropertyFlags)0x0010000000000580, UECodeGen_Private::EPropertyGenFlags::Enum, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(CombatComponent_eventGetAttackType_Parms, ReturnValue), Z_Construct_UEnum_ProjectGate_ECombatAttackType, METADATA_PARAMS(0, nullptr) }; // 1601793885
+const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_UCombatComponent_GetAttackType_Statics::PropPointers[] = {
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UCombatComponent_GetAttackType_Statics::NewProp_ReturnValue_Underlying,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UCombatComponent_GetAttackType_Statics::NewProp_ReturnValue,
+};
+static_assert(UE_ARRAY_COUNT(Z_Construct_UFunction_UCombatComponent_GetAttackType_Statics::PropPointers) < 2048);
+const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_UCombatComponent_GetAttackType_Statics::FuncParams = { { (UObject*(*)())Z_Construct_UClass_UCombatComponent, nullptr, "GetAttackType", Z_Construct_UFunction_UCombatComponent_GetAttackType_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_UCombatComponent_GetAttackType_Statics::PropPointers), sizeof(Z_Construct_UFunction_UCombatComponent_GetAttackType_Statics::CombatComponent_eventGetAttackType_Parms), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x54020401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_UCombatComponent_GetAttackType_Statics::Function_MetaDataParams), Z_Construct_UFunction_UCombatComponent_GetAttackType_Statics::Function_MetaDataParams)},  };
+static_assert(sizeof(Z_Construct_UFunction_UCombatComponent_GetAttackType_Statics::CombatComponent_eventGetAttackType_Parms) < MAX_uint16);
+UFunction* Z_Construct_UFunction_UCombatComponent_GetAttackType()
+{
+	static UFunction* ReturnFunction = nullptr;
+	if (!ReturnFunction)
+	{
+		UECodeGen_Private::ConstructUFunction(&ReturnFunction, Z_Construct_UFunction_UCombatComponent_GetAttackType_Statics::FuncParams);
+	}
+	return ReturnFunction;
+}
+DEFINE_FUNCTION(UCombatComponent::execGetAttackType)
+{
+	P_FINISH;
+	P_NATIVE_BEGIN;
+	*(ECombatAttackType*)Z_Param__Result=P_THIS->GetAttackType();
+	P_NATIVE_END;
+}
+// ********** End Class UCombatComponent Function GetAttackType ************************************
+
 // ********** Begin Class UCombatComponent Function GetHealthPercent *******************************
 struct Z_Construct_UFunction_UCombatComponent_GetHealthPercent_Statics
 {
@@ -905,6 +957,7 @@ void UCombatComponent::StaticRegisterNativesUCombatComponent()
 		{ "GetAttackableTargets", &UCombatComponent::execGetAttackableTargets },
 		{ "GetAttackCost", &UCombatComponent::execGetAttackCost },
 		{ "GetAttackRange", &UCombatComponent::execGetAttackRange },
+		{ "GetAttackType", &UCombatComponent::execGetAttackType },
 		{ "GetHealthPercent", &UCombatComponent::execGetHealthPercent },
 		{ "HideAttackRange", &UCombatComponent::execHideAttackRange },
 		{ "InitializeCombat", &UCombatComponent::execInitializeCombat },
@@ -1017,6 +1070,7 @@ struct Z_Construct_UClass_UCombatComponent_Statics
 		{ &Z_Construct_UFunction_UCombatComponent_GetAttackableTargets, "GetAttackableTargets" }, // 1647352096
 		{ &Z_Construct_UFunction_UCombatComponent_GetAttackCost, "GetAttackCost" }, // 208431384
 		{ &Z_Construct_UFunction_UCombatComponent_GetAttackRange, "GetAttackRange" }, // 583393437
+		{ &Z_Construct_UFunction_UCombatComponent_GetAttackType, "GetAttackType" }, // 2356119273
 		{ &Z_Construct_UFunction_UCombatComponent_GetHealthPercent, "GetHealthPercent" }, // 2385014377
 		{ &Z_Construct_UFunction_UCombatComponent_HideAttackRange, "HideAttackRange" }, // 3820853457
 		{ &Z_Construct_UFunction_UCombatComponent_InitializeCombat, "InitializeCombat" }, // 3493749258
@@ -1091,10 +1145,10 @@ UCombatComponent::~UCombatComponent() {}
 struct Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_CombatSystem_CombatComponent_h__Script_ProjectGate_Statics
 {
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_UCombatComponent, UCombatComponent::StaticClass, TEXT("UCombatComponent"), &Z_Registration_Info_UClass_UCombatComponent, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UCombatComponent), 1730106785U) },
+		{ Z_Construct_UClass_UCombatComponent, UCombatComponent::StaticClass, TEXT("UCombatComponent"), &Z_Registration_Info_UClass_UCombatComponent, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UCombatComponent), 3662908822U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_CombatSystem_CombatComponent_h__Script_ProjectGate_3865687074(TEXT("/Script/ProjectGate"),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_CombatSystem_CombatComponent_h__Script_ProjectGate_3416505225(TEXT("/Script/ProjectGate"),
 	Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_CombatSystem_CombatComponent_h__Script_ProjectGate_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_CombatSystem_CombatComponent_h__Script_ProjectGate_Statics::ClassInfo),
 	nullptr, 0,
 	nullptr, 0);

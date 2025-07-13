@@ -39,6 +39,10 @@ class PROJECTGATE_API AGridPlayerController : public APlayerController
 public:
 	AGridPlayerController();
 
+	//DebugTool
+
+	void DebugPossessSync() const;
+
 	// Public interfaces - delegates to components
 	UFUNCTION(BlueprintCallable, Category = "Camera")
 	void FocusOnActor(AActor* TargetActor, float Distance = 800.0f);
@@ -60,6 +64,7 @@ public:
 	// Get current turn character
 	class ATurnBasedCharacter* GetCurrentTurnCharacter();
 	class ATurnBasedCharacter* GetControlledTurnCharacter() const;
+	bool IsControllingCurrentTurnCharacter() const;
 
 	// Handle mode change UI effects
 	UPROPERTY(BlueprintAssignable, Category = "Movement")
@@ -183,6 +188,9 @@ public:
 	UFUNCTION(BlueprintPure, Category = "Components")
 	UUIManagerComponent* GetUIManager() const { return UIManager; }
 
+	void PossessAndSyncCharacter(class ATurnBasedCharacter* NewCharacter);
+
+
 protected:
 	virtual void BeginPlay() override;
 	virtual void SetupInputComponent() override;
@@ -191,6 +199,7 @@ protected:
 	// Possess and UnPossess functions
 	virtual void OnPossess(APawn* InPawn) override;
 	virtual void OnUnPossess() override;
+
 
 	UFUNCTION()
 	void SwitchMovementMode();
@@ -242,6 +251,10 @@ private:
 	bool bIsShiftPressed = false;
 	bool bIsRightMousePressed = false;
 
+	// Helper function to check if character's turn
+	bool IsCharacterMyTurn(ATurnBasedCharacter* NewCharacter) const;
+
+
 	// Initialization functions
 	void InitializeComponents();
 	void FindManagers();
@@ -257,6 +270,11 @@ private:
 	// For testing
 	void TestPortraitSystem();
 
+	UFUNCTION()
 	void OnMovementModeChanged(bool bIsDynamicMode);
+
+
+	void Tick(float DeltaTime);
+
 
 };

@@ -42,6 +42,7 @@ PROJECTGATE_API void FOnBattleEnded_DelegateWrapper(const FMulticastScriptDelega
 
 // ********** Begin Class ASimpleTurnManager *******************************************************
 #define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_SimpleTurnManager_h_37_RPC_WRAPPERS_NO_PURE_DECLS \
+	DECLARE_FUNCTION(execSetCurrentCharacterIndex); \
 	DECLARE_FUNCTION(execGetCurrentCharacterIndex); \
 	DECLARE_FUNCTION(execGetTurnOrder); \
 	DECLARE_FUNCTION(execGetCurrentTurnCharacter); \

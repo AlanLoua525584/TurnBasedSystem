@@ -160,13 +160,21 @@ void UCombatModeComponent::ProcessAttackClick()
     {
         Debug::Print(FString::Printf(TEXT("Attacking %s..."), *Target->GetActorLabel()), FColor::Orange);
 
-        // 執行動畫攻擊
+        // 執行帶動畫的攻擊
         ControlledCharacter->ExecuteAnimatedAttack(Target);
 
-        // 攻擊成功後自動退出攻擊模式
+        // 注意：不要立即退出攻擊模式，等待動畫完成
+        // 可以設置一個標記或計時器
         if (bAutoExitAttackMode)
         {
-            ExitAttackMode();
+            // 延遲退出攻擊模式，給動畫時間完成
+            FTimerHandle ExitTimer;
+            GetWorld()->GetTimerManager().SetTimer(
+                ExitTimer,
+                [this]() { ExitAttackMode(); },
+                4.0f, // 給動畫足夠的時間
+                false
+            );
         }
     }
     else

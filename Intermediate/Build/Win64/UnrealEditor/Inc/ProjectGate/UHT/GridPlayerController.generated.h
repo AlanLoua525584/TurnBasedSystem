@@ -35,6 +35,7 @@ PROJECTGATE_API void FUIOnMovementModeChanged_DelegateWrapper(const FMulticastSc
 
 // ********** Begin Class AGridPlayerController ****************************************************
 #define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_GridPlayerController_h_37_RPC_WRAPPERS_NO_PURE_DECLS \
+	DECLARE_FUNCTION(execOnMovementModeChanged); \
 	DECLARE_FUNCTION(execOnAttackModeChanged); \
 	DECLARE_FUNCTION(execOnCameraModeChanged); \
 	DECLARE_FUNCTION(execGetControlledMovementSystem); \
