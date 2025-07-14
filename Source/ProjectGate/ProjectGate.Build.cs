@@ -12,7 +12,8 @@ public class ProjectGate : ModuleRules
 			"Core",
 			"CoreUObject",
 			"Engine",
-			"InputCore",
+            "UnrealEd",
+            "InputCore",
 			"EnhancedInput",
 			"AIModule",
 			"StateTreeModule",
@@ -21,7 +22,7 @@ public class ProjectGate : ModuleRules
 			"Slate",
             "SlateCore",
             "GameplayTags",  
-            "GameplayAbilities", 
+            "GameplayAbilities",
             "GameplayTasks" 
         });
 

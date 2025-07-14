@@ -93,6 +93,9 @@
     <Filter Include="Source\ProjectGate\Private\TurnBasedSystem">
       <UniqueIdentifier>{589773EB-8A58-3F36-AEAD-ACBE7E97E255}</UniqueIdentifier>
     </Filter>
+    <ClCompile Include="..\..\Source\ProjectGate\Private\TurnBasedSystem\DefaultInitiativeModifiers.cpp">
+      <Filter>Source\ProjectGate\Private\TurnBasedSystem</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Source\ProjectGate\Private\TurnBasedSystem\EnhancedMovementSystem.cpp">
       <Filter>Source\ProjectGate\Private\TurnBasedSystem</Filter>
     </ClCompile>
@@ -115,6 +118,9 @@
       <Filter>Source\ProjectGate\Private\TurnBasedSystem</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\ProjectGate\Private\TurnBasedSystem\TurnBasedCharacter.cpp">
+      <Filter>Source\ProjectGate\Private\TurnBasedSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\ProjectGate\Private\TurnBasedSystem\TurnOrderCalculator.cpp">
       <Filter>Source\ProjectGate\Private\TurnBasedSystem</Filter>
     </ClCompile>
     <Filter Include="Source\ProjectGate\Private\TurnBasedSystem\Components">
@@ -163,6 +169,9 @@
       <UniqueIdentifier>{C528C903-8116-3183-B967-970DD332AAB3}</UniqueIdentifier>
     </Filter>
     <ClCompile Include="..\..\Source\ProjectGate\Private\TurnBasedSystem\DataAssets\CharacterPortraitData.cpp">
+      <Filter>Source\ProjectGate\Private\TurnBasedSystem\DataAssets</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\ProjectGate\Private\TurnBasedSystem\DataAssets\TurnOrderConfig.cpp">
       <Filter>Source\ProjectGate\Private\TurnBasedSystem\DataAssets</Filter>
     </ClCompile>
     <Filter Include="Source\ProjectGate\Private\TurnBasedSystem\UI">
@@ -240,6 +249,9 @@
     <Filter Include="Source\ProjectGate\Public\TurnBasedSystem">
       <UniqueIdentifier>{B24F2539-56DC-3150-829E-86689005E029}</UniqueIdentifier>
     </Filter>
+    <ClInclude Include="..\..\Source\ProjectGate\Public\TurnBasedSystem\DefaultInitiativeModifiers.h">
+      <Filter>Source\ProjectGate\Public\TurnBasedSystem</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\ProjectGate\Public\TurnBasedSystem\EnhancedMovementSystem.h">
       <Filter>Source\ProjectGate\Public\TurnBasedSystem</Filter>
     </ClInclude>
@@ -262,6 +274,9 @@
       <Filter>Source\ProjectGate\Public\TurnBasedSystem</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\ProjectGate\Public\TurnBasedSystem\TurnBasedCharacter.h">
+      <Filter>Source\ProjectGate\Public\TurnBasedSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\ProjectGate\Public\TurnBasedSystem\TurnOrderCalculator.h">
       <Filter>Source\ProjectGate\Public\TurnBasedSystem</Filter>
     </ClInclude>
     <Filter Include="Source\ProjectGate\Public\TurnBasedSystem\Components">
@@ -307,6 +322,9 @@
       <UniqueIdentifier>{35817840-5101-32DE-84D1-C12AAD409F55}</UniqueIdentifier>
     </Filter>
     <ClInclude Include="..\..\Source\ProjectGate\Public\TurnBasedSystem\DataAssets\CharacterPortraitData.h">
+      <Filter>Source\ProjectGate\Public\TurnBasedSystem\DataAssets</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\ProjectGate\Public\TurnBasedSystem\DataAssets\TurnOrderConfig.h">
       <Filter>Source\ProjectGate\Public\TurnBasedSystem\DataAssets</Filter>
     </ClInclude>
     <Filter Include="Source\ProjectGate\Public\TurnBasedSystem\UI">

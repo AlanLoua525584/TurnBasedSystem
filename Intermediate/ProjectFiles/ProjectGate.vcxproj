@@ -299,6 +299,9 @@
     <ClCompile Include="..\..\Source\ProjectGate\Private\GAS\GASAnimationAbility.cpp">
       <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
+    <ClCompile Include="..\..\Source\ProjectGate\Private\TurnBasedSystem\DefaultInitiativeModifiers.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
     <ClCompile Include="..\..\Source\ProjectGate\Private\TurnBasedSystem\EnhancedMovementSystem.cpp">
       <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
@@ -321,6 +324,9 @@
       <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <ClCompile Include="..\..\Source\ProjectGate\Private\TurnBasedSystem\TurnBasedCharacter.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\ProjectGate\Private\TurnBasedSystem\TurnOrderCalculator.cpp">
       <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <ClCompile Include="..\..\Source\ProjectGate\Private\TurnBasedSystem\Components\TurnSystemComponent.cpp">
@@ -347,6 +353,9 @@
     <ClCompile Include="..\..\Source\ProjectGate\Private\TurnBasedSystem\DataAssets\CharacterPortraitData.cpp">
       <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
+    <ClCompile Include="..\..\Source\ProjectGate\Private\TurnBasedSystem\DataAssets\TurnOrderConfig.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
     <ClCompile Include="..\..\Source\ProjectGate\Private\TurnBasedSystem\UI\TurnDisplayWidget.cpp">
       <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
@@ -370,6 +379,7 @@
     <ClInclude Include="..\..\Source\ProjectGate\Public\CombatSystem\CombatStats.h"/>
     <ClInclude Include="..\..\Source\ProjectGate\Public\CombatSystem\HealthPointBarWidget.h"/>
     <ClInclude Include="..\..\Source\ProjectGate\Public\GAS\GASAnimationAbility.h"/>
+    <ClInclude Include="..\..\Source\ProjectGate\Public\TurnBasedSystem\DefaultInitiativeModifiers.h"/>
     <ClInclude Include="..\..\Source\ProjectGate\Public\TurnBasedSystem\EnhancedMovementSystem.h"/>
     <ClInclude Include="..\..\Source\ProjectGate\Public\TurnBasedSystem\GridManager.h"/>
     <ClInclude Include="..\..\Source\ProjectGate\Public\TurnBasedSystem\GridPathfindingComponent.h"/>
@@ -378,6 +388,7 @@
     <ClInclude Include="..\..\Source\ProjectGate\Public\TurnBasedSystem\IntegratedGridController.h"/>
     <ClInclude Include="..\..\Source\ProjectGate\Public\TurnBasedSystem\SimpleTurnManager.h"/>
     <ClInclude Include="..\..\Source\ProjectGate\Public\TurnBasedSystem\TurnBasedCharacter.h"/>
+    <ClInclude Include="..\..\Source\ProjectGate\Public\TurnBasedSystem\TurnOrderCalculator.h"/>
     <ClInclude Include="..\..\Source\ProjectGate\Public\TurnBasedSystem\Components\TurnSystemComponent.h"/>
     <ClInclude Include="..\..\Source\ProjectGate\Public\TurnBasedSystem\Components\Camera\CameraControlComponent.h"/>
     <ClInclude Include="..\..\Source\ProjectGate\Public\TurnBasedSystem\Components\Combat\CombatModeComponent.h"/>
@@ -386,6 +397,7 @@
     <ClInclude Include="..\..\Source\ProjectGate\Public\TurnBasedSystem\Components\Movement\GridMovementComponent.h"/>
     <ClInclude Include="..\..\Source\ProjectGate\Public\TurnBasedSystem\Components\UI\UIManagerComponent.h"/>
     <ClInclude Include="..\..\Source\ProjectGate\Public\TurnBasedSystem\DataAssets\CharacterPortraitData.h"/>
+    <ClInclude Include="..\..\Source\ProjectGate\Public\TurnBasedSystem\DataAssets\TurnOrderConfig.h"/>
     <ClInclude Include="..\..\Source\ProjectGate\Public\TurnBasedSystem\UI\TurnDisplayWidget.h"/>
     <ClInclude Include="..\..\Source\ProjectGate\Public\TurnBasedSystem\UI\TurnOrderEntryWidget.h"/>
     <ClInclude Include="..\..\Source\ProjectGate\Public\TurnBasedSystem\UI\TurnOrderWidget.h"/>
