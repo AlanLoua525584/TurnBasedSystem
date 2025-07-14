@@ -12,8 +12,14 @@
 				"D:/UnrealProjects/ProjectGate/Content/Map/TurnBasedTest.umap",
 				"D:/UnrealProjects/ProjectGate/Content/TurnBasedSystem/BluePrints/Character/BP_EenemyCharacter.uasset",
 				"D:/UnrealProjects/ProjectGate/Content/ThirdPerson/Variant_Combat/Anims/AM_ComboAttack.uasset",
-				"D:/UnrealProjects/ProjectGate/Content/TurnBasedSystem/BluePrints/AnimNotifys/AN_AttackHit.uasset",
 				"D:/UnrealProjects/ProjectGate/Content/TurnBasedSystem/BluePrints/AnimNotifys/AN_AttackHitNotify.uasset",
+				"D:/UnrealProjects/ProjectGate/Content/TurnBasedSystem/DataAssets/DA_DefaultTurnOrderConfig.uasset",
+				"D:/UnrealProjects/ProjectGate/Content/TurnBasedSystem/BluePrints/BP_SimpleTurnManager.uasset",
+				"D:/UnrealProjects/ProjectGate/Content/TurnBasedSystem/UI/WBP_TurnOrderWidget.uasset",
+				"D:/UnrealProjects/ProjectGate/Content/TurnBasedSystem/UI/WBP_TurnOrder.uasset",
+				"D:/UnrealProjects/ProjectGate/Content/TurnBasedSystem/UI/WBP_TurnOrderEntryWidget.uasset",
+				"D:/UnrealProjects/ProjectGate/Content/TurnBasedSystem/UI/WBP_TurnOrderEntry.uasset",
+				"D:/UnrealProjects/ProjectGate/Content/TurnBasedSystem/BluePrints/AnimNotifys/AN_AttackHit.uasset",
 				"D:/UnrealProjects/ProjectGate/Content/TurnBasedSystem/BluePrints/AnimNotifys/AttackHit.uasset"
 			]
 		}

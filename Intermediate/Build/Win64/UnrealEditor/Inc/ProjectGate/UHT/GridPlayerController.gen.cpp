@@ -906,6 +906,36 @@ DEFINE_FUNCTION(AGridPlayerController::execOnTurnChangedCamera)
 }
 // ********** End Class AGridPlayerController Function OnTurnChangedCamera *************************
 
+// ********** Begin Class AGridPlayerController Function ShowModifiers *****************************
+struct Z_Construct_UFunction_AGridPlayerController_ShowModifiers_Statics
+{
+#if WITH_METADATA
+	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
+		{ "Category", "Debug" },
+		{ "ModuleRelativePath", "Public/TurnBasedSystem/GridPlayerController.h" },
+	};
+#endif // WITH_METADATA
+	static const UECodeGen_Private::FFunctionParams FuncParams;
+};
+const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_AGridPlayerController_ShowModifiers_Statics::FuncParams = { { (UObject*(*)())Z_Construct_UClass_AGridPlayerController, nullptr, "ShowModifiers", nullptr, 0, 0, RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x00020601, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_AGridPlayerController_ShowModifiers_Statics::Function_MetaDataParams), Z_Construct_UFunction_AGridPlayerController_ShowModifiers_Statics::Function_MetaDataParams)},  };
+UFunction* Z_Construct_UFunction_AGridPlayerController_ShowModifiers()
+{
+	static UFunction* ReturnFunction = nullptr;
+	if (!ReturnFunction)
+	{
+		UECodeGen_Private::ConstructUFunction(&ReturnFunction, Z_Construct_UFunction_AGridPlayerController_ShowModifiers_Statics::FuncParams);
+	}
+	return ReturnFunction;
+}
+DEFINE_FUNCTION(AGridPlayerController::execShowModifiers)
+{
+	P_FINISH;
+	P_NATIVE_BEGIN;
+	P_THIS->ShowModifiers();
+	P_NATIVE_END;
+}
+// ********** End Class AGridPlayerController Function ShowModifiers *******************************
+
 // ********** Begin Class AGridPlayerController Function SwitchMovementMode ************************
 struct Z_Construct_UFunction_AGridPlayerController_SwitchMovementMode_Statics
 {
@@ -935,6 +965,42 @@ DEFINE_FUNCTION(AGridPlayerController::execSwitchMovementMode)
 }
 // ********** End Class AGridPlayerController Function SwitchMovementMode **************************
 
+// ********** Begin Class AGridPlayerController Function TestNewTurnOrder **************************
+struct Z_Construct_UFunction_AGridPlayerController_TestNewTurnOrder_Statics
+{
+#if WITH_METADATA
+	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
+		{ "Category", "Debug" },
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "//Debug\n" },
+#endif
+		{ "ModuleRelativePath", "Public/TurnBasedSystem/GridPlayerController.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "Debug" },
+#endif
+	};
+#endif // WITH_METADATA
+	static const UECodeGen_Private::FFunctionParams FuncParams;
+};
+const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_AGridPlayerController_TestNewTurnOrder_Statics::FuncParams = { { (UObject*(*)())Z_Construct_UClass_AGridPlayerController, nullptr, "TestNewTurnOrder", nullptr, 0, 0, RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x00020601, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_AGridPlayerController_TestNewTurnOrder_Statics::Function_MetaDataParams), Z_Construct_UFunction_AGridPlayerController_TestNewTurnOrder_Statics::Function_MetaDataParams)},  };
+UFunction* Z_Construct_UFunction_AGridPlayerController_TestNewTurnOrder()
+{
+	static UFunction* ReturnFunction = nullptr;
+	if (!ReturnFunction)
+	{
+		UECodeGen_Private::ConstructUFunction(&ReturnFunction, Z_Construct_UFunction_AGridPlayerController_TestNewTurnOrder_Statics::FuncParams);
+	}
+	return ReturnFunction;
+}
+DEFINE_FUNCTION(AGridPlayerController::execTestNewTurnOrder)
+{
+	P_FINISH;
+	P_NATIVE_BEGIN;
+	P_THIS->TestNewTurnOrder();
+	P_NATIVE_END;
+}
+// ********** End Class AGridPlayerController Function TestNewTurnOrder ****************************
+
 // ********** Begin Class AGridPlayerController ****************************************************
 void AGridPlayerController::StaticRegisterNativesAGridPlayerController()
 {
@@ -957,7 +1023,9 @@ void AGridPlayerController::StaticRegisterNativesAGridPlayerController()
 		{ "OnMove", &AGridPlayerController::execOnMove },
 		{ "OnMovementModeChanged", &AGridPlayerController::execOnMovementModeChanged },
 		{ "OnTurnChangedCamera", &AGridPlayerController::execOnTurnChangedCamera },
+		{ "ShowModifiers", &AGridPlayerController::execShowModifiers },
 		{ "SwitchMovementMode", &AGridPlayerController::execSwitchMovementMode },
+		{ "TestNewTurnOrder", &AGridPlayerController::execTestNewTurnOrder },
 	};
 	FNativeFunctionRegistrar::RegisterFunctions(Class, Funcs, UE_ARRAY_COUNT(Funcs));
 }
@@ -1145,7 +1213,9 @@ struct Z_Construct_UClass_AGridPlayerController_Statics
 		{ &Z_Construct_UFunction_AGridPlayerController_OnMove, "OnMove" }, // 2667192795
 		{ &Z_Construct_UFunction_AGridPlayerController_OnMovementModeChanged, "OnMovementModeChanged" }, // 678560676
 		{ &Z_Construct_UFunction_AGridPlayerController_OnTurnChangedCamera, "OnTurnChangedCamera" }, // 3028409276
+		{ &Z_Construct_UFunction_AGridPlayerController_ShowModifiers, "ShowModifiers" }, // 2756661394
 		{ &Z_Construct_UFunction_AGridPlayerController_SwitchMovementMode, "SwitchMovementMode" }, // 1806344397
+		{ &Z_Construct_UFunction_AGridPlayerController_TestNewTurnOrder, "TestNewTurnOrder" }, // 3446535416
 	};
 	static_assert(UE_ARRAY_COUNT(FuncInfo) < 2048);
 	static constexpr FCppClassTypeInfoStatic StaticCppClassTypeInfo = {
@@ -1222,10 +1292,10 @@ AGridPlayerController::~AGridPlayerController() {}
 struct Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_GridPlayerController_h__Script_ProjectGate_Statics
 {
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_AGridPlayerController, AGridPlayerController::StaticClass, TEXT("AGridPlayerController"), &Z_Registration_Info_UClass_AGridPlayerController, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(AGridPlayerController), 4048200494U) },
+		{ Z_Construct_UClass_AGridPlayerController, AGridPlayerController::StaticClass, TEXT("AGridPlayerController"), &Z_Registration_Info_UClass_AGridPlayerController, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(AGridPlayerController), 2313339261U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_GridPlayerController_h__Script_ProjectGate_3087016194(TEXT("/Script/ProjectGate"),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_GridPlayerController_h__Script_ProjectGate_2275260304(TEXT("/Script/ProjectGate"),
 	Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_GridPlayerController_h__Script_ProjectGate_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_GridPlayerController_h__Script_ProjectGate_Statics::ClassInfo),
 	nullptr, 0,
 	nullptr, 0);

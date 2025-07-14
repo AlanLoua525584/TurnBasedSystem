@@ -16,10 +16,13 @@ ENGINE_API UClass* Z_Construct_UClass_AActor();
 ENGINE_API UClass* Z_Construct_UClass_AActor_NoRegister();
 PROJECTGATE_API UClass* Z_Construct_UClass_ASimpleTurnManager();
 PROJECTGATE_API UClass* Z_Construct_UClass_ASimpleTurnManager_NoRegister();
+PROJECTGATE_API UClass* Z_Construct_UClass_UTurnOrderCalculator_NoRegister();
+PROJECTGATE_API UClass* Z_Construct_UClass_UTurnOrderConfig_NoRegister();
 PROJECTGATE_API UEnum* Z_Construct_UEnum_ProjectGate_ETurnPhase();
 PROJECTGATE_API UFunction* Z_Construct_UDelegateFunction_ProjectGate_OnBattleEnded__DelegateSignature();
 PROJECTGATE_API UFunction* Z_Construct_UDelegateFunction_ProjectGate_OnPhaseChanged__DelegateSignature();
 PROJECTGATE_API UFunction* Z_Construct_UDelegateFunction_ProjectGate_OnTurnChanged__DelegateSignature();
+PROJECTGATE_API UFunction* Z_Construct_UDelegateFunction_ProjectGate_OnTurnOrderChanged__DelegateSignature();
 UPackage* Z_Construct_UPackage__Script_ProjectGate();
 // ********** End Cross Module References **********************************************************
 
@@ -238,6 +241,56 @@ void FOnBattleEnded_DelegateWrapper(const FMulticastScriptDelegate& OnBattleEnde
 }
 // ********** End Delegate FOnBattleEnded **********************************************************
 
+// ********** Begin Delegate FOnTurnOrderChanged ***************************************************
+struct Z_Construct_UDelegateFunction_ProjectGate_OnTurnOrderChanged__DelegateSignature_Statics
+{
+	struct _Script_ProjectGate_eventOnTurnOrderChanged_Parms
+	{
+		TArray<AActor*> NewOrder;
+	};
+#if WITH_METADATA
+	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
+		{ "ModuleRelativePath", "Public/TurnBasedSystem/SimpleTurnManager.h" },
+	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_NewOrder_MetaData[] = {
+		{ "NativeConst", "" },
+	};
+#endif // WITH_METADATA
+	static const UECodeGen_Private::FObjectPropertyParams NewProp_NewOrder_Inner;
+	static const UECodeGen_Private::FArrayPropertyParams NewProp_NewOrder;
+	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
+	static const UECodeGen_Private::FDelegateFunctionParams FuncParams;
+};
+const UECodeGen_Private::FObjectPropertyParams Z_Construct_UDelegateFunction_ProjectGate_OnTurnOrderChanged__DelegateSignature_Statics::NewProp_NewOrder_Inner = { "NewOrder", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, 0, Z_Construct_UClass_AActor_NoRegister, METADATA_PARAMS(0, nullptr) };
+const UECodeGen_Private::FArrayPropertyParams Z_Construct_UDelegateFunction_ProjectGate_OnTurnOrderChanged__DelegateSignature_Statics::NewProp_NewOrder = { "NewOrder", nullptr, (EPropertyFlags)0x0010000008000182, UECodeGen_Private::EPropertyGenFlags::Array, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(_Script_ProjectGate_eventOnTurnOrderChanged_Parms, NewOrder), EArrayPropertyFlags::None, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_NewOrder_MetaData), NewProp_NewOrder_MetaData) };
+const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UDelegateFunction_ProjectGate_OnTurnOrderChanged__DelegateSignature_Statics::PropPointers[] = {
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UDelegateFunction_ProjectGate_OnTurnOrderChanged__DelegateSignature_Statics::NewProp_NewOrder_Inner,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UDelegateFunction_ProjectGate_OnTurnOrderChanged__DelegateSignature_Statics::NewProp_NewOrder,
+};
+static_assert(UE_ARRAY_COUNT(Z_Construct_UDelegateFunction_ProjectGate_OnTurnOrderChanged__DelegateSignature_Statics::PropPointers) < 2048);
+const UECodeGen_Private::FDelegateFunctionParams Z_Construct_UDelegateFunction_ProjectGate_OnTurnOrderChanged__DelegateSignature_Statics::FuncParams = { { (UObject*(*)())Z_Construct_UPackage__Script_ProjectGate, nullptr, "OnTurnOrderChanged__DelegateSignature", Z_Construct_UDelegateFunction_ProjectGate_OnTurnOrderChanged__DelegateSignature_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UDelegateFunction_ProjectGate_OnTurnOrderChanged__DelegateSignature_Statics::PropPointers), sizeof(Z_Construct_UDelegateFunction_ProjectGate_OnTurnOrderChanged__DelegateSignature_Statics::_Script_ProjectGate_eventOnTurnOrderChanged_Parms), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x00530000, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UDelegateFunction_ProjectGate_OnTurnOrderChanged__DelegateSignature_Statics::Function_MetaDataParams), Z_Construct_UDelegateFunction_ProjectGate_OnTurnOrderChanged__DelegateSignature_Statics::Function_MetaDataParams)},  };
+static_assert(sizeof(Z_Construct_UDelegateFunction_ProjectGate_OnTurnOrderChanged__DelegateSignature_Statics::_Script_ProjectGate_eventOnTurnOrderChanged_Parms) < MAX_uint16);
+UFunction* Z_Construct_UDelegateFunction_ProjectGate_OnTurnOrderChanged__DelegateSignature()
+{
+	static UFunction* ReturnFunction = nullptr;
+	if (!ReturnFunction)
+	{
+		UECodeGen_Private::ConstructUDelegateFunction(&ReturnFunction, Z_Construct_UDelegateFunction_ProjectGate_OnTurnOrderChanged__DelegateSignature_Statics::FuncParams);
+	}
+	return ReturnFunction;
+}
+void FOnTurnOrderChanged_DelegateWrapper(const FMulticastScriptDelegate& OnTurnOrderChanged, TArray<AActor*> const& NewOrder)
+{
+	struct _Script_ProjectGate_eventOnTurnOrderChanged_Parms
+	{
+		TArray<AActor*> NewOrder;
+	};
+	_Script_ProjectGate_eventOnTurnOrderChanged_Parms Parms;
+	Parms.NewOrder=NewOrder;
+	OnTurnOrderChanged.ProcessMulticastDelegate<UObject>(&Parms);
+}
+// ********** End Delegate FOnTurnOrderChanged *****************************************************
+
 // ********** Begin Class ASimpleTurnManager Function AddCharacter *********************************
 struct Z_Construct_UFunction_ASimpleTurnManager_AddCharacter_Statics
 {
@@ -280,6 +333,49 @@ DEFINE_FUNCTION(ASimpleTurnManager::execAddCharacter)
 	P_NATIVE_END;
 }
 // ********** End Class ASimpleTurnManager Function AddCharacter ***********************************
+
+// ********** Begin Class ASimpleTurnManager Function ApplyTurnOrderConfig *************************
+struct Z_Construct_UFunction_ASimpleTurnManager_ApplyTurnOrderConfig_Statics
+{
+	struct SimpleTurnManager_eventApplyTurnOrderConfig_Parms
+	{
+		UTurnOrderConfig* Config;
+	};
+#if WITH_METADATA
+	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
+		{ "Category", "Turn System" },
+		{ "ModuleRelativePath", "Public/TurnBasedSystem/SimpleTurnManager.h" },
+	};
+#endif // WITH_METADATA
+	static const UECodeGen_Private::FObjectPropertyParams NewProp_Config;
+	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
+	static const UECodeGen_Private::FFunctionParams FuncParams;
+};
+const UECodeGen_Private::FObjectPropertyParams Z_Construct_UFunction_ASimpleTurnManager_ApplyTurnOrderConfig_Statics::NewProp_Config = { "Config", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(SimpleTurnManager_eventApplyTurnOrderConfig_Parms, Config), Z_Construct_UClass_UTurnOrderConfig_NoRegister, METADATA_PARAMS(0, nullptr) };
+const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_ASimpleTurnManager_ApplyTurnOrderConfig_Statics::PropPointers[] = {
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_ASimpleTurnManager_ApplyTurnOrderConfig_Statics::NewProp_Config,
+};
+static_assert(UE_ARRAY_COUNT(Z_Construct_UFunction_ASimpleTurnManager_ApplyTurnOrderConfig_Statics::PropPointers) < 2048);
+const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_ASimpleTurnManager_ApplyTurnOrderConfig_Statics::FuncParams = { { (UObject*(*)())Z_Construct_UClass_ASimpleTurnManager, nullptr, "ApplyTurnOrderConfig", Z_Construct_UFunction_ASimpleTurnManager_ApplyTurnOrderConfig_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_ASimpleTurnManager_ApplyTurnOrderConfig_Statics::PropPointers), sizeof(Z_Construct_UFunction_ASimpleTurnManager_ApplyTurnOrderConfig_Statics::SimpleTurnManager_eventApplyTurnOrderConfig_Parms), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x04020401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_ASimpleTurnManager_ApplyTurnOrderConfig_Statics::Function_MetaDataParams), Z_Construct_UFunction_ASimpleTurnManager_ApplyTurnOrderConfig_Statics::Function_MetaDataParams)},  };
+static_assert(sizeof(Z_Construct_UFunction_ASimpleTurnManager_ApplyTurnOrderConfig_Statics::SimpleTurnManager_eventApplyTurnOrderConfig_Parms) < MAX_uint16);
+UFunction* Z_Construct_UFunction_ASimpleTurnManager_ApplyTurnOrderConfig()
+{
+	static UFunction* ReturnFunction = nullptr;
+	if (!ReturnFunction)
+	{
+		UECodeGen_Private::ConstructUFunction(&ReturnFunction, Z_Construct_UFunction_ASimpleTurnManager_ApplyTurnOrderConfig_Statics::FuncParams);
+	}
+	return ReturnFunction;
+}
+DEFINE_FUNCTION(ASimpleTurnManager::execApplyTurnOrderConfig)
+{
+	P_GET_OBJECT(UTurnOrderConfig,Z_Param_Config);
+	P_FINISH;
+	P_NATIVE_BEGIN;
+	P_THIS->ApplyTurnOrderConfig(Z_Param_Config);
+	P_NATIVE_END;
+}
+// ********** End Class ASimpleTurnManager Function ApplyTurnOrderConfig ***************************
 
 // ********** Begin Class ASimpleTurnManager Function CheckBattleEnd *******************************
 struct Z_Construct_UFunction_ASimpleTurnManager_CheckBattleEnd_Statics
@@ -716,6 +812,54 @@ DEFINE_FUNCTION(ASimpleTurnManager::execGetTurnOrder)
 }
 // ********** End Class ASimpleTurnManager Function GetTurnOrder ***********************************
 
+// ********** Begin Class ASimpleTurnManager Function GetTurnOrderCalculator ***********************
+struct Z_Construct_UFunction_ASimpleTurnManager_GetTurnOrderCalculator_Statics
+{
+	struct SimpleTurnManager_eventGetTurnOrderCalculator_Parms
+	{
+		UTurnOrderCalculator* ReturnValue;
+	};
+#if WITH_METADATA
+	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
+		{ "Category", "Turn System" },
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "// === \xef\xbf\xbds\xef\xbf\xbdW\xef\xbf\xbd\xef\xbf\xbdk ===\n" },
+#endif
+		{ "ModuleRelativePath", "Public/TurnBasedSystem/SimpleTurnManager.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "=== \xef\xbf\xbds\xef\xbf\xbdW\xef\xbf\xbd\xef\xbf\xbdk ===" },
+#endif
+	};
+#endif // WITH_METADATA
+	static const UECodeGen_Private::FObjectPropertyParams NewProp_ReturnValue;
+	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
+	static const UECodeGen_Private::FFunctionParams FuncParams;
+};
+const UECodeGen_Private::FObjectPropertyParams Z_Construct_UFunction_ASimpleTurnManager_GetTurnOrderCalculator_Statics::NewProp_ReturnValue = { "ReturnValue", nullptr, (EPropertyFlags)0x0010000000000580, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(SimpleTurnManager_eventGetTurnOrderCalculator_Parms, ReturnValue), Z_Construct_UClass_UTurnOrderCalculator_NoRegister, METADATA_PARAMS(0, nullptr) };
+const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_ASimpleTurnManager_GetTurnOrderCalculator_Statics::PropPointers[] = {
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_ASimpleTurnManager_GetTurnOrderCalculator_Statics::NewProp_ReturnValue,
+};
+static_assert(UE_ARRAY_COUNT(Z_Construct_UFunction_ASimpleTurnManager_GetTurnOrderCalculator_Statics::PropPointers) < 2048);
+const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_ASimpleTurnManager_GetTurnOrderCalculator_Statics::FuncParams = { { (UObject*(*)())Z_Construct_UClass_ASimpleTurnManager, nullptr, "GetTurnOrderCalculator", Z_Construct_UFunction_ASimpleTurnManager_GetTurnOrderCalculator_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_ASimpleTurnManager_GetTurnOrderCalculator_Statics::PropPointers), sizeof(Z_Construct_UFunction_ASimpleTurnManager_GetTurnOrderCalculator_Statics::SimpleTurnManager_eventGetTurnOrderCalculator_Parms), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x54020401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_ASimpleTurnManager_GetTurnOrderCalculator_Statics::Function_MetaDataParams), Z_Construct_UFunction_ASimpleTurnManager_GetTurnOrderCalculator_Statics::Function_MetaDataParams)},  };
+static_assert(sizeof(Z_Construct_UFunction_ASimpleTurnManager_GetTurnOrderCalculator_Statics::SimpleTurnManager_eventGetTurnOrderCalculator_Parms) < MAX_uint16);
+UFunction* Z_Construct_UFunction_ASimpleTurnManager_GetTurnOrderCalculator()
+{
+	static UFunction* ReturnFunction = nullptr;
+	if (!ReturnFunction)
+	{
+		UECodeGen_Private::ConstructUFunction(&ReturnFunction, Z_Construct_UFunction_ASimpleTurnManager_GetTurnOrderCalculator_Statics::FuncParams);
+	}
+	return ReturnFunction;
+}
+DEFINE_FUNCTION(ASimpleTurnManager::execGetTurnOrderCalculator)
+{
+	P_FINISH;
+	P_NATIVE_BEGIN;
+	*(UTurnOrderCalculator**)Z_Param__Result=P_THIS->GetTurnOrderCalculator();
+	P_NATIVE_END;
+}
+// ********** End Class ASimpleTurnManager Function GetTurnOrderCalculator *************************
+
 // ********** Begin Class ASimpleTurnManager Function InsertImmediateAction ************************
 struct Z_Construct_UFunction_ASimpleTurnManager_InsertImmediateAction_Statics
 {
@@ -1031,12 +1175,43 @@ DEFINE_FUNCTION(ASimpleTurnManager::execStartBattle)
 }
 // ********** End Class ASimpleTurnManager Function StartBattle ************************************
 
+// ********** Begin Class ASimpleTurnManager Function UpdateTurnOrderUI ****************************
+struct Z_Construct_UFunction_ASimpleTurnManager_UpdateTurnOrderUI_Statics
+{
+#if WITH_METADATA
+	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
+		{ "Category", "Turn System" },
+		{ "ModuleRelativePath", "Public/TurnBasedSystem/SimpleTurnManager.h" },
+	};
+#endif // WITH_METADATA
+	static const UECodeGen_Private::FFunctionParams FuncParams;
+};
+const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_ASimpleTurnManager_UpdateTurnOrderUI_Statics::FuncParams = { { (UObject*(*)())Z_Construct_UClass_ASimpleTurnManager, nullptr, "UpdateTurnOrderUI", nullptr, 0, 0, RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x04020401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_ASimpleTurnManager_UpdateTurnOrderUI_Statics::Function_MetaDataParams), Z_Construct_UFunction_ASimpleTurnManager_UpdateTurnOrderUI_Statics::Function_MetaDataParams)},  };
+UFunction* Z_Construct_UFunction_ASimpleTurnManager_UpdateTurnOrderUI()
+{
+	static UFunction* ReturnFunction = nullptr;
+	if (!ReturnFunction)
+	{
+		UECodeGen_Private::ConstructUFunction(&ReturnFunction, Z_Construct_UFunction_ASimpleTurnManager_UpdateTurnOrderUI_Statics::FuncParams);
+	}
+	return ReturnFunction;
+}
+DEFINE_FUNCTION(ASimpleTurnManager::execUpdateTurnOrderUI)
+{
+	P_FINISH;
+	P_NATIVE_BEGIN;
+	P_THIS->UpdateTurnOrderUI();
+	P_NATIVE_END;
+}
+// ********** End Class ASimpleTurnManager Function UpdateTurnOrderUI ******************************
+
 // ********** Begin Class ASimpleTurnManager *******************************************************
 void ASimpleTurnManager::StaticRegisterNativesASimpleTurnManager()
 {
 	UClass* Class = ASimpleTurnManager::StaticClass();
 	static const FNameNativePtrPair Funcs[] = {
 		{ "AddCharacter", &ASimpleTurnManager::execAddCharacter },
+		{ "ApplyTurnOrderConfig", &ASimpleTurnManager::execApplyTurnOrderConfig },
 		{ "CheckBattleEnd", &ASimpleTurnManager::execCheckBattleEnd },
 		{ "DelayCharacterTurn", &ASimpleTurnManager::execDelayCharacterTurn },
 		{ "GetAliveCharacterCount", &ASimpleTurnManager::execGetAliveCharacterCount },
@@ -1046,6 +1221,7 @@ void ASimpleTurnManager::StaticRegisterNativesASimpleTurnManager()
 		{ "GetSortedTurnOrder", &ASimpleTurnManager::execGetSortedTurnOrder },
 		{ "GetTurnCount", &ASimpleTurnManager::execGetTurnCount },
 		{ "GetTurnOrder", &ASimpleTurnManager::execGetTurnOrder },
+		{ "GetTurnOrderCalculator", &ASimpleTurnManager::execGetTurnOrderCalculator },
 		{ "InsertImmediateAction", &ASimpleTurnManager::execInsertImmediateAction },
 		{ "NextPhase", &ASimpleTurnManager::execNextPhase },
 		{ "NextTurn", &ASimpleTurnManager::execNextTurn },
@@ -1054,6 +1230,7 @@ void ASimpleTurnManager::StaticRegisterNativesASimpleTurnManager()
 		{ "RemoveCharacter", &ASimpleTurnManager::execRemoveCharacter },
 		{ "SetCurrentCharacterIndex", &ASimpleTurnManager::execSetCurrentCharacterIndex },
 		{ "StartBattle", &ASimpleTurnManager::execStartBattle },
+		{ "UpdateTurnOrderUI", &ASimpleTurnManager::execUpdateTurnOrderUI },
 	};
 	FNativeFunctionRegistrar::RegisterFunctions(Class, Funcs, UE_ARRAY_COUNT(Funcs));
 }
@@ -1093,37 +1270,70 @@ struct Z_Construct_UClass_ASimpleTurnManager_Statics
 		{ "IncludePath", "TurnBasedSystem/SimpleTurnManager.h" },
 		{ "ModuleRelativePath", "Public/TurnBasedSystem/SimpleTurnManager.h" },
 	};
-	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_OnBattleEnded_MetaData[] = {
-		{ "Category", "Turn System" },
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_TurnOrderConfig_MetaData[] = {
+		{ "Category", "Config" },
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "// === \xef\xbf\xbdt\xef\xbf\xbdm\xef\xbf\xbd\xea\xb2\xa3 ===\n" },
+#endif
 		{ "ModuleRelativePath", "Public/TurnBasedSystem/SimpleTurnManager.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "=== \xef\xbf\xbdt\xef\xbf\xbdm\xef\xbf\xbd\xea\xb2\xa3 ===" },
+#endif
 	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_OnTurnChanged_MetaData[] = {
 		{ "Category", "Turn System" },
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "// === \xef\xbf\xbd\xc6\xa5\xef\xbf\xbd""e\xef\xbf\xbdU ===\n" },
+#endif
 		{ "ModuleRelativePath", "Public/TurnBasedSystem/SimpleTurnManager.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "=== \xef\xbf\xbd\xc6\xa5\xef\xbf\xbd""e\xef\xbf\xbdU ===" },
+#endif
 	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_OnPhaseChanged_MetaData[] = {
 		{ "Category", "Turn System" },
 		{ "ModuleRelativePath", "Public/TurnBasedSystem/SimpleTurnManager.h" },
 	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_OnBattleEnded_MetaData[] = {
+		{ "Category", "Turn System" },
+		{ "ModuleRelativePath", "Public/TurnBasedSystem/SimpleTurnManager.h" },
+	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_OnTurnOrderChanged_MetaData[] = {
+		{ "Category", "Turn System" },
+		{ "ModuleRelativePath", "Public/TurnBasedSystem/SimpleTurnManager.h" },
+	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_TurnOrder_MetaData[] = {
 #if !UE_BUILD_SHIPPING
-		{ "Comment", "//\xef\xbf\xbd\xef\xbf\xbdPrivate\n" },
+		{ "Comment", "/*StoreAllCharacter*/// === \xef\xbf\xbd\xd6\xa4\xdf\xa6\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd ===\n" },
 #endif
 		{ "ModuleRelativePath", "Public/TurnBasedSystem/SimpleTurnManager.h" },
 #if !UE_BUILD_SHIPPING
-		{ "ToolTip", "\xef\xbf\xbd\xef\xbf\xbdPrivate" },
+		{ "ToolTip", "StoreAllCharacter// === \xef\xbf\xbd\xd6\xa4\xdf\xa6\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd ===" },
+#endif
+	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_TurnOrderCalculator_MetaData[] = {
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "// === \xef\xbf\xbds\xef\xbf\xbdW\xef\xbf\xbdG\xef\xbf\xbdp\xef\xbf\xbd\xe2\xbe\xb9\xef\xbf\xbd\xd5\xa5\xef\xbf\xbd ===\n" },
+#endif
+		{ "ModuleRelativePath", "Public/TurnBasedSystem/SimpleTurnManager.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "=== \xef\xbf\xbds\xef\xbf\xbdW\xef\xbf\xbdG\xef\xbf\xbdp\xef\xbf\xbd\xe2\xbe\xb9\xef\xbf\xbd\xd5\xa5\xef\xbf\xbd ===" },
 #endif
 	};
 #endif // WITH_METADATA
-	static const UECodeGen_Private::FMulticastDelegatePropertyParams NewProp_OnBattleEnded;
+	static const UECodeGen_Private::FObjectPropertyParams NewProp_TurnOrderConfig;
 	static const UECodeGen_Private::FMulticastDelegatePropertyParams NewProp_OnTurnChanged;
 	static const UECodeGen_Private::FMulticastDelegatePropertyParams NewProp_OnPhaseChanged;
+	static const UECodeGen_Private::FMulticastDelegatePropertyParams NewProp_OnBattleEnded;
+	static const UECodeGen_Private::FMulticastDelegatePropertyParams NewProp_OnTurnOrderChanged;
 	static const UECodeGen_Private::FObjectPropertyParams NewProp_TurnOrder_Inner;
 	static const UECodeGen_Private::FArrayPropertyParams NewProp_TurnOrder;
+	static const UECodeGen_Private::FObjectPropertyParams NewProp_TurnOrderCalculator;
 	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
 	static UObject* (*const DependentSingletons[])();
 	static constexpr FClassFunctionLinkInfo FuncInfo[] = {
 		{ &Z_Construct_UFunction_ASimpleTurnManager_AddCharacter, "AddCharacter" }, // 907563401
+		{ &Z_Construct_UFunction_ASimpleTurnManager_ApplyTurnOrderConfig, "ApplyTurnOrderConfig" }, // 2103237877
 		{ &Z_Construct_UFunction_ASimpleTurnManager_CheckBattleEnd, "CheckBattleEnd" }, // 1098689763
 		{ &Z_Construct_UFunction_ASimpleTurnManager_DelayCharacterTurn, "DelayCharacterTurn" }, // 1604097565
 		{ &Z_Construct_UFunction_ASimpleTurnManager_GetAliveCharacterCount, "GetAliveCharacterCount" }, // 219225659
@@ -1133,6 +1343,7 @@ struct Z_Construct_UClass_ASimpleTurnManager_Statics
 		{ &Z_Construct_UFunction_ASimpleTurnManager_GetSortedTurnOrder, "GetSortedTurnOrder" }, // 1047158997
 		{ &Z_Construct_UFunction_ASimpleTurnManager_GetTurnCount, "GetTurnCount" }, // 1215446228
 		{ &Z_Construct_UFunction_ASimpleTurnManager_GetTurnOrder, "GetTurnOrder" }, // 2779018252
+		{ &Z_Construct_UFunction_ASimpleTurnManager_GetTurnOrderCalculator, "GetTurnOrderCalculator" }, // 3427506242
 		{ &Z_Construct_UFunction_ASimpleTurnManager_InsertImmediateAction, "InsertImmediateAction" }, // 3031203693
 		{ &Z_Construct_UFunction_ASimpleTurnManager_NextPhase, "NextPhase" }, // 3175668522
 		{ &Z_Construct_UFunction_ASimpleTurnManager_NextTurn, "NextTurn" }, // 4041743731
@@ -1141,6 +1352,7 @@ struct Z_Construct_UClass_ASimpleTurnManager_Statics
 		{ &Z_Construct_UFunction_ASimpleTurnManager_RemoveCharacter, "RemoveCharacter" }, // 1942789136
 		{ &Z_Construct_UFunction_ASimpleTurnManager_SetCurrentCharacterIndex, "SetCurrentCharacterIndex" }, // 1925167900
 		{ &Z_Construct_UFunction_ASimpleTurnManager_StartBattle, "StartBattle" }, // 3802053970
+		{ &Z_Construct_UFunction_ASimpleTurnManager_UpdateTurnOrderUI, "UpdateTurnOrderUI" }, // 602009519
 	};
 	static_assert(UE_ARRAY_COUNT(FuncInfo) < 2048);
 	static constexpr FCppClassTypeInfoStatic StaticCppClassTypeInfo = {
@@ -1148,17 +1360,23 @@ struct Z_Construct_UClass_ASimpleTurnManager_Statics
 	};
 	static const UECodeGen_Private::FClassParams ClassParams;
 };
-const UECodeGen_Private::FMulticastDelegatePropertyParams Z_Construct_UClass_ASimpleTurnManager_Statics::NewProp_OnBattleEnded = { "OnBattleEnded", nullptr, (EPropertyFlags)0x0010000010080000, UECodeGen_Private::EPropertyGenFlags::InlineMulticastDelegate, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(ASimpleTurnManager, OnBattleEnded), Z_Construct_UDelegateFunction_ProjectGate_OnBattleEnded__DelegateSignature, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_OnBattleEnded_MetaData), NewProp_OnBattleEnded_MetaData) }; // 3834345977
+const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_ASimpleTurnManager_Statics::NewProp_TurnOrderConfig = { "TurnOrderConfig", nullptr, (EPropertyFlags)0x0010000000000015, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(ASimpleTurnManager, TurnOrderConfig), Z_Construct_UClass_UTurnOrderConfig_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_TurnOrderConfig_MetaData), NewProp_TurnOrderConfig_MetaData) };
 const UECodeGen_Private::FMulticastDelegatePropertyParams Z_Construct_UClass_ASimpleTurnManager_Statics::NewProp_OnTurnChanged = { "OnTurnChanged", nullptr, (EPropertyFlags)0x0010000010080000, UECodeGen_Private::EPropertyGenFlags::InlineMulticastDelegate, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(ASimpleTurnManager, OnTurnChanged), Z_Construct_UDelegateFunction_ProjectGate_OnTurnChanged__DelegateSignature, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_OnTurnChanged_MetaData), NewProp_OnTurnChanged_MetaData) }; // 900040657
 const UECodeGen_Private::FMulticastDelegatePropertyParams Z_Construct_UClass_ASimpleTurnManager_Statics::NewProp_OnPhaseChanged = { "OnPhaseChanged", nullptr, (EPropertyFlags)0x0010000010080000, UECodeGen_Private::EPropertyGenFlags::InlineMulticastDelegate, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(ASimpleTurnManager, OnPhaseChanged), Z_Construct_UDelegateFunction_ProjectGate_OnPhaseChanged__DelegateSignature, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_OnPhaseChanged_MetaData), NewProp_OnPhaseChanged_MetaData) }; // 1595082495
+const UECodeGen_Private::FMulticastDelegatePropertyParams Z_Construct_UClass_ASimpleTurnManager_Statics::NewProp_OnBattleEnded = { "OnBattleEnded", nullptr, (EPropertyFlags)0x0010000010080000, UECodeGen_Private::EPropertyGenFlags::InlineMulticastDelegate, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(ASimpleTurnManager, OnBattleEnded), Z_Construct_UDelegateFunction_ProjectGate_OnBattleEnded__DelegateSignature, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_OnBattleEnded_MetaData), NewProp_OnBattleEnded_MetaData) }; // 3834345977
+const UECodeGen_Private::FMulticastDelegatePropertyParams Z_Construct_UClass_ASimpleTurnManager_Statics::NewProp_OnTurnOrderChanged = { "OnTurnOrderChanged", nullptr, (EPropertyFlags)0x0010000010080000, UECodeGen_Private::EPropertyGenFlags::InlineMulticastDelegate, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(ASimpleTurnManager, OnTurnOrderChanged), Z_Construct_UDelegateFunction_ProjectGate_OnTurnOrderChanged__DelegateSignature, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_OnTurnOrderChanged_MetaData), NewProp_OnTurnOrderChanged_MetaData) }; // 1561723673
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_ASimpleTurnManager_Statics::NewProp_TurnOrder_Inner = { "TurnOrder", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, 0, Z_Construct_UClass_AActor_NoRegister, METADATA_PARAMS(0, nullptr) };
-const UECodeGen_Private::FArrayPropertyParams Z_Construct_UClass_ASimpleTurnManager_Statics::NewProp_TurnOrder = { "TurnOrder", nullptr, (EPropertyFlags)0x0010000000000000, UECodeGen_Private::EPropertyGenFlags::Array, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(ASimpleTurnManager, TurnOrder), EArrayPropertyFlags::None, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_TurnOrder_MetaData), NewProp_TurnOrder_MetaData) };
+const UECodeGen_Private::FArrayPropertyParams Z_Construct_UClass_ASimpleTurnManager_Statics::NewProp_TurnOrder = { "TurnOrder", nullptr, (EPropertyFlags)0x0040000000000000, UECodeGen_Private::EPropertyGenFlags::Array, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(ASimpleTurnManager, TurnOrder), EArrayPropertyFlags::None, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_TurnOrder_MetaData), NewProp_TurnOrder_MetaData) };
+const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_ASimpleTurnManager_Statics::NewProp_TurnOrderCalculator = { "TurnOrderCalculator", nullptr, (EPropertyFlags)0x0040000000000000, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(ASimpleTurnManager, TurnOrderCalculator), Z_Construct_UClass_UTurnOrderCalculator_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_TurnOrderCalculator_MetaData), NewProp_TurnOrderCalculator_MetaData) };
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UClass_ASimpleTurnManager_Statics::PropPointers[] = {
-	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_ASimpleTurnManager_Statics::NewProp_OnBattleEnded,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_ASimpleTurnManager_Statics::NewProp_TurnOrderConfig,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_ASimpleTurnManager_Statics::NewProp_OnTurnChanged,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_ASimpleTurnManager_Statics::NewProp_OnPhaseChanged,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_ASimpleTurnManager_Statics::NewProp_OnBattleEnded,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_ASimpleTurnManager_Statics::NewProp_OnTurnOrderChanged,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_ASimpleTurnManager_Statics::NewProp_TurnOrder_Inner,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_ASimpleTurnManager_Statics::NewProp_TurnOrder,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_ASimpleTurnManager_Statics::NewProp_TurnOrderCalculator,
 };
 static_assert(UE_ARRAY_COUNT(Z_Construct_UClass_ASimpleTurnManager_Statics::PropPointers) < 2048);
 UObject* (*const Z_Construct_UClass_ASimpleTurnManager_Statics::DependentSingletons[])() = {
@@ -1200,10 +1418,10 @@ struct Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_P
 		{ ETurnPhase_StaticEnum, TEXT("ETurnPhase"), &Z_Registration_Info_UEnum_ETurnPhase, CONSTRUCT_RELOAD_VERSION_INFO(FEnumReloadVersionInfo, 1421385386U) },
 	};
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_ASimpleTurnManager, ASimpleTurnManager::StaticClass, TEXT("ASimpleTurnManager"), &Z_Registration_Info_UClass_ASimpleTurnManager, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(ASimpleTurnManager), 1779641372U) },
+		{ Z_Construct_UClass_ASimpleTurnManager, ASimpleTurnManager::StaticClass, TEXT("ASimpleTurnManager"), &Z_Registration_Info_UClass_ASimpleTurnManager, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(ASimpleTurnManager), 675931790U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_SimpleTurnManager_h__Script_ProjectGate_4261593797(TEXT("/Script/ProjectGate"),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_SimpleTurnManager_h__Script_ProjectGate_542751810(TEXT("/Script/ProjectGate"),
 	Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_SimpleTurnManager_h__Script_ProjectGate_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_SimpleTurnManager_h__Script_ProjectGate_Statics::ClassInfo),
 	nullptr, 0,
 	Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_SimpleTurnManager_h__Script_ProjectGate_Statics::EnumInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_SimpleTurnManager_h__Script_ProjectGate_Statics::EnumInfo));

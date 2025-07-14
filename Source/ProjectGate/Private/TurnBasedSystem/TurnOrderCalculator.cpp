@@ -21,9 +21,9 @@ void UTurnOrderCalculator::InitializeDefaultModifiers()
 {
     
     // 創建默認修正器
-    USpeedInitiativeModifier* SpeedMod = NewObject<USpeedInitiativeModifier>(this);
-    UStatusInitiativeModifier* StatusMod = NewObject<UStatusInitiativeModifier>(this);
-    URandomInitiativeModifier* RandomMod = NewObject<URandomInitiativeModifier>(this);
+    USpeedInitiativeModifier* SpeedMod = NewObject<USpeedInitiativeModifier>(this, USpeedInitiativeModifier::StaticClass(), TEXT("SpeedMod"));
+    UStatusInitiativeModifier* StatusMod = NewObject<UStatusInitiativeModifier>(this, UStatusInitiativeModifier::StaticClass(), TEXT("StatusMod"));
+    URandomInitiativeModifier* RandomMod = NewObject<URandomInitiativeModifier>(this, URandomInitiativeModifier::StaticClass(), TEXT("RandomMod"));
     
 
     InitiativeModifiers.Add(SpeedMod);

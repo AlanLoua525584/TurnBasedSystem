@@ -79,57 +79,18 @@ public:
 	bool bHideCursorInDynamicMode = false;
 
 
+	//Debug
+	UFUNCTION(Exec, Category = "Debug")
+	void TestNewTurnOrder();
+
+	UFUNCTION(Exec, Category = "Debug")
+	void ShowModifiers();
 	
 	// ===== Enhanced Input System =====
 	// Input mapping contexts
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
 	UInputMappingContext* GridInputMappingContext;
 
-	/*
-	// Input Action - Click
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
-	UInputAction* ClickAction;
-
-	// Input Action - Show Range
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
-	UInputAction* ShowRangeAction;
-
-	// Input Action - Camera Rotation
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
-	UInputAction* RotateCameraAction;
-
-	// Input Action - Camera Zoom
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
-	UInputAction* ZoomCameraAction;
-
-	// Input Action - Cancel
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
-	UInputAction* CancelAction;
-
-	// Dynamic movement toggle
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
-	class UInputAction* DynamicModeAction;
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
-	class UInputAction* MoveAction;
-
-	// Camera control Input Actions (if no existing ones)
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
-	UInputAction* CameraMoveAction;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
-	UInputAction* CameraRotateAction;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
-	UInputAction* CameraZoomAction;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
-	class UInputAction* ToggleFocus;
-
-	// Enter attack state
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input|Actions")
-	class UInputAction* AttackModeAction;
-	*/
 
 	// Input response functions
 	void OnClick();

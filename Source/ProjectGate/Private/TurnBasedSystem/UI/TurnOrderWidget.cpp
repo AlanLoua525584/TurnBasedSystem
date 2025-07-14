@@ -5,7 +5,7 @@
 #include "TurnBasedSystem/UI/TurnOrderEntryWidget.h"
 #include "TurnBasedSystem/TurnBasedCharacter.h"
 #include "Components/HorizontalBox.h"
-
+#include "Public/DebugHelper.h"
 
 void UTurnOrderWidget::NativeConstruct()
 {
@@ -28,17 +28,16 @@ void UTurnOrderWidget::NativeConstruct()
 }
 
 void UTurnOrderWidget::UpdateTurnOrder(const TArray<AActor*>& OrderedCharacters)
-{ // 清空當前顯示
+{ 
     TurnOrderContainer->ClearChildren();
     EntryWidgets.Empty();
 
-    // 為每個角色創建或重用 Entry
+   
     for (int32 i = 0; i < OrderedCharacters.Num(); i++)
     {
         ATurnBasedCharacter* Character = Cast<ATurnBasedCharacter>(OrderedCharacters[i]);
         if (!Character) continue;
 
-        // 從池中取得或創建新的
         UTurnOrderEntryWidget* Entry = nullptr;
         if (WidgetPool.Num() > 0)
         {
@@ -59,10 +58,11 @@ void UTurnOrderWidget::UpdateTurnOrder(const TArray<AActor*>& OrderedCharacters)
             TurnOrderContainer->AddChild(Entry);
             EntryWidgets.Add(Entry);
 
-            // 第一個角色特殊處理（當前回合）
+        
             if (i == 0)
             {
                 Entry->SetRenderScale(FVector2D(1.2f, 1.2f));
+                
             }
             else
             {
@@ -71,15 +71,28 @@ void UTurnOrderWidget::UpdateTurnOrder(const TArray<AActor*>& OrderedCharacters)
         }
 
     }
-
+    Debug::Print(FString::Printf(TEXT("Turn Order UI Updated - %d characters"), OrderedCharacters.Num()), FColor::Green);
 }
 
 
 void UTurnOrderWidget::HighlightCurrentCharacter(AActor* Character)
 {
+
 }
 
 UTurnOrderEntryWidget* UTurnOrderWidget::CreateEntryWidget()
 {
-	return nullptr;
+    if (!TurnOrderEntryClass)
+    {
+        Debug::Print(TEXT("TurnOrderEntryClass is null!"), FColor::Red);
+        return nullptr;
+    }
+
+    UTurnOrderEntryWidget* NewEntry = CreateWidget<UTurnOrderEntryWidget>(this, TurnOrderEntryClass);
+    if (NewEntry)
+    {
+        NewEntry->SetVisibility(ESlateVisibility::Visible);
+    }
+
+    return NewEntry;
 }

@@ -9,6 +9,9 @@
 
 
 class ATurnBasedCharacter;
+class UTurnOrderCalculator;
+class UTurnOrderConfig;
+class UUIManagerComponent;
 
 /*ThreePhasesInTurn*/
 UENUM(BlueprintType)
@@ -27,6 +30,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnPhaseChanged, AActor*, CurrentCh
 // 戰鬥結束事件
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnBattleEnded, bool, bPlayerWon);
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnTurnOrderChanged, const TArray<AActor*>&, NewOrder);
 
 
 
@@ -39,6 +43,11 @@ class PROJECTGATE_API ASimpleTurnManager : public AActor
 public:	
 	// Sets default values for this actor's properties
 	ASimpleTurnManager();
+
+	// === 配置資產 ===
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Config")
+	UTurnOrderConfig* TurnOrderConfig;
+
 	UFUNCTION(BlueprintCallable, Category = "Turn System")
 	void AddCharacter(AActor* Character);
 
@@ -67,6 +76,8 @@ public:
 	//檢查戰鬥是否開始
 	bool IsBattleStarted() const { return bBattleStarted; }
 
+	// === 更新的方法 ===
+
 	// 回合排序方法
 	UFUNCTION(BlueprintCallable, Category = "Turn System")
 	void RecalculateTurnOrder();
@@ -83,16 +94,19 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Turn System")
 	void InsertImmediateAction(AActor* Character);
 
-
-
 	// 獲取存活角色數量
 	UFUNCTION(BlueprintCallable, Category = "Turn System")
 	int32 GetAliveCharacterCount() const;
 
-	UPROPERTY(BlueprintAssignable, Category = "Turn System")
-	FOnBattleEnded OnBattleEnded;
+	// === 新增方法 ===
+	UFUNCTION(BlueprintCallable, Category = "Turn System")
+	UTurnOrderCalculator* GetTurnOrderCalculator() const { return TurnOrderCalculator; }
 
-	
+	UFUNCTION(BlueprintCallable, Category = "Turn System")
+	void ApplyTurnOrderConfig(UTurnOrderConfig* Config);
+
+	UFUNCTION(BlueprintCallable, Category = "Turn System")
+	void UpdateTurnOrderUI();
 
 	/*GetCurrentPhase*/ 
 	UFUNCTION(BlueprintCallable, Category = "Turn System")
@@ -112,6 +126,11 @@ public:
 	int32 GetCurrentCharacterIndex() const ;
 
 
+	// 設置當前索引
+	UFUNCTION(BlueprintCallable, Category = "Turn System")
+	void SetCurrentCharacterIndex(int32 NewIndex);
+
+	// === 事件委託 ===
 	UPROPERTY(BlueprintAssignable, Category = "Turn System")
 	FOnTurnChanged OnTurnChanged;
 
@@ -119,23 +138,15 @@ public:
 	UPROPERTY(BlueprintAssignable, Category = "Turn System")
 	FOnPhaseChanged OnPhaseChanged;
 
-
-	//原Private
-	UPROPERTY()
-	TArray<AActor*> TurnOrder;
+	UPROPERTY(BlueprintAssignable, Category = "Turn System")
+	FOnBattleEnded OnBattleEnded;
 
 
-	int32 CurrentTurnIndex;
-	bool bBattleStarted;
-	ETurnPhase CurrentPhase;
-	int32 TurnCount;
-
-	// 設置當前索引
-	UFUNCTION(BlueprintCallable, Category = "Turn System")
-	void SetCurrentCharacterIndex(int32 NewIndex);
+	UPROPERTY(BlueprintAssignable, Category = "Turn System")
+	FOnTurnOrderChanged OnTurnOrderChanged;
 
 
-	void PossessCharacter(AActor* CharacterToPossess);
+
 
 protected:
 	// Called when the game starts or when spawned
@@ -155,7 +166,21 @@ public:
 
 private:
 	/*StoreAllCharacter*/
-	
+	// === 核心成員 ===
+	UPROPERTY()
+	TArray<AActor*> TurnOrder;
+
+	int32 CurrentTurnIndex;
+	bool bBattleStarted;
+	ETurnPhase CurrentPhase;
+	int32 TurnCount;
+
+	// === 新增：計算器組件 ===
+	UPROPERTY()
+	UTurnOrderCalculator* TurnOrderCalculator;
+
+
+	void PossessCharacter(AActor* CharacterToPossess);
 
 	// 處理角色死亡後的回合切換
 	void HandleCharacterDeath(AActor* DeadCharacter);

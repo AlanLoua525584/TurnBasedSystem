@@ -49,6 +49,8 @@ PROJECTGATE_API void FUIOnMovementModeChanged_DelegateWrapper(const FMulticastSc
 	DECLARE_FUNCTION(execGetCameraPawn); \
 	DECLARE_FUNCTION(execOnDynamicMode); \
 	DECLARE_FUNCTION(execOnMove); \
+	DECLARE_FUNCTION(execShowModifiers); \
+	DECLARE_FUNCTION(execTestNewTurnOrder); \
 	DECLARE_FUNCTION(execOnTurnChangedCamera); \
 	DECLARE_FUNCTION(execIsInAttackMode); \
 	DECLARE_FUNCTION(execIsInDynamicMode); \

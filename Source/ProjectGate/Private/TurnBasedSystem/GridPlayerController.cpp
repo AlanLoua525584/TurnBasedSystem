@@ -398,6 +398,45 @@ void AGridPlayerController::HandleDynamicAttackInput()
 }
 
 
+void AGridPlayerController::TestNewTurnOrder()
+{
+	if (!TurnManager) return;
+
+	UTurnOrderCalculator* Calculator = TurnManager->GetTurnOrderCalculator();
+	if (!Calculator)
+	{
+		Debug::Print(TEXT("ERROR: No TurnOrderCalculator!"), FColor::Red);
+		return;
+	}
+
+	// 強制重新計算
+	TurnManager->RecalculateTurnOrder();
+
+	// 顯示結果
+	TArray<AActor*> Order = TurnManager->GetTurnOrder();
+	Debug::Print(TEXT("=== NEW TURN ORDER SYSTEM TEST ==="), FColor::Cyan);
+
+	for (int32 i = 0; i < Order.Num(); i++)
+	{
+		if (ATurnBasedCharacter* Char = Cast<ATurnBasedCharacter>(Order[i]))
+		{
+			Debug::Print(FString::Printf(TEXT("%d. %s - Initiative: %d"),
+				i + 1, *Char->GetActorLabel(), Char->CurrentInitiative),
+				FColor::White);
+		}
+	}
+}
+
+void AGridPlayerController::ShowModifiers()
+{
+	if (!TurnManager) return;
+
+	UTurnOrderCalculator* Calculator = TurnManager->GetTurnOrderCalculator();
+	if (!Calculator) return;
+
+	Debug::Print(TEXT("=== ACTIVE MODIFIERS ==="), FColor::Cyan);
+}
+
 void AGridPlayerController::OnClick()
 {
 	Debug::Print(TEXT("Clicking"));

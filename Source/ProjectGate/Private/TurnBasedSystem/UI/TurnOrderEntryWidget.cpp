@@ -3,8 +3,12 @@
 
 #include "TurnBasedSystem/UI/TurnOrderEntryWidget.h"
 #include "TurnBasedSystem/TurnBasedCharacter.h"
+#include "CombatSystem/CombatComponent.h"
+#include "CombatSystem/CombatInterface.h"
 #include "Components/TextBlock.h"
 #include "Components/Image.h"
+#include "Components/ProgressBar.h"
+#include "Public/DebugHelper.h"
 
 
 void UTurnOrderEntryWidget::SetCharacterData(ATurnBasedCharacter* Character)
@@ -14,45 +18,78 @@ void UTurnOrderEntryWidget::SetCharacterData(ATurnBasedCharacter* Character)
     AssociatedCharacter = Character;
     AssociatedCharacter = Character;
 
-    // 設置頭像 - 使用新的結構
-    if (UTexture2D* Portrait = Character->GetUIPortrait())
+
+    if (CharacterPortrait)
     {
-        CharacterPortrait->SetBrushFromTexture(Portrait);
+        if (UTexture2D* Portrait = Character->GetUIPortrait())
+        {
+            CharacterPortrait->SetBrushFromTexture(Portrait);
+        }
     }
 
-    // 設置先攻值文字
+
     if (Character->AccessCombatComponent())
     {
         int32 Initiative = Character->CurrentInitiative;
         InitiativeText->SetText(FText::AsNumber(Initiative));
     }
 
-    // 使用角色的邊框顏色
-    FLinearColor BorderColor = Character->GetPortraitBorderColor();
-
-    /*
-    // 如果有邊框組件，設置顏色
-    if (CharacterBorder)  // 需要在.h中添加這個組件
+  
+    if (CharacterNameText)
     {
-        CharacterBorder->SetBrushColor(BorderColor);
+        CharacterNameText->SetText(FText::FromString(Character->GetActorLabel()));
     }
 
-    */
 
-    /*待後續增加
-    // 根據框架類型設置特殊效果
-    switch (Character->PortraitData.FrameStyle)
+    if (TeamColorBorder)
     {
-    case 1: // 精英
-        PlayEliteFrameAnimation();
-        break;
-    case 2: // Boss
-        PlayBossFrameAnimation();
-        break;
-    default: // 普通
-        // 不需要特殊效果
-        break;
+        FLinearColor BorderColor = Character->GetPortraitBorderColor();
+        TeamColorBorder->SetColorAndOpacity(BorderColor);
     }
-    */
 
+
+    if (HealthBar && Character->AccessCombatComponent())
+    {
+        const FCombatStats& Stats = Character->AccessCombatComponent()->GetStats();
+        float HealthPercent = (float)Stats.CurrentHealth / (float)Stats.MaxHealth;
+        HealthBar->SetPercent(HealthPercent);
+
+    
+        FLinearColor HealthColor;
+        if (HealthPercent > 0.6f)
+            HealthColor = FLinearColor(0.0f, 1.0f, 0.0f); // Green
+        else if (HealthPercent > 0.3f)
+            HealthColor = FLinearColor(1.0f, 1.0f, 0.0f); // Yellow
+        else
+            HealthColor = FLinearColor(1.0f, 0.0f, 0.0f); // Red
+
+        HealthBar->SetFillColorAndOpacity(HealthColor);
+    }
+
+    // SetEffectwithTeam
+    if (Character->TeamID == 1) //  敵人
+    {
+        // Add Enmey Effect
+    }
+
+}
+
+void UTurnOrderEntryWidget::SetHighlighted(bool bHighlight)
+{
+    if (HighlightFrame)
+    {
+        HighlightFrame->SetVisibility(bHighlight ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
+    }
+
+    
+    if (TeamColorBorder && AssociatedCharacter)
+    {
+        FLinearColor BorderColor = AssociatedCharacter->GetPortraitBorderColor();
+        if (bHighlight)
+        {
+            BorderColor *= 1.5f; // Brightness
+            BorderColor.A = 1.0f;
+        }
+        TeamColorBorder->SetColorAndOpacity(BorderColor);
+    }
 }

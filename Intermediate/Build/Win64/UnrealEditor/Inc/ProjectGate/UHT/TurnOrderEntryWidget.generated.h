@@ -20,9 +20,12 @@ class ATurnBasedCharacter;
 
 // ********** Begin Class UTurnOrderEntryWidget ****************************************************
 #define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_UI_TurnOrderEntryWidget_h_15_RPC_WRAPPERS_NO_PURE_DECLS \
+	DECLARE_FUNCTION(execGetAssociatedCharacter); \
+	DECLARE_FUNCTION(execSetHighlighted); \
 	DECLARE_FUNCTION(execSetCharacterData);
 
 
+#define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_UI_TurnOrderEntryWidget_h_15_CALLBACK_WRAPPERS
 PROJECTGATE_API UClass* Z_Construct_UClass_UTurnOrderEntryWidget_NoRegister();
 
 #define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_UI_TurnOrderEntryWidget_h_15_INCLASS_NO_PURE_DECLS \
@@ -53,6 +56,7 @@ public: \
 PRAGMA_DISABLE_DEPRECATION_WARNINGS \
 public: \
 	FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_UI_TurnOrderEntryWidget_h_15_RPC_WRAPPERS_NO_PURE_DECLS \
+	FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_UI_TurnOrderEntryWidget_h_15_CALLBACK_WRAPPERS \
 	FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_UI_TurnOrderEntryWidget_h_15_INCLASS_NO_PURE_DECLS \
 	FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_UI_TurnOrderEntryWidget_h_15_ENHANCED_CONSTRUCTORS \
 private: \

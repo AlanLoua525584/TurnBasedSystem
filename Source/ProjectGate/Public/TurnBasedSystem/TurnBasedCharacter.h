@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "TurnBasedSystem/DataAssets/CharacterPortraitData.h"
+#include "GameFramework/Actor.h"
 #include "CombatSystem/CombatInterface.h"
 #include "TurnBasedCharacter.generated.h"
 
