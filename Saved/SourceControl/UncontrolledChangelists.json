@@ -16,8 +16,10 @@
 				"D:/UnrealProjects/ProjectGate/Content/TurnBasedSystem/DataAssets/DA_DefaultTurnOrderConfig.uasset",
 				"D:/UnrealProjects/ProjectGate/Content/TurnBasedSystem/BluePrints/BP_SimpleTurnManager.uasset",
 				"D:/UnrealProjects/ProjectGate/Content/TurnBasedSystem/UI/WBP_TurnOrderWidget.uasset",
-				"D:/UnrealProjects/ProjectGate/Content/TurnBasedSystem/UI/WBP_TurnOrder.uasset",
 				"D:/UnrealProjects/ProjectGate/Content/TurnBasedSystem/UI/WBP_TurnOrderEntryWidget.uasset",
+				"D:/UnrealProjects/ProjectGate/Content/TurnBasedSystem/BP_TurnBasedGameMode.uasset",
+				"D:/UnrealProjects/ProjectGate/Content/TurnBasedSystem/UI/WBP_SimpleTurnBasedUI.uasset",
+				"D:/UnrealProjects/ProjectGate/Content/TurnBasedSystem/UI/WBP_TurnOrder.uasset",
 				"D:/UnrealProjects/ProjectGate/Content/TurnBasedSystem/UI/WBP_TurnOrderEntry.uasset",
 				"D:/UnrealProjects/ProjectGate/Content/TurnBasedSystem/BluePrints/AnimNotifys/AN_AttackHit.uasset",
 				"D:/UnrealProjects/ProjectGate/Content/TurnBasedSystem/BluePrints/AnimNotifys/AttackHit.uasset"

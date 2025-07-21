@@ -206,14 +206,17 @@ void AGridPlayerController::InitializeComponents()
 		ModeManager->OnMovementModeChanged.AddDynamic(this, &AGridPlayerController::OnMovementModeChanged);
 	}
 
-	// 延遲初始化 UIManager，確保其他系統已準備好
+	// 初始化 UIManager，確保其他系統已準備好
 	if (UIManager)
 	{
-		// 立即初始化，不需要延遲
+		Debug::Print(TEXT(">>> 初始化 UIManager <<<"), FColor::Magenta);
 		UIManager->Initialize(this);
-		Debug::Print(TEXT("UIManager initialized"), FColor::Green);
-
 	}
+	else
+	{
+		Debug::Print(TEXT("ERROR: UIManager 組件不存在"), FColor::Red);
+	}
+
 	Debug::Print(TEXT("GridPlayerController components initialized"), FColor::Green);
 }
 

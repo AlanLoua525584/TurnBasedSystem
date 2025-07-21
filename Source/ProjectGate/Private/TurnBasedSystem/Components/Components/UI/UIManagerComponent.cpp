@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
 #include "TurnbasedSystem/Components/UI/UIManagerComponent.h"
@@ -24,7 +24,9 @@ UUIManagerComponent::UUIManagerComponent()
 
 void UUIManagerComponent::Initialize(APlayerController* InOwnerController)
 {
-	OwnerController = InOwnerController;
+    Debug::Print(TEXT("=== UIManagerComponent::Initialize 被調用 ==="), FColor::Yellow);
+
+    OwnerController = InOwnerController;
 
     if (!OwnerController)
     {
@@ -32,10 +34,16 @@ void UUIManagerComponent::Initialize(APlayerController* InOwnerController)
         return;
     }
 
-	// Try to get widget classes from GameMode if not set
-	TryGetWidgetClassesFromGameMode();
+    Debug::Print(FString::Printf(TEXT("✓ OwnerController 設置為: %s"), *OwnerController->GetName()), FColor::Green);
 
-	Debug::Print(TEXT("UIManagerComponent initialized"), FColor::Green);
+    // 嘗試獲取 widget classes from GameMode
+    TryGetWidgetClassesFromGameMode();
+
+    // 立即嘗試創建 UI，而不是等待 BeginPlay
+    Debug::Print(TEXT(">>> 在 Initialize 中立即創建 UI <<<"), FColor::Magenta);
+    CreateAllUI();
+
+    Debug::Print(TEXT("UIManagerComponent initialized"), FColor::Green);
 }
 
 
@@ -44,19 +52,28 @@ void UUIManagerComponent::BeginPlay()
 {
 	Super::BeginPlay();
 	
-    // ����Ы� UI�A�T�O OwnerController �w�]�m
-    GetWorld()->GetTimerManager().SetTimerForNextTick([this]()
-        {
-            if (OwnerController)
-            {
-                CreateAllUI();
-            }
-            else
-            {
-                Debug::Print(TEXT("ERROR: OwnerController still null after delay"), FColor::Red);
-            }
-        });
+    // 添加詳細的調試信息
+    Debug::Print(TEXT("=== UIManagerComponent BeginPlay 調試 ==="), FColor::Yellow);
 
+    // 如果還沒有初始化，嘗試初始化
+    if (!OwnerController)
+    {
+        Debug::Print(TEXT("OwnerController 是 null，嘗試自動查找..."), FColor::Orange);
+
+        if (APlayerController* PC = GetWorld()->GetFirstPlayerController())
+        {
+            Debug::Print(FString::Printf(TEXT("找到 PlayerController: %s"), *PC->GetName()), FColor::Green);
+            Initialize(PC);
+        }
+        else
+        {
+            Debug::Print(TEXT("無法找到 PlayerController"), FColor::Red);
+        }
+    }
+    else
+    {
+        Debug::Print(TEXT("OwnerController 已設置，跳過自動初始化"), FColor::Green);
+    }
 }
 
 void UUIManagerComponent::EndPlay(const EEndPlayReason::Type EndPlayReason)
@@ -105,6 +122,7 @@ void UUIManagerComponent::CreateCombatUI()
 
 void UUIManagerComponent::CreateTurnOrderUI()
 {
+    Debug::Print(TEXT("=== CreateTurnOrderUI() 開始 ==="), FColor::Yellow);
     if (!CanCreateWidgets())
     {
         Debug::Print(TEXT("Cannot create turn order UI - invalid conditions"), FColor::Red);
@@ -124,9 +142,13 @@ void UUIManagerComponent::CreateTurnOrderUI()
         TurnOrderWidget = CreateWidget<UTurnOrderWidget>(OwnerController, TurnOrderWidgetClass);
         if (TurnOrderWidget)
         {
+            // 設置 Widget 不攔截輸入事件 - 關鍵修改！
+            TurnOrderWidget->SetVisibility(ESlateVisibility::HitTestInvisible);
+
             TurnOrderWidget->AddToViewport(TurnOrderUILayer);
             SetupTurnOrderPosition();
-            Debug::Print(TEXT("Turn Order UI created"), FColor::Green);
+
+            Debug::Print(TEXT("Turn Order UI created with HitTestInvisible"), FColor::Green);
         }
         else
         {
@@ -141,8 +163,15 @@ void UUIManagerComponent::CreateTurnOrderUI()
 
 void UUIManagerComponent::CreateAllUI()
 {
-	CreateCombatUI();
-	CreateTurnOrderUI();
+    Debug::Print(TEXT("=== CreateAllUI() 被調用 ==="), FColor::Magenta);
+
+    Debug::Print(TEXT(">>> 調用 CreateCombatUI() <<<"), FColor::Cyan);
+    CreateCombatUI();
+
+    Debug::Print(TEXT(">>> 調用 CreateTurnOrderUI() <<<"), FColor::Cyan);
+    CreateTurnOrderUI();
+
+    Debug::Print(TEXT("=== CreateAllUI() 完成 ==="), FColor::Magenta);
 }
 
 void UUIManagerComponent::UpdateCombatUI(AActor* Target, bool bCanAttack)
@@ -256,8 +285,14 @@ void UUIManagerComponent::SetupTurnOrderPosition()
         CanvasSlot->SetAlignment(TurnOrderAlignment);
         CanvasSlot->SetPosition(TurnOrderPosition);
 
+        // 確保 Widget 大小合適，不會意外覆蓋其他區域
+        CanvasSlot->SetSize(FVector2D(800.0f, 100.0f)); // 設置合適的大小
+
         Debug::Print(TEXT("Turn Order UI positioned"), FColor::Cyan);
     }
+
+    // 再次確保 Visibility 設置正確
+    TurnOrderWidget->SetVisibility(ESlateVisibility::HitTestInvisible);
 }
 
 void UUIManagerComponent::TryGetWidgetClassesFromGameMode()
