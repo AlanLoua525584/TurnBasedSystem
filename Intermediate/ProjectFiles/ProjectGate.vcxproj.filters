@@ -90,6 +90,24 @@
     <ClCompile Include="..\..\Source\ProjectGate\Private\GAS\GASAnimationAbility.cpp">
       <Filter>Source\ProjectGate\Private\GAS</Filter>
     </ClCompile>
+    <Filter Include="Source\ProjectGate\Private\HighlightSystem">
+      <UniqueIdentifier>{5BB3EFF5-B329-3B46-ABD6-CD6863DC869E}</UniqueIdentifier>
+    </Filter>
+    <ClCompile Include="..\..\Source\ProjectGate\Private\HighlightSystem\Highlightable.cpp">
+      <Filter>Source\ProjectGate\Private\HighlightSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\ProjectGate\Private\HighlightSystem\HighlightBlueprintLibrary.cpp">
+      <Filter>Source\ProjectGate\Private\HighlightSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\ProjectGate\Private\HighlightSystem\HighlightComponent.cpp">
+      <Filter>Source\ProjectGate\Private\HighlightSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\ProjectGate\Private\HighlightSystem\HighlightManager.cpp">
+      <Filter>Source\ProjectGate\Private\HighlightSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\ProjectGate\Private\HighlightSystem\HighlightTypes.cpp">
+      <Filter>Source\ProjectGate\Private\HighlightSystem</Filter>
+    </ClCompile>
     <Filter Include="Source\ProjectGate\Private\TurnBasedSystem">
       <UniqueIdentifier>{589773EB-8A58-3F36-AEAD-ACBE7E97E255}</UniqueIdentifier>
     </Filter>
@@ -245,6 +263,24 @@
     </Filter>
     <ClInclude Include="..\..\Source\ProjectGate\Public\GAS\GASAnimationAbility.h">
       <Filter>Source\ProjectGate\Public\GAS</Filter>
+    </ClInclude>
+    <Filter Include="Source\ProjectGate\Public\HighlightSystem">
+      <UniqueIdentifier>{A9E1D379-B0F3-3D29-B362-1B681CD2BFB7}</UniqueIdentifier>
+    </Filter>
+    <ClInclude Include="..\..\Source\ProjectGate\Public\HighlightSystem\Highlightable.h">
+      <Filter>Source\ProjectGate\Public\HighlightSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\ProjectGate\Public\HighlightSystem\HighlightBlueprintLibrary.h">
+      <Filter>Source\ProjectGate\Public\HighlightSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\ProjectGate\Public\HighlightSystem\HighlightComponent.h">
+      <Filter>Source\ProjectGate\Public\HighlightSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\ProjectGate\Public\HighlightSystem\HighlightManager.h">
+      <Filter>Source\ProjectGate\Public\HighlightSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\ProjectGate\Public\HighlightSystem\HighlightTypes.h">
+      <Filter>Source\ProjectGate\Public\HighlightSystem</Filter>
     </ClInclude>
     <Filter Include="Source\ProjectGate\Public\TurnBasedSystem">
       <UniqueIdentifier>{B24F2539-56DC-3150-829E-86689005E029}</UniqueIdentifier>

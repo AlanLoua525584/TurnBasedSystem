@@ -815,6 +815,41 @@ void ATurnBasedCharacter::OnDeath_Implementation(AActor* Killer)
     }
 }
 
+void ATurnBasedCharacter::OnHighlightApplied_Implementation(EHighlightType Type)
+{
+
+
+}
+
+void ATurnBasedCharacter::OnHighlightRemoved_Implementation(EHighlightType Type)
+{
+}
+
+TArray<UPrimitiveComponent*> ATurnBasedCharacter::GetHighlightableComponents_Implementation()
+{
+    TArray<UPrimitiveComponent*> Components;
+
+    // 只高亮主要的 Mesh
+    if (GetMesh())
+    {
+        Components.Add(GetMesh());
+    }
+
+    // 如果有武器或其他配件，可以選擇性地添加
+    // if (WeaponMeshComponent && bHighlightWeapon)
+    // {
+    //     Components.Add(WeaponMeshComponent);
+    // }
+
+    return Components;
+}
+
+bool ATurnBasedCharacter::CanBeHighlighted_Implementation() const
+{
+    // 死亡的角色不能被高亮
+    return !IsDying() && IsAlive();
+}
+
 
 void ATurnBasedCharacter::OnCombatAnimationCompleted(AActor* Attacker, AActor* Target, bool bSuccess)
 {

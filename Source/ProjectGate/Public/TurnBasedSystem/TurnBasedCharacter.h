@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+ï»¿// Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
 
@@ -7,6 +7,7 @@
 #include "TurnBasedSystem/DataAssets/CharacterPortraitData.h"
 #include "GameFramework/Actor.h"
 #include "CombatSystem/CombatInterface.h"
+#include "HighlightSystem/Highlightable.h"
 #include "TurnBasedCharacter.generated.h"
 
 // Forward declarations
@@ -36,7 +37,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTurnOrderChangedSignature, int32, N
  * Acts as a container for various gameplay components
  */
 UCLASS()
-class PROJECTGATE_API ATurnBasedCharacter : public ACharacter, public ICombatInterface
+class PROJECTGATE_API ATurnBasedCharacter : public ACharacter, public ICombatInterface, public IHighlightable
 {
     GENERATED_BODY()
 
@@ -183,6 +184,15 @@ public:
     virtual void OnDamageReceived_Implementation(const FDamageResult& DamageResult) override;
     virtual void OnDeath_Implementation(AActor* Killer) override;
 
+
+	// == Highlightable Interface Implementation ==
+
+    virtual void OnHighlightApplied_Implementation(EHighlightType Type) override;
+    virtual void OnHighlightRemoved_Implementation(EHighlightType Type) override;
+    virtual TArray<UPrimitiveComponent*> GetHighlightableComponents_Implementation() override;
+    virtual bool CanBeHighlighted_Implementation() const override;
+
+
     // === Camera Components ===
 
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Camera")
@@ -200,7 +210,7 @@ public:
     UFUNCTION(BlueprintCallable, Category = "Combat")
     void ExecuteAnimatedAttack(AActor* Target);
 
-    // °õ¦æª½±µ§ğÀ»¡]µL°Êµe¦^°h¤è®×¡^
+    // åŸ·è¡Œç›´æ¥æ”»æ“Šï¼ˆç„¡å‹•ç•«å›é€€æ–¹æ¡ˆï¼‰
     UFUNCTION(BlueprintCallable, Category = "Combat")
     void ExecuteDirectAttack(AActor* Target);
 
@@ -299,7 +309,7 @@ private:
     void InitializeComponents();
     void SetupCameraComponents();
 
-    // ³B²z Initiative ÅÜ¤Æ
+    // è™•ç† Initiative è®ŠåŒ–
     UFUNCTION()
     void OnInitiativeChanged(int32 NewInitiative);
 
@@ -323,7 +333,7 @@ public:
     UFUNCTION(BlueprintCallable, Category = "Animation")
     virtual void HandleAnimNotify(FName NotifyName);
 
-    //¦w¥ş³]¸m¨ç¼Æ
+    //å®‰å…¨è¨­ç½®å‡½æ•¸
     void SetupHealthBar();
 
     void BindCombatEvents();

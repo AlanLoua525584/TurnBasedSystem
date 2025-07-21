@@ -299,6 +299,21 @@
     <ClCompile Include="..\..\Source\ProjectGate\Private\GAS\GASAnimationAbility.cpp">
       <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
+    <ClCompile Include="..\..\Source\ProjectGate\Private\HighlightSystem\Highlightable.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\ProjectGate\Private\HighlightSystem\HighlightBlueprintLibrary.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\ProjectGate\Private\HighlightSystem\HighlightComponent.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\ProjectGate\Private\HighlightSystem\HighlightManager.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\ProjectGate\Private\HighlightSystem\HighlightTypes.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
     <ClCompile Include="..\..\Source\ProjectGate\Private\TurnBasedSystem\DefaultInitiativeModifiers.cpp">
       <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
@@ -379,6 +394,11 @@
     <ClInclude Include="..\..\Source\ProjectGate\Public\CombatSystem\CombatStats.h"/>
     <ClInclude Include="..\..\Source\ProjectGate\Public\CombatSystem\HealthPointBarWidget.h"/>
     <ClInclude Include="..\..\Source\ProjectGate\Public\GAS\GASAnimationAbility.h"/>
+    <ClInclude Include="..\..\Source\ProjectGate\Public\HighlightSystem\Highlightable.h"/>
+    <ClInclude Include="..\..\Source\ProjectGate\Public\HighlightSystem\HighlightBlueprintLibrary.h"/>
+    <ClInclude Include="..\..\Source\ProjectGate\Public\HighlightSystem\HighlightComponent.h"/>
+    <ClInclude Include="..\..\Source\ProjectGate\Public\HighlightSystem\HighlightManager.h"/>
+    <ClInclude Include="..\..\Source\ProjectGate\Public\HighlightSystem\HighlightTypes.h"/>
     <ClInclude Include="..\..\Source\ProjectGate\Public\TurnBasedSystem\DefaultInitiativeModifiers.h"/>
     <ClInclude Include="..\..\Source\ProjectGate\Public\TurnBasedSystem\EnhancedMovementSystem.h"/>
     <ClInclude Include="..\..\Source\ProjectGate\Public\TurnBasedSystem\GridManager.h"/>

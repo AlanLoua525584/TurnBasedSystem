@@ -33,6 +33,7 @@ PROJECTGATE_API UClass* Z_Construct_UClass_UEnhancedMovementSystem_NoRegister();
 PROJECTGATE_API UClass* Z_Construct_UClass_UGridMovementComponent_NoRegister();
 PROJECTGATE_API UClass* Z_Construct_UClass_UGridVisualComponent_NoRegister();
 PROJECTGATE_API UClass* Z_Construct_UClass_UHealthBarWidget_NoRegister();
+PROJECTGATE_API UClass* Z_Construct_UClass_UHighlightable_NoRegister();
 PROJECTGATE_API UClass* Z_Construct_UClass_UTurnSystemComponent_NoRegister();
 PROJECTGATE_API UEnum* Z_Construct_UEnum_ProjectGate_EAnimationType();
 PROJECTGATE_API UFunction* Z_Construct_UDelegateFunction_ProjectGate_TurnOrderChangedSignature__DelegateSignature();
@@ -300,11 +301,11 @@ struct Z_Construct_UFunction_ATurnBasedCharacter_ExecuteDirectAttack_Statics
 	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
 		{ "Category", "Combat" },
 #if !UE_BUILD_SHIPPING
-		{ "Comment", "// \xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xe6\xaa\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd]\xef\xbf\xbdL\xef\xbf\xbd\xca\xb5""e\xef\xbf\xbd^\xef\xbf\xbdh\xef\xbf\xbd\xef\xbf\xbd\xd7\xa1^\n" },
+		{ "Comment", "// \xe5\x9f\xb7\xe8\xa1\x8c\xe7\x9b\xb4\xe6\x8e\xa5\xe6\x94\xbb\xe6\x93\x8a\xef\xbc\x88\xe7\x84\xa1\xe5\x8b\x95\xe7\x95\xab\xe5\x9b\x9e\xe9\x80\x80\xe6\x96\xb9\xe6\xa1\x88\xef\xbc\x89\n" },
 #endif
 		{ "ModuleRelativePath", "Public/TurnBasedSystem/TurnBasedCharacter.h" },
 #if !UE_BUILD_SHIPPING
-		{ "ToolTip", "\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xe6\xaa\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd]\xef\xbf\xbdL\xef\xbf\xbd\xca\xb5""e\xef\xbf\xbd^\xef\xbf\xbdh\xef\xbf\xbd\xef\xbf\xbd\xd7\xa1^" },
+		{ "ToolTip", "\xe5\x9f\xb7\xe8\xa1\x8c\xe7\x9b\xb4\xe6\x8e\xa5\xe6\x94\xbb\xe6\x93\x8a\xef\xbc\x88\xe7\x84\xa1\xe5\x8b\x95\xe7\x95\xab\xe5\x9b\x9e\xe9\x80\x80\xe6\x96\xb9\xe6\xa1\x88\xef\xbc\x89" },
 #endif
 	};
 #endif // WITH_METADATA
@@ -1550,11 +1551,11 @@ struct Z_Construct_UFunction_ATurnBasedCharacter_OnInitiativeChanged_Statics
 #if WITH_METADATA
 	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
 #if !UE_BUILD_SHIPPING
-		{ "Comment", "// \xef\xbf\xbd""B\xef\xbf\xbdz Initiative \xef\xbf\xbd\xdc\xa4\xef\xbf\xbd\n" },
+		{ "Comment", "// \xe8\x99\x95\xe7\x90\x86 Initiative \xe8\xae\x8a\xe5\x8c\x96\n" },
 #endif
 		{ "ModuleRelativePath", "Public/TurnBasedSystem/TurnBasedCharacter.h" },
 #if !UE_BUILD_SHIPPING
-		{ "ToolTip", "\xef\xbf\xbd""B\xef\xbf\xbdz Initiative \xef\xbf\xbd\xdc\xa4\xef\xbf\xbd" },
+		{ "ToolTip", "\xe8\x99\x95\xe7\x90\x86 Initiative \xe8\xae\x8a\xe5\x8c\x96" },
 #endif
 	};
 #endif // WITH_METADATA
@@ -2135,7 +2136,7 @@ struct Z_Construct_UClass_ATurnBasedCharacter_Statics
 		{ &Z_Construct_UFunction_ATurnBasedCharacter_CanPerformAction, "CanPerformAction" }, // 2263197173
 		{ &Z_Construct_UFunction_ATurnBasedCharacter_ConsumeActionPoints, "ConsumeActionPoints" }, // 2491331975
 		{ &Z_Construct_UFunction_ATurnBasedCharacter_ExecuteAnimatedAttack, "ExecuteAnimatedAttack" }, // 3379498810
-		{ &Z_Construct_UFunction_ATurnBasedCharacter_ExecuteDirectAttack, "ExecuteDirectAttack" }, // 1997320867
+		{ &Z_Construct_UFunction_ATurnBasedCharacter_ExecuteDirectAttack, "ExecuteDirectAttack" }, // 687193074
 		{ &Z_Construct_UFunction_ATurnBasedCharacter_GetAnimationManager, "GetAnimationManager" }, // 1374292490
 		{ &Z_Construct_UFunction_ATurnBasedCharacter_GetAnyAvailablePortrait, "GetAnyAvailablePortrait" }, // 1174080209
 		{ &Z_Construct_UFunction_ATurnBasedCharacter_GetBattlePortrait, "GetBattlePortrait" }, // 2189307095
@@ -2162,7 +2163,7 @@ struct Z_Construct_UClass_ATurnBasedCharacter_Statics
 		{ &Z_Construct_UFunction_ATurnBasedCharacter_OnCombatAnimationHit, "OnCombatAnimationHit" }, // 966785050
 		{ &Z_Construct_UFunction_ATurnBasedCharacter_OnDeathAnimationEnd, "OnDeathAnimationEnd" }, // 4015770381
 		{ &Z_Construct_UFunction_ATurnBasedCharacter_OnHealthChanged, "OnHealthChanged" }, // 922099546
-		{ &Z_Construct_UFunction_ATurnBasedCharacter_OnInitiativeChanged, "OnInitiativeChanged" }, // 1530415044
+		{ &Z_Construct_UFunction_ATurnBasedCharacter_OnInitiativeChanged, "OnInitiativeChanged" }, // 3692852446
 		{ &Z_Construct_UFunction_ATurnBasedCharacter_OnTurnEnd, "OnTurnEnd" }, // 1218860492
 		{ &Z_Construct_UFunction_ATurnBasedCharacter_OnTurnStart, "OnTurnStart" }, // 54234823
 		{ &Z_Construct_UFunction_ATurnBasedCharacter_SetGridManager, "SetGridManager" }, // 896963779
@@ -2241,6 +2242,7 @@ UObject* (*const Z_Construct_UClass_ATurnBasedCharacter_Statics::DependentSingle
 static_assert(UE_ARRAY_COUNT(Z_Construct_UClass_ATurnBasedCharacter_Statics::DependentSingletons) < 16);
 const UECodeGen_Private::FImplementedInterfaceParams Z_Construct_UClass_ATurnBasedCharacter_Statics::InterfaceParams[] = {
 	{ Z_Construct_UClass_UCombatInterface_NoRegister, (int32)VTABLE_OFFSET(ATurnBasedCharacter, ICombatInterface), false },  // 2990235492
+	{ Z_Construct_UClass_UHighlightable_NoRegister, (int32)VTABLE_OFFSET(ATurnBasedCharacter, IHighlightable), false },  // 566508340
 };
 const UECodeGen_Private::FClassParams Z_Construct_UClass_ATurnBasedCharacter_Statics::ClassParams = {
 	&ATurnBasedCharacter::StaticClass,
@@ -2273,10 +2275,10 @@ ATurnBasedCharacter::~ATurnBasedCharacter() {}
 struct Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_TurnBasedCharacter_h__Script_ProjectGate_Statics
 {
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_ATurnBasedCharacter, ATurnBasedCharacter::StaticClass, TEXT("ATurnBasedCharacter"), &Z_Registration_Info_UClass_ATurnBasedCharacter, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(ATurnBasedCharacter), 2889882592U) },
+		{ Z_Construct_UClass_ATurnBasedCharacter, ATurnBasedCharacter::StaticClass, TEXT("ATurnBasedCharacter"), &Z_Registration_Info_UClass_ATurnBasedCharacter, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(ATurnBasedCharacter), 1010346018U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_TurnBasedCharacter_h__Script_ProjectGate_3945708850(TEXT("/Script/ProjectGate"),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_TurnBasedCharacter_h__Script_ProjectGate_4269486881(TEXT("/Script/ProjectGate"),
 	Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_TurnBasedCharacter_h__Script_ProjectGate_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_TurnBasedCharacter_h__Script_ProjectGate_Statics::ClassInfo),
 	nullptr, 0,
 	nullptr, 0);
