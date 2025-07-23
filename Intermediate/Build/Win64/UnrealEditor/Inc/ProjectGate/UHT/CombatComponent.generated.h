@@ -19,6 +19,7 @@ PRAGMA_DISABLE_DEPRECATION_WARNINGS
 class AActor;
 class AGridManager;
 enum class ECombatAttackType : uint8;
+struct FAttackConfig;
 struct FDamageResult;
 
 // ********** Begin Delegate FOnDamageReceived *****************************************************
@@ -59,6 +60,8 @@ PROJECTGATE_API void FOnAttackExecutedWithResult_DelegateWrapper(const FMulticas
 // ********** Begin Class UCombatComponent *********************************************************
 #define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_CombatSystem_CombatComponent_h_35_RPC_WRAPPERS_NO_PURE_DECLS \
 	DECLARE_FUNCTION(execGetAttackType); \
+	DECLARE_FUNCTION(execGetAttackConfig); \
+	DECLARE_FUNCTION(execGetAttackPower); \
 	DECLARE_FUNCTION(execGetAttackRange); \
 	DECLARE_FUNCTION(execGetAttackCost); \
 	DECLARE_FUNCTION(execGetHealthPercent); \

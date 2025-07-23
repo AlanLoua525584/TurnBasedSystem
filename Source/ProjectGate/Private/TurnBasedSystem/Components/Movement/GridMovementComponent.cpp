@@ -37,6 +37,11 @@ void UGridMovementComponent::BeginPlay()
 		PathfindingComponent = Owner->FindComponentByClass<UGridPathfindingComponent>();
 		VisualComponent = Owner->FindComponentByClass<UGridVisualComponent>();
 
+        // 新增：查找驗證器和狀態管理器
+        MovementValidator = Owner->FindComponentByClass<UMovementValidatorComponent>();
+        MovementStateManager = Owner->FindComponentByClass<UMovementStateManager>();
+
+
 		if (!PathfindingComponent)
 		{
 			Debug::Print(TEXT("Warning: No PathfindingComponent found on owner!"), FColor::Yellow);
@@ -46,6 +51,18 @@ void UGridMovementComponent::BeginPlay()
 		{
 			Debug::Print(TEXT("Warning: No VisualComponent found on owner!"), FColor::Yellow);
 		}
+
+        // 新增警告
+        if (!MovementValidator)
+        {
+            Debug::Print(TEXT("Warning: No MovementValidator found, using basic validation"), FColor::Yellow);
+        }
+
+        if (!MovementStateManager)
+        {
+            Debug::Print(TEXT("Warning: No MovementStateManager found"), FColor::Yellow);
+        }
+
 	}
 
 }
@@ -115,45 +132,51 @@ bool UGridMovementComponent::MoveToGridPosition(FIntPoint TargetGridPos)
         return false;
     }
 
-    // Check if already moving
-    if (IsMoving())
+    // 停止任何進行中的移動
+    if (MovementState == EGridMovementState::Moving)
     {
-        Debug::Print(TEXT("Already moving!"), FColor::Red);
+        AbortGridMovement();
         return false;
     }
 
-    // Validate target position
-    if (!IsValidMoveTarget(TargetGridPos))
+    // 使用MovementValidator進行驗證
+    if (MovementValidator)
     {
-        Debug::Print(TEXT("Invalid move target!"), FColor::Red);
-        return false;
-    }
+        FMovementValidationResult ValidationResult = MovementValidator->ValidateMovement(
+            CurrentGridPosition, TargetGridPos);
 
-    // Check if character can perform action (turn and AP check)
-    ATurnBasedCharacter* Character = GetOwnerCharacter();
-    if (!Character)
-    {
-        Debug::Print(TEXT("No owner character!"), FColor::Red);
-        return false;
-    }
-
-    // Get turn system component for AP check
-    if (UTurnSystemComponent* TurnSystem = Character->FindComponentByClass<UTurnSystemComponent>())
-    {
-        if (!TurnSystem->IsMyTurn())
+        if (!ValidationResult.bIsValid)
         {
-            Debug::Print(TEXT("Not your turn!"), FColor::Red);
+            Debug::Print(FString::Printf(TEXT("Movement validation failed: %s"),
+                *ValidationResult.Reason), FColor::Red);
             return false;
         }
 
-        int32 MoveCost = CalculateMovementCost(TargetGridPos);
-        if (!TurnSystem->CanPerformAction(MoveCost))
+        // 使用驗證器返回的路徑
+        if (ValidationResult.Path.Num() > 0)
         {
-            Debug::Print(TEXT("Not enough Action Points!"), FColor::Red);
+            CurrentPath = ValidationResult.Path;
+        }
+
+        Debug::Print(FString::Printf(TEXT("Movement validated - AP Cost: %d, Path Length: %d"),
+            ValidationResult.RequiredAP, CurrentPath.Num()), FColor::Green);
+    }
+    else
+    {
+        // 退回到基本驗證
+        if (IsMoving())
+        {
+            Debug::Print(TEXT("Already moving!"), FColor::Red);
             return false;
         }
 
-        // Calculate path
+        if (!IsValidMoveTarget(TargetGridPos))
+        {
+            Debug::Print(TEXT("Invalid move target!"), FColor::Red);
+            return false;
+        }
+
+        // 基本路徑計算
         if (PathfindingComponent)
         {
             CurrentPath = PathfindingComponent->FindPath(CurrentGridPosition, TargetGridPos);
@@ -163,36 +186,38 @@ bool UGridMovementComponent::MoveToGridPosition(FIntPoint TargetGridPos)
                 return false;
             }
         }
-        else
-        {
-            // Simple direct path if no pathfinding
-            CurrentPath.Empty();
-            CurrentPath.Add(CurrentGridPosition);
-            CurrentPath.Add(TargetGridPos);
-        }
-
-        // Clear any visual highlights
-        ClearMovementRange();
-
-        // Clear current cell occupation
-        GridManager->ClearCellOccupation(CurrentGridPosition);
-
-        // Set target and start movement
-        TargetGridPosition = TargetGridPos;
-        CurrentPathIndex = 0;
-        SetMovementState(EGridMovementState::Moving);
-        SetComponentTickEnabled(true);
-
-        // Consume AP
-        TurnSystem->ConsumeActionPoints(MoveCost);
-
-        Debug::Print(FString::Printf(TEXT("%s moving to (%d, %d), Cost: %d AP"),
-            *Character->GetActorLabel(), TargetGridPos.X, TargetGridPos.Y, MoveCost), FColor::Green);
-
-        return true;
     }
 
-    return false;
+    // 通知狀態管理器
+    if (MovementStateManager)
+    {
+        MovementStateManager->ActivateMovementSystem(EMovementSystemType::GridMovement);
+    }
+
+    // 清除視覺效果
+    ClearMovementRange();
+
+    // 清除當前格子佔用
+    GridManager->ClearCellOccupation(CurrentGridPosition);
+
+    // 設置目標並開始移動
+    TargetGridPosition = TargetGridPos;
+    CurrentPathIndex = 0;
+    SetMovementState(EGridMovementState::Moving);
+    SetComponentTickEnabled(true);
+
+    // 消耗AP
+    ATurnBasedCharacter* Character = GetOwnerCharacter();
+    if (Character && Character->FindComponentByClass<UTurnSystemComponent>())
+    {
+        int32 MoveCost = CalculateMovementCost(TargetGridPos);
+        Character->FindComponentByClass<UTurnSystemComponent>()->ConsumeActionPoints(MoveCost);
+    }
+
+    Debug::Print(FString::Printf(TEXT("Moving to (%d, %d)"),
+        TargetGridPos.X, TargetGridPos.Y), FColor::Green);
+
+    return true;
 }
 
 void UGridMovementComponent::ShowMovementRange()
@@ -263,6 +288,41 @@ void UGridMovementComponent::UpdateGridPositionFromWorld()
             FString::Printf(TEXT("%s grid position (%d, %d)"),
                 *Owner->GetActorLabel(), CurrentGridPosition.X, CurrentGridPosition.Y),
             FColor::Yellow, 1.0f);
+    }
+}
+
+void UGridMovementComponent::AbortGridMovement()
+{
+    if (MovementState == EGridMovementState::Moving)
+    {
+        Debug::Print(TEXT("GridMovement: Aborting movement"), FColor::Orange);
+
+        // 清除路徑
+        CurrentPath.Empty();
+        CurrentPathIndex = 0;
+
+        // 停止移動
+        SetMovementState(EGridMovementState::Idle);
+        SetComponentTickEnabled(false);
+
+        // 停止角色移動
+        if (ATurnBasedCharacter* Character = GetOwnerCharacter())
+        {
+            if (UCharacterMovementComponent* MoveComp = Character->GetCharacterMovement())
+            {
+                MoveComp->StopMovementImmediately();
+                MoveComp->Velocity = FVector::ZeroVector;
+            }
+        }
+
+        // 更新網格佔用
+        if (GridManager)
+        {
+            GridManager->SetCellOccupied(CurrentGridPosition, GetOwner());
+        }
+
+        // 廣播移動結束
+        OnMovementCompleted.Broadcast(CurrentGridPosition, CurrentGridPosition);
     }
 }
 
@@ -361,6 +421,12 @@ void UGridMovementComponent::OnMoveCompleted()
         {
             MoveComp->StopMovementImmediately();
         }
+    }
+
+    // 通知狀態管理器
+    if (MovementStateManager)
+    {
+        MovementStateManager->HaltMovementSystem(EMovementSystemType::GridMovement);
     }
 
     // Broadcast completion

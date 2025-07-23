@@ -19,6 +19,8 @@ PROJECTGATE_API UClass* Z_Construct_UClass_UGridMovementComponent();
 PROJECTGATE_API UClass* Z_Construct_UClass_UGridMovementComponent_NoRegister();
 PROJECTGATE_API UClass* Z_Construct_UClass_UGridPathfindingComponent_NoRegister();
 PROJECTGATE_API UClass* Z_Construct_UClass_UGridVisualComponent_NoRegister();
+PROJECTGATE_API UClass* Z_Construct_UClass_UMovementStateManager_NoRegister();
+PROJECTGATE_API UClass* Z_Construct_UClass_UMovementValidatorComponent_NoRegister();
 PROJECTGATE_API UEnum* Z_Construct_UEnum_ProjectGate_EGridMovementState();
 PROJECTGATE_API UFunction* Z_Construct_UDelegateFunction_ProjectGate_OnGridPositionChanged__DelegateSignature();
 PROJECTGATE_API UFunction* Z_Construct_UDelegateFunction_ProjectGate_OnMovementCompleted__DelegateSignature();
@@ -241,6 +243,42 @@ void FOnMovementCompleted_DelegateWrapper(const FMulticastScriptDelegate& OnMove
 	OnMovementCompleted.ProcessMulticastDelegate<UObject>(&Parms);
 }
 // ********** End Delegate FOnMovementCompleted ****************************************************
+
+// ********** Begin Class UGridMovementComponent Function AbortGridMovement ************************
+struct Z_Construct_UFunction_UGridMovementComponent_AbortGridMovement_Statics
+{
+#if WITH_METADATA
+	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
+		{ "Category", "Grid Movement" },
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "// === \xef\xbf\xbds\xef\xbf\xbdW\xef\xbf\xbdG\xef\xbf\xbd\xef\xbf\xbdW\xef\xbf\xbd\xe1\xaa\xba\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd ===\n// \xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xe6\xb2\xbe\xef\xbf\xbd\xca\xa1]\xef\xbf\xbd\xef\xbf\xbdStopMovementImmediately\xef\xbf\xbd^\n" },
+#endif
+		{ "ModuleRelativePath", "Public/TurnBasedSystem/Components/Movement/GridMovementComponent.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "=== \xef\xbf\xbds\xef\xbf\xbdW\xef\xbf\xbdG\xef\xbf\xbd\xef\xbf\xbdW\xef\xbf\xbd\xe1\xaa\xba\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd ===\n\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xe6\xb2\xbe\xef\xbf\xbd\xca\xa1]\xef\xbf\xbd\xef\xbf\xbdStopMovementImmediately\xef\xbf\xbd^" },
+#endif
+	};
+#endif // WITH_METADATA
+	static const UECodeGen_Private::FFunctionParams FuncParams;
+};
+const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_UGridMovementComponent_AbortGridMovement_Statics::FuncParams = { { (UObject*(*)())Z_Construct_UClass_UGridMovementComponent, nullptr, "AbortGridMovement", nullptr, 0, 0, RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x04020401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_UGridMovementComponent_AbortGridMovement_Statics::Function_MetaDataParams), Z_Construct_UFunction_UGridMovementComponent_AbortGridMovement_Statics::Function_MetaDataParams)},  };
+UFunction* Z_Construct_UFunction_UGridMovementComponent_AbortGridMovement()
+{
+	static UFunction* ReturnFunction = nullptr;
+	if (!ReturnFunction)
+	{
+		UECodeGen_Private::ConstructUFunction(&ReturnFunction, Z_Construct_UFunction_UGridMovementComponent_AbortGridMovement_Statics::FuncParams);
+	}
+	return ReturnFunction;
+}
+DEFINE_FUNCTION(UGridMovementComponent::execAbortGridMovement)
+{
+	P_FINISH;
+	P_NATIVE_BEGIN;
+	P_THIS->AbortGridMovement();
+	P_NATIVE_END;
+}
+// ********** End Class UGridMovementComponent Function AbortGridMovement **************************
 
 // ********** Begin Class UGridMovementComponent Function CalculateMovementCost ********************
 struct Z_Construct_UFunction_UGridMovementComponent_CalculateMovementCost_Statics
@@ -536,6 +574,108 @@ DEFINE_FUNCTION(UGridMovementComponent::execGetMovementState)
 }
 // ********** End Class UGridMovementComponent Function GetMovementState ***************************
 
+// ********** Begin Class UGridMovementComponent Function GetMovementStateManager ******************
+struct Z_Construct_UFunction_UGridMovementComponent_GetMovementStateManager_Statics
+{
+	struct GridMovementComponent_eventGetMovementStateManager_Parms
+	{
+		UMovementStateManager* ReturnValue;
+	};
+#if WITH_METADATA
+	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
+		{ "Category", "Grid Movement" },
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "// === \xef\xbf\xbds\xef\xbf\xbdW\xef\xbf\xbdG\xef\xbf\xbd\xef\xbf\xbdXMovementStateManager ===\n// \xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xca\xaa\xef\xbf\xbd\xef\xbf\xbd""A\xef\xbf\xbd\xde\xb2z\xef\xbf\xbd\xef\xbf\xbd\n" },
+#endif
+		{ "ModuleRelativePath", "Public/TurnBasedSystem/Components/Movement/GridMovementComponent.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "=== \xef\xbf\xbds\xef\xbf\xbdW\xef\xbf\xbdG\xef\xbf\xbd\xef\xbf\xbdXMovementStateManager ===\n\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xca\xaa\xef\xbf\xbd\xef\xbf\xbd""A\xef\xbf\xbd\xde\xb2z\xef\xbf\xbd\xef\xbf\xbd" },
+#endif
+	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_ReturnValue_MetaData[] = {
+		{ "EditInline", "true" },
+	};
+#endif // WITH_METADATA
+	static const UECodeGen_Private::FObjectPropertyParams NewProp_ReturnValue;
+	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
+	static const UECodeGen_Private::FFunctionParams FuncParams;
+};
+const UECodeGen_Private::FObjectPropertyParams Z_Construct_UFunction_UGridMovementComponent_GetMovementStateManager_Statics::NewProp_ReturnValue = { "ReturnValue", nullptr, (EPropertyFlags)0x0010000000080588, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(GridMovementComponent_eventGetMovementStateManager_Parms, ReturnValue), Z_Construct_UClass_UMovementStateManager_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_ReturnValue_MetaData), NewProp_ReturnValue_MetaData) };
+const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_UGridMovementComponent_GetMovementStateManager_Statics::PropPointers[] = {
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UGridMovementComponent_GetMovementStateManager_Statics::NewProp_ReturnValue,
+};
+static_assert(UE_ARRAY_COUNT(Z_Construct_UFunction_UGridMovementComponent_GetMovementStateManager_Statics::PropPointers) < 2048);
+const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_UGridMovementComponent_GetMovementStateManager_Statics::FuncParams = { { (UObject*(*)())Z_Construct_UClass_UGridMovementComponent, nullptr, "GetMovementStateManager", Z_Construct_UFunction_UGridMovementComponent_GetMovementStateManager_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_UGridMovementComponent_GetMovementStateManager_Statics::PropPointers), sizeof(Z_Construct_UFunction_UGridMovementComponent_GetMovementStateManager_Statics::GridMovementComponent_eventGetMovementStateManager_Parms), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x54020401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_UGridMovementComponent_GetMovementStateManager_Statics::Function_MetaDataParams), Z_Construct_UFunction_UGridMovementComponent_GetMovementStateManager_Statics::Function_MetaDataParams)},  };
+static_assert(sizeof(Z_Construct_UFunction_UGridMovementComponent_GetMovementStateManager_Statics::GridMovementComponent_eventGetMovementStateManager_Parms) < MAX_uint16);
+UFunction* Z_Construct_UFunction_UGridMovementComponent_GetMovementStateManager()
+{
+	static UFunction* ReturnFunction = nullptr;
+	if (!ReturnFunction)
+	{
+		UECodeGen_Private::ConstructUFunction(&ReturnFunction, Z_Construct_UFunction_UGridMovementComponent_GetMovementStateManager_Statics::FuncParams);
+	}
+	return ReturnFunction;
+}
+DEFINE_FUNCTION(UGridMovementComponent::execGetMovementStateManager)
+{
+	P_FINISH;
+	P_NATIVE_BEGIN;
+	*(UMovementStateManager**)Z_Param__Result=P_THIS->GetMovementStateManager();
+	P_NATIVE_END;
+}
+// ********** End Class UGridMovementComponent Function GetMovementStateManager ********************
+
+// ********** Begin Class UGridMovementComponent Function GetMovementValidator *********************
+struct Z_Construct_UFunction_UGridMovementComponent_GetMovementValidator_Statics
+{
+	struct GridMovementComponent_eventGetMovementValidator_Parms
+	{
+		UMovementValidatorComponent* ReturnValue;
+	};
+#if WITH_METADATA
+	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
+		{ "Category", "Grid Movement" },
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "// === \xef\xbf\xbds\xef\xbf\xbdW\xef\xbf\xbdG\xef\xbf\xbd\xef\xbf\xbdXMovementValidator ===\n// \xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xd2\xbe\xef\xbf\xbd\n" },
+#endif
+		{ "ModuleRelativePath", "Public/TurnBasedSystem/Components/Movement/GridMovementComponent.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "=== \xef\xbf\xbds\xef\xbf\xbdW\xef\xbf\xbdG\xef\xbf\xbd\xef\xbf\xbdXMovementValidator ===\n\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xd2\xbe\xef\xbf\xbd" },
+#endif
+	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_ReturnValue_MetaData[] = {
+		{ "EditInline", "true" },
+	};
+#endif // WITH_METADATA
+	static const UECodeGen_Private::FObjectPropertyParams NewProp_ReturnValue;
+	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
+	static const UECodeGen_Private::FFunctionParams FuncParams;
+};
+const UECodeGen_Private::FObjectPropertyParams Z_Construct_UFunction_UGridMovementComponent_GetMovementValidator_Statics::NewProp_ReturnValue = { "ReturnValue", nullptr, (EPropertyFlags)0x0010000000080588, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(GridMovementComponent_eventGetMovementValidator_Parms, ReturnValue), Z_Construct_UClass_UMovementValidatorComponent_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_ReturnValue_MetaData), NewProp_ReturnValue_MetaData) };
+const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_UGridMovementComponent_GetMovementValidator_Statics::PropPointers[] = {
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UGridMovementComponent_GetMovementValidator_Statics::NewProp_ReturnValue,
+};
+static_assert(UE_ARRAY_COUNT(Z_Construct_UFunction_UGridMovementComponent_GetMovementValidator_Statics::PropPointers) < 2048);
+const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_UGridMovementComponent_GetMovementValidator_Statics::FuncParams = { { (UObject*(*)())Z_Construct_UClass_UGridMovementComponent, nullptr, "GetMovementValidator", Z_Construct_UFunction_UGridMovementComponent_GetMovementValidator_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_UGridMovementComponent_GetMovementValidator_Statics::PropPointers), sizeof(Z_Construct_UFunction_UGridMovementComponent_GetMovementValidator_Statics::GridMovementComponent_eventGetMovementValidator_Parms), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x54020401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_UGridMovementComponent_GetMovementValidator_Statics::Function_MetaDataParams), Z_Construct_UFunction_UGridMovementComponent_GetMovementValidator_Statics::Function_MetaDataParams)},  };
+static_assert(sizeof(Z_Construct_UFunction_UGridMovementComponent_GetMovementValidator_Statics::GridMovementComponent_eventGetMovementValidator_Parms) < MAX_uint16);
+UFunction* Z_Construct_UFunction_UGridMovementComponent_GetMovementValidator()
+{
+	static UFunction* ReturnFunction = nullptr;
+	if (!ReturnFunction)
+	{
+		UECodeGen_Private::ConstructUFunction(&ReturnFunction, Z_Construct_UFunction_UGridMovementComponent_GetMovementValidator_Statics::FuncParams);
+	}
+	return ReturnFunction;
+}
+DEFINE_FUNCTION(UGridMovementComponent::execGetMovementValidator)
+{
+	P_FINISH;
+	P_NATIVE_BEGIN;
+	*(UMovementValidatorComponent**)Z_Param__Result=P_THIS->GetMovementValidator();
+	P_NATIVE_END;
+}
+// ********** End Class UGridMovementComponent Function GetMovementValidator ***********************
+
 // ********** Begin Class UGridMovementComponent Function GetReachableCells ************************
 struct Z_Construct_UFunction_UGridMovementComponent_GetReachableCells_Statics
 {
@@ -829,12 +969,15 @@ void UGridMovementComponent::StaticRegisterNativesUGridMovementComponent()
 {
 	UClass* Class = UGridMovementComponent::StaticClass();
 	static const FNameNativePtrPair Funcs[] = {
+		{ "AbortGridMovement", &UGridMovementComponent::execAbortGridMovement },
 		{ "CalculateMovementCost", &UGridMovementComponent::execCalculateMovementCost },
 		{ "CanMoveTo", &UGridMovementComponent::execCanMoveTo },
 		{ "ClearMovementRange", &UGridMovementComponent::execClearMovementRange },
 		{ "GetCurrentGridPosition", &UGridMovementComponent::execGetCurrentGridPosition },
 		{ "GetGridManager", &UGridMovementComponent::execGetGridManager },
 		{ "GetMovementState", &UGridMovementComponent::execGetMovementState },
+		{ "GetMovementStateManager", &UGridMovementComponent::execGetMovementStateManager },
+		{ "GetMovementValidator", &UGridMovementComponent::execGetMovementValidator },
 		{ "GetReachableCells", &UGridMovementComponent::execGetReachableCells },
 		{ "InitializeGridMovement", &UGridMovementComponent::execInitializeGridMovement },
 		{ "IsMoving", &UGridMovementComponent::execIsMoving },
@@ -977,6 +1120,20 @@ struct Z_Construct_UClass_UGridMovementComponent_Statics
 		{ "ToolTip", "Current path for movement" },
 #endif
 	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_MovementValidator_MetaData[] = {
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "// === \xef\xbf\xbds\xef\xbf\xbdW\xef\xbf\xbd\xd5\xa5\xef\xbf\xbd\xde\xa5\xef\xbf\xbd ===\n" },
+#endif
+		{ "EditInline", "true" },
+		{ "ModuleRelativePath", "Public/TurnBasedSystem/Components/Movement/GridMovementComponent.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "=== \xef\xbf\xbds\xef\xbf\xbdW\xef\xbf\xbd\xd5\xa5\xef\xbf\xbd\xde\xa5\xef\xbf\xbd ===" },
+#endif
+	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_MovementStateManager_MetaData[] = {
+		{ "EditInline", "true" },
+		{ "ModuleRelativePath", "Public/TurnBasedSystem/Components/Movement/GridMovementComponent.h" },
+	};
 #endif // WITH_METADATA
 	static const UECodeGen_Private::FMulticastDelegatePropertyParams NewProp_OnGridPositionChanged;
 	static const UECodeGen_Private::FMulticastDelegatePropertyParams NewProp_OnMovementStateChanged;
@@ -994,15 +1151,20 @@ struct Z_Construct_UClass_UGridMovementComponent_Statics
 	static const UECodeGen_Private::FEnumPropertyParams NewProp_MovementState;
 	static const UECodeGen_Private::FStructPropertyParams NewProp_CurrentPath_Inner;
 	static const UECodeGen_Private::FArrayPropertyParams NewProp_CurrentPath;
+	static const UECodeGen_Private::FObjectPropertyParams NewProp_MovementValidator;
+	static const UECodeGen_Private::FObjectPropertyParams NewProp_MovementStateManager;
 	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
 	static UObject* (*const DependentSingletons[])();
 	static constexpr FClassFunctionLinkInfo FuncInfo[] = {
+		{ &Z_Construct_UFunction_UGridMovementComponent_AbortGridMovement, "AbortGridMovement" }, // 1060083852
 		{ &Z_Construct_UFunction_UGridMovementComponent_CalculateMovementCost, "CalculateMovementCost" }, // 2392128086
 		{ &Z_Construct_UFunction_UGridMovementComponent_CanMoveTo, "CanMoveTo" }, // 900104442
 		{ &Z_Construct_UFunction_UGridMovementComponent_ClearMovementRange, "ClearMovementRange" }, // 2633655973
 		{ &Z_Construct_UFunction_UGridMovementComponent_GetCurrentGridPosition, "GetCurrentGridPosition" }, // 1979989395
 		{ &Z_Construct_UFunction_UGridMovementComponent_GetGridManager, "GetGridManager" }, // 1824976397
 		{ &Z_Construct_UFunction_UGridMovementComponent_GetMovementState, "GetMovementState" }, // 3238898908
+		{ &Z_Construct_UFunction_UGridMovementComponent_GetMovementStateManager, "GetMovementStateManager" }, // 2495964107
+		{ &Z_Construct_UFunction_UGridMovementComponent_GetMovementValidator, "GetMovementValidator" }, // 1305942494
 		{ &Z_Construct_UFunction_UGridMovementComponent_GetReachableCells, "GetReachableCells" }, // 2149769189
 		{ &Z_Construct_UFunction_UGridMovementComponent_InitializeGridMovement, "InitializeGridMovement" }, // 87985425
 		{ &Z_Construct_UFunction_UGridMovementComponent_IsMoving, "IsMoving" }, // 3712386500
@@ -1035,6 +1197,8 @@ const UECodeGen_Private::FBytePropertyParams Z_Construct_UClass_UGridMovementCom
 const UECodeGen_Private::FEnumPropertyParams Z_Construct_UClass_UGridMovementComponent_Statics::NewProp_MovementState = { "MovementState", nullptr, (EPropertyFlags)0x0040000000000000, UECodeGen_Private::EPropertyGenFlags::Enum, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UGridMovementComponent, MovementState), Z_Construct_UEnum_ProjectGate_EGridMovementState, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_MovementState_MetaData), NewProp_MovementState_MetaData) }; // 4141896492
 const UECodeGen_Private::FStructPropertyParams Z_Construct_UClass_UGridMovementComponent_Statics::NewProp_CurrentPath_Inner = { "CurrentPath", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, 0, Z_Construct_UScriptStruct_FIntPoint, METADATA_PARAMS(0, nullptr) };
 const UECodeGen_Private::FArrayPropertyParams Z_Construct_UClass_UGridMovementComponent_Statics::NewProp_CurrentPath = { "CurrentPath", nullptr, (EPropertyFlags)0x0040000000000000, UECodeGen_Private::EPropertyGenFlags::Array, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UGridMovementComponent, CurrentPath), EArrayPropertyFlags::None, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_CurrentPath_MetaData), NewProp_CurrentPath_MetaData) };
+const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_UGridMovementComponent_Statics::NewProp_MovementValidator = { "MovementValidator", nullptr, (EPropertyFlags)0x0040000000080008, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UGridMovementComponent, MovementValidator), Z_Construct_UClass_UMovementValidatorComponent_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_MovementValidator_MetaData), NewProp_MovementValidator_MetaData) };
+const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_UGridMovementComponent_Statics::NewProp_MovementStateManager = { "MovementStateManager", nullptr, (EPropertyFlags)0x0040000000080008, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UGridMovementComponent, MovementStateManager), Z_Construct_UClass_UMovementStateManager_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_MovementStateManager_MetaData), NewProp_MovementStateManager_MetaData) };
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UClass_UGridMovementComponent_Statics::PropPointers[] = {
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UGridMovementComponent_Statics::NewProp_OnGridPositionChanged,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UGridMovementComponent_Statics::NewProp_OnMovementStateChanged,
@@ -1051,6 +1215,8 @@ const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UClass_UGridMove
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UGridMovementComponent_Statics::NewProp_MovementState,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UGridMovementComponent_Statics::NewProp_CurrentPath_Inner,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UGridMovementComponent_Statics::NewProp_CurrentPath,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UGridMovementComponent_Statics::NewProp_MovementValidator,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UGridMovementComponent_Statics::NewProp_MovementStateManager,
 };
 static_assert(UE_ARRAY_COUNT(Z_Construct_UClass_UGridMovementComponent_Statics::PropPointers) < 2048);
 UObject* (*const Z_Construct_UClass_UGridMovementComponent_Statics::DependentSingletons[])() = {
@@ -1092,10 +1258,10 @@ struct Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_P
 		{ EGridMovementState_StaticEnum, TEXT("EGridMovementState"), &Z_Registration_Info_UEnum_EGridMovementState, CONSTRUCT_RELOAD_VERSION_INFO(FEnumReloadVersionInfo, 4141896492U) },
 	};
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_UGridMovementComponent, UGridMovementComponent::StaticClass, TEXT("UGridMovementComponent"), &Z_Registration_Info_UClass_UGridMovementComponent, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UGridMovementComponent), 3920939830U) },
+		{ Z_Construct_UClass_UGridMovementComponent, UGridMovementComponent::StaticClass, TEXT("UGridMovementComponent"), &Z_Registration_Info_UClass_UGridMovementComponent, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UGridMovementComponent), 361377131U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_Components_Movement_GridMovementComponent_h__Script_ProjectGate_1970362043(TEXT("/Script/ProjectGate"),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_Components_Movement_GridMovementComponent_h__Script_ProjectGate_3327608336(TEXT("/Script/ProjectGate"),
 	Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_Components_Movement_GridMovementComponent_h__Script_ProjectGate_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_Components_Movement_GridMovementComponent_h__Script_ProjectGate_Statics::ClassInfo),
 	nullptr, 0,
 	Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_Components_Movement_GridMovementComponent_h__Script_ProjectGate_Statics::EnumInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_Components_Movement_GridMovementComponent_h__Script_ProjectGate_Statics::EnumInfo));

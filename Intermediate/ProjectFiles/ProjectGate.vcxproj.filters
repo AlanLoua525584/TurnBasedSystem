@@ -11,10 +11,12 @@
     <None Include="..\..\Source\ProjectGateEditor.Target.cs">
       <Filter>Source</Filter>
     </None>
+    <None Include="..\..\.editorconfig" />
     <None Include="..\..\.gitattributes" />
     <None Include="..\..\.gitignore" />
     <None Include="..\..\.vsconfig" />
     <None Include="..\..\README.md" />
+    <None Include="..\..\shadertoolsconfig.json" />
     <Filter Include="Config">
       <UniqueIdentifier>{FA535FFB-25E1-3D20-B416-52F9BE21E06E}</UniqueIdentifier>
     </Filter>
@@ -27,6 +29,102 @@
     <None Include="..\..\Config\DefaultInput.ini">
       <Filter>Config</Filter>
     </None>
+    <Filter Include="Plugins">
+      <UniqueIdentifier>{BB38096A-B391-30DC-A0D4-4F3EA6B44507}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Plugins\VisualStudioTools">
+      <UniqueIdentifier>{41769F9C-1A97-316F-BB54-C3A5E5B67BD9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Plugins\VisualStudioTools\Source">
+      <UniqueIdentifier>{1D6F83A9-DB28-3ED2-9726-5CBD49662E2A}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Plugins\VisualStudioTools\Source\VisualStudioBlueprintDebuggerHelper">
+      <UniqueIdentifier>{DA293EF3-DE5E-3E0C-8AB9-5D9B37A141A4}</UniqueIdentifier>
+    </Filter>
+    <None Include="..\..\Plugins\VisualStudioTools\Source\VisualStudioBlueprintDebuggerHelper\VisualStudioBlueprintDebuggerHelper.Build.cs">
+      <Filter>Plugins\VisualStudioTools\Source\VisualStudioBlueprintDebuggerHelper</Filter>
+    </None>
+    <Filter Include="Plugins\VisualStudioTools\Source\VisualStudioBlueprintDebuggerHelper\Private">
+      <UniqueIdentifier>{D4B7A11D-48EF-383A-B625-62F4B65D3FD8}</UniqueIdentifier>
+    </Filter>
+    <ClCompile Include="..\..\Plugins\VisualStudioTools\Source\VisualStudioBlueprintDebuggerHelper\Private\VisualStudioBlueprintDebuggerHelperModule.cpp">
+      <Filter>Plugins\VisualStudioTools\Source\VisualStudioBlueprintDebuggerHelper\Private</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Plugins\VisualStudioTools\Source\VisualStudioBlueprintDebuggerHelper\Private\VisualStudioBlueprintDebuggerHelperModule.h">
+      <Filter>Plugins\VisualStudioTools\Source\VisualStudioBlueprintDebuggerHelper\Private</Filter>
+    </ClInclude>
+    <None Include="..\..\Plugins\VisualStudioTools\VisualStudioTools.uplugin">
+      <Filter>Plugins\VisualStudioTools</Filter>
+    </None>
+    <Filter Include="Plugins\VisualStudioTools\Config">
+      <UniqueIdentifier>{CB5E8725-3658-331E-9E61-542E2997D7C5}</UniqueIdentifier>
+    </Filter>
+    <None Include="..\..\Plugins\VisualStudioTools\Config\FilterPlugin.ini">
+      <Filter>Plugins\VisualStudioTools\Config</Filter>
+    </None>
+    <Filter Include="Plugins\VisualStudioTools\Source\VisualStudioTools">
+      <UniqueIdentifier>{E48AC123-3582-39B0-901B-970708A27A9A}</UniqueIdentifier>
+    </Filter>
+    <None Include="..\..\Plugins\VisualStudioTools\Source\VisualStudioTools\VisualStudioTools.Build.cs">
+      <Filter>Plugins\VisualStudioTools\Source\VisualStudioTools</Filter>
+    </None>
+    <Filter Include="Plugins\VisualStudioTools\Source\VisualStudioTools\Private">
+      <UniqueIdentifier>{75F6F5BA-F8E5-3E94-8434-FA6DC9ABBA70}</UniqueIdentifier>
+    </Filter>
+    <ClCompile Include="..\..\Plugins\VisualStudioTools\Source\VisualStudioTools\Private\BlueprintAssetHelper.cpp">
+      <Filter>Plugins\VisualStudioTools\Source\VisualStudioTools\Private</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Plugins\VisualStudioTools\Source\VisualStudioTools\Private\BlueprintAssetHelpers.h">
+      <Filter>Plugins\VisualStudioTools\Source\VisualStudioTools\Private</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Plugins\VisualStudioTools\Source\VisualStudioTools\Private\BlueprintReferencesCommandlet.cpp">
+      <Filter>Plugins\VisualStudioTools\Source\VisualStudioTools\Private</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Plugins\VisualStudioTools\Source\VisualStudioTools\Private\BlueprintReferencesCommandlet.h">
+      <Filter>Plugins\VisualStudioTools\Source\VisualStudioTools\Private</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Plugins\VisualStudioTools\Source\VisualStudioTools\Private\FSmartBSTR.h">
+      <Filter>Plugins\VisualStudioTools\Source\VisualStudioTools\Private</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Plugins\VisualStudioTools\Source\VisualStudioTools\Private\VisualStudioTools.cpp">
+      <Filter>Plugins\VisualStudioTools\Source\VisualStudioTools\Private</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Plugins\VisualStudioTools\Source\VisualStudioTools\Private\VisualStudioToolsBlueprintBreakpointExtension.cpp">
+      <Filter>Plugins\VisualStudioTools\Source\VisualStudioTools\Private</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Plugins\VisualStudioTools\Source\VisualStudioTools\Private\VisualStudioToolsBlueprintBreakpointExtension.h">
+      <Filter>Plugins\VisualStudioTools\Source\VisualStudioTools\Private</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Plugins\VisualStudioTools\Source\VisualStudioTools\Private\VisualStudioToolsCommandlet.cpp">
+      <Filter>Plugins\VisualStudioTools\Source\VisualStudioTools\Private</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Plugins\VisualStudioTools\Source\VisualStudioTools\Private\VisualStudioToolsCommandlet.h">
+      <Filter>Plugins\VisualStudioTools\Source\VisualStudioTools\Private</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Plugins\VisualStudioTools\Source\VisualStudioTools\Private\VisualStudioToolsCommandletBase.cpp">
+      <Filter>Plugins\VisualStudioTools\Source\VisualStudioTools\Private</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Plugins\VisualStudioTools\Source\VisualStudioTools\Private\VisualStudioToolsCommandletBase.h">
+      <Filter>Plugins\VisualStudioTools\Source\VisualStudioTools\Private</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Plugins\VisualStudioTools\Source\VisualStudioTools\Private\VSServerCommandlet.cpp">
+      <Filter>Plugins\VisualStudioTools\Source\VisualStudioTools\Private</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Plugins\VisualStudioTools\Source\VisualStudioTools\Private\VSServerCommandlet.h">
+      <Filter>Plugins\VisualStudioTools\Source\VisualStudioTools\Private</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Plugins\VisualStudioTools\Source\VisualStudioTools\Private\VSTestAdapterCommandlet.cpp">
+      <Filter>Plugins\VisualStudioTools\Source\VisualStudioTools\Private</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Plugins\VisualStudioTools\Source\VisualStudioTools\Private\VSTestAdapterCommandlet.h">
+      <Filter>Plugins\VisualStudioTools\Source\VisualStudioTools\Private</Filter>
+    </ClInclude>
+    <Filter Include="Plugins\VisualStudioTools\Source\VisualStudioTools\Public">
+      <UniqueIdentifier>{333EB5AC-492F-3ED7-9C7F-15701C1818EC}</UniqueIdentifier>
+    </Filter>
+    <ClInclude Include="..\..\Plugins\VisualStudioTools\Source\VisualStudioTools\Public\VisualStudioTools.h">
+      <Filter>Plugins\VisualStudioTools\Source\VisualStudioTools\Public</Filter>
+    </ClInclude>
     <Filter Include="Source\ProjectGate">
       <UniqueIdentifier>{73499FDC-106D-3960-A759-B3C7A839BCDE}</UniqueIdentifier>
     </Filter>
@@ -44,12 +142,6 @@
     </ClCompile>
     <ClCompile Include="..\..\Source\ProjectGate\Private\ProjectGateGameMode.cpp">
       <Filter>Source\ProjectGate\Private</Filter>
-    </ClCompile>
-    <Filter Include="Source\ProjectGate\Private\AbilitySystem">
-      <UniqueIdentifier>{7CE3F02D-855F-389C-829A-786A5450B52D}</UniqueIdentifier>
-    </Filter>
-    <ClCompile Include="..\..\Source\ProjectGate\Private\AbilitySystem\GateAbilitySystemComponent.cpp">
-      <Filter>Source\ProjectGate\Private\AbilitySystem</Filter>
     </ClCompile>
     <Filter Include="Source\ProjectGate\Private\AnimationComponents">
       <UniqueIdentifier>{BE9428E4-BA93-3382-AB9B-DA0857D3B4DB}</UniqueIdentifier>
@@ -83,6 +175,48 @@
     </ClCompile>
     <ClCompile Include="..\..\Source\ProjectGate\Private\CombatSystem\HealthPointBarWidget.cpp">
       <Filter>Source\ProjectGate\Private\CombatSystem</Filter>
+    </ClCompile>
+    <Filter Include="Source\ProjectGate\Private\EventHandlers">
+      <UniqueIdentifier>{C2FD0F63-9346-34A4-B49F-E11F8FD63418}</UniqueIdentifier>
+    </Filter>
+    <ClCompile Include="..\..\Source\ProjectGate\Private\EventHandlers\CharacterEventHandler.cpp">
+      <Filter>Source\ProjectGate\Private\EventHandlers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\ProjectGate\Private\EventHandlers\EventHandlerBase.cpp">
+      <Filter>Source\ProjectGate\Private\EventHandlers</Filter>
+    </ClCompile>
+    <Filter Include="Source\ProjectGate\Private\GameplayAbilitySystem">
+      <UniqueIdentifier>{B831B553-C00A-30F8-A169-6A0A64B1E9C1}</UniqueIdentifier>
+    </Filter>
+    <ClCompile Include="..\..\Source\ProjectGate\Private\GameplayAbilitySystem\AbilityTargetingComponent.cpp">
+      <Filter>Source\ProjectGate\Private\GameplayAbilitySystem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\ProjectGate\Private\GameplayAbilitySystem\AttributeSyncComponent.cpp">
+      <Filter>Source\ProjectGate\Private\GameplayAbilitySystem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\ProjectGate\Private\GameplayAbilitySystem\GASBridgeComponent.cpp">
+      <Filter>Source\ProjectGate\Private\GameplayAbilitySystem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\ProjectGate\Private\GameplayAbilitySystem\GASManagerComponent.cpp">
+      <Filter>Source\ProjectGate\Private\GameplayAbilitySystem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\ProjectGate\Private\GameplayAbilitySystem\GASSystemInterface.cpp">
+      <Filter>Source\ProjectGate\Private\GameplayAbilitySystem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\ProjectGate\Private\GameplayAbilitySystem\GateAbilitySystemComponent.cpp">
+      <Filter>Source\ProjectGate\Private\GameplayAbilitySystem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\ProjectGate\Private\GameplayAbilitySystem\GateAttributeSet.cpp">
+      <Filter>Source\ProjectGate\Private\GameplayAbilitySystem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\ProjectGate\Private\GameplayAbilitySystem\GateGameplayAbility.cpp">
+      <Filter>Source\ProjectGate\Private\GameplayAbilitySystem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\ProjectGate\Private\GameplayAbilitySystem\GateGameplayTags.cpp">
+      <Filter>Source\ProjectGate\Private\GameplayAbilitySystem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\ProjectGate\Private\GameplayAbilitySystem\GA_BasicAttack_Test.cpp">
+      <Filter>Source\ProjectGate\Private\GameplayAbilitySystem</Filter>
     </ClCompile>
     <Filter Include="Source\ProjectGate\Private\GAS">
       <UniqueIdentifier>{F78C35DE-8628-3D49-9502-9FEC275F4DBE}</UniqueIdentifier>
@@ -183,6 +317,12 @@
     <ClCompile Include="..\..\Source\ProjectGate\Private\TurnBasedSystem\Components\Movement\GridMovementComponent.cpp">
       <Filter>Source\ProjectGate\Private\TurnBasedSystem\Components\Movement</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Source\ProjectGate\Private\TurnBasedSystem\Components\Movement\MovementStateManager.cpp">
+      <Filter>Source\ProjectGate\Private\TurnBasedSystem\Components\Movement</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\ProjectGate\Private\TurnBasedSystem\Components\Movement\MovementValidatorComponent.cpp">
+      <Filter>Source\ProjectGate\Private\TurnBasedSystem\Components\Movement</Filter>
+    </ClCompile>
     <Filter Include="Source\ProjectGate\Private\TurnBasedSystem\DataAssets">
       <UniqueIdentifier>{C528C903-8116-3183-B967-970DD332AAB3}</UniqueIdentifier>
     </Filter>
@@ -219,12 +359,6 @@
     <ClInclude Include="..\..\Source\ProjectGate\Public\ProjectGateGameMode.h">
       <Filter>Source\ProjectGate\Public</Filter>
     </ClInclude>
-    <Filter Include="Source\ProjectGate\Public\AbilitySystem">
-      <UniqueIdentifier>{6DD4A5B5-D6A2-3D55-AAD1-2605D73E4EFC}</UniqueIdentifier>
-    </Filter>
-    <ClInclude Include="..\..\Source\ProjectGate\Public\AbilitySystem\GateAbilitySystemComponent.h">
-      <Filter>Source\ProjectGate\Public\AbilitySystem</Filter>
-    </ClInclude>
     <Filter Include="Source\ProjectGate\Public\AnimationComponents">
       <UniqueIdentifier>{D62CC3C1-706E-38FF-85A8-1D90B99D4D05}</UniqueIdentifier>
     </Filter>
@@ -257,6 +391,48 @@
     </ClInclude>
     <ClInclude Include="..\..\Source\ProjectGate\Public\CombatSystem\HealthPointBarWidget.h">
       <Filter>Source\ProjectGate\Public\CombatSystem</Filter>
+    </ClInclude>
+    <Filter Include="Source\ProjectGate\Public\EventHandlers">
+      <UniqueIdentifier>{CE83F241-9F69-34BD-B74C-2D6A02F2D145}</UniqueIdentifier>
+    </Filter>
+    <ClInclude Include="..\..\Source\ProjectGate\Public\EventHandlers\CharacterEventHandler.h">
+      <Filter>Source\ProjectGate\Public\EventHandlers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\ProjectGate\Public\EventHandlers\EventHandlerBase.h">
+      <Filter>Source\ProjectGate\Public\EventHandlers</Filter>
+    </ClInclude>
+    <Filter Include="Source\ProjectGate\Public\GameplayAbilitySystem">
+      <UniqueIdentifier>{B248F71F-6C73-3B8A-BD5B-21BA177C022A}</UniqueIdentifier>
+    </Filter>
+    <ClInclude Include="..\..\Source\ProjectGate\Public\GameplayAbilitySystem\AbilityTargetingComponent.h">
+      <Filter>Source\ProjectGate\Public\GameplayAbilitySystem</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\ProjectGate\Public\GameplayAbilitySystem\AttributeSyncComponent.h">
+      <Filter>Source\ProjectGate\Public\GameplayAbilitySystem</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\ProjectGate\Public\GameplayAbilitySystem\GASBridgeComponent.h">
+      <Filter>Source\ProjectGate\Public\GameplayAbilitySystem</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\ProjectGate\Public\GameplayAbilitySystem\GASManagerComponent.h">
+      <Filter>Source\ProjectGate\Public\GameplayAbilitySystem</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\ProjectGate\Public\GameplayAbilitySystem\GASSystemInterface.h">
+      <Filter>Source\ProjectGate\Public\GameplayAbilitySystem</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\ProjectGate\Public\GameplayAbilitySystem\GateAbilitySystemComponent.h">
+      <Filter>Source\ProjectGate\Public\GameplayAbilitySystem</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\ProjectGate\Public\GameplayAbilitySystem\GateAttributeSet.h">
+      <Filter>Source\ProjectGate\Public\GameplayAbilitySystem</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\ProjectGate\Public\GameplayAbilitySystem\GateGameplayAbility.h">
+      <Filter>Source\ProjectGate\Public\GameplayAbilitySystem</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\ProjectGate\Public\GameplayAbilitySystem\GateGameplayTags.h">
+      <Filter>Source\ProjectGate\Public\GameplayAbilitySystem</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\ProjectGate\Public\GameplayAbilitySystem\GA_BasicAttack_Test.h">
+      <Filter>Source\ProjectGate\Public\GameplayAbilitySystem</Filter>
     </ClInclude>
     <Filter Include="Source\ProjectGate\Public\GAS">
       <UniqueIdentifier>{C8756738-C2A9-3DEF-8893-0117506588ED}</UniqueIdentifier>
@@ -346,6 +522,12 @@
       <UniqueIdentifier>{0E08FB6C-E82E-3894-8F23-543B0E287FD4}</UniqueIdentifier>
     </Filter>
     <ClInclude Include="..\..\Source\ProjectGate\Public\TurnBasedSystem\Components\Movement\GridMovementComponent.h">
+      <Filter>Source\ProjectGate\Public\TurnBasedSystem\Components\Movement</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\ProjectGate\Public\TurnBasedSystem\Components\Movement\MovementStateManager.h">
+      <Filter>Source\ProjectGate\Public\TurnBasedSystem\Components\Movement</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\ProjectGate\Public\TurnBasedSystem\Components\Movement\MovementValidatorComponent.h">
       <Filter>Source\ProjectGate\Public\TurnBasedSystem\Components\Movement</Filter>
     </ClInclude>
     <Filter Include="Source\ProjectGate\Public\TurnBasedSystem\Components\UI">

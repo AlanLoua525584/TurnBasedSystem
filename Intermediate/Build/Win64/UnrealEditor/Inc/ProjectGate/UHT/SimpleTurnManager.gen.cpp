@@ -196,11 +196,11 @@ struct Z_Construct_UDelegateFunction_ProjectGate_OnBattleEnded__DelegateSignatur
 #if WITH_METADATA
 	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
 #if !UE_BUILD_SHIPPING
-		{ "Comment", "// \xef\xbf\xbd\xd4\xb0\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xc6\xa5\xef\xbf\xbd\n" },
+		{ "Comment", "// \xe6\x88\xb0\xe9\xac\xa5\xe7\xb5\x90\xe6\x9d\x9f\xe4\xba\x8b\xe4\xbb\xb6\n" },
 #endif
 		{ "ModuleRelativePath", "Public/TurnBasedSystem/SimpleTurnManager.h" },
 #if !UE_BUILD_SHIPPING
-		{ "ToolTip", "\xef\xbf\xbd\xd4\xb0\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xc6\xa5\xef\xbf\xbd" },
+		{ "ToolTip", "\xe6\x88\xb0\xe9\xac\xa5\xe7\xb5\x90\xe6\x9d\x9f\xe4\xba\x8b\xe4\xbb\xb6" },
 #endif
 	};
 #endif // WITH_METADATA
@@ -388,11 +388,11 @@ struct Z_Construct_UFunction_ASimpleTurnManager_CheckBattleEnd_Statics
 	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
 		{ "Category", "Turn System" },
 #if !UE_BUILD_SHIPPING
-		{ "Comment", "// \xef\xbf\xbd\xcb\xac""d\xef\xbf\xbd\xd4\xb0\xef\xbf\xbd\xef\xbf\xbdO\xef\xbf\xbd_\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\n" },
+		{ "Comment", "// \xe6\xaa\xa2\xe6\x9f\xa5\xe6\x88\xb0\xe9\xac\xa5\xe6\x98\xaf\xe5\x90\xa6\xe7\xb5\x90\xe6\x9d\x9f\n" },
 #endif
 		{ "ModuleRelativePath", "Public/TurnBasedSystem/SimpleTurnManager.h" },
 #if !UE_BUILD_SHIPPING
-		{ "ToolTip", "\xef\xbf\xbd\xcb\xac""d\xef\xbf\xbd\xd4\xb0\xef\xbf\xbd\xef\xbf\xbdO\xef\xbf\xbd_\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd" },
+		{ "ToolTip", "\xe6\xaa\xa2\xe6\x9f\xa5\xe6\x88\xb0\xe9\xac\xa5\xe6\x98\xaf\xe5\x90\xa6\xe7\xb5\x90\xe6\x9d\x9f" },
 #endif
 	};
 #endif // WITH_METADATA
@@ -442,12 +442,12 @@ struct Z_Construct_UFunction_ASimpleTurnManager_DelayCharacterTurn_Statics
 	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
 		{ "Category", "Turn System" },
 #if !UE_BUILD_SHIPPING
-		{ "Comment", "// \xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbdY\xef\xbf\xbd\xd3\xa8\xef\xbf\xbd\xef\xbf\xbd\xe2\xaa\xba\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\n" },
+		{ "Comment", "// \xe5\xbb\xb6\xe9\x81\xb2\xe6\x9f\x90\xe5\x80\x8b\xe8\xa7\x92\xe8\x89\xb2\xe7\x9a\x84\xe8\xa1\x8c\xe5\x8b\x95\n" },
 #endif
 		{ "CPP_Default_DelayTurns", "1" },
 		{ "ModuleRelativePath", "Public/TurnBasedSystem/SimpleTurnManager.h" },
 #if !UE_BUILD_SHIPPING
-		{ "ToolTip", "\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbdY\xef\xbf\xbd\xd3\xa8\xef\xbf\xbd\xef\xbf\xbd\xe2\xaa\xba\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd" },
+		{ "ToolTip", "\xe5\xbb\xb6\xe9\x81\xb2\xe6\x9f\x90\xe5\x80\x8b\xe8\xa7\x92\xe8\x89\xb2\xe7\x9a\x84\xe8\xa1\x8c\xe5\x8b\x95" },
 #endif
 	};
 #endif // WITH_METADATA
@@ -496,11 +496,11 @@ struct Z_Construct_UFunction_ASimpleTurnManager_GetAliveCharacterCount_Statics
 	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
 		{ "Category", "Turn System" },
 #if !UE_BUILD_SHIPPING
-		{ "Comment", "// \xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbds\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xc6\xb6q\n" },
+		{ "Comment", "// \xe7\x8d\xb2\xe5\x8f\x96\xe5\xad\x98\xe6\xb4\xbb\xe8\xa7\x92\xe8\x89\xb2\xe6\x95\xb8\xe9\x87\x8f\n" },
 #endif
 		{ "ModuleRelativePath", "Public/TurnBasedSystem/SimpleTurnManager.h" },
 #if !UE_BUILD_SHIPPING
-		{ "ToolTip", "\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbds\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xc6\xb6q" },
+		{ "ToolTip", "\xe7\x8d\xb2\xe5\x8f\x96\xe5\xad\x98\xe6\xb4\xbb\xe8\xa7\x92\xe8\x89\xb2\xe6\x95\xb8\xe9\x87\x8f" },
 #endif
 	};
 #endif // WITH_METADATA
@@ -679,11 +679,11 @@ struct Z_Construct_UFunction_ASimpleTurnManager_GetSortedTurnOrder_Statics
 	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
 		{ "Category", "Turn System" },
 #if !UE_BUILD_SHIPPING
-		{ "Comment", "// \xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xc6\xa7\xc7\xab\xe1\xaa\xba\xef\xbf\xbd^\xef\xbf\xbdX\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\n" },
+		{ "Comment", "// \xe7\x8d\xb2\xe5\x8f\x96\xe6\x8e\x92\xe5\xba\x8f\xe5\xbe\x8c\xe7\x9a\x84\xe5\x9b\x9e\xe5\x90\x88\xe9\xa0\x86\xe5\xba\x8f\n" },
 #endif
 		{ "ModuleRelativePath", "Public/TurnBasedSystem/SimpleTurnManager.h" },
 #if !UE_BUILD_SHIPPING
-		{ "ToolTip", "\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xc6\xa7\xc7\xab\xe1\xaa\xba\xef\xbf\xbd^\xef\xbf\xbdX\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd" },
+		{ "ToolTip", "\xe7\x8d\xb2\xe5\x8f\x96\xe6\x8e\x92\xe5\xba\x8f\xe5\xbe\x8c\xe7\x9a\x84\xe5\x9b\x9e\xe5\x90\x88\xe9\xa0\x86\xe5\xba\x8f" },
 #endif
 	};
 #endif // WITH_METADATA
@@ -823,11 +823,11 @@ struct Z_Construct_UFunction_ASimpleTurnManager_GetTurnOrderCalculator_Statics
 	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
 		{ "Category", "Turn System" },
 #if !UE_BUILD_SHIPPING
-		{ "Comment", "// === \xef\xbf\xbds\xef\xbf\xbdW\xef\xbf\xbd\xef\xbf\xbdk ===\n" },
+		{ "Comment", "// === \xe6\x96\xb0\xe5\xa2\x9e\xe6\x96\xb9\xe6\xb3\x95 ===\n" },
 #endif
 		{ "ModuleRelativePath", "Public/TurnBasedSystem/SimpleTurnManager.h" },
 #if !UE_BUILD_SHIPPING
-		{ "ToolTip", "=== \xef\xbf\xbds\xef\xbf\xbdW\xef\xbf\xbd\xef\xbf\xbdk ===" },
+		{ "ToolTip", "=== \xe6\x96\xb0\xe5\xa2\x9e\xe6\x96\xb9\xe6\xb3\x95 ===" },
 #endif
 	};
 #endif // WITH_METADATA
@@ -871,11 +871,11 @@ struct Z_Construct_UFunction_ASimpleTurnManager_InsertImmediateAction_Statics
 	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
 		{ "Category", "Turn System" },
 #if !UE_BUILD_SHIPPING
-		{ "Comment", "// \xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbdJ\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\n" },
+		{ "Comment", "// \xe6\x8f\x92\xe5\x85\xa5\xe7\xb7\x8a\xe6\x80\xa5\xe8\xa1\x8c\xe5\x8b\x95\n" },
 #endif
 		{ "ModuleRelativePath", "Public/TurnBasedSystem/SimpleTurnManager.h" },
 #if !UE_BUILD_SHIPPING
-		{ "ToolTip", "\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbdJ\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd" },
+		{ "ToolTip", "\xe6\x8f\x92\xe5\x85\xa5\xe7\xb7\x8a\xe6\x80\xa5\xe8\xa1\x8c\xe5\x8b\x95" },
 #endif
 	};
 #endif // WITH_METADATA
@@ -982,11 +982,11 @@ struct Z_Construct_UFunction_ASimpleTurnManager_PossessCurrentTurnCharacter_Stat
 	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
 		{ "Category", "Turn System" },
 #if !UE_BUILD_SHIPPING
-		{ "Comment", "// \xef\xbf\xbd\xef\xbf\xbd PlayerController Possess \xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd""e\xef\xbf\xbd^\xef\xbf\xbdX\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\n" },
+		{ "Comment", "// \xe8\xae\x93 PlayerController Possess \xe7\x95\xb6\xe5\x89\x8d\xe5\x9b\x9e\xe5\x90\x88\xe8\xa7\x92\xe8\x89\xb2\n" },
 #endif
 		{ "ModuleRelativePath", "Public/TurnBasedSystem/SimpleTurnManager.h" },
 #if !UE_BUILD_SHIPPING
-		{ "ToolTip", "\xef\xbf\xbd\xef\xbf\xbd PlayerController Possess \xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd""e\xef\xbf\xbd^\xef\xbf\xbdX\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd" },
+		{ "ToolTip", "\xe8\xae\x93 PlayerController Possess \xe7\x95\xb6\xe5\x89\x8d\xe5\x9b\x9e\xe5\x90\x88\xe8\xa7\x92\xe8\x89\xb2" },
 #endif
 	};
 #endif // WITH_METADATA
@@ -1018,11 +1018,11 @@ struct Z_Construct_UFunction_ASimpleTurnManager_RecalculateTurnOrder_Statics
 	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
 		{ "Category", "Turn System" },
 #if !UE_BUILD_SHIPPING
-		{ "Comment", "// \xef\xbf\xbd^\xef\xbf\xbdX\xef\xbf\xbd\xc6\xa7\xc7\xa4\xef\xbf\xbdk\n" },
+		{ "Comment", "// \xe5\x9b\x9e\xe5\x90\x88\xe6\x8e\x92\xe5\xba\x8f\xe6\x96\xb9\xe6\xb3\x95\n" },
 #endif
 		{ "ModuleRelativePath", "Public/TurnBasedSystem/SimpleTurnManager.h" },
 #if !UE_BUILD_SHIPPING
-		{ "ToolTip", "\xef\xbf\xbd^\xef\xbf\xbdX\xef\xbf\xbd\xc6\xa7\xc7\xa4\xef\xbf\xbdk" },
+		{ "ToolTip", "\xe5\x9b\x9e\xe5\x90\x88\xe6\x8e\x92\xe5\xba\x8f\xe6\x96\xb9\xe6\xb3\x95" },
 #endif
 	};
 #endif // WITH_METADATA
@@ -1058,11 +1058,11 @@ struct Z_Construct_UFunction_ASimpleTurnManager_RemoveCharacter_Statics
 	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
 		{ "Category", "Turn System" },
 #if !UE_BUILD_SHIPPING
-		{ "Comment", "//\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd^\xef\xbf\xbdX\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\n" },
+		{ "Comment", "//\xe7\xa7\xbb\xe9\x99\xa4\xe5\x9b\x9e\xe5\x90\x88\xe8\xa7\x92\xe8\x89\xb2\n" },
 #endif
 		{ "ModuleRelativePath", "Public/TurnBasedSystem/SimpleTurnManager.h" },
 #if !UE_BUILD_SHIPPING
-		{ "ToolTip", "\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd^\xef\xbf\xbdX\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd" },
+		{ "ToolTip", "\xe7\xa7\xbb\xe9\x99\xa4\xe5\x9b\x9e\xe5\x90\x88\xe8\xa7\x92\xe8\x89\xb2" },
 #endif
 	};
 #endif // WITH_METADATA
@@ -1107,11 +1107,11 @@ struct Z_Construct_UFunction_ASimpleTurnManager_SetCurrentCharacterIndex_Statics
 	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
 		{ "Category", "Turn System" },
 #if !UE_BUILD_SHIPPING
-		{ "Comment", "// \xef\xbf\xbd]\xef\xbf\xbdm\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd""e\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\n" },
+		{ "Comment", "// \xe8\xa8\xad\xe7\xbd\xae\xe7\x95\xb6\xe5\x89\x8d\xe7\xb4\xa2\xe5\xbc\x95\n" },
 #endif
 		{ "ModuleRelativePath", "Public/TurnBasedSystem/SimpleTurnManager.h" },
 #if !UE_BUILD_SHIPPING
-		{ "ToolTip", "\xef\xbf\xbd]\xef\xbf\xbdm\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd""e\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd" },
+		{ "ToolTip", "\xe8\xa8\xad\xe7\xbd\xae\xe7\x95\xb6\xe5\x89\x8d\xe7\xb4\xa2\xe5\xbc\x95" },
 #endif
 	};
 #endif // WITH_METADATA
@@ -1273,21 +1273,21 @@ struct Z_Construct_UClass_ASimpleTurnManager_Statics
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_TurnOrderConfig_MetaData[] = {
 		{ "Category", "Config" },
 #if !UE_BUILD_SHIPPING
-		{ "Comment", "// === \xef\xbf\xbdt\xef\xbf\xbdm\xef\xbf\xbd\xea\xb2\xa3 ===\n" },
+		{ "Comment", "// === \xe9\x85\x8d\xe7\xbd\xae\xe8\xb3\x87\xe7\x94\xa2 ===\n" },
 #endif
 		{ "ModuleRelativePath", "Public/TurnBasedSystem/SimpleTurnManager.h" },
 #if !UE_BUILD_SHIPPING
-		{ "ToolTip", "=== \xef\xbf\xbdt\xef\xbf\xbdm\xef\xbf\xbd\xea\xb2\xa3 ===" },
+		{ "ToolTip", "=== \xe9\x85\x8d\xe7\xbd\xae\xe8\xb3\x87\xe7\x94\xa2 ===" },
 #endif
 	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_OnTurnChanged_MetaData[] = {
 		{ "Category", "Turn System" },
 #if !UE_BUILD_SHIPPING
-		{ "Comment", "// === \xef\xbf\xbd\xc6\xa5\xef\xbf\xbd""e\xef\xbf\xbdU ===\n" },
+		{ "Comment", "// === \xe4\xba\x8b\xe4\xbb\xb6\xe5\xa7\x94\xe8\xa8\x97 ===\n" },
 #endif
 		{ "ModuleRelativePath", "Public/TurnBasedSystem/SimpleTurnManager.h" },
 #if !UE_BUILD_SHIPPING
-		{ "ToolTip", "=== \xef\xbf\xbd\xc6\xa5\xef\xbf\xbd""e\xef\xbf\xbdU ===" },
+		{ "ToolTip", "=== \xe4\xba\x8b\xe4\xbb\xb6\xe5\xa7\x94\xe8\xa8\x97 ===" },
 #endif
 	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_OnPhaseChanged_MetaData[] = {
@@ -1304,20 +1304,20 @@ struct Z_Construct_UClass_ASimpleTurnManager_Statics
 	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_TurnOrder_MetaData[] = {
 #if !UE_BUILD_SHIPPING
-		{ "Comment", "/*StoreAllCharacter*/// === \xef\xbf\xbd\xd6\xa4\xdf\xa6\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd ===\n" },
+		{ "Comment", "/*StoreAllCharacter*/// === \xe6\xa0\xb8\xe5\xbf\x83\xe6\x88\x90\xe5\x93\xa1 ===\n" },
 #endif
 		{ "ModuleRelativePath", "Public/TurnBasedSystem/SimpleTurnManager.h" },
 #if !UE_BUILD_SHIPPING
-		{ "ToolTip", "StoreAllCharacter// === \xef\xbf\xbd\xd6\xa4\xdf\xa6\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd ===" },
+		{ "ToolTip", "StoreAllCharacter// === \xe6\xa0\xb8\xe5\xbf\x83\xe6\x88\x90\xe5\x93\xa1 ===" },
 #endif
 	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_TurnOrderCalculator_MetaData[] = {
 #if !UE_BUILD_SHIPPING
-		{ "Comment", "// === \xef\xbf\xbds\xef\xbf\xbdW\xef\xbf\xbdG\xef\xbf\xbdp\xef\xbf\xbd\xe2\xbe\xb9\xef\xbf\xbd\xd5\xa5\xef\xbf\xbd ===\n" },
+		{ "Comment", "// === \xe6\x96\xb0\xe5\xa2\x9e\xef\xbc\x9a\xe8\xa8\x88\xe7\xae\x97\xe5\x99\xa8\xe7\xb5\x84\xe4\xbb\xb6 ===\n" },
 #endif
 		{ "ModuleRelativePath", "Public/TurnBasedSystem/SimpleTurnManager.h" },
 #if !UE_BUILD_SHIPPING
-		{ "ToolTip", "=== \xef\xbf\xbds\xef\xbf\xbdW\xef\xbf\xbdG\xef\xbf\xbdp\xef\xbf\xbd\xe2\xbe\xb9\xef\xbf\xbd\xd5\xa5\xef\xbf\xbd ===" },
+		{ "ToolTip", "=== \xe6\x96\xb0\xe5\xa2\x9e\xef\xbc\x9a\xe8\xa8\x88\xe7\xae\x97\xe5\x99\xa8\xe7\xb5\x84\xe4\xbb\xb6 ===" },
 #endif
 	};
 #endif // WITH_METADATA
@@ -1334,23 +1334,23 @@ struct Z_Construct_UClass_ASimpleTurnManager_Statics
 	static constexpr FClassFunctionLinkInfo FuncInfo[] = {
 		{ &Z_Construct_UFunction_ASimpleTurnManager_AddCharacter, "AddCharacter" }, // 907563401
 		{ &Z_Construct_UFunction_ASimpleTurnManager_ApplyTurnOrderConfig, "ApplyTurnOrderConfig" }, // 2103237877
-		{ &Z_Construct_UFunction_ASimpleTurnManager_CheckBattleEnd, "CheckBattleEnd" }, // 1098689763
-		{ &Z_Construct_UFunction_ASimpleTurnManager_DelayCharacterTurn, "DelayCharacterTurn" }, // 1604097565
-		{ &Z_Construct_UFunction_ASimpleTurnManager_GetAliveCharacterCount, "GetAliveCharacterCount" }, // 219225659
+		{ &Z_Construct_UFunction_ASimpleTurnManager_CheckBattleEnd, "CheckBattleEnd" }, // 3037137634
+		{ &Z_Construct_UFunction_ASimpleTurnManager_DelayCharacterTurn, "DelayCharacterTurn" }, // 3437267340
+		{ &Z_Construct_UFunction_ASimpleTurnManager_GetAliveCharacterCount, "GetAliveCharacterCount" }, // 217606232
 		{ &Z_Construct_UFunction_ASimpleTurnManager_GetCurrentCharacterIndex, "GetCurrentCharacterIndex" }, // 958147449
 		{ &Z_Construct_UFunction_ASimpleTurnManager_GetCurrentPhase, "GetCurrentPhase" }, // 830492570
 		{ &Z_Construct_UFunction_ASimpleTurnManager_GetCurrentTurnCharacter, "GetCurrentTurnCharacter" }, // 1965766587
-		{ &Z_Construct_UFunction_ASimpleTurnManager_GetSortedTurnOrder, "GetSortedTurnOrder" }, // 1047158997
+		{ &Z_Construct_UFunction_ASimpleTurnManager_GetSortedTurnOrder, "GetSortedTurnOrder" }, // 2477998455
 		{ &Z_Construct_UFunction_ASimpleTurnManager_GetTurnCount, "GetTurnCount" }, // 1215446228
 		{ &Z_Construct_UFunction_ASimpleTurnManager_GetTurnOrder, "GetTurnOrder" }, // 2779018252
-		{ &Z_Construct_UFunction_ASimpleTurnManager_GetTurnOrderCalculator, "GetTurnOrderCalculator" }, // 3427506242
-		{ &Z_Construct_UFunction_ASimpleTurnManager_InsertImmediateAction, "InsertImmediateAction" }, // 3031203693
+		{ &Z_Construct_UFunction_ASimpleTurnManager_GetTurnOrderCalculator, "GetTurnOrderCalculator" }, // 1478313842
+		{ &Z_Construct_UFunction_ASimpleTurnManager_InsertImmediateAction, "InsertImmediateAction" }, // 628918381
 		{ &Z_Construct_UFunction_ASimpleTurnManager_NextPhase, "NextPhase" }, // 3175668522
 		{ &Z_Construct_UFunction_ASimpleTurnManager_NextTurn, "NextTurn" }, // 4041743731
-		{ &Z_Construct_UFunction_ASimpleTurnManager_PossessCurrentTurnCharacter, "PossessCurrentTurnCharacter" }, // 3713163859
-		{ &Z_Construct_UFunction_ASimpleTurnManager_RecalculateTurnOrder, "RecalculateTurnOrder" }, // 2700294628
-		{ &Z_Construct_UFunction_ASimpleTurnManager_RemoveCharacter, "RemoveCharacter" }, // 1942789136
-		{ &Z_Construct_UFunction_ASimpleTurnManager_SetCurrentCharacterIndex, "SetCurrentCharacterIndex" }, // 1925167900
+		{ &Z_Construct_UFunction_ASimpleTurnManager_PossessCurrentTurnCharacter, "PossessCurrentTurnCharacter" }, // 2786147153
+		{ &Z_Construct_UFunction_ASimpleTurnManager_RecalculateTurnOrder, "RecalculateTurnOrder" }, // 932226560
+		{ &Z_Construct_UFunction_ASimpleTurnManager_RemoveCharacter, "RemoveCharacter" }, // 1061723252
+		{ &Z_Construct_UFunction_ASimpleTurnManager_SetCurrentCharacterIndex, "SetCurrentCharacterIndex" }, // 3716443718
 		{ &Z_Construct_UFunction_ASimpleTurnManager_StartBattle, "StartBattle" }, // 3802053970
 		{ &Z_Construct_UFunction_ASimpleTurnManager_UpdateTurnOrderUI, "UpdateTurnOrderUI" }, // 602009519
 	};
@@ -1363,7 +1363,7 @@ struct Z_Construct_UClass_ASimpleTurnManager_Statics
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_ASimpleTurnManager_Statics::NewProp_TurnOrderConfig = { "TurnOrderConfig", nullptr, (EPropertyFlags)0x0010000000000015, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(ASimpleTurnManager, TurnOrderConfig), Z_Construct_UClass_UTurnOrderConfig_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_TurnOrderConfig_MetaData), NewProp_TurnOrderConfig_MetaData) };
 const UECodeGen_Private::FMulticastDelegatePropertyParams Z_Construct_UClass_ASimpleTurnManager_Statics::NewProp_OnTurnChanged = { "OnTurnChanged", nullptr, (EPropertyFlags)0x0010000010080000, UECodeGen_Private::EPropertyGenFlags::InlineMulticastDelegate, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(ASimpleTurnManager, OnTurnChanged), Z_Construct_UDelegateFunction_ProjectGate_OnTurnChanged__DelegateSignature, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_OnTurnChanged_MetaData), NewProp_OnTurnChanged_MetaData) }; // 900040657
 const UECodeGen_Private::FMulticastDelegatePropertyParams Z_Construct_UClass_ASimpleTurnManager_Statics::NewProp_OnPhaseChanged = { "OnPhaseChanged", nullptr, (EPropertyFlags)0x0010000010080000, UECodeGen_Private::EPropertyGenFlags::InlineMulticastDelegate, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(ASimpleTurnManager, OnPhaseChanged), Z_Construct_UDelegateFunction_ProjectGate_OnPhaseChanged__DelegateSignature, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_OnPhaseChanged_MetaData), NewProp_OnPhaseChanged_MetaData) }; // 1595082495
-const UECodeGen_Private::FMulticastDelegatePropertyParams Z_Construct_UClass_ASimpleTurnManager_Statics::NewProp_OnBattleEnded = { "OnBattleEnded", nullptr, (EPropertyFlags)0x0010000010080000, UECodeGen_Private::EPropertyGenFlags::InlineMulticastDelegate, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(ASimpleTurnManager, OnBattleEnded), Z_Construct_UDelegateFunction_ProjectGate_OnBattleEnded__DelegateSignature, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_OnBattleEnded_MetaData), NewProp_OnBattleEnded_MetaData) }; // 3834345977
+const UECodeGen_Private::FMulticastDelegatePropertyParams Z_Construct_UClass_ASimpleTurnManager_Statics::NewProp_OnBattleEnded = { "OnBattleEnded", nullptr, (EPropertyFlags)0x0010000010080000, UECodeGen_Private::EPropertyGenFlags::InlineMulticastDelegate, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(ASimpleTurnManager, OnBattleEnded), Z_Construct_UDelegateFunction_ProjectGate_OnBattleEnded__DelegateSignature, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_OnBattleEnded_MetaData), NewProp_OnBattleEnded_MetaData) }; // 3240132687
 const UECodeGen_Private::FMulticastDelegatePropertyParams Z_Construct_UClass_ASimpleTurnManager_Statics::NewProp_OnTurnOrderChanged = { "OnTurnOrderChanged", nullptr, (EPropertyFlags)0x0010000010080000, UECodeGen_Private::EPropertyGenFlags::InlineMulticastDelegate, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(ASimpleTurnManager, OnTurnOrderChanged), Z_Construct_UDelegateFunction_ProjectGate_OnTurnOrderChanged__DelegateSignature, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_OnTurnOrderChanged_MetaData), NewProp_OnTurnOrderChanged_MetaData) }; // 1561723673
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_ASimpleTurnManager_Statics::NewProp_TurnOrder_Inner = { "TurnOrder", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, 0, Z_Construct_UClass_AActor_NoRegister, METADATA_PARAMS(0, nullptr) };
 const UECodeGen_Private::FArrayPropertyParams Z_Construct_UClass_ASimpleTurnManager_Statics::NewProp_TurnOrder = { "TurnOrder", nullptr, (EPropertyFlags)0x0040000000000000, UECodeGen_Private::EPropertyGenFlags::Array, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(ASimpleTurnManager, TurnOrder), EArrayPropertyFlags::None, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_TurnOrder_MetaData), NewProp_TurnOrder_MetaData) };
@@ -1418,10 +1418,10 @@ struct Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_P
 		{ ETurnPhase_StaticEnum, TEXT("ETurnPhase"), &Z_Registration_Info_UEnum_ETurnPhase, CONSTRUCT_RELOAD_VERSION_INFO(FEnumReloadVersionInfo, 1421385386U) },
 	};
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_ASimpleTurnManager, ASimpleTurnManager::StaticClass, TEXT("ASimpleTurnManager"), &Z_Registration_Info_UClass_ASimpleTurnManager, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(ASimpleTurnManager), 675931790U) },
+		{ Z_Construct_UClass_ASimpleTurnManager, ASimpleTurnManager::StaticClass, TEXT("ASimpleTurnManager"), &Z_Registration_Info_UClass_ASimpleTurnManager, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(ASimpleTurnManager), 2464584627U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_SimpleTurnManager_h__Script_ProjectGate_542751810(TEXT("/Script/ProjectGate"),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_SimpleTurnManager_h__Script_ProjectGate_3795423199(TEXT("/Script/ProjectGate"),
 	Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_SimpleTurnManager_h__Script_ProjectGate_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_SimpleTurnManager_h__Script_ProjectGate_Statics::ClassInfo),
 	nullptr, 0,
 	Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_SimpleTurnManager_h__Script_ProjectGate_Statics::EnumInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_SimpleTurnManager_h__Script_ProjectGate_Statics::EnumInfo));

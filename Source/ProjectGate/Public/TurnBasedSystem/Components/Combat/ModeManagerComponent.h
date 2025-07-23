@@ -106,6 +106,10 @@ private:
     // Restore camera state after transition  
     void RestoreCameraState();
 
+    void HandleAttackModeOnDynamicSwitch();
+    
+    void UpdateTurnDisplayWidget(bool bIsDynamic);
+
     // Camera state storage
     FRotator SavedCameraRotation;
     FVector SavedCameraLocation;

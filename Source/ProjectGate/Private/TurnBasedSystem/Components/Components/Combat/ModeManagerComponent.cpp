@@ -67,15 +67,49 @@ void UModeManagerComponent::OnDynamicMode()
 		return;
 	}
 
-	// Toggle mode 切換模式
-	if (bIsInDynamicMode)
-	{
-		EnterGridMode();
-	}
-	else
-	{
-		EnterDynamicMode();
-	}
+    // 獲取當前角色
+    ATurnBasedCharacter* ControlledCharacter = GetControlledTurnCharacter();
+    if (!ControlledCharacter)
+    {
+        Debug::Print(TEXT("No controlled character"), FColor::Red);
+        return;
+    }
+
+    // 使用MovementStateManager進行安全切換
+    if (UMovementStateManager* StateManager = ControlledCharacter->GetMovementStateManager())
+    {
+        // 先停止所有移動
+        StateManager->HaltAllMovement();
+
+        // 等待一幀確保停止完成
+        GetWorld()->GetTimerManager().SetTimerForNextTick([this]()
+            {
+                // 切換模式
+                if (bIsInDynamicMode)
+                {
+                    EnterGridMode();
+                }
+                else
+                {
+                    EnterDynamicMode();
+                }
+            });
+    }
+    else
+    {
+        // 備用方案：使用舊方法
+        ControlledCharacter->HaltAllMovementSystems();
+
+        // 切換模式
+        if (bIsInDynamicMode)
+        {
+            EnterGridMode();
+        }
+        else
+        {
+            EnterDynamicMode();
+        }
+    }
 }
 // Enter grid mode (free camera + click movement)
 void UModeManagerComponent::EnterGridMode()
@@ -87,6 +121,67 @@ void UModeManagerComponent::EnterGridMode()
 
     Debug::Print(TEXT("===== Entering GRID MODE 進入網格模式 ====="), FColor::Blue, 5.0f);
 
+    // 使用MovementStateManager切換
+    if (UMovementStateManager* StateManager = ControlledCharacter->GetMovementStateManager())
+    {
+        // 確保Dynamic移動停止
+        StateManager->HaltMovementSystem(EMovementSystemType::DynamicMovement);
+
+        // 激活Grid移動系統（處於待命狀態）
+        StateManager->ActivateMovementSystem(EMovementSystemType::GridMovement);
+    }
+    else
+    {
+        // 備用方案
+        if (UEnhancedMovementSystem* MovementSystem = ControlledCharacter->GetComponentByClass<UEnhancedMovementSystem>())
+        {
+            MovementSystem->SwitchMovementMode(ECustomMovementMode::Idle);
+        }
+
+        if (UGridMovementComponent* GridMovement = ControlledCharacter->GetComponentByClass<UGridMovementComponent>())
+        {
+            if (GridMovement->IsMoving())
+            {
+                GridMovement->AbortGridMovement();
+            }
+            GridMovement->UpdateGridPositionFromWorld();
+        }
+    }
+
+    // 更新角色移動設置
+    UpdateCharacterMovementSettings(ControlledCharacter, false);
+
+    // 顯示網格移動範圍
+    ControlledCharacter->ShowMovementRange();
+
+    // 處理鏡頭切換
+    HandleCameraTransition(false);
+
+    // 更新網格視覺效果
+    UpdateGridVisuals(true);
+
+    // 設置輸入模式
+    SetupInputMode();
+
+    // 更新狀態
+    bIsInDynamicMode = false;
+
+    // 同步PlayerController狀態
+    if (AGridPlayerController* GridPC = Cast<AGridPlayerController>(OwnerController))
+    {
+        GridPC->bIsInDynamicMode = false;
+    }
+
+    // 通知UI
+    OnMovementModeChanged.Broadcast(false);
+
+    // 更新回合顯示
+    UpdateTurnDisplayWidget(false);
+
+    // 最後同步所有組件
+    ControlledCharacter->SynchronizeMovementComponents();
+
+    /*
     // Stop dynamic movement 停止動態移動
     if (UEnhancedMovementSystem* MovementSystem = ControlledCharacter->GetComponentByClass<UEnhancedMovementSystem>())
     {
@@ -136,9 +231,10 @@ void UModeManagerComponent::EnterGridMode()
             TurnWidget->UpdateCameraMode(false);
         }
     }
-
+     */
 
     ShowModeNotification(TEXT("GRID MODE - Click to move"));
+   
 }
 
 
@@ -369,4 +465,30 @@ void UModeManagerComponent::RestoreCameraState()
     }
 
     Debug::Print(TEXT("Camera state restored "), FColor::Cyan);
+}
+
+void UModeManagerComponent::HandleAttackModeOnDynamicSwitch()
+{
+    AGridPlayerController* GridPC = Cast<AGridPlayerController>(OwnerController);
+    if (!GridPC) return;
+
+    if (UCombatModeComponent* CombatMode = GridPC->GetCombatModeManager())
+    {
+        if (CombatMode->IsInAttackMode())
+        {
+            CombatMode->ExitAttackMode();
+            Debug::Print(TEXT("Exiting Attack Mode due to Dynamic Mode switch"), FColor::Yellow);
+        }
+    }
+}
+
+void UModeManagerComponent::UpdateTurnDisplayWidget(bool bIsDynamic)
+{
+    if (AProjectGateGameMode* GameMode = Cast<AProjectGateGameMode>(OwnerController->GetWorld()->GetAuthGameMode()))
+    {
+        if (UTurnDisplayWidget* TurnWidget = GameMode->GetTurnDisplayWidget())
+        {
+            TurnWidget->UpdateCameraMode(bIsDynamic);
+        }
+    }
 }

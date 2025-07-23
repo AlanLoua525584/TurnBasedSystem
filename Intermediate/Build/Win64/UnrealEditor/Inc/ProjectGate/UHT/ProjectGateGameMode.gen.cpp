@@ -15,6 +15,7 @@ void EmptyLinkFunctionForGeneratedCodeProjectGateGameMode() {}
 COREUOBJECT_API UClass* Z_Construct_UClass_UClass();
 ENGINE_API UClass* Z_Construct_UClass_AActor_NoRegister();
 ENGINE_API UClass* Z_Construct_UClass_AGameModeBase();
+ENGINE_API UClass* Z_Construct_UClass_UDataTable_NoRegister();
 PROJECTGATE_API UClass* Z_Construct_UClass_AFreeCameraPawn_NoRegister();
 PROJECTGATE_API UClass* Z_Construct_UClass_AProjectGateGameMode();
 PROJECTGATE_API UClass* Z_Construct_UClass_AProjectGateGameMode_NoRegister();
@@ -81,11 +82,11 @@ struct Z_Construct_UFunction_AProjectGateGameMode_GetCombatDisplayWidgetClass_St
 	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
 		{ "Category", "UI" },
 #if !UE_BUILD_SHIPPING
-		{ "Comment", "//\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd CombatDisplayWidget\n" },
+		{ "Comment", "//\xe7\x8d\xb2\xe5\x8f\x96 CombatDisplayWidget\n" },
 #endif
 		{ "ModuleRelativePath", "Public/ProjectGateGameMode.h" },
 #if !UE_BUILD_SHIPPING
-		{ "ToolTip", "\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd CombatDisplayWidget" },
+		{ "ToolTip", "\xe7\x8d\xb2\xe5\x8f\x96 CombatDisplayWidget" },
 #endif
 	};
 #endif // WITH_METADATA
@@ -129,11 +130,11 @@ struct Z_Construct_UFunction_AProjectGateGameMode_GetTurnDisplayWidget_Statics
 	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
 		{ "Category", "UI" },
 #if !UE_BUILD_SHIPPING
-		{ "Comment", "// \xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd Turn Display Widget\n" },
+		{ "Comment", "// \xe7\x8d\xb2\xe5\x8f\x96 Turn Display Widget\n" },
 #endif
 		{ "ModuleRelativePath", "Public/ProjectGateGameMode.h" },
 #if !UE_BUILD_SHIPPING
-		{ "ToolTip", "\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd Turn Display Widget" },
+		{ "ToolTip", "\xe7\x8d\xb2\xe5\x8f\x96 Turn Display Widget" },
 #endif
 	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_ReturnValue_MetaData[] = {
@@ -313,11 +314,11 @@ struct Z_Construct_UFunction_AProjectGateGameMode_OnTurnChanged_Statics
 #if WITH_METADATA
 	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
 #if !UE_BUILD_SHIPPING
-		{ "Comment", "// \xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xd5\xa8\xef\xbf\xbd\xef\xbf\xbd\n" },
+		{ "Comment", "// \xe6\xb8\xac\xe8\xa9\xa6\xe5\x87\xbd\xe6\x95\xb8\n" },
 #endif
 		{ "ModuleRelativePath", "Public/ProjectGateGameMode.h" },
 #if !UE_BUILD_SHIPPING
-		{ "ToolTip", "\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xd5\xa8\xef\xbf\xbd\xef\xbf\xbd" },
+		{ "ToolTip", "\xe6\xb8\xac\xe8\xa9\xa6\xe5\x87\xbd\xe6\x95\xb8" },
 #endif
 	};
 #endif // WITH_METADATA
@@ -412,31 +413,31 @@ struct Z_Construct_UClass_AProjectGateGameMode_Statics
 	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_FreeCameraPawn_MetaData[] = {
 #if !UE_BUILD_SHIPPING
-		{ "Comment", "//\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd""e\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbdY\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\n" },
+		{ "Comment", "//\xe7\x95\xb6\xe5\x89\x8d\xe9\x8f\xa1\xe9\xa0\xad\xe5\xaf\xa6\xe4\xbe\x8b\n" },
 #endif
 		{ "ModuleRelativePath", "Public/ProjectGateGameMode.h" },
 #if !UE_BUILD_SHIPPING
-		{ "ToolTip", "\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd""e\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbdY\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd" },
+		{ "ToolTip", "\xe7\x95\xb6\xe5\x89\x8d\xe9\x8f\xa1\xe9\xa0\xad\xe5\xaf\xa6\xe4\xbe\x8b" },
 #endif
 	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_bAutoFocusCurrentCharacter_MetaData[] = {
 		{ "Category", "Camera" },
 #if !UE_BUILD_SHIPPING
-		{ "Comment", "//\xef\xbf\xbdO\xef\xbf\xbd_\xef\xbf\xbd\xdb\xb0\xca\xbb""E\xef\xbf\xbdJ\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd""e\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\n" },
+		{ "Comment", "//\xe6\x98\xaf\xe5\x90\xa6\xe8\x87\xaa\xe5\x8b\x95\xe8\x81\x9a\xe7\x84\xa6\xe5\x88\xb0\xe7\x95\xb6\xe5\x89\x8d\xe8\xa7\x92\xe8\x89\xb2\n" },
 #endif
 		{ "ModuleRelativePath", "Public/ProjectGateGameMode.h" },
 #if !UE_BUILD_SHIPPING
-		{ "ToolTip", "\xef\xbf\xbdO\xef\xbf\xbd_\xef\xbf\xbd\xdb\xb0\xca\xbb""E\xef\xbf\xbdJ\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd""e\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd" },
+		{ "ToolTip", "\xe6\x98\xaf\xe5\x90\xa6\xe8\x87\xaa\xe5\x8b\x95\xe8\x81\x9a\xe7\x84\xa6\xe5\x88\xb0\xe7\x95\xb6\xe5\x89\x8d\xe8\xa7\x92\xe8\x89\xb2" },
 #endif
 	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_FocusDistance_MetaData[] = {
 		{ "Category", "Camera" },
 #if !UE_BUILD_SHIPPING
-		{ "Comment", "// \xef\xbf\xbd""E\xef\xbf\xbdJ\xef\xbf\xbdZ\xef\xbf\xbd\xef\xbf\xbd\n" },
+		{ "Comment", "// \xe8\x81\x9a\xe7\x84\xa6\xe8\xb7\x9d\xe9\x9b\xa2\n" },
 #endif
 		{ "ModuleRelativePath", "Public/ProjectGateGameMode.h" },
 #if !UE_BUILD_SHIPPING
-		{ "ToolTip", "\xef\xbf\xbd""E\xef\xbf\xbdJ\xef\xbf\xbdZ\xef\xbf\xbd\xef\xbf\xbd" },
+		{ "ToolTip", "\xe8\x81\x9a\xe7\x84\xa6\xe8\xb7\x9d\xe9\x9b\xa2" },
 #endif
 	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_CombatDisplayWidgetClass_MetaData[] = {
@@ -453,13 +454,23 @@ struct Z_Construct_UClass_AProjectGateGameMode_Statics
 		{ "EditInline", "true" },
 		{ "ModuleRelativePath", "Public/ProjectGateGameMode.h" },
 	};
-	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_TurnManager_MetaData[] = {
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_HighlightConfigTable_MetaData[] = {
+		{ "Category", "Highlight" },
 #if !UE_BUILD_SHIPPING
-		{ "Comment", "// \xef\xbf\xbd^\xef\xbf\xbdX\xef\xbf\xbd\xde\xb2z\xef\xbf\xbd\xef\xbf\xbd\n" },
+		{ "Comment", "// DataTable \xe5\xbc\x95\xe7\x94\xa8\n" },
 #endif
 		{ "ModuleRelativePath", "Public/ProjectGateGameMode.h" },
 #if !UE_BUILD_SHIPPING
-		{ "ToolTip", "\xef\xbf\xbd^\xef\xbf\xbdX\xef\xbf\xbd\xde\xb2z\xef\xbf\xbd\xef\xbf\xbd" },
+		{ "ToolTip", "DataTable \xe5\xbc\x95\xe7\x94\xa8" },
+#endif
+	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_TurnManager_MetaData[] = {
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "// \xe5\x9b\x9e\xe5\x90\x88\xe7\xae\xa1\xe7\x90\x86\xe5\x99\xa8\n" },
+#endif
+		{ "ModuleRelativePath", "Public/ProjectGateGameMode.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "\xe5\x9b\x9e\xe5\x90\x88\xe7\xae\xa1\xe7\x90\x86\xe5\x99\xa8" },
 #endif
 	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_TurnDisplayWidget_MetaData[] = {
@@ -478,11 +489,11 @@ struct Z_Construct_UClass_AProjectGateGameMode_Statics
 	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_PreviousCharacter_MetaData[] = {
 #if !UE_BUILD_SHIPPING
-		{ "Comment", "//\xef\xbf\xbdl\xef\xbf\xbd\xdc\xab""e\xef\xbf\xbd@\xef\xbf\xbd\xd3\xa8\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\n" },
+		{ "Comment", "//\xe8\xbf\xbd\xe8\xb9\xa4\xe5\x89\x8d\xe4\xb8\x80\xe5\x80\x8b\xe8\xa7\x92\xe8\x89\xb2\n" },
 #endif
 		{ "ModuleRelativePath", "Public/ProjectGateGameMode.h" },
 #if !UE_BUILD_SHIPPING
-		{ "ToolTip", "\xef\xbf\xbdl\xef\xbf\xbd\xdc\xab""e\xef\xbf\xbd@\xef\xbf\xbd\xd3\xa8\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd" },
+		{ "ToolTip", "\xe8\xbf\xbd\xe8\xb9\xa4\xe5\x89\x8d\xe4\xb8\x80\xe5\x80\x8b\xe8\xa7\x92\xe8\x89\xb2" },
 #endif
 	};
 #endif // WITH_METADATA
@@ -492,6 +503,7 @@ struct Z_Construct_UClass_AProjectGateGameMode_Statics
 	static const UECodeGen_Private::FFloatPropertyParams NewProp_FocusDistance;
 	static const UECodeGen_Private::FClassPropertyParams NewProp_CombatDisplayWidgetClass;
 	static const UECodeGen_Private::FObjectPropertyParams NewProp_CombatDisplayWidget;
+	static const UECodeGen_Private::FObjectPropertyParams NewProp_HighlightConfigTable;
 	static const UECodeGen_Private::FObjectPropertyParams NewProp_TurnManager;
 	static const UECodeGen_Private::FObjectPropertyParams NewProp_TurnDisplayWidget;
 	static const UECodeGen_Private::FClassPropertyParams NewProp_TurnDisplayWidgetClass;
@@ -500,12 +512,12 @@ struct Z_Construct_UClass_AProjectGateGameMode_Statics
 	static UObject* (*const DependentSingletons[])();
 	static constexpr FClassFunctionLinkInfo FuncInfo[] = {
 		{ &Z_Construct_UFunction_AProjectGateGameMode_GetCombatDisplayWidget, "GetCombatDisplayWidget" }, // 2887423676
-		{ &Z_Construct_UFunction_AProjectGateGameMode_GetCombatDisplayWidgetClass, "GetCombatDisplayWidgetClass" }, // 1711437056
-		{ &Z_Construct_UFunction_AProjectGateGameMode_GetTurnDisplayWidget, "GetTurnDisplayWidget" }, // 3514545476
+		{ &Z_Construct_UFunction_AProjectGateGameMode_GetCombatDisplayWidgetClass, "GetCombatDisplayWidgetClass" }, // 2258452791
+		{ &Z_Construct_UFunction_AProjectGateGameMode_GetTurnDisplayWidget, "GetTurnDisplayWidget" }, // 3509142260
 		{ &Z_Construct_UFunction_AProjectGateGameMode_OnAPChanged, "OnAPChanged" }, // 2365455300
 		{ &Z_Construct_UFunction_AProjectGateGameMode_OnPhaseChanged, "OnPhaseChanged" }, // 3792010443
 		{ &Z_Construct_UFunction_AProjectGateGameMode_OnStaminaChanged, "OnStaminaChanged" }, // 2470393181
-		{ &Z_Construct_UFunction_AProjectGateGameMode_OnTurnChanged, "OnTurnChanged" }, // 1761269530
+		{ &Z_Construct_UFunction_AProjectGateGameMode_OnTurnChanged, "OnTurnChanged" }, // 3760152077
 	};
 	static_assert(UE_ARRAY_COUNT(FuncInfo) < 2048);
 	static constexpr FCppClassTypeInfoStatic StaticCppClassTypeInfo = {
@@ -522,6 +534,7 @@ const UECodeGen_Private::FBoolPropertyParams Z_Construct_UClass_AProjectGateGame
 const UECodeGen_Private::FFloatPropertyParams Z_Construct_UClass_AProjectGateGameMode_Statics::NewProp_FocusDistance = { "FocusDistance", nullptr, (EPropertyFlags)0x0020080000010001, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AProjectGateGameMode, FocusDistance), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_FocusDistance_MetaData), NewProp_FocusDistance_MetaData) };
 const UECodeGen_Private::FClassPropertyParams Z_Construct_UClass_AProjectGateGameMode_Statics::NewProp_CombatDisplayWidgetClass = { "CombatDisplayWidgetClass", nullptr, (EPropertyFlags)0x0024080000010001, UECodeGen_Private::EPropertyGenFlags::Class, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AProjectGateGameMode, CombatDisplayWidgetClass), Z_Construct_UClass_UClass, Z_Construct_UClass_UCombatDisplayWidget_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_CombatDisplayWidgetClass_MetaData), NewProp_CombatDisplayWidgetClass_MetaData) };
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_AProjectGateGameMode_Statics::NewProp_CombatDisplayWidget = { "CombatDisplayWidget", nullptr, (EPropertyFlags)0x0020080000080008, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AProjectGateGameMode, CombatDisplayWidget), Z_Construct_UClass_UCombatDisplayWidget_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_CombatDisplayWidget_MetaData), NewProp_CombatDisplayWidget_MetaData) };
+const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_AProjectGateGameMode_Statics::NewProp_HighlightConfigTable = { "HighlightConfigTable", nullptr, (EPropertyFlags)0x0020080000010001, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AProjectGateGameMode, HighlightConfigTable), Z_Construct_UClass_UDataTable_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_HighlightConfigTable_MetaData), NewProp_HighlightConfigTable_MetaData) };
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_AProjectGateGameMode_Statics::NewProp_TurnManager = { "TurnManager", nullptr, (EPropertyFlags)0x0040000000000000, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AProjectGateGameMode, TurnManager), Z_Construct_UClass_ASimpleTurnManager_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_TurnManager_MetaData), NewProp_TurnManager_MetaData) };
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_AProjectGateGameMode_Statics::NewProp_TurnDisplayWidget = { "TurnDisplayWidget", nullptr, (EPropertyFlags)0x0040000000080008, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AProjectGateGameMode, TurnDisplayWidget), Z_Construct_UClass_UTurnDisplayWidget_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_TurnDisplayWidget_MetaData), NewProp_TurnDisplayWidget_MetaData) };
 const UECodeGen_Private::FClassPropertyParams Z_Construct_UClass_AProjectGateGameMode_Statics::NewProp_TurnDisplayWidgetClass = { "TurnDisplayWidgetClass", nullptr, (EPropertyFlags)0x0044000000010001, UECodeGen_Private::EPropertyGenFlags::Class, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AProjectGateGameMode, TurnDisplayWidgetClass), Z_Construct_UClass_UClass, Z_Construct_UClass_UTurnDisplayWidget_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_TurnDisplayWidgetClass_MetaData), NewProp_TurnDisplayWidgetClass_MetaData) };
@@ -532,6 +545,7 @@ const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UClass_AProjectG
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AProjectGateGameMode_Statics::NewProp_FocusDistance,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AProjectGateGameMode_Statics::NewProp_CombatDisplayWidgetClass,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AProjectGateGameMode_Statics::NewProp_CombatDisplayWidget,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AProjectGateGameMode_Statics::NewProp_HighlightConfigTable,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AProjectGateGameMode_Statics::NewProp_TurnManager,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AProjectGateGameMode_Statics::NewProp_TurnDisplayWidget,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AProjectGateGameMode_Statics::NewProp_TurnDisplayWidgetClass,
@@ -574,10 +588,10 @@ AProjectGateGameMode::~AProjectGateGameMode() {}
 struct Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_ProjectGateGameMode_h__Script_ProjectGate_Statics
 {
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_AProjectGateGameMode, AProjectGateGameMode::StaticClass, TEXT("AProjectGateGameMode"), &Z_Registration_Info_UClass_AProjectGateGameMode, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(AProjectGateGameMode), 528440076U) },
+		{ Z_Construct_UClass_AProjectGateGameMode, AProjectGateGameMode::StaticClass, TEXT("AProjectGateGameMode"), &Z_Registration_Info_UClass_AProjectGateGameMode, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(AProjectGateGameMode), 2756648077U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_ProjectGateGameMode_h__Script_ProjectGate_2358876080(TEXT("/Script/ProjectGate"),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_ProjectGateGameMode_h__Script_ProjectGate_247372207(TEXT("/Script/ProjectGate"),
 	Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_ProjectGateGameMode_h__Script_ProjectGate_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_ProjectGateGameMode_h__Script_ProjectGate_Statics::ClassInfo),
 	nullptr, 0,
 	nullptr, 0);

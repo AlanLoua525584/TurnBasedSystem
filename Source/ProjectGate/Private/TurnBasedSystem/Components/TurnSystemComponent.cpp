@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+ï»¿// Fill out your copyright notice in the Description page of Project Settings.
 
 
 #include "TurnBasedSystem/Components/TurnSystemComponent.h"
@@ -7,6 +7,7 @@
 #include "TurnBasedSystem/TurnBasedCharacter.h"
 #include "TurnBasedSystem/GridPlayerController.h"
 #include "TurnBasedSystem/GridVisualComponent.h"
+#include "HighlightSystem/HighlightManager.h"
 #include "CombatSystem/CombatComponent.h"
 #include "ProjectGateGameMode.h"
 #include "TurnBasedSystem/UI/TurnDisplayWidget.h"
@@ -35,7 +36,7 @@ void UTurnSystemComponent::BeginPlay()
 {
     Super::BeginPlay();
 
-    // ½T«Oªì©lª¬ºA¬OÃö³¬ªº
+    // ç¢ºä¿åˆå§‹ç‹€æ…‹æ˜¯é—œé–‰çš„
     bIsMyTurn = false;
     TurnState = ETurnState::Waiting;
 
@@ -79,21 +80,12 @@ void UTurnSystemComponent::OnTurnStart()
     FString CharName = Character->GetActorLabel();
     Debug::Print(FString::Printf(TEXT("=== %s's Turn Started ==="), *CharName), FColor::Cyan, 3);
 
-    // Visual feedback - highlight character
-    if (USkeletalMeshComponent* MeshComp = Character->GetMesh())
-    {
-        MeshComp->SetRenderCustomDepth(true);
-        MeshComp->SetCustomDepthStencilValue(252); // Green outline
-        Debug::Print(FString::Printf(TEXT("%s: Highlight enabled"), *CharName), FColor::Green);
-    }
-
-
-    // ¥u¬°ª±®a±±¨îªº¨¤¦âÅã¥Ü²¾°Ê½d³ò
+    // åªç‚ºç©å®¶æ§åˆ¶çš„è§’è‰²é¡¯ç¤ºç§»å‹•ç¯„åœ
    
      Character = Cast<ATurnBasedCharacter>(GetOwner());
     if (Character && Character->bIsPlayerControlled)
     {
-        // ¨Ï¥Î­p®É¾¹©µ¿ğÅã¥Ü¡A½T«O©Ò¦³¨t²Î³£¤wªì©l¤Æ
+        // ä½¿ç”¨è¨ˆæ™‚å™¨å»¶é²é¡¯ç¤ºï¼Œç¢ºä¿æ‰€æœ‰ç³»çµ±éƒ½å·²åˆå§‹åŒ–
         FTimerHandle ShowRangeTimer;
         GetWorld()->GetTimerManager().SetTimer(
             ShowRangeTimer,
@@ -106,11 +98,21 @@ void UTurnSystemComponent::OnTurnStart()
                         *Character->GetActorLabel()), FColor::Blue);
                 }
             },
-            0.1f,  // ©µ¿ğ 0.1 ¬í
+            0.1f,  // å»¶é² 0.1 ç§’
             false
         );
     }
 
+    // æ–°ä»£ç¢¼ï¼šä½¿ç”¨ HighlightManager
+    if (UHighlightManager* HighlightMgr = GetWorld()->GetSubsystem<UHighlightManager>())
+    {
+        HighlightMgr->SetHighlight(Character, EHighlightType::CurrentTurn);
+        Debug::Print(FString::Printf(TEXT("%s: Highlight set via HighlightManager"), *CharName), FColor::Green);
+    }
+    else
+    {
+        Debug::Print(TEXT("ERROR: HighlightManager not found!"), FColor::Red);
+    }
 
 
     // Broadcast events
@@ -118,6 +120,7 @@ void UTurnSystemComponent::OnTurnStart()
 
     // Update UI
     UpdateUI();
+
 }
 
 void UTurnSystemComponent::OnTurnEnd()
@@ -162,6 +165,13 @@ void UTurnSystemComponent::OnTurnEnd()
     {
         VisualComp->ClearAllVisuals();
     }
+
+    // ä½¿ç”¨ HighlightManager æ¸…é™¤é«˜äº®
+    if (UHighlightManager* HighlightMgr = GetWorld()->GetSubsystem<UHighlightManager>())
+    {
+        HighlightMgr->RemoveHighlight(Character, EHighlightType::CurrentTurn);
+    }
+
 
     // Broadcast events
     OnTurnEnded.Broadcast();

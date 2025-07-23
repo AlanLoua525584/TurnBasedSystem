@@ -19,10 +19,12 @@ COREUOBJECT_API UScriptStruct* Z_Construct_UScriptStruct_FVector2D();
 ENGINE_API UClass* Z_Construct_UClass_AActor_NoRegister();
 ENGINE_API UClass* Z_Construct_UClass_APlayerController_NoRegister();
 ENGINE_API UClass* Z_Construct_UClass_UActorComponent();
+PROJECTGATE_API UClass* Z_Construct_UClass_ASimpleTurnManager_NoRegister();
 PROJECTGATE_API UClass* Z_Construct_UClass_UCombatDisplayWidget_NoRegister();
 PROJECTGATE_API UClass* Z_Construct_UClass_UTurnOrderWidget_NoRegister();
 PROJECTGATE_API UClass* Z_Construct_UClass_UUIManagerComponent();
 PROJECTGATE_API UClass* Z_Construct_UClass_UUIManagerComponent_NoRegister();
+PROJECTGATE_API UEnum* Z_Construct_UEnum_ProjectGate_ETurnPhase();
 PROJECTGATE_API UScriptStruct* Z_Construct_UScriptStruct_FDamageResult();
 SLATE_API UScriptStruct* Z_Construct_UScriptStruct_FAnchors();
 UPackage* Z_Construct_UPackage__Script_ProjectGate();
@@ -273,6 +275,152 @@ DEFINE_FUNCTION(UUIManagerComponent::execHideDamagePreview)
 	P_NATIVE_END;
 }
 // ********** End Class UUIManagerComponent Function HideDamagePreview *****************************
+
+// ********** Begin Class UUIManagerComponent Function OnPhaseChanged ******************************
+struct Z_Construct_UFunction_UUIManagerComponent_OnPhaseChanged_Statics
+{
+	struct UIManagerComponent_eventOnPhaseChanged_Parms
+	{
+		AActor* CurrentCharacter;
+		ETurnPhase NewPhase;
+	};
+#if WITH_METADATA
+	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
+		{ "ModuleRelativePath", "Public/TurnBasedSystem/Components/UI/UIManagerComponent.h" },
+	};
+#endif // WITH_METADATA
+	static const UECodeGen_Private::FObjectPropertyParams NewProp_CurrentCharacter;
+	static const UECodeGen_Private::FBytePropertyParams NewProp_NewPhase_Underlying;
+	static const UECodeGen_Private::FEnumPropertyParams NewProp_NewPhase;
+	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
+	static const UECodeGen_Private::FFunctionParams FuncParams;
+};
+const UECodeGen_Private::FObjectPropertyParams Z_Construct_UFunction_UUIManagerComponent_OnPhaseChanged_Statics::NewProp_CurrentCharacter = { "CurrentCharacter", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UIManagerComponent_eventOnPhaseChanged_Parms, CurrentCharacter), Z_Construct_UClass_AActor_NoRegister, METADATA_PARAMS(0, nullptr) };
+const UECodeGen_Private::FBytePropertyParams Z_Construct_UFunction_UUIManagerComponent_OnPhaseChanged_Statics::NewProp_NewPhase_Underlying = { "UnderlyingType", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Byte, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, 0, nullptr, METADATA_PARAMS(0, nullptr) };
+const UECodeGen_Private::FEnumPropertyParams Z_Construct_UFunction_UUIManagerComponent_OnPhaseChanged_Statics::NewProp_NewPhase = { "NewPhase", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Enum, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UIManagerComponent_eventOnPhaseChanged_Parms, NewPhase), Z_Construct_UEnum_ProjectGate_ETurnPhase, METADATA_PARAMS(0, nullptr) }; // 1421385386
+const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_UUIManagerComponent_OnPhaseChanged_Statics::PropPointers[] = {
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UUIManagerComponent_OnPhaseChanged_Statics::NewProp_CurrentCharacter,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UUIManagerComponent_OnPhaseChanged_Statics::NewProp_NewPhase_Underlying,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UUIManagerComponent_OnPhaseChanged_Statics::NewProp_NewPhase,
+};
+static_assert(UE_ARRAY_COUNT(Z_Construct_UFunction_UUIManagerComponent_OnPhaseChanged_Statics::PropPointers) < 2048);
+const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_UUIManagerComponent_OnPhaseChanged_Statics::FuncParams = { { (UObject*(*)())Z_Construct_UClass_UUIManagerComponent, nullptr, "OnPhaseChanged", Z_Construct_UFunction_UUIManagerComponent_OnPhaseChanged_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_UUIManagerComponent_OnPhaseChanged_Statics::PropPointers), sizeof(Z_Construct_UFunction_UUIManagerComponent_OnPhaseChanged_Statics::UIManagerComponent_eventOnPhaseChanged_Parms), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x00020401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_UUIManagerComponent_OnPhaseChanged_Statics::Function_MetaDataParams), Z_Construct_UFunction_UUIManagerComponent_OnPhaseChanged_Statics::Function_MetaDataParams)},  };
+static_assert(sizeof(Z_Construct_UFunction_UUIManagerComponent_OnPhaseChanged_Statics::UIManagerComponent_eventOnPhaseChanged_Parms) < MAX_uint16);
+UFunction* Z_Construct_UFunction_UUIManagerComponent_OnPhaseChanged()
+{
+	static UFunction* ReturnFunction = nullptr;
+	if (!ReturnFunction)
+	{
+		UECodeGen_Private::ConstructUFunction(&ReturnFunction, Z_Construct_UFunction_UUIManagerComponent_OnPhaseChanged_Statics::FuncParams);
+	}
+	return ReturnFunction;
+}
+DEFINE_FUNCTION(UUIManagerComponent::execOnPhaseChanged)
+{
+	P_GET_OBJECT(AActor,Z_Param_CurrentCharacter);
+	P_GET_ENUM(ETurnPhase,Z_Param_NewPhase);
+	P_FINISH;
+	P_NATIVE_BEGIN;
+	P_THIS->OnPhaseChanged(Z_Param_CurrentCharacter,ETurnPhase(Z_Param_NewPhase));
+	P_NATIVE_END;
+}
+// ********** End Class UUIManagerComponent Function OnPhaseChanged ********************************
+
+// ********** Begin Class UUIManagerComponent Function OnTurnChanged *******************************
+struct Z_Construct_UFunction_UUIManagerComponent_OnTurnChanged_Statics
+{
+	struct UIManagerComponent_eventOnTurnChanged_Parms
+	{
+		AActor* CurrentCharacter;
+	};
+#if WITH_METADATA
+	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "// === \xe4\xba\x8b\xe4\xbb\xb6\xe8\x99\x95\xe7\x90\x86\xe6\x96\xb9\xe6\xb3\x95 ===\n" },
+#endif
+		{ "ModuleRelativePath", "Public/TurnBasedSystem/Components/UI/UIManagerComponent.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "=== \xe4\xba\x8b\xe4\xbb\xb6\xe8\x99\x95\xe7\x90\x86\xe6\x96\xb9\xe6\xb3\x95 ===" },
+#endif
+	};
+#endif // WITH_METADATA
+	static const UECodeGen_Private::FObjectPropertyParams NewProp_CurrentCharacter;
+	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
+	static const UECodeGen_Private::FFunctionParams FuncParams;
+};
+const UECodeGen_Private::FObjectPropertyParams Z_Construct_UFunction_UUIManagerComponent_OnTurnChanged_Statics::NewProp_CurrentCharacter = { "CurrentCharacter", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UIManagerComponent_eventOnTurnChanged_Parms, CurrentCharacter), Z_Construct_UClass_AActor_NoRegister, METADATA_PARAMS(0, nullptr) };
+const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_UUIManagerComponent_OnTurnChanged_Statics::PropPointers[] = {
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UUIManagerComponent_OnTurnChanged_Statics::NewProp_CurrentCharacter,
+};
+static_assert(UE_ARRAY_COUNT(Z_Construct_UFunction_UUIManagerComponent_OnTurnChanged_Statics::PropPointers) < 2048);
+const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_UUIManagerComponent_OnTurnChanged_Statics::FuncParams = { { (UObject*(*)())Z_Construct_UClass_UUIManagerComponent, nullptr, "OnTurnChanged", Z_Construct_UFunction_UUIManagerComponent_OnTurnChanged_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_UUIManagerComponent_OnTurnChanged_Statics::PropPointers), sizeof(Z_Construct_UFunction_UUIManagerComponent_OnTurnChanged_Statics::UIManagerComponent_eventOnTurnChanged_Parms), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x00020401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_UUIManagerComponent_OnTurnChanged_Statics::Function_MetaDataParams), Z_Construct_UFunction_UUIManagerComponent_OnTurnChanged_Statics::Function_MetaDataParams)},  };
+static_assert(sizeof(Z_Construct_UFunction_UUIManagerComponent_OnTurnChanged_Statics::UIManagerComponent_eventOnTurnChanged_Parms) < MAX_uint16);
+UFunction* Z_Construct_UFunction_UUIManagerComponent_OnTurnChanged()
+{
+	static UFunction* ReturnFunction = nullptr;
+	if (!ReturnFunction)
+	{
+		UECodeGen_Private::ConstructUFunction(&ReturnFunction, Z_Construct_UFunction_UUIManagerComponent_OnTurnChanged_Statics::FuncParams);
+	}
+	return ReturnFunction;
+}
+DEFINE_FUNCTION(UUIManagerComponent::execOnTurnChanged)
+{
+	P_GET_OBJECT(AActor,Z_Param_CurrentCharacter);
+	P_FINISH;
+	P_NATIVE_BEGIN;
+	P_THIS->OnTurnChanged(Z_Param_CurrentCharacter);
+	P_NATIVE_END;
+}
+// ********** End Class UUIManagerComponent Function OnTurnChanged *********************************
+
+// ********** Begin Class UUIManagerComponent Function OnTurnOrderChanged **************************
+struct Z_Construct_UFunction_UUIManagerComponent_OnTurnOrderChanged_Statics
+{
+	struct UIManagerComponent_eventOnTurnOrderChanged_Parms
+	{
+		TArray<AActor*> NewOrder;
+	};
+#if WITH_METADATA
+	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
+		{ "ModuleRelativePath", "Public/TurnBasedSystem/Components/UI/UIManagerComponent.h" },
+	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_NewOrder_MetaData[] = {
+		{ "NativeConst", "" },
+	};
+#endif // WITH_METADATA
+	static const UECodeGen_Private::FObjectPropertyParams NewProp_NewOrder_Inner;
+	static const UECodeGen_Private::FArrayPropertyParams NewProp_NewOrder;
+	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
+	static const UECodeGen_Private::FFunctionParams FuncParams;
+};
+const UECodeGen_Private::FObjectPropertyParams Z_Construct_UFunction_UUIManagerComponent_OnTurnOrderChanged_Statics::NewProp_NewOrder_Inner = { "NewOrder", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, 0, Z_Construct_UClass_AActor_NoRegister, METADATA_PARAMS(0, nullptr) };
+const UECodeGen_Private::FArrayPropertyParams Z_Construct_UFunction_UUIManagerComponent_OnTurnOrderChanged_Statics::NewProp_NewOrder = { "NewOrder", nullptr, (EPropertyFlags)0x0010000008000182, UECodeGen_Private::EPropertyGenFlags::Array, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UIManagerComponent_eventOnTurnOrderChanged_Parms, NewOrder), EArrayPropertyFlags::None, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_NewOrder_MetaData), NewProp_NewOrder_MetaData) };
+const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_UUIManagerComponent_OnTurnOrderChanged_Statics::PropPointers[] = {
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UUIManagerComponent_OnTurnOrderChanged_Statics::NewProp_NewOrder_Inner,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UUIManagerComponent_OnTurnOrderChanged_Statics::NewProp_NewOrder,
+};
+static_assert(UE_ARRAY_COUNT(Z_Construct_UFunction_UUIManagerComponent_OnTurnOrderChanged_Statics::PropPointers) < 2048);
+const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_UUIManagerComponent_OnTurnOrderChanged_Statics::FuncParams = { { (UObject*(*)())Z_Construct_UClass_UUIManagerComponent, nullptr, "OnTurnOrderChanged", Z_Construct_UFunction_UUIManagerComponent_OnTurnOrderChanged_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_UUIManagerComponent_OnTurnOrderChanged_Statics::PropPointers), sizeof(Z_Construct_UFunction_UUIManagerComponent_OnTurnOrderChanged_Statics::UIManagerComponent_eventOnTurnOrderChanged_Parms), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x00420401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_UUIManagerComponent_OnTurnOrderChanged_Statics::Function_MetaDataParams), Z_Construct_UFunction_UUIManagerComponent_OnTurnOrderChanged_Statics::Function_MetaDataParams)},  };
+static_assert(sizeof(Z_Construct_UFunction_UUIManagerComponent_OnTurnOrderChanged_Statics::UIManagerComponent_eventOnTurnOrderChanged_Parms) < MAX_uint16);
+UFunction* Z_Construct_UFunction_UUIManagerComponent_OnTurnOrderChanged()
+{
+	static UFunction* ReturnFunction = nullptr;
+	if (!ReturnFunction)
+	{
+		UECodeGen_Private::ConstructUFunction(&ReturnFunction, Z_Construct_UFunction_UUIManagerComponent_OnTurnOrderChanged_Statics::FuncParams);
+	}
+	return ReturnFunction;
+}
+DEFINE_FUNCTION(UUIManagerComponent::execOnTurnOrderChanged)
+{
+	P_GET_TARRAY_REF(AActor*,Z_Param_Out_NewOrder);
+	P_FINISH;
+	P_NATIVE_BEGIN;
+	P_THIS->OnTurnOrderChanged(Z_Param_Out_NewOrder);
+	P_NATIVE_END;
+}
+// ********** End Class UUIManagerComponent Function OnTurnOrderChanged ****************************
 
 // ********** Begin Class UUIManagerComponent Function SetAttackModeActive *************************
 struct Z_Construct_UFunction_UUIManagerComponent_SetAttackModeActive_Statics
@@ -569,6 +717,9 @@ void UUIManagerComponent::StaticRegisterNativesUUIManagerComponent()
 		{ "GetTurnOrderWidget", &UUIManagerComponent::execGetTurnOrderWidget },
 		{ "HideCombatUI", &UUIManagerComponent::execHideCombatUI },
 		{ "HideDamagePreview", &UUIManagerComponent::execHideDamagePreview },
+		{ "OnPhaseChanged", &UUIManagerComponent::execOnPhaseChanged },
+		{ "OnTurnChanged", &UUIManagerComponent::execOnTurnChanged },
+		{ "OnTurnOrderChanged", &UUIManagerComponent::execOnTurnOrderChanged },
 		{ "SetAttackModeActive", &UUIManagerComponent::execSetAttackModeActive },
 		{ "ShowCombatResult", &UUIManagerComponent::execShowCombatResult },
 		{ "ShowDamagePreview", &UUIManagerComponent::execShowDamagePreview },
@@ -678,6 +829,15 @@ struct Z_Construct_UClass_UUIManagerComponent_Statics
 		{ "Category", "UI|Config" },
 		{ "ModuleRelativePath", "Public/TurnBasedSystem/Components/UI/UIManagerComponent.h" },
 	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_CachedTurnManager_MetaData[] = {
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "// TurnManager \xe5\xbc\x95\xe7\x94\xa8\n" },
+#endif
+		{ "ModuleRelativePath", "Public/TurnBasedSystem/Components/UI/UIManagerComponent.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "TurnManager \xe5\xbc\x95\xe7\x94\xa8" },
+#endif
+	};
 #endif // WITH_METADATA
 	static const UECodeGen_Private::FObjectPropertyParams NewProp_CombatDisplayWidget;
 	static const UECodeGen_Private::FObjectPropertyParams NewProp_TurnOrderWidget;
@@ -689,6 +849,7 @@ struct Z_Construct_UClass_UUIManagerComponent_Statics
 	static const UECodeGen_Private::FStructPropertyParams NewProp_TurnOrderPosition;
 	static const UECodeGen_Private::FStructPropertyParams NewProp_TurnOrderAnchors;
 	static const UECodeGen_Private::FStructPropertyParams NewProp_TurnOrderAlignment;
+	static const UECodeGen_Private::FObjectPropertyParams NewProp_CachedTurnManager;
 	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
 	static UObject* (*const DependentSingletons[])();
 	static constexpr FClassFunctionLinkInfo FuncInfo[] = {
@@ -698,6 +859,9 @@ struct Z_Construct_UClass_UUIManagerComponent_Statics
 		{ &Z_Construct_UFunction_UUIManagerComponent_GetTurnOrderWidget, "GetTurnOrderWidget" }, // 4123665361
 		{ &Z_Construct_UFunction_UUIManagerComponent_HideCombatUI, "HideCombatUI" }, // 3540855383
 		{ &Z_Construct_UFunction_UUIManagerComponent_HideDamagePreview, "HideDamagePreview" }, // 842407290
+		{ &Z_Construct_UFunction_UUIManagerComponent_OnPhaseChanged, "OnPhaseChanged" }, // 1609817541
+		{ &Z_Construct_UFunction_UUIManagerComponent_OnTurnChanged, "OnTurnChanged" }, // 1056192380
+		{ &Z_Construct_UFunction_UUIManagerComponent_OnTurnOrderChanged, "OnTurnOrderChanged" }, // 1770620466
 		{ &Z_Construct_UFunction_UUIManagerComponent_SetAttackModeActive, "SetAttackModeActive" }, // 1779929445
 		{ &Z_Construct_UFunction_UUIManagerComponent_ShowCombatResult, "ShowCombatResult" }, // 2702035201
 		{ &Z_Construct_UFunction_UUIManagerComponent_ShowDamagePreview, "ShowDamagePreview" }, // 4023225259
@@ -720,6 +884,7 @@ const UECodeGen_Private::FIntPropertyParams Z_Construct_UClass_UUIManagerCompone
 const UECodeGen_Private::FStructPropertyParams Z_Construct_UClass_UUIManagerComponent_Statics::NewProp_TurnOrderPosition = { "TurnOrderPosition", nullptr, (EPropertyFlags)0x0040000000010001, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UUIManagerComponent, TurnOrderPosition), Z_Construct_UScriptStruct_FVector2D, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_TurnOrderPosition_MetaData), NewProp_TurnOrderPosition_MetaData) };
 const UECodeGen_Private::FStructPropertyParams Z_Construct_UClass_UUIManagerComponent_Statics::NewProp_TurnOrderAnchors = { "TurnOrderAnchors", nullptr, (EPropertyFlags)0x0040000000010001, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UUIManagerComponent, TurnOrderAnchors), Z_Construct_UScriptStruct_FAnchors, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_TurnOrderAnchors_MetaData), NewProp_TurnOrderAnchors_MetaData) }; // 110128851
 const UECodeGen_Private::FStructPropertyParams Z_Construct_UClass_UUIManagerComponent_Statics::NewProp_TurnOrderAlignment = { "TurnOrderAlignment", nullptr, (EPropertyFlags)0x0040000000010001, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UUIManagerComponent, TurnOrderAlignment), Z_Construct_UScriptStruct_FVector2D, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_TurnOrderAlignment_MetaData), NewProp_TurnOrderAlignment_MetaData) };
+const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_UUIManagerComponent_Statics::NewProp_CachedTurnManager = { "CachedTurnManager", nullptr, (EPropertyFlags)0x0040000000000000, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UUIManagerComponent, CachedTurnManager), Z_Construct_UClass_ASimpleTurnManager_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_CachedTurnManager_MetaData), NewProp_CachedTurnManager_MetaData) };
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UClass_UUIManagerComponent_Statics::PropPointers[] = {
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UUIManagerComponent_Statics::NewProp_CombatDisplayWidget,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UUIManagerComponent_Statics::NewProp_TurnOrderWidget,
@@ -731,6 +896,7 @@ const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UClass_UUIManage
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UUIManagerComponent_Statics::NewProp_TurnOrderPosition,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UUIManagerComponent_Statics::NewProp_TurnOrderAnchors,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UUIManagerComponent_Statics::NewProp_TurnOrderAlignment,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UUIManagerComponent_Statics::NewProp_CachedTurnManager,
 };
 static_assert(UE_ARRAY_COUNT(Z_Construct_UClass_UUIManagerComponent_Statics::PropPointers) < 2048);
 UObject* (*const Z_Construct_UClass_UUIManagerComponent_Statics::DependentSingletons[])() = {
@@ -769,10 +935,10 @@ UUIManagerComponent::~UUIManagerComponent() {}
 struct Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_Components_UI_UIManagerComponent_h__Script_ProjectGate_Statics
 {
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_UUIManagerComponent, UUIManagerComponent::StaticClass, TEXT("UUIManagerComponent"), &Z_Registration_Info_UClass_UUIManagerComponent, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UUIManagerComponent), 1554811279U) },
+		{ Z_Construct_UClass_UUIManagerComponent, UUIManagerComponent::StaticClass, TEXT("UUIManagerComponent"), &Z_Registration_Info_UClass_UUIManagerComponent, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UUIManagerComponent), 53737815U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_Components_UI_UIManagerComponent_h__Script_ProjectGate_2937353378(TEXT("/Script/ProjectGate"),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_Components_UI_UIManagerComponent_h__Script_ProjectGate_3524226950(TEXT("/Script/ProjectGate"),
 	Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_Components_UI_UIManagerComponent_h__Script_ProjectGate_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_Components_UI_UIManagerComponent_h__Script_ProjectGate_Statics::ClassInfo),
 	nullptr, 0,
 	nullptr, 0);

@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+ï»¿// Fill out your copyright notice in the Description page of Project Settings.
 
 
 #include "CombatSystem/CombatComponent.h"
@@ -8,6 +8,7 @@
 #include "TurnBasedSystem/GridVisualComponent.h"
 #include "TurnBasedSystem/Components/Movement/GridMovementComponent.h" 
 #include "TurnBasedSystem/Components/TurnSystemComponent.h" 
+#include "HighlightSystem/HighlightManager.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Engine/World.h"
@@ -20,7 +21,7 @@ UCombatComponent::UCombatComponent()
 	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = true;
 
-	// ³]¸mÀq»{­È
+	// è¨­ç½®é»˜èªå€¼
 	AttackConfig.AttackType = ECombatAttackType::Ranged;
 	AttackConfig.AttackRange = 500.0f;
 	AttackConfig.ActionPointCost = 3;
@@ -31,10 +32,10 @@ void UCombatComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
-	 // Àò¨ú¾Ö¦³ªÌ
+	 // ç²å–æ“æœ‰è€…
 	OwnerCharacter = Cast<ATurnBasedCharacter>(GetOwner());
 
-	// ªì©l¤Æ¥Í©R­È
+	// åˆå§‹åŒ–ç”Ÿå‘½å€¼
 	Stats.CurrentHealth = Stats.MaxHealth;
 	OnHealthChanged.Broadcast(GetOwner(), Stats.CurrentHealth, Stats.MaxHealth);
 
@@ -50,7 +51,7 @@ bool UCombatComponent::CanAttack(AActor* Target) const
 {
     Debug::PrintCooldown(GetWorld(), TEXT("Attack"),(TEXT("=== CanAttack Check ===")),
         FColor::Yellow,
-        1.0f); // 1¬í§ó·s¤@¦¸
+        1.0f); // 1ç§’æ›´æ–°ä¸€æ¬¡
 
     if (!Target)
     {
@@ -66,7 +67,7 @@ bool UCombatComponent::CanAttack(AActor* Target) const
     {
         Debug::Print(TEXT("CanAttack: IsValidTarget failed"), FColor::Red);
 
-        // ÀË¬d¨ãÅé­ì¦]
+        // æª¢æŸ¥å…·é«”åŸå› 
         if (Target == GetOwner())
         {
             Debug::Print(TEXT("  - Cannot attack self"), FColor::Red);
@@ -86,7 +87,7 @@ bool UCombatComponent::CanAttack(AActor* Target) const
         return false;
     }
 
-    // ÀË¬d¦Û¤v¬O§_¦s¬¡
+    // æª¢æŸ¥è‡ªå·±æ˜¯å¦å­˜æ´»
     if (!IsAlive())
     {
         Debug::Print(TEXT("CanAttack: Attacker is dead"), FColor::Red);
@@ -94,7 +95,7 @@ bool UCombatComponent::CanAttack(AActor* Target) const
     }
 
 
-    // ÀË¬d¶ZÂ÷
+    // æª¢æŸ¥è·é›¢
     float Distance = FVector::Dist(GetOwner()->GetActorLocation(), Target->GetActorLocation());
     Debug::Print(FString::Printf(TEXT("Distance: %.1f / %.1f"),
         Distance, AttackConfig.AttackRange), FColor::White);
@@ -108,10 +109,10 @@ bool UCombatComponent::CanAttack(AActor* Target) const
         return false;
     }
 
-    // ªñ¾Ô§ğÀ»ÃB¥~ÀË¬d
+    // è¿‘æˆ°æ”»æ“Šé¡å¤–æª¢æŸ¥
     if (AttackConfig.AttackType == ECombatAttackType::Melee && OwnerCharacter && GridManager)
     {
-        // ½T«O OwnerCharacter ¦³ GridMovementComponent
+        // ç¢ºä¿ OwnerCharacter æœ‰ GridMovementComponent
         if (UGridMovementComponent* GridMovement = OwnerCharacter->GetGridMovementComponent())
         {
             FIntPoint MyGrid = GridMovement->GetCurrentGridPosition();
@@ -133,10 +134,10 @@ bool UCombatComponent::CanAttack(AActor* Target) const
         }
     }
 
-    // ÀË¬d¦æ°ÊÂI
+    // æª¢æŸ¥è¡Œå‹•é»
     if (OwnerCharacter)
     {
-        // ½T«O¦³ TurnSystemComponent
+        // ç¢ºä¿æœ‰ TurnSystemComponent
         if (UTurnSystemComponent* TurnSystem = OwnerCharacter->GetTurnSystemComponent())
         {
             if (!TurnSystem->CanPerformAction(AttackConfig.ActionPointCost))
@@ -152,7 +153,7 @@ bool UCombatComponent::CanAttack(AActor* Target) const
             return false;
         }
     }
-    // ©Ò¦³ÀË¬d³£³q¹L
+    // æ‰€æœ‰æª¢æŸ¥éƒ½é€šé
     return true;
 
 }
@@ -164,10 +165,10 @@ bool UCombatComponent::ExecuteAttack(AActor* Target)
         return false;
     }
 
-    // ­pºâ¶Ë®`
+    // è¨ˆç®—å‚·å®³
     FDamageResult DamageResult = CalculateDamage(Target);
 
-    // À³¥Î¶Ë®`
+    // æ‡‰ç”¨å‚·å®³
     if (Target->Implements<UCombatInterface>())
     {
         ICombatInterface::Execute_OnDamageReceived(Target, DamageResult);
@@ -177,10 +178,10 @@ bool UCombatComponent::ExecuteAttack(AActor* Target)
         TargetCombat->ApplyDamage(DamageResult);
     }
 
-    // ®ø¯Ó¦æ°ÊÂI
+    // æ¶ˆè€—è¡Œå‹•é»
     if (OwnerCharacter)
     {
-        // ½T«O¦³ TurnSystemComponent
+        // ç¢ºä¿æœ‰ TurnSystemComponent
         if (UTurnSystemComponent* TurnSystem = OwnerCharacter->GetTurnSystemComponent())
         {
             TurnSystem->ConsumeActionPoints(AttackConfig.ActionPointCost);
@@ -191,11 +192,11 @@ bool UCombatComponent::ExecuteAttack(AActor* Target)
         }
     }
 
-    // ¼s¼½§ğÀ»¨Æ¥ó
+    // å»£æ’­æ”»æ“Šäº‹ä»¶
     OnAttackExecuted.Broadcast(GetOwner(), Target);
     OnAttackExecutedWithResult.Broadcast(GetOwner(), Target, DamageResult);
 
-    // Debug ¿é¥X
+    // Debug è¼¸å‡º
     FString AttackMsg = FString::Printf(TEXT("%s attacked %s for %d damage%s!"),
         *GetOwner()->GetName(),
         *Target->GetName(),
@@ -214,10 +215,10 @@ FDamageResult UCombatComponent::CalculateDamage(AActor* Target)
     Result.Target = Target;
     Result.CustomDamageType = AttackConfig.CustomDamageType;
 
-    // °òÂ¦¶Ë®`
+    // åŸºç¤å‚·å®³
     int32 BaseDamage = Stats.AttackPower;
 
-    // Àò¨ú¥Ø¼Ğ¨¾¿m
+    // ç²å–ç›®æ¨™é˜²ç¦¦
     int32 TargetDefense = 0;
     if (UCombatComponent* TargetCombat = Target->FindComponentByClass<UCombatComponent>())
     {
@@ -231,18 +232,18 @@ FDamageResult UCombatComponent::CalculateDamage(AActor* Target)
         }
     }
 
-    // ­pºâ´î§K
+    // è¨ˆç®—æ¸›å…
     int32 DamageReduction = FMath::Min(TargetDefense, BaseDamage / 2);
     Result.FinalDamage = BaseDamage - DamageReduction;
 
-    // ¼ÉÀ»§P©w
+    // æš´æ“Šåˆ¤å®š
     Result.bIsCritical = FMath::FRandRange(0.0f, 1.0f) < Stats.CriticalChance;
     if (Result.bIsCritical)
     {
         Result.FinalDamage = FMath::RoundToInt(Result.FinalDamage * Stats.CriticalMultiplier);
     }
 
-    // ½T«O¦Ü¤Ö³y¦¨1ÂI¶Ë®`
+    // ç¢ºä¿è‡³å°‘é€ æˆ1é»å‚·å®³
     Result.FinalDamage = FMath::Max(1, Result.FinalDamage);
 
     return Result;
@@ -255,11 +256,11 @@ void UCombatComponent::ApplyDamage(const FDamageResult& DamageResult)
         return;
     }
 
-    // À³¥Î¶Ë®`
+    // æ‡‰ç”¨å‚·å®³
     int32 OldHealth = Stats.CurrentHealth;
     Stats.CurrentHealth = FMath::Max(0, Stats.CurrentHealth - DamageResult.FinalDamage);
 
-    // ¼s¼½¨Æ¥ó
+    // å»£æ’­äº‹ä»¶
     OnDamageReceived.Broadcast(DamageResult);
     OnHealthChanged.Broadcast(GetOwner(), Stats.CurrentHealth, Stats.MaxHealth);
 
@@ -270,7 +271,7 @@ void UCombatComponent::ApplyDamage(const FDamageResult& DamageResult)
         Stats.MaxHealth),
         FColor::Red);
 
-    // ¦º¤`³B²z
+    // æ­»äº¡è™•ç†
     if (!IsAlive())
     {
         HandleDeath(DamageResult.Attacker);
@@ -286,16 +287,16 @@ TArray<AActor*> UCombatComponent::GetAttackableTargets() const
         return ValidTargets;
     }
 
-    // Àò¨ú©Ò¦³¼ç¦b¥Ø¼Ğ
+    // ç²å–æ‰€æœ‰æ½›åœ¨ç›®æ¨™
     TArray<AActor*> AllActors;
     UGameplayStatics::GetAllActorsWithInterface(GetWorld(), UCombatInterface::StaticClass(), AllActors);
 
-    // ¤]ÀË¬d¦³ CombatComponent ªº¨¤¦â
+    // ä¹Ÿæª¢æŸ¥æœ‰ CombatComponent çš„è§’è‰²
     TArray<AActor*> CombatActors;
     UGameplayStatics::GetAllActorsOfClass(GetWorld(), ATurnBasedCharacter::StaticClass(), CombatActors);
     AllActors.Append(CombatActors);
 
-    // ¿z¿ï¦³®Ä¥Ø¼Ğ
+    // ç¯©é¸æœ‰æ•ˆç›®æ¨™
     for (AActor* Actor : AllActors)
     {
         if (Actor && Actor != GetOwner() && CanAttack(Actor))
@@ -318,10 +319,10 @@ void UCombatComponent::ShowAttackRange()
     Debug::Print(FString::Printf(TEXT("=== %s: Showing Attack Range (%.0f units) ==="),
         *GetOwner()->GetName(), AttackConfig.AttackRange), FColor::Red);
 
-    // ¨Ï¥Î GridVisualComponent Åã¥Ü½d³ò
+    // ä½¿ç”¨ GridVisualComponent é¡¯ç¤ºç¯„åœ
     if (UGridVisualComponent* VisualComp = OwnerCharacter->GetGridVisualComponent())
     {
-        // ½T«O¦³ GridMovementComponent ¨ÓÀò¨ú¦ì¸m
+        // ç¢ºä¿æœ‰ GridMovementComponent ä¾†ç²å–ä½ç½®
         if (UGridMovementComponent* GridMovement = OwnerCharacter->GetGridMovementComponent())
         {
             VisualComp->ClearVisualType(EGridVisualType::MovementRange);
@@ -333,15 +334,15 @@ void UCombatComponent::ShowAttackRange()
         }
     }
 
-    // °ª«G¥i§ğÀ»¥Ø¼Ğ
+    // é«˜äº®å¯æ”»æ“Šç›®æ¨™
     HighlightedTargets = GetAttackableTargets();
 
-    for (AActor* Target : HighlightedTargets)
+    if (UHighlightManager* HighlightMgr = GetWorld()->GetSubsystem<UHighlightManager>())
     {
-        if (USkeletalMeshComponent* Mesh = Target->FindComponentByClass<USkeletalMeshComponent>())
+        // é«˜äº®æ‰€æœ‰å¯æ”»æ“Šç›®æ¨™
+        for (AActor* Target : HighlightedTargets)
         {
-            Mesh->SetRenderCustomDepth(true);
-            Mesh->SetCustomDepthStencilValue(253); // ¬õ¦â½ü¹ø
+            HighlightMgr->SetHighlight(Target, EHighlightType::AttackTarget);
         }
     }
 
@@ -360,7 +361,7 @@ void UCombatComponent::HideAttackRange()
 
     Debug::Print(FString::Printf(TEXT("=== %s: Hiding Attack Range ==="), *GetOwner()->GetName()), FColor::Blue);
 
-    // ²M°£½d³òÅã¥Ü
+    // æ¸…é™¤ç¯„åœé¡¯ç¤º
     if (OwnerCharacter)
     {
         if (UGridVisualComponent* VisualComp = OwnerCharacter->GetGridVisualComponent())
@@ -369,28 +370,12 @@ void UCombatComponent::HideAttackRange()
         }
     }
 
-    // ²¾°£¥Ø¼Ğ°ª«G
-    for (AActor* Target : HighlightedTargets)
+    // æ¸…é™¤æ”»æ“Šç›®æ¨™é«˜äº®
+    if (UHighlightManager* HighlightMgr = GetWorld()->GetSubsystem<UHighlightManager>())
     {
-        if (IsValid(Target))
+        for (AActor* Target : HighlightedTargets)
         {
-            if (USkeletalMeshComponent* Mesh = Target->FindComponentByClass<USkeletalMeshComponent>())
-            {
-                // Check if it's the current turn character
-                bool bIsCurrentTurn = false;
-                if (ATurnBasedCharacter* TurnChar = Cast<ATurnBasedCharacter>(Target))
-                {
-                    // Check through TurnSystemComponent
-                    if (UTurnSystemComponent* TurnSystem = TurnChar->GetTurnSystemComponent())
-                    {
-                        bIsCurrentTurn = TurnSystem->IsMyTurn();
-                    }
-                }
-                if (!bIsCurrentTurn)
-                {
-                    Mesh->SetRenderCustomDepth(false);
-                }
-            }
+            HighlightMgr->RemoveHighlight(Target, EHighlightType::AttackTarget);
         }
     }
 
@@ -414,7 +399,7 @@ bool UCombatComponent::IsValidTarget(AActor* Target) const
     }
 
 
-    // ÀË¬d¬O§_¥¿¦b¦º¤`
+    // æª¢æŸ¥æ˜¯å¦æ­£åœ¨æ­»äº¡
     if (ATurnBasedCharacter* TurnChar = Cast<ATurnBasedCharacter>(Target))
     {
         if (TurnChar->IsDying())
@@ -425,7 +410,7 @@ bool UCombatComponent::IsValidTarget(AActor* Target) const
     }
 
 
-    // ÀË¬d¬O§_¦³¾Ô°«¯à¤O
+    // æª¢æŸ¥æ˜¯å¦æœ‰æˆ°é¬¥èƒ½åŠ›
     bool bHasCombatAbility = Target->Implements<UCombatInterface>() ||
         Target->FindComponentByClass<UCombatComponent>() != nullptr;
 
@@ -434,7 +419,7 @@ bool UCombatComponent::IsValidTarget(AActor* Target) const
         return false;
     }
 
-    // ÀË¬d¥Ø¼Ğ¬O§_¦s¬¡
+    // æª¢æŸ¥ç›®æ¨™æ˜¯å¦å­˜æ´»
     if (UCombatComponent* TargetCombat = Target->FindComponentByClass<UCombatComponent>())
     {
         if (!TargetCombat->IsAlive())
@@ -451,7 +436,7 @@ void UCombatComponent::HandleDeath(AActor* Killer)
     OnDeath.Broadcast(Killer);
 
  
-    // ¦pªG¹ê²{¤F±µ¤f¡A½Õ¥Î±µ¤f¤èªk
+    // å¦‚æœå¯¦ç¾äº†æ¥å£ï¼Œèª¿ç”¨æ¥å£æ–¹æ³•
     if (GetOwner()->Implements<UCombatInterface>())
     {
         ICombatInterface::Execute_OnDeath(GetOwner(), Killer);

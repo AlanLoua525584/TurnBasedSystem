@@ -22,35 +22,35 @@ class UTurnOrderConfig;
 enum class ETurnPhase : uint8;
 
 // ********** Begin Delegate FOnTurnChanged ********************************************************
-#define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_SimpleTurnManager_h_26_DELEGATE \
+#define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_SimpleTurnManager_h_27_DELEGATE \
 PROJECTGATE_API void FOnTurnChanged_DelegateWrapper(const FMulticastScriptDelegate& OnTurnChanged, AActor* CurrentCharacter);
 
 
 // ********** End Delegate FOnTurnChanged **********************************************************
 
 // ********** Begin Delegate FOnPhaseChanged *******************************************************
-#define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_SimpleTurnManager_h_28_DELEGATE \
+#define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_SimpleTurnManager_h_29_DELEGATE \
 PROJECTGATE_API void FOnPhaseChanged_DelegateWrapper(const FMulticastScriptDelegate& OnPhaseChanged, AActor* CurrentCharacter, ETurnPhase NewPhase);
 
 
 // ********** End Delegate FOnPhaseChanged *********************************************************
 
 // ********** Begin Delegate FOnBattleEnded ********************************************************
-#define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_SimpleTurnManager_h_31_DELEGATE \
+#define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_SimpleTurnManager_h_32_DELEGATE \
 PROJECTGATE_API void FOnBattleEnded_DelegateWrapper(const FMulticastScriptDelegate& OnBattleEnded, bool bPlayerWon);
 
 
 // ********** End Delegate FOnBattleEnded **********************************************************
 
 // ********** Begin Delegate FOnTurnOrderChanged ***************************************************
-#define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_SimpleTurnManager_h_33_DELEGATE \
+#define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_SimpleTurnManager_h_34_DELEGATE \
 PROJECTGATE_API void FOnTurnOrderChanged_DelegateWrapper(const FMulticastScriptDelegate& OnTurnOrderChanged, TArray<AActor*> const& NewOrder);
 
 
 // ********** End Delegate FOnTurnOrderChanged *****************************************************
 
 // ********** Begin Class ASimpleTurnManager *******************************************************
-#define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_SimpleTurnManager_h_41_RPC_WRAPPERS_NO_PURE_DECLS \
+#define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_SimpleTurnManager_h_42_RPC_WRAPPERS_NO_PURE_DECLS \
 	DECLARE_FUNCTION(execSetCurrentCharacterIndex); \
 	DECLARE_FUNCTION(execGetCurrentCharacterIndex); \
 	DECLARE_FUNCTION(execGetTurnOrder); \
@@ -76,7 +76,7 @@ PROJECTGATE_API void FOnTurnOrderChanged_DelegateWrapper(const FMulticastScriptD
 
 PROJECTGATE_API UClass* Z_Construct_UClass_ASimpleTurnManager_NoRegister();
 
-#define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_SimpleTurnManager_h_41_INCLASS_NO_PURE_DECLS \
+#define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_SimpleTurnManager_h_42_INCLASS_NO_PURE_DECLS \
 private: \
 	static void StaticRegisterNativesASimpleTurnManager(); \
 	friend struct Z_Construct_UClass_ASimpleTurnManager_Statics; \
@@ -87,7 +87,7 @@ public: \
 	DECLARE_SERIALIZER(ASimpleTurnManager)
 
 
-#define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_SimpleTurnManager_h_41_ENHANCED_CONSTRUCTORS \
+#define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_SimpleTurnManager_h_42_ENHANCED_CONSTRUCTORS \
 	/** Deleted move- and copy-constructors, should never be used */ \
 	ASimpleTurnManager(ASimpleTurnManager&&) = delete; \
 	ASimpleTurnManager(const ASimpleTurnManager&) = delete; \
@@ -97,13 +97,13 @@ public: \
 	NO_API virtual ~ASimpleTurnManager();
 
 
-#define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_SimpleTurnManager_h_38_PROLOG
-#define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_SimpleTurnManager_h_41_GENERATED_BODY \
+#define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_SimpleTurnManager_h_39_PROLOG
+#define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_SimpleTurnManager_h_42_GENERATED_BODY \
 PRAGMA_DISABLE_DEPRECATION_WARNINGS \
 public: \
-	FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_SimpleTurnManager_h_41_RPC_WRAPPERS_NO_PURE_DECLS \
-	FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_SimpleTurnManager_h_41_INCLASS_NO_PURE_DECLS \
-	FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_SimpleTurnManager_h_41_ENHANCED_CONSTRUCTORS \
+	FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_SimpleTurnManager_h_42_RPC_WRAPPERS_NO_PURE_DECLS \
+	FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_SimpleTurnManager_h_42_INCLASS_NO_PURE_DECLS \
+	FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_SimpleTurnManager_h_42_ENHANCED_CONSTRUCTORS \
 private: \
 PRAGMA_ENABLE_DEPRECATION_WARNINGS
 

@@ -19,10 +19,14 @@ PRAGMA_DISABLE_DEPRECATION_WARNINGS
 class AActor;
 class UCombatDisplayWidget;
 class UTurnOrderWidget;
+enum class ETurnPhase : uint8;
 struct FDamageResult;
 
 // ********** Begin Class UUIManagerComponent ******************************************************
 #define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_Components_UI_UIManagerComponent_h_21_RPC_WRAPPERS_NO_PURE_DECLS \
+	DECLARE_FUNCTION(execOnTurnOrderChanged); \
+	DECLARE_FUNCTION(execOnPhaseChanged); \
+	DECLARE_FUNCTION(execOnTurnChanged); \
 	DECLARE_FUNCTION(execDestroyAllUI); \
 	DECLARE_FUNCTION(execHideCombatUI); \
 	DECLARE_FUNCTION(execSetAttackModeActive); \

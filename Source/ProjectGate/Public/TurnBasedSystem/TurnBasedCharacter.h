@@ -5,6 +5,8 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "TurnBasedSystem/DataAssets/CharacterPortraitData.h"
+#include "TurnBasedSystem/Components/Movement/MovementStateManager.h"
+#include "TurnBasedSystem/Components/Movement/MovementValidatorComponent.h"
 #include "GameFramework/Actor.h"
 #include "CombatSystem/CombatInterface.h"
 #include "HighlightSystem/Highlightable.h"
@@ -112,6 +114,13 @@ public:
     UFUNCTION(BlueprintPure, Category = "Components")
     UGridVisualComponent* GetGridVisualComponent() const { return GridVisualComponent; }
 
+    UFUNCTION(BlueprintPure, Category = "Components")
+    UMovementValidatorComponent* GetMovementValidator() const { return MovementValidator; }
+
+    UFUNCTION(BlueprintPure, Category = "Components")
+    UMovementStateManager* GetMovementStateManager() const { return MovementStateManager; }
+
+
     // Turn System delegates
     UFUNCTION(BlueprintCallable, Category = "Turn System")
     bool ConsumeActionPoints(int32 Amount);
@@ -214,6 +223,16 @@ public:
     UFUNCTION(BlueprintCallable, Category = "Combat")
     void ExecuteDirectAttack(AActor* Target);
 
+    // === 更新後的移動控制函數 ===
+    // 統一的停止所有移動函數
+    UFUNCTION(BlueprintCallable, Category = "Movement")
+    void HaltAllMovementSystems();
+
+    // 同步所有移動組件
+    UFUNCTION(BlueprintCallable, Category = "Movement")
+    void SynchronizeMovementComponents();
+
+
 protected:
     // Called when the game starts or when spawned
     virtual void BeginPlay() override;
@@ -256,6 +275,18 @@ protected:
 
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
     class UCombatAnimationComponent* CombatAnimationComponent;
+
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+    class UHighlightComponent* HighlightComponent;
+
+    // === 新增組件 ===
+   // 移動驗證器
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components", meta = (AllowPrivateAccess = "true"))
+    UMovementValidatorComponent* MovementValidator;
+
+    // 移動狀態管理器
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components", meta = (AllowPrivateAccess = "true"))
+    UMovementStateManager* MovementStateManager;
 
 
 

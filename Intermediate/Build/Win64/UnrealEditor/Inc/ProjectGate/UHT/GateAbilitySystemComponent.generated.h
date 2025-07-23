@@ -4,7 +4,7 @@
 	DO NOT modify this manually! Edit the corresponding .h files instead!
 ===========================================================================*/
 
-// IWYU pragma: private, include "AbilitySystem/GateAbilitySystemComponent.h"
+// IWYU pragma: private, include "GameplayAbilitySystem/GateAbilitySystemComponent.h"
 
 #ifdef PROJECTGATE_GateAbilitySystemComponent_generated_h
 #error "GateAbilitySystemComponent.generated.h already included, missing '#pragma once' in GateAbilitySystemComponent.h"
@@ -16,10 +16,38 @@
 
 PRAGMA_DISABLE_DEPRECATION_WARNINGS
 
+class AActor;
+class UGameplayAbility;
+struct FGameplayAbilitySpecHandle;
+struct FGameplayTag;
+
+// ********** Begin Delegate FOnAbilityActivated ***************************************************
+#define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_GameplayAbilitySystem_GateAbilitySystemComponent_h_12_DELEGATE \
+PROJECTGATE_API void FOnAbilityActivated_DelegateWrapper(const FMulticastScriptDelegate& OnAbilityActivated, UGameplayAbility* Ability, AActor* Target);
+
+
+// ********** End Delegate FOnAbilityActivated *****************************************************
+
+// ********** Begin Delegate FOnAbilityEnded *******************************************************
+#define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_GameplayAbilitySystem_GateAbilitySystemComponent_h_13_DELEGATE \
+PROJECTGATE_API void FOnAbilityEnded_DelegateWrapper(const FMulticastScriptDelegate& OnAbilityEnded, UGameplayAbility* Ability);
+
+
+// ********** End Delegate FOnAbilityEnded *********************************************************
+
 // ********** Begin Class UGateAbilitySystemComponent **********************************************
+#define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_GameplayAbilitySystem_GateAbilitySystemComponent_h_21_RPC_WRAPPERS_NO_PURE_DECLS \
+	DECLARE_FUNCTION(execGetAvailableAbilities); \
+	DECLARE_FUNCTION(execUpdateCooldownsOnTurnEnd); \
+	DECLARE_FUNCTION(execGetAbilityCooldownTurns); \
+	DECLARE_FUNCTION(execGetAbilityAPCost); \
+	DECLARE_FUNCTION(execCanAffordAbilityByTag); \
+	DECLARE_FUNCTION(execTryActivateAbilityWithTarget);
+
+
 PROJECTGATE_API UClass* Z_Construct_UClass_UGateAbilitySystemComponent_NoRegister();
 
-#define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_AbilitySystem_GateAbilitySystemComponent_h_16_INCLASS_NO_PURE_DECLS \
+#define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_GameplayAbilitySystem_GateAbilitySystemComponent_h_21_INCLASS_NO_PURE_DECLS \
 private: \
 	static void StaticRegisterNativesUGateAbilitySystemComponent(); \
 	friend struct Z_Construct_UClass_UGateAbilitySystemComponent_Statics; \
@@ -30,7 +58,7 @@ public: \
 	DECLARE_SERIALIZER(UGateAbilitySystemComponent)
 
 
-#define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_AbilitySystem_GateAbilitySystemComponent_h_16_ENHANCED_CONSTRUCTORS \
+#define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_GameplayAbilitySystem_GateAbilitySystemComponent_h_21_ENHANCED_CONSTRUCTORS \
 	/** Standard constructor, called after all reflected properties have been initialized */ \
 	NO_API UGateAbilitySystemComponent(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get()); \
 	/** Deleted move- and copy-constructors, should never be used */ \
@@ -42,12 +70,13 @@ public: \
 	NO_API virtual ~UGateAbilitySystemComponent();
 
 
-#define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_AbilitySystem_GateAbilitySystemComponent_h_13_PROLOG
-#define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_AbilitySystem_GateAbilitySystemComponent_h_16_GENERATED_BODY \
+#define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_GameplayAbilitySystem_GateAbilitySystemComponent_h_18_PROLOG
+#define FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_GameplayAbilitySystem_GateAbilitySystemComponent_h_21_GENERATED_BODY \
 PRAGMA_DISABLE_DEPRECATION_WARNINGS \
 public: \
-	FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_AbilitySystem_GateAbilitySystemComponent_h_16_INCLASS_NO_PURE_DECLS \
-	FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_AbilitySystem_GateAbilitySystemComponent_h_16_ENHANCED_CONSTRUCTORS \
+	FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_GameplayAbilitySystem_GateAbilitySystemComponent_h_21_RPC_WRAPPERS_NO_PURE_DECLS \
+	FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_GameplayAbilitySystem_GateAbilitySystemComponent_h_21_INCLASS_NO_PURE_DECLS \
+	FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_GameplayAbilitySystem_GateAbilitySystemComponent_h_21_ENHANCED_CONSTRUCTORS \
 private: \
 PRAGMA_ENABLE_DEPRECATION_WARNINGS
 
@@ -57,6 +86,6 @@ class UGateAbilitySystemComponent;
 // ********** End Class UGateAbilitySystemComponent ************************************************
 
 #undef CURRENT_FILE_ID
-#define CURRENT_FILE_ID FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_AbilitySystem_GateAbilitySystemComponent_h
+#define CURRENT_FILE_ID FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_GameplayAbilitySystem_GateAbilitySystemComponent_h
 
 PRAGMA_ENABLE_DEPRECATION_WARNINGS

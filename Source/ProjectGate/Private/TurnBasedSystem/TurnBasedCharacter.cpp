@@ -11,6 +11,7 @@
 #include "TurnBasedSystem/EnhancedMovementSystem.h"
 #include "TurnBasedSystem/GridManager.h"
 #include "TurnBasedSystem/SimpleTurnManager.h"
+#include "HighlightSystem/HighlightComponent.h"
 #include "CombatSystem/CombatComponent.h"
 #include "CombatSystem/HealthPointBarWidget.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -47,12 +48,28 @@ ATurnBasedCharacter::ATurnBasedCharacter()
 	// Combat component
 	CombatComponent = CreateDefaultSubobject<UCombatComponent>(TEXT("CombatComponent"));
 
+    // Movement validator
+    MovementValidator = CreateDefaultSubobject<UMovementValidatorComponent>(TEXT("MovementValidator"));
+
+    // Movement state manager
+    MovementStateManager = CreateDefaultSubobject<UMovementStateManager>(TEXT("MovementStateManager"));
+
+
 	// Health bar widget component
 	HealthBarComponent = CreateDefaultSubobject<UWidgetComponent>(TEXT("HealthBarComponent"));
 	HealthBarComponent->SetupAttachment(RootComponent);
 	HealthBarComponent->SetRelativeLocation(FVector(0, 0, 120.0f));
 	HealthBarComponent->SetWidgetSpace(EWidgetSpace::Screen);
 	HealthBarComponent->SetDrawSize(FVector2D(200, 30));
+
+    // 創建高亮組件
+    HighlightComponent = CreateDefaultSubobject<UHighlightComponent>(TEXT("HighlightComponent"));
+
+    // 配置自動高亮
+    HighlightComponent->bAutoHighlightOnHover = true;
+    HighlightComponent->bAutoHighlightWhenSelected = false;
+    HighlightComponent->HoverHighlightType = EHighlightType::Hover;
+
 
 	// === Camera System ===
 	SetupCameraComponents();
@@ -170,6 +187,62 @@ void ATurnBasedCharacter::ExecuteDirectAttack(AActor* Target)
             Debug::Print(TEXT("  - Reason: Target out of range"), FColor::Orange);
         }
     }
+}
+
+void ATurnBasedCharacter::HaltAllMovementSystems()
+{
+    Debug::Print(FString::Printf(TEXT("%s: Halting all movement systems"),
+        *GetActorLabel()), FColor::Orange);
+
+    // 使用MovementStateManager統一管理
+    if (MovementStateManager)
+    {
+        MovementStateManager->HaltAllMovement();
+    }
+    else
+    {
+        // 備用方案：手動停止各個系統
+        if (GridMovementComponent && GridMovementComponent->IsMoving())
+        {
+            GridMovementComponent->AbortGridMovement();
+        }
+
+        if (EnhancedMovementSystem)
+        {
+            EnhancedMovementSystem->SwitchMovementMode(ECustomMovementMode::Idle);
+        }
+
+        if (GetCharacterMovement())
+        {
+            GetCharacterMovement()->StopMovementImmediately();
+        }
+    }
+
+    // 清除視覺效果
+    if (GridVisualComponent)
+    {
+        GridVisualComponent->ClearAllVisuals();
+    }
+}
+
+void ATurnBasedCharacter::SynchronizeMovementComponents()
+{
+    Debug::Print(FString::Printf(TEXT("=== %s: Synchronizing Movement Components ==="),
+        *GetActorLabel()), FColor::Cyan);
+
+    // 使用MovementStateManager進行同步
+    if (MovementStateManager)
+    {
+        MovementStateManager->SynchronizeMovementStates();
+    }
+
+    // 確保網格位置更新
+    if (GridMovementComponent)
+    {
+        GridMovementComponent->UpdateGridPositionFromWorld();
+    }
+
+    Debug::Print(TEXT("=== Movement Components Synchronized ==="), FColor::Green);
 }
 
 // 確保動畫事件處理函數實現
@@ -291,6 +364,14 @@ void ATurnBasedCharacter::BeginPlay()
         0.5f,  // 延遲 0.5 秒執行
         false
     );
+
+    
+    if (UCapsuleComponent* CapsuleComp = GetCapsuleComponent())
+    {
+        CapsuleComp->SetCollisionResponseToChannel(ECC_Pawn, ECR_Ignore);
+    }
+
+   
 }
 
 

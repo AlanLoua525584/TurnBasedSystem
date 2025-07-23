@@ -4,6 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
+#include "TurnBasedSystem/Components/Movement/MovementStateManager.h"
+#include "TurnBasedSystem/Components/Movement/MovementValidatorComponent.h"
 #include "Math/IntPoint.h"
 #include "GridMovementComponent.generated.h"
 
@@ -63,6 +65,22 @@ public:
     // Update grid position based on world location
     UFUNCTION(BlueprintCallable, Category = "Grid Movement")
     void UpdateGridPositionFromWorld();
+
+    // === 新增：改名後的停止函數 ===
+    // 中止網格移動（原StopMovementImmediately）
+    UFUNCTION(BlueprintCallable, Category = "Grid Movement")
+    void AbortGridMovement();
+
+    // === 新增：整合MovementValidator ===
+    // 獲取移動驗證器
+    UFUNCTION(BlueprintPure, Category = "Grid Movement")
+    UMovementValidatorComponent* GetMovementValidator() const { return MovementValidator; }
+
+    // === 新增：整合MovementStateManager ===
+    // 獲取移動狀態管理器
+    UFUNCTION(BlueprintPure, Category = "Grid Movement")
+    UMovementStateManager* GetMovementStateManager() const { return MovementStateManager; }
+
 
     // === Query Functions ===
 
@@ -181,5 +199,12 @@ private:
 
     // === Debug ===
     void DrawDebugVisualization() const;
-		
+	
+    // === 新增組件引用 ===
+    UPROPERTY()
+    UMovementValidatorComponent* MovementValidator;
+
+    UPROPERTY()
+    UMovementStateManager* MovementStateManager;
+
 };

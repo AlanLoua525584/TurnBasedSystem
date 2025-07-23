@@ -57,6 +57,7 @@ public:
     UFUNCTION(BlueprintCallable, Category = "Combat")
     void ApplyDamage(const FDamageResult& DamageResult);
 
+
     // === ½d³ò¥\¯à ===
     UFUNCTION(BlueprintCallable, Category = "Combat")
     TArray<AActor*> GetAttackableTargets() const;
@@ -84,6 +85,13 @@ public:
 
     UFUNCTION(BlueprintPure, Category = "Combat")
     float GetAttackRange() const { return AttackConfig.AttackRange; }
+
+    UFUNCTION(BlueprintPure, Category = "Combat")
+	float GetAttackPower() const { return Stats.AttackPower; }
+
+    UFUNCTION(BlueprintPure, Category = "Combat")
+
+
 
     const FAttackConfig& GetAttackConfig() const { return AttackConfig; }
 

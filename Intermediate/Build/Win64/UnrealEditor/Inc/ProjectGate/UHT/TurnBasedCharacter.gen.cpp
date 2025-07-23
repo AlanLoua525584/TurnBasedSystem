@@ -34,6 +34,9 @@ PROJECTGATE_API UClass* Z_Construct_UClass_UGridMovementComponent_NoRegister();
 PROJECTGATE_API UClass* Z_Construct_UClass_UGridVisualComponent_NoRegister();
 PROJECTGATE_API UClass* Z_Construct_UClass_UHealthBarWidget_NoRegister();
 PROJECTGATE_API UClass* Z_Construct_UClass_UHighlightable_NoRegister();
+PROJECTGATE_API UClass* Z_Construct_UClass_UHighlightComponent_NoRegister();
+PROJECTGATE_API UClass* Z_Construct_UClass_UMovementStateManager_NoRegister();
+PROJECTGATE_API UClass* Z_Construct_UClass_UMovementValidatorComponent_NoRegister();
 PROJECTGATE_API UClass* Z_Construct_UClass_UTurnSystemComponent_NoRegister();
 PROJECTGATE_API UEnum* Z_Construct_UEnum_ProjectGate_EAnimationType();
 PROJECTGATE_API UFunction* Z_Construct_UDelegateFunction_ProjectGate_TurnOrderChangedSignature__DelegateSignature();
@@ -870,6 +873,96 @@ DEFINE_FUNCTION(ATurnBasedCharacter::execGetMaxActionPoints)
 }
 // ********** End Class ATurnBasedCharacter Function GetMaxActionPoints ****************************
 
+// ********** Begin Class ATurnBasedCharacter Function GetMovementStateManager *********************
+struct Z_Construct_UFunction_ATurnBasedCharacter_GetMovementStateManager_Statics
+{
+	struct TurnBasedCharacter_eventGetMovementStateManager_Parms
+	{
+		UMovementStateManager* ReturnValue;
+	};
+#if WITH_METADATA
+	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
+		{ "Category", "Components" },
+		{ "ModuleRelativePath", "Public/TurnBasedSystem/TurnBasedCharacter.h" },
+	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_ReturnValue_MetaData[] = {
+		{ "EditInline", "true" },
+	};
+#endif // WITH_METADATA
+	static const UECodeGen_Private::FObjectPropertyParams NewProp_ReturnValue;
+	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
+	static const UECodeGen_Private::FFunctionParams FuncParams;
+};
+const UECodeGen_Private::FObjectPropertyParams Z_Construct_UFunction_ATurnBasedCharacter_GetMovementStateManager_Statics::NewProp_ReturnValue = { "ReturnValue", nullptr, (EPropertyFlags)0x0010000000080588, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(TurnBasedCharacter_eventGetMovementStateManager_Parms, ReturnValue), Z_Construct_UClass_UMovementStateManager_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_ReturnValue_MetaData), NewProp_ReturnValue_MetaData) };
+const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_ATurnBasedCharacter_GetMovementStateManager_Statics::PropPointers[] = {
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_ATurnBasedCharacter_GetMovementStateManager_Statics::NewProp_ReturnValue,
+};
+static_assert(UE_ARRAY_COUNT(Z_Construct_UFunction_ATurnBasedCharacter_GetMovementStateManager_Statics::PropPointers) < 2048);
+const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_ATurnBasedCharacter_GetMovementStateManager_Statics::FuncParams = { { (UObject*(*)())Z_Construct_UClass_ATurnBasedCharacter, nullptr, "GetMovementStateManager", Z_Construct_UFunction_ATurnBasedCharacter_GetMovementStateManager_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_ATurnBasedCharacter_GetMovementStateManager_Statics::PropPointers), sizeof(Z_Construct_UFunction_ATurnBasedCharacter_GetMovementStateManager_Statics::TurnBasedCharacter_eventGetMovementStateManager_Parms), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x54020401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_ATurnBasedCharacter_GetMovementStateManager_Statics::Function_MetaDataParams), Z_Construct_UFunction_ATurnBasedCharacter_GetMovementStateManager_Statics::Function_MetaDataParams)},  };
+static_assert(sizeof(Z_Construct_UFunction_ATurnBasedCharacter_GetMovementStateManager_Statics::TurnBasedCharacter_eventGetMovementStateManager_Parms) < MAX_uint16);
+UFunction* Z_Construct_UFunction_ATurnBasedCharacter_GetMovementStateManager()
+{
+	static UFunction* ReturnFunction = nullptr;
+	if (!ReturnFunction)
+	{
+		UECodeGen_Private::ConstructUFunction(&ReturnFunction, Z_Construct_UFunction_ATurnBasedCharacter_GetMovementStateManager_Statics::FuncParams);
+	}
+	return ReturnFunction;
+}
+DEFINE_FUNCTION(ATurnBasedCharacter::execGetMovementStateManager)
+{
+	P_FINISH;
+	P_NATIVE_BEGIN;
+	*(UMovementStateManager**)Z_Param__Result=P_THIS->GetMovementStateManager();
+	P_NATIVE_END;
+}
+// ********** End Class ATurnBasedCharacter Function GetMovementStateManager ***********************
+
+// ********** Begin Class ATurnBasedCharacter Function GetMovementValidator ************************
+struct Z_Construct_UFunction_ATurnBasedCharacter_GetMovementValidator_Statics
+{
+	struct TurnBasedCharacter_eventGetMovementValidator_Parms
+	{
+		UMovementValidatorComponent* ReturnValue;
+	};
+#if WITH_METADATA
+	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
+		{ "Category", "Components" },
+		{ "ModuleRelativePath", "Public/TurnBasedSystem/TurnBasedCharacter.h" },
+	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_ReturnValue_MetaData[] = {
+		{ "EditInline", "true" },
+	};
+#endif // WITH_METADATA
+	static const UECodeGen_Private::FObjectPropertyParams NewProp_ReturnValue;
+	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
+	static const UECodeGen_Private::FFunctionParams FuncParams;
+};
+const UECodeGen_Private::FObjectPropertyParams Z_Construct_UFunction_ATurnBasedCharacter_GetMovementValidator_Statics::NewProp_ReturnValue = { "ReturnValue", nullptr, (EPropertyFlags)0x0010000000080588, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(TurnBasedCharacter_eventGetMovementValidator_Parms, ReturnValue), Z_Construct_UClass_UMovementValidatorComponent_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_ReturnValue_MetaData), NewProp_ReturnValue_MetaData) };
+const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_ATurnBasedCharacter_GetMovementValidator_Statics::PropPointers[] = {
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_ATurnBasedCharacter_GetMovementValidator_Statics::NewProp_ReturnValue,
+};
+static_assert(UE_ARRAY_COUNT(Z_Construct_UFunction_ATurnBasedCharacter_GetMovementValidator_Statics::PropPointers) < 2048);
+const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_ATurnBasedCharacter_GetMovementValidator_Statics::FuncParams = { { (UObject*(*)())Z_Construct_UClass_ATurnBasedCharacter, nullptr, "GetMovementValidator", Z_Construct_UFunction_ATurnBasedCharacter_GetMovementValidator_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_ATurnBasedCharacter_GetMovementValidator_Statics::PropPointers), sizeof(Z_Construct_UFunction_ATurnBasedCharacter_GetMovementValidator_Statics::TurnBasedCharacter_eventGetMovementValidator_Parms), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x54020401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_ATurnBasedCharacter_GetMovementValidator_Statics::Function_MetaDataParams), Z_Construct_UFunction_ATurnBasedCharacter_GetMovementValidator_Statics::Function_MetaDataParams)},  };
+static_assert(sizeof(Z_Construct_UFunction_ATurnBasedCharacter_GetMovementValidator_Statics::TurnBasedCharacter_eventGetMovementValidator_Parms) < MAX_uint16);
+UFunction* Z_Construct_UFunction_ATurnBasedCharacter_GetMovementValidator()
+{
+	static UFunction* ReturnFunction = nullptr;
+	if (!ReturnFunction)
+	{
+		UECodeGen_Private::ConstructUFunction(&ReturnFunction, Z_Construct_UFunction_ATurnBasedCharacter_GetMovementValidator_Statics::FuncParams);
+	}
+	return ReturnFunction;
+}
+DEFINE_FUNCTION(ATurnBasedCharacter::execGetMovementValidator)
+{
+	P_FINISH;
+	P_NATIVE_BEGIN;
+	*(UMovementValidatorComponent**)Z_Param__Result=P_THIS->GetMovementValidator();
+	P_NATIVE_END;
+}
+// ********** End Class ATurnBasedCharacter Function GetMovementValidator **************************
+
 // ********** Begin Class ATurnBasedCharacter Function GetPortraitBorderColor **********************
 struct Z_Construct_UFunction_ATurnBasedCharacter_GetPortraitBorderColor_Statics
 {
@@ -1004,6 +1097,42 @@ DEFINE_FUNCTION(ATurnBasedCharacter::execGetUIPortrait)
 	P_NATIVE_END;
 }
 // ********** End Class ATurnBasedCharacter Function GetUIPortrait *********************************
+
+// ********** Begin Class ATurnBasedCharacter Function HaltAllMovementSystems **********************
+struct Z_Construct_UFunction_ATurnBasedCharacter_HaltAllMovementSystems_Statics
+{
+#if WITH_METADATA
+	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
+		{ "Category", "Movement" },
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "// === \xe6\x9b\xb4\xe6\x96\xb0\xe5\xbe\x8c\xe7\x9a\x84\xe7\xa7\xbb\xe5\x8b\x95\xe6\x8e\xa7\xe5\x88\xb6\xe5\x87\xbd\xe6\x95\xb8 ===\n// \xe7\xb5\xb1\xe4\xb8\x80\xe7\x9a\x84\xe5\x81\x9c\xe6\xad\xa2\xe6\x89\x80\xe6\x9c\x89\xe7\xa7\xbb\xe5\x8b\x95\xe5\x87\xbd\xe6\x95\xb8\n" },
+#endif
+		{ "ModuleRelativePath", "Public/TurnBasedSystem/TurnBasedCharacter.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "=== \xe6\x9b\xb4\xe6\x96\xb0\xe5\xbe\x8c\xe7\x9a\x84\xe7\xa7\xbb\xe5\x8b\x95\xe6\x8e\xa7\xe5\x88\xb6\xe5\x87\xbd\xe6\x95\xb8 ===\n\xe7\xb5\xb1\xe4\xb8\x80\xe7\x9a\x84\xe5\x81\x9c\xe6\xad\xa2\xe6\x89\x80\xe6\x9c\x89\xe7\xa7\xbb\xe5\x8b\x95\xe5\x87\xbd\xe6\x95\xb8" },
+#endif
+	};
+#endif // WITH_METADATA
+	static const UECodeGen_Private::FFunctionParams FuncParams;
+};
+const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_ATurnBasedCharacter_HaltAllMovementSystems_Statics::FuncParams = { { (UObject*(*)())Z_Construct_UClass_ATurnBasedCharacter, nullptr, "HaltAllMovementSystems", nullptr, 0, 0, RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x04020401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_ATurnBasedCharacter_HaltAllMovementSystems_Statics::Function_MetaDataParams), Z_Construct_UFunction_ATurnBasedCharacter_HaltAllMovementSystems_Statics::Function_MetaDataParams)},  };
+UFunction* Z_Construct_UFunction_ATurnBasedCharacter_HaltAllMovementSystems()
+{
+	static UFunction* ReturnFunction = nullptr;
+	if (!ReturnFunction)
+	{
+		UECodeGen_Private::ConstructUFunction(&ReturnFunction, Z_Construct_UFunction_ATurnBasedCharacter_HaltAllMovementSystems_Statics::FuncParams);
+	}
+	return ReturnFunction;
+}
+DEFINE_FUNCTION(ATurnBasedCharacter::execHaltAllMovementSystems)
+{
+	P_FINISH;
+	P_NATIVE_BEGIN;
+	P_THIS->HaltAllMovementSystems();
+	P_NATIVE_END;
+}
+// ********** End Class ATurnBasedCharacter Function HaltAllMovementSystems ************************
 
 // ********** Begin Class ATurnBasedCharacter Function HandleAnimNotify ****************************
 struct Z_Construct_UFunction_ATurnBasedCharacter_HandleAnimNotify_Statics
@@ -1782,6 +1911,42 @@ DEFINE_FUNCTION(ATurnBasedCharacter::execShowMovementRange)
 }
 // ********** End Class ATurnBasedCharacter Function ShowMovementRange *****************************
 
+// ********** Begin Class ATurnBasedCharacter Function SynchronizeMovementComponents ***************
+struct Z_Construct_UFunction_ATurnBasedCharacter_SynchronizeMovementComponents_Statics
+{
+#if WITH_METADATA
+	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
+		{ "Category", "Movement" },
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "// \xe5\x90\x8c\xe6\xad\xa5\xe6\x89\x80\xe6\x9c\x89\xe7\xa7\xbb\xe5\x8b\x95\xe7\xb5\x84\xe4\xbb\xb6\n" },
+#endif
+		{ "ModuleRelativePath", "Public/TurnBasedSystem/TurnBasedCharacter.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "\xe5\x90\x8c\xe6\xad\xa5\xe6\x89\x80\xe6\x9c\x89\xe7\xa7\xbb\xe5\x8b\x95\xe7\xb5\x84\xe4\xbb\xb6" },
+#endif
+	};
+#endif // WITH_METADATA
+	static const UECodeGen_Private::FFunctionParams FuncParams;
+};
+const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_ATurnBasedCharacter_SynchronizeMovementComponents_Statics::FuncParams = { { (UObject*(*)())Z_Construct_UClass_ATurnBasedCharacter, nullptr, "SynchronizeMovementComponents", nullptr, 0, 0, RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x04020401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_ATurnBasedCharacter_SynchronizeMovementComponents_Statics::Function_MetaDataParams), Z_Construct_UFunction_ATurnBasedCharacter_SynchronizeMovementComponents_Statics::Function_MetaDataParams)},  };
+UFunction* Z_Construct_UFunction_ATurnBasedCharacter_SynchronizeMovementComponents()
+{
+	static UFunction* ReturnFunction = nullptr;
+	if (!ReturnFunction)
+	{
+		UECodeGen_Private::ConstructUFunction(&ReturnFunction, Z_Construct_UFunction_ATurnBasedCharacter_SynchronizeMovementComponents_Statics::FuncParams);
+	}
+	return ReturnFunction;
+}
+DEFINE_FUNCTION(ATurnBasedCharacter::execSynchronizeMovementComponents)
+{
+	P_FINISH;
+	P_NATIVE_BEGIN;
+	P_THIS->SynchronizeMovementComponents();
+	P_NATIVE_END;
+}
+// ********** End Class ATurnBasedCharacter Function SynchronizeMovementComponents *****************
+
 // ********** Begin Class ATurnBasedCharacter Function UpdateGridPositionFromWorld *****************
 struct Z_Construct_UFunction_ATurnBasedCharacter_UpdateGridPositionFromWorld_Statics
 {
@@ -1840,9 +2005,12 @@ void ATurnBasedCharacter::StaticRegisterNativesATurnBasedCharacter()
 		{ "GetGridMovementComponent", &ATurnBasedCharacter::execGetGridMovementComponent },
 		{ "GetGridVisualComponent", &ATurnBasedCharacter::execGetGridVisualComponent },
 		{ "GetMaxActionPoints", &ATurnBasedCharacter::execGetMaxActionPoints },
+		{ "GetMovementStateManager", &ATurnBasedCharacter::execGetMovementStateManager },
+		{ "GetMovementValidator", &ATurnBasedCharacter::execGetMovementValidator },
 		{ "GetPortraitBorderColor", &ATurnBasedCharacter::execGetPortraitBorderColor },
 		{ "GetTurnSystemComponent", &ATurnBasedCharacter::execGetTurnSystemComponent },
 		{ "GetUIPortrait", &ATurnBasedCharacter::execGetUIPortrait },
+		{ "HaltAllMovementSystems", &ATurnBasedCharacter::execHaltAllMovementSystems },
 		{ "HandleAnimNotify", &ATurnBasedCharacter::execHandleAnimNotify },
 		{ "IsAlive", &ATurnBasedCharacter::execIsAlive },
 		{ "IsDying", &ATurnBasedCharacter::execIsDying },
@@ -1860,6 +2028,7 @@ void ATurnBasedCharacter::StaticRegisterNativesATurnBasedCharacter()
 		{ "SetGridManager", &ATurnBasedCharacter::execSetGridManager },
 		{ "SetMovementMode", &ATurnBasedCharacter::execSetMovementMode },
 		{ "ShowMovementRange", &ATurnBasedCharacter::execShowMovementRange },
+		{ "SynchronizeMovementComponents", &ATurnBasedCharacter::execSynchronizeMovementComponents },
 		{ "UpdateGridPositionFromWorld", &ATurnBasedCharacter::execUpdateGridPositionFromWorld },
 	};
 	FNativeFunctionRegistrar::RegisterFunctions(Class, Funcs, UE_ARRAY_COUNT(Funcs));
@@ -2049,6 +2218,35 @@ struct Z_Construct_UClass_ATurnBasedCharacter_Statics
 		{ "EditInline", "true" },
 		{ "ModuleRelativePath", "Public/TurnBasedSystem/TurnBasedCharacter.h" },
 	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_HighlightComponent_MetaData[] = {
+		{ "Category", "Components" },
+		{ "EditInline", "true" },
+		{ "ModuleRelativePath", "Public/TurnBasedSystem/TurnBasedCharacter.h" },
+	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_MovementValidator_MetaData[] = {
+		{ "AllowPrivateAccess", "true" },
+		{ "Category", "Components" },
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "// === \xe6\x96\xb0\xe5\xa2\x9e\xe7\xb5\x84\xe4\xbb\xb6 ===\n// \xe7\xa7\xbb\xe5\x8b\x95\xe9\xa9\x97\xe8\xad\x89\xe5\x99\xa8\n" },
+#endif
+		{ "EditInline", "true" },
+		{ "ModuleRelativePath", "Public/TurnBasedSystem/TurnBasedCharacter.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "=== \xe6\x96\xb0\xe5\xa2\x9e\xe7\xb5\x84\xe4\xbb\xb6 ===\n\xe7\xa7\xbb\xe5\x8b\x95\xe9\xa9\x97\xe8\xad\x89\xe5\x99\xa8" },
+#endif
+	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_MovementStateManager_MetaData[] = {
+		{ "AllowPrivateAccess", "true" },
+		{ "Category", "Components" },
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "// \xe7\xa7\xbb\xe5\x8b\x95\xe7\x8b\x80\xe6\x85\x8b\xe7\xae\xa1\xe7\x90\x86\xe5\x99\xa8\n" },
+#endif
+		{ "EditInline", "true" },
+		{ "ModuleRelativePath", "Public/TurnBasedSystem/TurnBasedCharacter.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "\xe7\xa7\xbb\xe5\x8b\x95\xe7\x8b\x80\xe6\x85\x8b\xe7\xae\xa1\xe7\x90\x86\xe5\x99\xa8" },
+#endif
+	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_HealthBarWidgetClass_MetaData[] = {
 		{ "Category", "UI" },
 #if !UE_BUILD_SHIPPING
@@ -2120,6 +2318,9 @@ struct Z_Construct_UClass_ATurnBasedCharacter_Statics
 	static const UECodeGen_Private::FObjectPropertyParams NewProp_HealthBarComponent;
 	static const UECodeGen_Private::FObjectPropertyParams NewProp_AnimationManager;
 	static const UECodeGen_Private::FObjectPropertyParams NewProp_CombatAnimationComponent;
+	static const UECodeGen_Private::FObjectPropertyParams NewProp_HighlightComponent;
+	static const UECodeGen_Private::FObjectPropertyParams NewProp_MovementValidator;
+	static const UECodeGen_Private::FObjectPropertyParams NewProp_MovementStateManager;
 	static const UECodeGen_Private::FClassPropertyParams NewProp_HealthBarWidgetClass;
 	static const UECodeGen_Private::FObjectPropertyParams NewProp_HealthBarWidget;
 	static const UECodeGen_Private::FObjectPropertyParams NewProp_DeathMontage;
@@ -2149,9 +2350,12 @@ struct Z_Construct_UClass_ATurnBasedCharacter_Statics
 		{ &Z_Construct_UFunction_ATurnBasedCharacter_GetGridMovementComponent, "GetGridMovementComponent" }, // 586422778
 		{ &Z_Construct_UFunction_ATurnBasedCharacter_GetGridVisualComponent, "GetGridVisualComponent" }, // 2759062919
 		{ &Z_Construct_UFunction_ATurnBasedCharacter_GetMaxActionPoints, "GetMaxActionPoints" }, // 832912254
+		{ &Z_Construct_UFunction_ATurnBasedCharacter_GetMovementStateManager, "GetMovementStateManager" }, // 4130428313
+		{ &Z_Construct_UFunction_ATurnBasedCharacter_GetMovementValidator, "GetMovementValidator" }, // 2621100949
 		{ &Z_Construct_UFunction_ATurnBasedCharacter_GetPortraitBorderColor, "GetPortraitBorderColor" }, // 1376849415
 		{ &Z_Construct_UFunction_ATurnBasedCharacter_GetTurnSystemComponent, "GetTurnSystemComponent" }, // 837253875
 		{ &Z_Construct_UFunction_ATurnBasedCharacter_GetUIPortrait, "GetUIPortrait" }, // 3643449529
+		{ &Z_Construct_UFunction_ATurnBasedCharacter_HaltAllMovementSystems, "HaltAllMovementSystems" }, // 485446912
 		{ &Z_Construct_UFunction_ATurnBasedCharacter_HandleAnimNotify, "HandleAnimNotify" }, // 2317579529
 		{ &Z_Construct_UFunction_ATurnBasedCharacter_IsAlive, "IsAlive" }, // 3871319002
 		{ &Z_Construct_UFunction_ATurnBasedCharacter_IsDying, "IsDying" }, // 4073957879
@@ -2169,6 +2373,7 @@ struct Z_Construct_UClass_ATurnBasedCharacter_Statics
 		{ &Z_Construct_UFunction_ATurnBasedCharacter_SetGridManager, "SetGridManager" }, // 896963779
 		{ &Z_Construct_UFunction_ATurnBasedCharacter_SetMovementMode, "SetMovementMode" }, // 91090598
 		{ &Z_Construct_UFunction_ATurnBasedCharacter_ShowMovementRange, "ShowMovementRange" }, // 676302802
+		{ &Z_Construct_UFunction_ATurnBasedCharacter_SynchronizeMovementComponents, "SynchronizeMovementComponents" }, // 3486414310
 		{ &Z_Construct_UFunction_ATurnBasedCharacter_UpdateGridPositionFromWorld, "UpdateGridPositionFromWorld" }, // 2013269250
 	};
 	static_assert(UE_ARRAY_COUNT(FuncInfo) < 2048);
@@ -2197,6 +2402,9 @@ const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_ATurnBasedChar
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_ATurnBasedCharacter_Statics::NewProp_HealthBarComponent = { "HealthBarComponent", nullptr, (EPropertyFlags)0x00200800000a001d, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(ATurnBasedCharacter, HealthBarComponent), Z_Construct_UClass_UWidgetComponent_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_HealthBarComponent_MetaData), NewProp_HealthBarComponent_MetaData) };
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_ATurnBasedCharacter_Statics::NewProp_AnimationManager = { "AnimationManager", nullptr, (EPropertyFlags)0x00200800000a001d, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(ATurnBasedCharacter, AnimationManager), Z_Construct_UClass_UAnimationManagerComponent_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_AnimationManager_MetaData), NewProp_AnimationManager_MetaData) };
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_ATurnBasedCharacter_Statics::NewProp_CombatAnimationComponent = { "CombatAnimationComponent", nullptr, (EPropertyFlags)0x00200800000a001d, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(ATurnBasedCharacter, CombatAnimationComponent), Z_Construct_UClass_UCombatAnimationComponent_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_CombatAnimationComponent_MetaData), NewProp_CombatAnimationComponent_MetaData) };
+const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_ATurnBasedCharacter_Statics::NewProp_HighlightComponent = { "HighlightComponent", nullptr, (EPropertyFlags)0x00200800000a001d, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(ATurnBasedCharacter, HighlightComponent), Z_Construct_UClass_UHighlightComponent_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_HighlightComponent_MetaData), NewProp_HighlightComponent_MetaData) };
+const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_ATurnBasedCharacter_Statics::NewProp_MovementValidator = { "MovementValidator", nullptr, (EPropertyFlags)0x00200800000a001d, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(ATurnBasedCharacter, MovementValidator), Z_Construct_UClass_UMovementValidatorComponent_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_MovementValidator_MetaData), NewProp_MovementValidator_MetaData) };
+const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_ATurnBasedCharacter_Statics::NewProp_MovementStateManager = { "MovementStateManager", nullptr, (EPropertyFlags)0x00200800000a001d, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(ATurnBasedCharacter, MovementStateManager), Z_Construct_UClass_UMovementStateManager_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_MovementStateManager_MetaData), NewProp_MovementStateManager_MetaData) };
 const UECodeGen_Private::FClassPropertyParams Z_Construct_UClass_ATurnBasedCharacter_Statics::NewProp_HealthBarWidgetClass = { "HealthBarWidgetClass", nullptr, (EPropertyFlags)0x0024080000010001, UECodeGen_Private::EPropertyGenFlags::Class, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(ATurnBasedCharacter, HealthBarWidgetClass), Z_Construct_UClass_UClass, Z_Construct_UClass_UHealthBarWidget_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_HealthBarWidgetClass_MetaData), NewProp_HealthBarWidgetClass_MetaData) };
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_ATurnBasedCharacter_Statics::NewProp_HealthBarWidget = { "HealthBarWidget", nullptr, (EPropertyFlags)0x0020080000080008, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(ATurnBasedCharacter, HealthBarWidget), Z_Construct_UClass_UHealthBarWidget_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_HealthBarWidget_MetaData), NewProp_HealthBarWidget_MetaData) };
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_ATurnBasedCharacter_Statics::NewProp_DeathMontage = { "DeathMontage", nullptr, (EPropertyFlags)0x0020080000010001, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(ATurnBasedCharacter, DeathMontage), Z_Construct_UClass_UAnimMontage_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_DeathMontage_MetaData), NewProp_DeathMontage_MetaData) };
@@ -2225,6 +2433,9 @@ const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UClass_ATurnBase
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_ATurnBasedCharacter_Statics::NewProp_HealthBarComponent,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_ATurnBasedCharacter_Statics::NewProp_AnimationManager,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_ATurnBasedCharacter_Statics::NewProp_CombatAnimationComponent,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_ATurnBasedCharacter_Statics::NewProp_HighlightComponent,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_ATurnBasedCharacter_Statics::NewProp_MovementValidator,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_ATurnBasedCharacter_Statics::NewProp_MovementStateManager,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_ATurnBasedCharacter_Statics::NewProp_HealthBarWidgetClass,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_ATurnBasedCharacter_Statics::NewProp_HealthBarWidget,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_ATurnBasedCharacter_Statics::NewProp_DeathMontage,
@@ -2275,10 +2486,10 @@ ATurnBasedCharacter::~ATurnBasedCharacter() {}
 struct Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_TurnBasedCharacter_h__Script_ProjectGate_Statics
 {
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_ATurnBasedCharacter, ATurnBasedCharacter::StaticClass, TEXT("ATurnBasedCharacter"), &Z_Registration_Info_UClass_ATurnBasedCharacter, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(ATurnBasedCharacter), 1010346018U) },
+		{ Z_Construct_UClass_ATurnBasedCharacter, ATurnBasedCharacter::StaticClass, TEXT("ATurnBasedCharacter"), &Z_Registration_Info_UClass_ATurnBasedCharacter, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(ATurnBasedCharacter), 369694229U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_TurnBasedCharacter_h__Script_ProjectGate_4269486881(TEXT("/Script/ProjectGate"),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_TurnBasedCharacter_h__Script_ProjectGate_1043079458(TEXT("/Script/ProjectGate"),
 	Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_TurnBasedCharacter_h__Script_ProjectGate_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_UnrealProjects_ProjectGate_Source_ProjectGate_Public_TurnBasedSystem_TurnBasedCharacter_h__Script_ProjectGate_Statics::ClassInfo),
 	nullptr, 0,
 	nullptr, 0);

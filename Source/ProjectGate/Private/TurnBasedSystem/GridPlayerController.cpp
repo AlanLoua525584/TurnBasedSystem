@@ -516,6 +516,9 @@ void AGridPlayerController::ProcessGridClick()
 		return;
 	}
 
+
+
+
 	// === 🔍 關鍵診斷：同步狀態檢查 ===
 	Debug::Print(TEXT("=== 同步狀態診斷 ==="), FColor::Magenta);
 

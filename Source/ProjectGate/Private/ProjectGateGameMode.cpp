@@ -1,10 +1,11 @@
-// Copyright Epic Games, Inc. All Rights Reserved.
+ï»¿// Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "ProjectGateGameMode.h"
 #include "TurnBasedSystem/SimpleTurnManager.h"
 #include "TurnBasedSystem/GridPlayerController.h"
 #include "TurnBasedSystem/EnhancedMovementSystem.h"
 #include "TurnBasedSystem/Components/TurnSystemComponent.h"
+#include "HighlightSystem/HighlightManager.h"
 #include "CombatSystem/CombatDisplayWidget.h"
 #include "Public/DebugHelper.h"
 #include "Engine/World.h"
@@ -20,7 +21,7 @@ AProjectGateGameMode::AProjectGateGameMode()
     // Not Set default Pawn class
     DefaultPawnClass = nullptr;
 
-    //¨Ï¥Î¦Û©w¸qPlayerController
+    //ä½¿ç”¨è‡ªå®šç¾©PlayerController
     PlayerControllerClass = AGridPlayerController::StaticClass();
 }
 
@@ -31,7 +32,7 @@ void AProjectGateGameMode::BeginPlay()
 
     Debug::Print(TEXT("=== GameMode BeginPlay ==="), FColor::Cyan);
 
-    // 1. ¥ı½T«O PlayerController §¹¥şªì©l¤Æ
+    // 1. å…ˆç¢ºä¿ PlayerController å®Œå…¨åˆå§‹åŒ–
     APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();
     if (!PlayerController)
     {
@@ -39,11 +40,11 @@ void AProjectGateGameMode::BeginPlay()
         return;
     }
 
-    // 2. µ¹ PlayerController ¤@¨Ç®É¶¡§¹¦¨ªì©l¤Æ
+    // 2. çµ¦ PlayerController ä¸€äº›æ™‚é–“å®Œæˆåˆå§‹åŒ–
     FTimerHandle InitTimer;
     GetWorld()->GetTimerManager().SetTimer(InitTimer, [this]()
         {
-            // 3. ³Ğ«Ø TurnManager
+            // 3. å‰µå»º TurnManager
             if (GetWorld())
             {
                 FActorSpawnParameters SpawnParams;
@@ -66,122 +67,50 @@ void AProjectGateGameMode::BeginPlay()
                 }
             }
             
-            // 4. ³Ğ«Ø UI
+            // 4. å‰µå»º UI
             CreateGameUI();
             
 
-            // 5. ³Ì«áªì©l¤Æ¾Ô°«
+            // 5. æœ€å¾Œåˆå§‹åŒ–æˆ°é¬¥
             FTimerHandle BattleTimer;
             GetWorld()->GetTimerManager().SetTimer(BattleTimer, [this]()
                 {
                     InitializeBattle();
-                }, 0.2f, false);  // ¦A©µ¿ğ 0.2 ¬í
+                }, 0.2f, false);  // å†å»¶é² 0.2 ç§’
 
-        }, 0.1f, false);  // ©µ¿ğ 0.1 ¬í
+        }, 0.1f, false);  // å»¶é² 0.1 ç§’
 
-    /*
-    // Spawn Turn Manager
-    if (GetWorld())
+
+    // ç²å– HighlightManager
+    if (UHighlightManager* HighlightMgr = GetWorld()->GetSubsystem<UHighlightManager>())
     {
-        FActorSpawnParameters SpawnParams;
-        SpawnParams.Owner = this;
+        Debug::Print(TEXT("HighlightManager found and initializing..."), FColor::Green);
 
-        TurnManager = GetWorld()->SpawnActor<ASimpleTurnManager>(
-            ASimpleTurnManager::StaticClass(),
-            FVector::ZeroVector,
-            FRotator::ZeroRotator,
-            SpawnParams
-        );
-
-        if (TurnManager)
+        // åŠ è¼‰ DataTable
+        if (!HighlightConfigTable)
         {
-            Debug::Print(TEXT("TurnManager spawned successfully!"), FColor::Green);
-
-            // Bind events
-            TurnManager->OnTurnChanged.AddDynamic(this, &AProjectGateGameMode::OnTurnChanged);
-            TurnManager->OnPhaseChanged.AddDynamic(this, &AProjectGateGameMode::OnPhaseChanged);
-
-        }
-    }
-    
-    if (TurnDisplayWidgetClass)
-    {
-        APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();
-        if (PlayerController)
-        {
-            TurnDisplayWidget = CreateWidget<UTurnDisplayWidget>(PlayerController, TurnDisplayWidgetClass);
-            if (TurnDisplayWidget)
-            {
-                TurnDisplayWidget->AddToViewport();
-
-                // Bind button events
-                TurnDisplayWidget->OnNextPhaseClicked.BindLambda([this]()
-                    {
-                        if (TurnManager)
-                        {
-                            TurnManager->NextPhase();
-                        }
-                    });
-
-                TurnDisplayWidget->OnEndTurnClicked.BindLambda([this]()
-                    {
-                        if (TurnManager)
-                        {
-                            Debug::Print(TEXT("End Turn button clicked - processing..."), FColor::Orange);
-
-                            // === ­×´_1¡G½T«O·í«e¨¤¦âµ²§ô¦^¦X ===
-                            if (AActor* CurrentCharacter = TurnManager->GetCurrentTurnCharacter())
-                            {
-                                if (ATurnBasedCharacter* Character = Cast<ATurnBasedCharacter>(CurrentCharacter))
-                                {
-                                    // ½T«O¨¤¦âµ²§ô¦^¦X
-                                    Character->OnTurnEnd();
-                                    Debug::Print(FString::Printf(TEXT("Forced turn end for: %s"),
-                                        *Character->GetActorLabel()), FColor::Yellow);
-                                }
-                            }
-
-
-
-                            // === ­×´_2¡G¥¿½T±À¶i¨ì¤U¤@­Ó¦^¦X ===
-                            // ª½±µ½Õ¥ÎNextTurn¡AµL»İ¤â°Ê±À¶i¶¥¬q
-                            TurnManager->NextTurn();
-
-                            Debug::Print(TEXT("TurnManager->NextTurn() called"), FColor::Green);
-                        }
-                    });
-                Debug::Print(TEXT("Turn Display UI created with controls"), FColor::Green);
-
-                // Initial update
-                if (AActor* CurrentChar = TurnManager->GetCurrentTurnCharacter())
-                {
-                    TurnDisplayWidget->UpdateCurrentCharacter(CurrentChar->GetActorLabel());
-                }
-                TurnDisplayWidget->UpdateTurnCount(TurnManager->GetTurnCount());
-                TurnDisplayWidget->UpdatePhase(TurnManager->GetCurrentPhase());
-
-                // Update turn order
-                TArray<FString> CharacterNames;
-                TArray<AActor*> TurnOrder = TurnManager->GetTurnOrder();
-                for (AActor* Character : TurnOrder)
-                {
-                    if (Character)
-                    {
-                        CharacterNames.Add(Character->GetActorLabel());
-                    }
-                }
-
-                TurnDisplayWidget->UpdateTurnOrder(CharacterNames, TurnManager->GetCurrentCharacterIndex());
-
-            }
-
-
+            // å¦‚æœæ²’æœ‰åœ¨ç·¨è¼¯å™¨ä¸­è¨­ç½®ï¼Œå˜—è©¦åŠ è¼‰
+            HighlightConfigTable = LoadObject<UDataTable>(nullptr,
+                TEXT("/Game/Data/DT_HighlightConfigs.DT_HighlightConfigs"));
         }
 
+        if (HighlightConfigTable)
+        {
+            HighlightMgr->LoadHighlightConfigs(HighlightConfigTable);
+            Debug::Print(TEXT("Highlight configs loaded from DataTable"), FColor::Green);
+        }
+        else
+        {
+            Debug::Print(TEXT("WARNING: No HighlightConfigTable found, using defaults"), FColor::Yellow);
+        }
 
+        // æ¸¬è©¦é«˜äº®ç³»çµ±
+        TestHighlightSystem();
     }
-
-    */
+    else
+    {
+        Debug::Print(TEXT("ERROR: HighlightManager not found!"), FColor::Red);
+    }
 
     Debug::Print(TEXT("Manual control mode enabled - use buttons to control turns"), FColor::Yellow);
 }
@@ -195,7 +124,7 @@ void AProjectGateGameMode::CreateGameUI()
         return;
     }
 
-    // ³Ğ«Ø¦^¦XÅã¥Ü UI
+    // å‰µå»ºå›åˆé¡¯ç¤º UI
     if (TurnDisplayWidgetClass)
     {
         TurnDisplayWidget = CreateWidget<UTurnDisplayWidget>(PlayerController, TurnDisplayWidgetClass);
@@ -203,7 +132,7 @@ void AProjectGateGameMode::CreateGameUI()
         {
             TurnDisplayWidget->AddToViewport();
 
-            // ¸j©w«ö¶s¨Æ¥ó
+            // ç¶å®šæŒ‰éˆ•äº‹ä»¶
             TurnDisplayWidget->OnNextPhaseClicked.BindLambda([this]()
                 {
                     if (TurnManager)
@@ -225,7 +154,7 @@ void AProjectGateGameMode::CreateGameUI()
         }
     }
 
-    // ³Ğ«Ø¾Ô°«Åã¥Ü UI
+    // å‰µå»ºæˆ°é¬¥é¡¯ç¤º UI
     if (CombatDisplayWidgetClass)
     {
         CombatDisplayWidget = CreateWidget<UCombatDisplayWidget>(PlayerController, CombatDisplayWidgetClass);
@@ -239,31 +168,31 @@ void AProjectGateGameMode::CreateGameUI()
 
 void AProjectGateGameMode::InitializeBattle()
 {
-    Debug::Print(TEXT("=== InitializeBattle ¶}©l ==="), FColor::Magenta);
+    Debug::Print(TEXT("=== InitializeBattle é–‹å§‹ ==="), FColor::Magenta);
 
-    // 1. ½T«O PlayerController ¨S¦³ Possess ¥ô¦ó¨¤¦â
+    // 1. ç¢ºä¿ PlayerController æ²’æœ‰ Possess ä»»ä½•è§’è‰²
     if (AGridPlayerController* PC = Cast<AGridPlayerController>(GetWorld()->GetFirstPlayerController()))
     {
         if (PC->GetPawn())
         {
-            Debug::Print(FString::Printf(TEXT("¸Ñ°£ PlayerController ªº Possess: %s"),
+            Debug::Print(FString::Printf(TEXT("è§£é™¤ PlayerController çš„ Possess: %s"),
                 *PC->GetPawn()->GetName()), FColor::Orange);
             PC->UnPossess();
         }
     }
 
-    // 2. ³o¸Ì©w¸q FoundCharacters¡I¡I¡I
-    TArray<AActor*> FoundCharacters;  // <--- ³o¬O©w¸q
+    // 2. é€™è£¡å®šç¾© FoundCharactersï¼ï¼ï¼
+    TArray<AActor*> FoundCharacters;  // <--- é€™æ˜¯å®šç¾©
     UGameplayStatics::GetAllActorsOfClass(
         GetWorld(),
         ATurnBasedCharacter::StaticClass(),
-        FoundCharacters  // <--- ³o·|¶ñ¥R¼Æ²Õ
+        FoundCharacters  // <--- é€™æœƒå¡«å……æ•¸çµ„
     );
 
     Debug::Print(FString::Printf(TEXT("Found %d characters in scene"), FoundCharacters.Num()), FColor::Yellow);
 
 
-    // 3.¦b²K¥[¨¤¦â¨ì TurnManager ¤§«e¡A¥ı±Æ§Ç
+    // 3.åœ¨æ·»åŠ è§’è‰²åˆ° TurnManager ä¹‹å‰ï¼Œå…ˆæ’åº
     TArray<AActor*> PlayerCharacters;
     TArray<AActor*> EnemyCharacters;
 
@@ -271,18 +200,18 @@ void AProjectGateGameMode::InitializeBattle()
     {
         if (ATurnBasedCharacter* TurnChar = Cast<ATurnBasedCharacter>(Character))
         {
-            // ­«¸m¨¤¦âªº¦^¦Xª¬ºA
+            // é‡ç½®è§’è‰²çš„å›åˆç‹€æ…‹
             if (UTurnSystemComponent* TurnSystem = TurnChar->GetTurnSystemComponent())
             {
                 if (TurnSystem->IsMyTurn())
                 {
-                    Debug::Print(FString::Printf(TEXT("­«¸m %s ªº¦^¦Xª¬ºA"),
+                    Debug::Print(FString::Printf(TEXT("é‡ç½® %s çš„å›åˆç‹€æ…‹"),
                         *TurnChar->GetActorLabel()), FColor::Orange);
                     TurnSystem->OnTurnEnd();
                 }
             }
 
-            // ®Ú¾Ú¬O§_¬°ª±®a±±¨î¶i¦æ¤ÀÃş
+            // æ ¹æ“šæ˜¯å¦ç‚ºç©å®¶æ§åˆ¶é€²è¡Œåˆ†é¡
             if (TurnChar->bIsPlayerControlled)
             {
                 PlayerCharacters.Add(Character);
@@ -296,7 +225,7 @@ void AProjectGateGameMode::InitializeBattle()
 
 
 
-    // 4. ¥ı²K¥[ª±®a¨¤¦â¡A¦A²K¥[¼Ä¤H¨¤¦â
+    // 4. å…ˆæ·»åŠ ç©å®¶è§’è‰²ï¼Œå†æ·»åŠ æ•µäººè§’è‰²
     for (AActor* PlayerChar : PlayerCharacters)
     {
         TurnManager->AddCharacter(PlayerChar);
@@ -311,14 +240,32 @@ void AProjectGateGameMode::InitializeBattle()
             *EnemyChar->GetActorLabel()), FColor::Yellow);
     }
 
-    // 5. ¶}©l¾Ô°«
+    // 5. é–‹å§‹æˆ°é¬¥
     if (TurnManager)
     {
-        Debug::Print(TEXT("GameMode ±Ò°Ê¾Ô°«"), FColor::Green);
+        Debug::Print(TEXT("GameMode å•Ÿå‹•æˆ°é¬¥"), FColor::Green);
         TurnManager->StartBattle();
     }
 
-    Debug::Print(TEXT("=== InitializeBattle µ²§ô ==="), FColor::Magenta);
+    Debug::Print(TEXT("=== InitializeBattle çµæŸ ==="), FColor::Magenta);
+}
+
+void AProjectGateGameMode::TestHighlightSystem()
+{
+    UHighlightManager* HighlightMgr = GetWorld()->GetSubsystem<UHighlightManager>();
+    if (!HighlightMgr) return;
+
+    // ç²å–æ‰€æœ‰é…ç½®ä¸¦æ‰“å°
+    for (int32 i = 1; i <= 4; i++)
+    {
+        EHighlightType Type = (EHighlightType)i;
+        FHighlightConfig Config = HighlightMgr->GetHighlightConfig(Type);
+
+        Debug::Print(FString::Printf(TEXT("Highlight Type %d: Stencil=%d, Color=(%f,%f,%f)"),
+            i, Config.StencilValue,
+            Config.Color.R, Config.Color.G, Config.Color.B),
+            FColor::Cyan);
+    }
 }
 
 
@@ -344,13 +291,13 @@ void AProjectGateGameMode::OnTurnChanged(AActor* CurrentCharacter)
 
         if (ATurnBasedCharacter* PrevChar = Cast<ATurnBasedCharacter>(PreviousCharacter))
         {
-            // ¸Ñ¸j AP ¨Æ¥ó
+            // è§£ç¶ AP äº‹ä»¶
             if (UTurnSystemComponent* PrevTurnSys = PrevChar->GetTurnSystemComponent())
             {
                 PrevTurnSys->OnActionPointsChanged.RemoveAll(this);
             }
 
-            // ¸Ñ¸j­@¤O¨Æ¥ó
+            // è§£ç¶è€åŠ›äº‹ä»¶
             if (UEnhancedMovementSystem* PrevMoveSys =
                 PrevChar->FindComponentByClass<UEnhancedMovementSystem>())
             {
@@ -374,12 +321,12 @@ void AProjectGateGameMode::OnTurnChanged(AActor* CurrentCharacter)
             TurnChar->OnTurnStart();
 
 
-            //¸j©w·sªºAP¨Æ¥ó
+            //ç¶å®šæ–°çš„APäº‹ä»¶
             if (UTurnSystemComponent* TurnSys = TurnChar->GetTurnSystemComponent())
             {
                 TurnSys->OnActionPointsChanged.AddDynamic(this, &AProjectGateGameMode::OnAPChanged);
 
-                // ªì©l¤ÆUI
+                // åˆå§‹åŒ–UI
                 TurnDisplayWidget->UpdateActionPoints(
                     TurnSys->GetCurrentActionPoints(),
                     TurnSys->GetMaxActionPoints()
@@ -413,7 +360,7 @@ void AProjectGateGameMode::OnTurnChanged(AActor* CurrentCharacter)
     {
         if (UEnhancedMovementSystem* MoveSys = TurnChar->FindComponentByClass<UEnhancedMovementSystem>())
         {
-            // ªì©l§ó·s­@¤OÅã¥Ü
+            // åˆå§‹æ›´æ–°è€åŠ›é¡¯ç¤º
             if (TurnDisplayWidget)
             {
                 TurnDisplayWidget->UpdateStamina(
@@ -422,7 +369,7 @@ void AProjectGateGameMode::OnTurnChanged(AActor* CurrentCharacter)
                 );
             }
 
-            // ¸j©w­@¤OÅÜ¤Æ¨Æ¥ó
+            // ç¶å®šè€åŠ›è®ŠåŒ–äº‹ä»¶
             MoveSys->OnResourceChanged.AddDynamic(this, &AProjectGateGameMode::OnStaminaChanged);
 
         }

@@ -1,10 +1,11 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+ï»¿// Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "Engine/EngineTypes.h"
+#include "HighlightSystem/HighlightManager.h"
 #include "SimpleTurnManager.generated.h"
 
 
@@ -27,7 +28,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnTurnChanged, AActor*, CurrentChar
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnPhaseChanged, AActor*, CurrentCharacter, ETurnPhase, NewPhase);
 
-// ¾Ô°«µ²§ô¨Æ¥ó
+// æˆ°é¬¥çµæŸäº‹ä»¶
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnBattleEnded, bool, bPlayerWon);
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnTurnOrderChanged, const TArray<AActor*>&, NewOrder);
@@ -44,7 +45,7 @@ public:
 	// Sets default values for this actor's properties
 	ASimpleTurnManager();
 
-	// === °t¸m¸ê²£ ===
+	// === é…ç½®è³‡ç”¢ ===
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Config")
 	UTurnOrderConfig* TurnOrderConfig;
 
@@ -61,44 +62,44 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Turn System")
 	void NextPhase();
 
-	// Åı PlayerController Possess ·í«e¦^¦X¨¤¦â
+	// è®“ PlayerController Possess ç•¶å‰å›åˆè§’è‰²
 	UFUNCTION(BlueprintCallable, Category = "Turn System")
 	void PossessCurrentTurnCharacter();
 
-	//²¾°£¦^¦X¨¤¦â
+	//ç§»é™¤å›åˆè§’è‰²
 	UFUNCTION(BlueprintCallable, Category = "Turn System")
 	void RemoveCharacter(AActor* Character);
 
-	// ÀË¬d¾Ô°«¬O§_µ²§ô
+	// æª¢æŸ¥æˆ°é¬¥æ˜¯å¦çµæŸ
 	UFUNCTION(BlueprintCallable, Category = "Turn System")
 	bool CheckBattleEnd();
 
-	//ÀË¬d¾Ô°«¬O§_¶}©l
+	//æª¢æŸ¥æˆ°é¬¥æ˜¯å¦é–‹å§‹
 	bool IsBattleStarted() const { return bBattleStarted; }
 
-	// === §ó·sªº¤èªk ===
+	// === æ›´æ–°çš„æ–¹æ³• ===
 
-	// ¦^¦X±Æ§Ç¤èªk
+	// å›åˆæ’åºæ–¹æ³•
 	UFUNCTION(BlueprintCallable, Category = "Turn System")
 	void RecalculateTurnOrder();
 
-	// Àò¨ú±Æ§Ç«áªº¦^¦X¶¶§Ç
+	// ç²å–æ’åºå¾Œçš„å›åˆé †åº
 	UFUNCTION(BlueprintCallable, Category = "Turn System")
 	TArray<AActor*> GetSortedTurnOrder() const;
 
-	// ©µ¿ğ¬Y­Ó¨¤¦âªº¦æ°Ê
+	// å»¶é²æŸå€‹è§’è‰²çš„è¡Œå‹•
 	UFUNCTION(BlueprintCallable, Category = "Turn System")
 	void DelayCharacterTurn(AActor* Character, int32 DelayTurns = 1);
 
-	// ´¡¤Jºò«æ¦æ°Ê
+	// æ’å…¥ç·Šæ€¥è¡Œå‹•
 	UFUNCTION(BlueprintCallable, Category = "Turn System")
 	void InsertImmediateAction(AActor* Character);
 
-	// Àò¨ú¦s¬¡¨¤¦â¼Æ¶q
+	// ç²å–å­˜æ´»è§’è‰²æ•¸é‡
 	UFUNCTION(BlueprintCallable, Category = "Turn System")
 	int32 GetAliveCharacterCount() const;
 
-	// === ·s¼W¤èªk ===
+	// === æ–°å¢æ–¹æ³• ===
 	UFUNCTION(BlueprintCallable, Category = "Turn System")
 	UTurnOrderCalculator* GetTurnOrderCalculator() const { return TurnOrderCalculator; }
 
@@ -126,11 +127,11 @@ public:
 	int32 GetCurrentCharacterIndex() const ;
 
 
-	// ³]¸m·í«e¯Á¤Ş
+	// è¨­ç½®ç•¶å‰ç´¢å¼•
 	UFUNCTION(BlueprintCallable, Category = "Turn System")
 	void SetCurrentCharacterIndex(int32 NewIndex);
 
-	// === ¨Æ¥ó©e°U ===
+	// === äº‹ä»¶å§”è¨— ===
 	UPROPERTY(BlueprintAssignable, Category = "Turn System")
 	FOnTurnChanged OnTurnChanged;
 
@@ -152,10 +153,10 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	// ­pºâ¥ı§ğ­È
+	// è¨ˆç®—å…ˆæ”»å€¼
 	int32 CalculateInitiative(ATurnBasedCharacter* Character);
 
-	// ±Æ§Çºâªk
+	// æ’åºç®—æ³•
 	void SortTurnOrderByInitiative();
 
 
@@ -166,7 +167,7 @@ public:
 
 private:
 	/*StoreAllCharacter*/
-	// === ®Ö¤ß¦¨­û ===
+	// === æ ¸å¿ƒæˆå“¡ ===
 	UPROPERTY()
 	TArray<AActor*> TurnOrder;
 
@@ -175,14 +176,14 @@ private:
 	ETurnPhase CurrentPhase;
 	int32 TurnCount;
 
-	// === ·s¼W¡G­pºâ¾¹²Õ¥ó ===
+	// === æ–°å¢ï¼šè¨ˆç®—å™¨çµ„ä»¶ ===
 	UPROPERTY()
 	UTurnOrderCalculator* TurnOrderCalculator;
 
 
 	void PossessCharacter(AActor* CharacterToPossess);
 
-	// ³B²z¨¤¦â¦º¤`«áªº¦^¦X¤Á´«
+	// è™•ç†è§’è‰²æ­»äº¡å¾Œçš„å›åˆåˆ‡æ›
 	void HandleCharacterDeath(AActor* DeadCharacter);
 
 };

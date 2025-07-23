@@ -1,4 +1,4 @@
-// Copyright Epic Games, Inc. All Rights Reserved.
+ï»¿// Copyright Epic Games, Inc. All Rights Reserved.
 
 #pragma once
 
@@ -31,15 +31,15 @@ protected:
 
     void CreateGameUI();
 
-    //·í«eÃèÀY¹ê¨Ò
+    //ç•¶å‰é¡é ­å¯¦ä¾‹
     UPROPERTY()
     AFreeCameraPawn* FreeCameraPawn;
 
-	//¬O§_¦Û°Ê»EµJ¨ì·í«e¨¤¦â
+	//æ˜¯å¦è‡ªå‹•èšç„¦åˆ°ç•¶å‰è§’è‰²
     UPROPERTY(EditDefaultsOnly, Category = "Camera")
     bool bAutoFocusCurrentCharacter = true;
 
-    // »EµJ¶ZÂ÷
+    // èšç„¦è·é›¢
     UPROPERTY(EditDefaultsOnly, Category = "Camera")
     float FocusDistance = 800.0f;
 
@@ -52,8 +52,14 @@ protected:
    
     void InitializeBattle();
 
+    // DataTable å¼•ç”¨
+    UPROPERTY(EditDefaultsOnly, Category = "Highlight")
+    class UDataTable* HighlightConfigTable;
+
+    void TestHighlightSystem();
+
 private:
-    // ¦^¦XºŞ²z¾¹
+    // å›åˆç®¡ç†å™¨
     UPROPERTY()
     ASimpleTurnManager* TurnManager;
 
@@ -66,32 +72,32 @@ private:
 
    
 
-    //°lÂÜ«e¤@­Ó¨¤¦â
+    //è¿½è¹¤å‰ä¸€å€‹è§’è‰²
 	UPROPERTY()
 	AActor* PreviousCharacter = nullptr;
     
 
-    // ´ú¸Õ¨ç¼Æ
+    // æ¸¬è©¦å‡½æ•¸
     UFUNCTION()
     void OnTurnChanged(AActor* CurrentCharacter);
 
     UFUNCTION()
     void OnPhaseChanged(AActor* CurrentCharacter, ETurnPhase NewPhase);
 
-    // ´ú¸Õ¥Î­p®É¾¹
+    // æ¸¬è©¦ç”¨è¨ˆæ™‚å™¨
     void TestNextPhase();
     FTimerHandle PhaseTestTimer;
 
 public:
 
-    // Àò¨ú Turn Display Widget
+    // ç²å– Turn Display Widget
     UFUNCTION(BlueprintCallable, Category = "UI")
     UTurnDisplayWidget* GetTurnDisplayWidget() const { return TurnDisplayWidget;}
 
     UFUNCTION(BlueprintCallable, Category = "UI")
     UCombatDisplayWidget* GetCombatDisplayWidget() const { return CombatDisplayWidget; }
 
-    //Àò¨ú CombatDisplayWidget
+    //ç²å– CombatDisplayWidget
     UFUNCTION(BlueprintCallable, Category = "UI")
     TSubclassOf<class UCombatDisplayWidget> GetCombatDisplayWidgetClass() const { return CombatDisplayWidgetClass; }
 

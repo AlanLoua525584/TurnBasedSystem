@@ -7,6 +7,7 @@
 #include "TurnBasedSystem/UI/TurnOrderWidget.h"
 #include "ProjectGateGameMode.h"
 #include "Blueprint/UserWidget.h"
+#include "Kismet/GameplayStatics.h"
 #include "Components/CanvasPanelSlot.h"
 #include "Engine/World.h"
 #include "Public/DebugHelper.h"
@@ -43,6 +44,9 @@ void UUIManagerComponent::Initialize(APlayerController* InOwnerController)
     Debug::Print(TEXT(">>> 在 Initialize 中立即創建 UI <<<"), FColor::Magenta);
     CreateAllUI();
 
+    // 綁定 TurnManager 事件
+    BindTurnManagerEvents();
+
     Debug::Print(TEXT("UIManagerComponent initialized"), FColor::Green);
 }
 
@@ -78,6 +82,17 @@ void UUIManagerComponent::BeginPlay()
 
 void UUIManagerComponent::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
+
+    // 清理事件綁定
+    if (CachedTurnManager)
+    {
+        CachedTurnManager->OnTurnChanged.RemoveDynamic(this, &UUIManagerComponent::OnTurnChanged);
+        CachedTurnManager->OnPhaseChanged.RemoveDynamic(this, &UUIManagerComponent::OnPhaseChanged);
+        CachedTurnManager->OnTurnOrderChanged.RemoveDynamic(this, &UUIManagerComponent::OnTurnOrderChanged);
+        CachedTurnManager = nullptr;
+    }
+
+
 	// Clean up all UI widgets
 	DestroyAllUI();
 
@@ -251,6 +266,46 @@ void UUIManagerComponent::DestroyAllUI()
     Debug::Print(TEXT("All UI widgets destroyed"), FColor::Yellow);
 }
 
+void UUIManagerComponent::OnTurnChanged(AActor* CurrentCharacter)
+{
+    Debug::Print(FString::Printf(TEXT("=== UI OnTurnChanged: %s ==="),
+        CurrentCharacter ? *CurrentCharacter->GetName() : TEXT("None")), FColor::Cyan);
+
+    if (CachedTurnManager)
+    {
+        TArray<AActor*> CurrentOrder = CachedTurnManager->GetTurnOrder();
+        int32 CurrentIndex = CachedTurnManager->GetCurrentCharacterIndex();
+
+        Debug::Print(FString::Printf(TEXT("更新 TurnOrder UI - 當前角色索引: %d"), CurrentIndex), FColor::Green);
+        UpdateTurnOrderUI(CurrentOrder, CurrentIndex);
+    }
+}
+
+void UUIManagerComponent::OnPhaseChanged(AActor* CurrentCharacter, ETurnPhase NewPhase)
+{
+    Debug::Print(FString::Printf(TEXT("=== UI OnPhaseChanged: %s, Phase: %d ==="),
+        CurrentCharacter ? *CurrentCharacter->GetName() : TEXT("None"), (int32)NewPhase), FColor::Cyan);
+
+    // 在階段變化時也更新 UI
+    if (CachedTurnManager)
+    {
+        TArray<AActor*> CurrentOrder = CachedTurnManager->GetTurnOrder();
+        int32 CurrentIndex = CachedTurnManager->GetCurrentCharacterIndex();
+        UpdateTurnOrderUI(CurrentOrder, CurrentIndex);
+    }
+}
+
+void UUIManagerComponent::OnTurnOrderChanged(const TArray<AActor*>& NewOrder)
+{
+    Debug::Print(FString::Printf(TEXT("=== UI OnTurnOrderChanged: %d characters ==="), NewOrder.Num()), FColor::Cyan);
+
+    if (CachedTurnManager)
+    {
+        int32 CurrentIndex = CachedTurnManager->GetCurrentCharacterIndex();
+        UpdateTurnOrderUI(NewOrder, CurrentIndex);
+    }
+}
+
 
 // === Helper Functions ===
 
@@ -315,6 +370,59 @@ void UUIManagerComponent::TryGetWidgetClassesFromGameMode()
     }
 
     // Note: Add similar logic for TurnOrderWidgetClass when it's added to GameM
+}
+
+void UUIManagerComponent::BindTurnManagerEvents()
+{
+    if (!OwnerController || !OwnerController->GetWorld())
+    {
+        Debug::Print(TEXT("Cannot bind TurnManager events - no world"), FColor::Red);
+        return;
+    }
+
+    // 查找 TurnManager
+    TArray<AActor*> FoundActors;
+    UGameplayStatics::GetAllActorsOfClass(OwnerController->GetWorld(), ASimpleTurnManager::StaticClass(), FoundActors);
+
+    if (FoundActors.Num() > 0)
+    {
+        CachedTurnManager = Cast<ASimpleTurnManager>(FoundActors[0]);
+        if (CachedTurnManager)
+        {
+            // 綁定事件
+            CachedTurnManager->OnTurnChanged.AddDynamic(this, &UUIManagerComponent::OnTurnChanged);
+            CachedTurnManager->OnPhaseChanged.AddDynamic(this, &UUIManagerComponent::OnPhaseChanged);
+            CachedTurnManager->OnTurnOrderChanged.AddDynamic(this, &UUIManagerComponent::OnTurnOrderChanged);
+
+            Debug::Print(TEXT(" TurnManager events bound successfully"), FColor::Green);
+
+            // 立即更新一次 UI
+            TArray<AActor*> CurrentOrder = CachedTurnManager->GetTurnOrder();
+            int32 CurrentIndex = CachedTurnManager->GetCurrentCharacterIndex();
+            UpdateTurnOrderUI(CurrentOrder, CurrentIndex);
+        }
+        else
+        {
+            Debug::Print(TEXT(" Failed to cast to SimpleTurnManager"), FColor::Red);
+        }
+    }
+    else
+    {
+        Debug::Print(TEXT(" TurnManager not found"), FColor::Red);
+
+
+        // 延遲重試
+        FTimerHandle RetryTimerHandle;
+        GetWorld()->GetTimerManager().SetTimer(
+            RetryTimerHandle,
+            [this]()
+            {
+                BindTurnManagerEvents();
+            },
+			1.0f,  // 延遲1秒重試
+			false  // 不循環重試
+        );
+    }
 }
 
 

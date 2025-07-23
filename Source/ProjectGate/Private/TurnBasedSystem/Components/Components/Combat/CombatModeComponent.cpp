@@ -1,10 +1,11 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+ï»¿// Fill out your copyright notice in the Description page of Project Settings.
 
 
 #include "TurnbasedSystem/Components/Combat/CombatModeComponent.h"
 #include "TurnBasedSystem/TurnBasedCharacter.h"
 #include "CombatSystem/CombatComponent.h"
 #include "CombatSystem/CombatDisplayWidget.h"
+#include "HighlightSystem/HighlightManager.h"
 #include "GameFramework/PlayerController.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Engine/World.h"
@@ -68,26 +69,26 @@ void UCombatModeComponent::EnterAttackMode()
 
     Debug::Print(TEXT("=== ATTACK MODE: ON ==="), FColor::Red, 10.0f);
 
-    // Åã¥Ü§ğÀ»½d³ò
+    // é¡¯ç¤ºæ”»æ“Šç¯„åœ
     CombatComp->ShowAttackRange();
 
-    // °±¤î¨¤¦â²¾°Ê
+    // åœæ­¢è§’è‰²ç§»å‹•
     if (UCharacterMovementComponent* CharMoveComp = ControlledCharacter->GetCharacterMovement())
     {
         CharMoveComp->StopMovementImmediately();
     }
 
-    // ±Ò¥Î§ó·s
+    // å•Ÿç”¨æ›´æ–°
     SetComponentTickEnabled(true);
 
-    // ¸j©w¾Ô°«¨Æ¥ó
+    // ç¶å®šæˆ°é¬¥äº‹ä»¶
     if (!CombatComp->OnAttackExecutedWithResult.IsAlreadyBound(this, &UCombatModeComponent::OnCombatResultReceived))
     {
         CombatComp->OnAttackExecutedWithResult.AddDynamic(
             this, &UCombatModeComponent::OnCombatResultReceived);
     }
 
-    // ¼s¼½¨Æ¥ó
+    // å»£æ’­äº‹ä»¶
     OnAttackModeChanged.Broadcast(true);
 }
 
@@ -99,26 +100,26 @@ void UCombatModeComponent::ExitAttackMode()
 
     Debug::Print(TEXT("=== ATTACK MODE: OFF ==="), FColor::Blue, 5.0f);
 
-    // ÁôÂÃ§ğÀ»½d³ò
+    // éš±è—æ”»æ“Šç¯„åœ
     if (ATurnBasedCharacter* ControlledCharacter = GetControlledTurnCharacter())
     {
         if (UCombatComponent* CombatComp = ControlledCharacter->GetComponentByClass<UCombatComponent>())
         {
             CombatComp->HideAttackRange();
 
-            // ¸Ñ¸j¨Æ¥ó
+            // è§£ç¶äº‹ä»¶
             CombatComp->OnAttackExecutedWithResult.RemoveDynamic(
                 this, &UCombatModeComponent::OnCombatResultReceived);
         }
     }
 
-    // ²M°£°ª«G¥Ø¼Ğ
+    // æ¸…é™¤é«˜äº®ç›®æ¨™
     LastHighlightedTarget = nullptr;
 
-    // °±¥Î§ó·s
+    // åœç”¨æ›´æ–°
     SetComponentTickEnabled(false);
 
-    // ¼s¼½¨Æ¥ó
+    // å»£æ’­äº‹ä»¶
     OnAttackModeChanged.Broadcast(false);
 }
 
@@ -138,7 +139,7 @@ void UCombatModeComponent::ProcessAttackClick()
 {
     AActor* Target = nullptr;
 
-    // ¨Ï¥Î·sªºÀË´ú¨ç¼Æ
+    // ä½¿ç”¨æ–°çš„æª¢æ¸¬å‡½æ•¸
     if (!GetCharacterUnderCursor(Target))
     {
         Debug::Print(TEXT("No character under cursor - exiting attack mode"), FColor::Yellow);
@@ -148,31 +149,31 @@ void UCombatModeComponent::ProcessAttackClick()
 
     Debug::Print(FString::Printf(TEXT("Found target: %s"), *Target->GetActorLabel()), FColor::Cyan);
 
-    // §ğÀ»ÅŞ¿è
+    // æ”»æ“Šé‚è¼¯
     ATurnBasedCharacter* ControlledCharacter = GetControlledTurnCharacter();
     if (!ControlledCharacter) return;
 
     UCombatComponent* CombatComp = ControlledCharacter->GetComponentByClass<UCombatComponent>();
     if (!CombatComp) return;
 
-    // ÀË¬d¬O§_¥i¥H§ğÀ»¦¹¥Ø¼Ğ
+    // æª¢æŸ¥æ˜¯å¦å¯ä»¥æ”»æ“Šæ­¤ç›®æ¨™
     if (CombatComp->CanAttack(Target))
     {
         Debug::Print(FString::Printf(TEXT("Attacking %s..."), *Target->GetActorLabel()), FColor::Orange);
 
-        // °õ¦æ±a°Êµeªº§ğÀ»
+        // åŸ·è¡Œå¸¶å‹•ç•«çš„æ”»æ“Š
         ControlledCharacter->ExecuteAnimatedAttack(Target);
 
-        // ª`·N¡G¤£­n¥ß§Y°h¥X§ğÀ»¼Ò¦¡¡Aµ¥«İ°Êµe§¹¦¨
-        // ¥i¥H³]¸m¤@­Ó¼Ğ°O©Î­p®É¾¹
+        // æ³¨æ„ï¼šä¸è¦ç«‹å³é€€å‡ºæ”»æ“Šæ¨¡å¼ï¼Œç­‰å¾…å‹•ç•«å®Œæˆ
+        // å¯ä»¥è¨­ç½®ä¸€å€‹æ¨™è¨˜æˆ–è¨ˆæ™‚å™¨
         if (bAutoExitAttackMode)
         {
-            // ©µ¿ğ°h¥X§ğÀ»¼Ò¦¡¡Aµ¹°Êµe®É¶¡§¹¦¨
+            // å»¶é²é€€å‡ºæ”»æ“Šæ¨¡å¼ï¼Œçµ¦å‹•ç•«æ™‚é–“å®Œæˆ
             FTimerHandle ExitTimer;
             GetWorld()->GetTimerManager().SetTimer(
                 ExitTimer,
                 [this]() { ExitAttackMode(); },
-                4.0f, // µ¹°Êµe¨¬°÷ªº®É¶¡
+                4.0f, // çµ¦å‹•ç•«è¶³å¤ çš„æ™‚é–“
                 false
             );
         }
@@ -191,10 +192,10 @@ void UCombatModeComponent::ShowAttackPreview(AActor* Target)
     UCombatComponent* Combat = ControlledCharacter->FindComponentByClass<UCombatComponent>();
     if (!Combat) return;
 
-    // ­pºâ¹wÄı¶Ë®`
+    // è¨ˆç®—é è¦½å‚·å®³
     FDamageResult PreviewDamage = Combat->CalculateDamage(Target);
 
-    // ¨Ï¥Î¾Ô°« UI Åã¥Ü¹wÄı
+    // ä½¿ç”¨æˆ°é¬¥ UI é¡¯ç¤ºé è¦½
     if (CombatDisplayWidget)
     {
         CombatDisplayWidget->ShowDamagePreview(
@@ -223,32 +224,42 @@ void UCombatModeComponent::UpdateAttackTargetHighlight()
 
     AActor* CurrentTarget = nullptr;
 
-    // ¹Á¸ÕÀò¨ú·Æ¹«¤Uªº¨¤¦â
+    // å˜—è©¦ç²å–æ»‘é¼ ä¸‹çš„è§’è‰²
     if (!GetCharacterUnderCursor(CurrentTarget))
     {
-        // ¨S¦³¥Ø¼Ğ¡A²M°£¥Ø¼Ğ«H®§
+        // æ¸…é™¤æ‡¸åœé«˜äº®
         if (LastHighlightedTarget)
         {
-            // TODO: ÁôÂÃ¥Ø¼ĞUI
+            if (UHighlightManager* HighlightMgr = GetWorld()->GetSubsystem<UHighlightManager>())
+            {
+                HighlightMgr->RemoveHighlight(LastHighlightedTarget, EHighlightType::Hover);
+            }
             LastHighlightedTarget = nullptr;
         }
         return;
     }
 
-    // ¦pªG¬O¬Û¦P¥Ø¼Ğ¡A¤£»İ­n§ó·s
+    // å¦‚æœæ˜¯ç›¸åŒç›®æ¨™ï¼Œä¸éœ€è¦æ›´æ–°
     if (CurrentTarget == LastHighlightedTarget) return;
 
-    // ·s¥Ø¼Ğ
-    LastHighlightedTarget = CurrentTarget;
+    // å¦‚æœæ˜¯æ–°ç›®æ¨™
+    if (CurrentTarget != LastHighlightedTarget)
+    {
+        if (UHighlightManager* HighlightMgr = GetWorld()->GetSubsystem<UHighlightManager>())
+        {
+            // æ¸…é™¤èˆŠçš„æ‡¸åœé«˜äº®
+            if (LastHighlightedTarget)
+            {
+                HighlightMgr->RemoveHighlight(LastHighlightedTarget, EHighlightType::Hover);
+            }
 
-    /*
-    Debug::PrintCooldown(TEXT("HoverTarget"),
-        FString::Printf(TEXT("Hovering over: %s"), *CurrentTarget->GetActorLabel()),
-        FColor::White, 0.5f);
-        */
+            // è¨­ç½®æ–°çš„æ‡¸åœé«˜äº®ï¼ˆè‡¨æ™‚ï¼Œ2ç§’ï¼‰
+            HighlightMgr->SetHighlight(CurrentTarget, EHighlightType::Hover, 2.0f);
+        }
 
-    // Åã¥Ü§ğÀ»¹wÄı
-    ShowAttackPreview(CurrentTarget);
+        LastHighlightedTarget = CurrentTarget;
+        ShowAttackPreview(CurrentTarget);
+    }
 }
 
 bool UCombatModeComponent::GetCharacterUnderCursor(AActor*& OutCharacter)
@@ -265,7 +276,7 @@ bool UCombatModeComponent::GetCharacterUnderCursor(AActor*& OutCharacter)
     QueryParams.bTraceComplex = true;
     QueryParams.bReturnPhysicalMaterial = false;
 
-    // ¥uÀË´ú Pawn
+    // åªæª¢æ¸¬ Pawn
     FCollisionObjectQueryParams ObjectQueryParams;
     ObjectQueryParams.AddObjectTypesToQuery(ECC_Pawn);
 
@@ -278,7 +289,7 @@ bool UCombatModeComponent::GetCharacterUnderCursor(AActor*& OutCharacter)
         QueryParams
     );
 
-    // §ä¨ì²Ä¤@­Ó TurnBasedCharacter
+    // æ‰¾åˆ°ç¬¬ä¸€å€‹ TurnBasedCharacter
     for (const FHitResult& Hit : Hits)
     {
         if (Hit.GetActor() && Hit.GetActor()->IsA<ATurnBasedCharacter>())
@@ -301,6 +312,6 @@ void UCombatModeComponent::OnCombatResultReceived(AActor* Attacker, AActor* Targ
 {
     Debug::Print(FString::Printf(TEXT("Combat Result: %d damage!"), Result.FinalDamage), FColor::Green);
 
-    // TODO: ³qª¾UIÅã¥Ü¾Ô°«µ²ªG
+    // TODO: é€šçŸ¥UIé¡¯ç¤ºæˆ°é¬¥çµæœ
 }
 

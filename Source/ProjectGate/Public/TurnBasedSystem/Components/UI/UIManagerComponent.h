@@ -79,6 +79,17 @@ public:
     UFUNCTION(BlueprintCallable, Category = "UI")
     void DestroyAllUI();
 
+    // === 事件處理方法 ===
+    UFUNCTION()
+    void OnTurnChanged(AActor* CurrentCharacter);
+
+    UFUNCTION()
+    void OnPhaseChanged(AActor* CurrentCharacter, ETurnPhase NewPhase);
+
+    UFUNCTION()
+    void OnTurnOrderChanged(const TArray<AActor*>& NewOrder);
+
+
 
 protected:
 	// Called when the game starts
@@ -140,6 +151,13 @@ private:
 
     // Get widget class from game mode if not set
     void TryGetWidgetClassesFromGameMode();
+
+    // 綁定 TurnManager 事件
+    void BindTurnManagerEvents();
+
+    // TurnManager 引用
+    UPROPERTY()
+    class ASimpleTurnManager* CachedTurnManager = nullptr;
 
 
 };
